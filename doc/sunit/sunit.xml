@@ -16,7 +16,7 @@
 	calling program, which is typically a makefile.
       </para>
 
-    <sect1>
+    <section>
       <title>Setting up a test suite</title>
 
       <para>
@@ -68,9 +68,9 @@ strategies
 	the standard library.
       </para>
 
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Compare expected and actual output</title>
 
       <para>
@@ -90,9 +90,9 @@ apply-test(!"test3"
 )
 </screen>
 
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Check for failure</title>
 
       <para>
@@ -111,9 +111,9 @@ apply-and-fail(!"is-double-quote 3"
 )
 </screen>
 
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Check arbitrary conditions on output</title>
 
       <para>
@@ -138,6 +138,6 @@ new-test =
   )
 </screen>
 
-    </sect1>
+    </section>
 
   </chapter>

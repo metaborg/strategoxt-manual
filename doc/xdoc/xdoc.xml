@@ -8,21 +8,21 @@
     <para>
     </para>
 
-    <sect1>
+    <section>
       <title>Generating documentation</title>
 
       <para>
       </para>
 
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Building your own documentation generator</title>
 
       <para>
       </para>
 
-    </sect1>
+    </section>
 
   </chapter>
 

@@ -9,7 +9,7 @@
 	Advanced features
       </para>
 
-    <sect1>
+    <section>
       <title>Dynamic rules</title>
 
       <para>
@@ -17,9 +17,9 @@
       </para>
 
 
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Concrete object syntax</title>
 
       <para>
@@ -27,6 +27,6 @@
       </para>
 
 
-    </sect1>
+    </section>
 
   </chapter>

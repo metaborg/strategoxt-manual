@@ -16,7 +16,7 @@
     </cmdsynopsis>
   </refsynopsisdiv>
 
-  <refsect1>
+  <refsection>
     <title>Description</title>
 
     <para>
@@ -39,9 +39,9 @@
       of over 8000 lines of code is compiled. When developing, compile time
       can be reduced by reducing the optimization level.
     </para>
-  </refsect1>
+  </refsection>
 
-  <refsect1>
+  <refsection>
     <title>Examples</title>
 
     <para>
@@ -85,9 +85,9 @@
       <arg choice="plain">-i <replaceable>M</replaceable></arg>
       <arg choice="plain">-I ../sig</arg>
     </cmdsynopsis>
-  </refsect1>
+  </refsection>
 
-  <refsect1>
+  <refsection>
     <title>Options</title>
 
     <variablelist>
@@ -227,21 +227,21 @@
 	</listitem>
       </varlistentry>
     </variablelist>
-  </refsect1>
+  </refsection>
 
-  <refsect1>
+  <refsection>
     <title>See Also</title>
 
     <para><ulink url="http://www.stratego-language.org">Stratego website</ulink></para>
-  </refsect1>
+  </refsection>
 
-  <refsect1>
+  <refsection>
     <title>Reporting Bugs</title>
 
     <para>
       Please report bugs to <email>stratego-bugs@cs.uu.nl</email>
     </para>
-  </refsect1>
+  </refsection>
 
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </refentry>

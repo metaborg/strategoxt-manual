@@ -16,7 +16,7 @@
     </cmdsynopsis>
   </refsynopsisdiv>
 
-  <refsect1>
+  <refsection>
     <title>Description</title>
 
     <para>
@@ -29,12 +29,12 @@
       looked for in the current directory and any of the include directories
       indicated with the <option>-I <replaceable>dir</replaceable></option> arguments.
     </para>
-  </refsect1>
+  </refsection>
 
-  <refsect1>
+  <refsection>
     <title>Reporting Bugs</title>
     <para>Please report bugs to <email>stratego-bugs@cs.uu.nl</email></para>
-  </refsect1>
+  </refsection>
 
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </refentry>

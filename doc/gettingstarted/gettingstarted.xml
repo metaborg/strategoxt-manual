@@ -15,7 +15,7 @@
 
       </para>
       
-      <sect1>
+      <section>
 	<title>What do I need?</title>
 
 	<para>
@@ -23,7 +23,7 @@
 	  Stratego Shell
 
 	</para>
-      </sect1>
+      </section>
 
     </chapter>
 

@@ -10,13 +10,13 @@
 	URLs are specified in the the release page of StrategoXT.
       </para>
 
-      <sect1>
+      <section>
 	<title>Using source tarballs</title>
 
 	<para>
 	</para>
 
-	<sect2>
+	<section>
 	  <title>Installation of aterm and sdf2-bundle</title>
 
 	  <para>
@@ -61,9 +61,9 @@ cd ..
 ./configure --prefix=/opt/sdf2-bundle --with-aterm=/opt/aterm
 </screen>
 
-	</sect2>
+	</section>
 
-	<sect2>
+	<section>
 	  <title>Installation of StrategoXT</title>
 
 	  <para>
@@ -92,11 +92,11 @@ make install
   --with-aterm=/opt/aterm --with-sdf=/opt/sdf2-bundle
 </screen>
 
-	</sect2>
+	</section>
 
-      </sect1>
+      </section>
 
-      <sect1>
+      <section>
 	<title>Using binary RPMs</title>
 
 	<para>
@@ -122,5 +122,5 @@ rpm -U *
 	  specifying the filenames of the RPMs.  
 	</para>
 
-      </sect1>
+      </section>
     </chapter>
