@@ -1,5 +1,5 @@
 ACLOCAL_AMFLAGS = -I .
-SUBDIRS    = doc html xhtml man
+SUBDIRS    = doc html man
 EXTRA_DIST = bootstrap docbook.m4 Makefile.docbook
 
 relname:
