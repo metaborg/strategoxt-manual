@@ -201,9 +201,9 @@
 	<sect3>
 	  <title>Fixpoint operator</title>
 	  <para>
-	    Fixpoint Operator Another way to define recursion is using
-	    the fixpoint operator rec x(s), which recurses on
-	    applications of x within s. 
+	    Another way to define recursion is using the fixpoint
+	    operator rec x(s), which recurses on applications of x
+	    within s.
 	  </para>
 
 	  <para>
