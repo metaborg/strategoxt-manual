@@ -31,6 +31,12 @@ Plus(Var("a"),Int("3"))
       traversals.
     </para>
 
+    <para>
+      Congruences can also be applied to tuples,
+      <code>(s1,s2,...,sn)</code>, and lists,
+      <code>[s1,s2,...,sn]</code>. A special list congruence is
+      <code>[]</code> which 'visits' the empty list.
+    </para>
 
 
   </section>
