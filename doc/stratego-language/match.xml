@@ -3,26 +3,32 @@
 
 <section>
   <title>Match pattern</title>
+
+  <section id="match">
+    <title>Matching terms</title>
   
-  <para>
-    Match
-  </para>
-  
-  <section>
-    <title>Match variables</title>
-    
     <para>
-      Non-linear patterns
+      
     </para>
-    
-  </section>
   
-  <section>
-    <title>Non-linear patterns</title>
+    <section>
+      <title>Match variables</title>
     
-    <para>
-      Non-linear patterns
-    </para>
+      <para>
+	Non-linear patterns
+      </para>
+    
+    </section>
+  
+    <section>
+      <title>Non-linear patterns</title>
+    
+      <para>
+	Non-linear patterns
+      </para>
    
+    </section>
   </section>
+
+
 </section>
