@@ -13,54 +13,32 @@
 
 
   <section id="strategy-def-reference">
-	  <title>Named strategy expressions</title>
+    <title>Named strategy expressions</title>
 
-	  <section>
-	    <title>Description</title>
+    <section>
+      <title>Description</title>
 
-	    <para>
-	    </para>
+      <para>
+      </para>
 
-	  </section>
+    </section>
 
-	  <section>
-	    <title>Syntax</title>
+    <section>
+      <title>Syntax</title>
 
-	    <para></para>
-	  </section>
+      <para></para>
+    </section>
 
-	  <section>
-	    <title>Formatting</title>
+    <section>
+      <title>Formatting</title>
+      
+      <para>
+      </para>
 
-	    <para>
-	    </para>
+      <screen>
+      </screen>
 
-	    <screen>
-</screen>
+    </section>
 
-	  </section>
-
-	  <section>
-	    <title>Implementation</title>
-
-	    <para>
-	      The strategy expression:
-	    </para>
-
-	    <screen>
-rec x (s)
-</screen>
-
-	    <para>
-	      is equivalent to:
-	    </para>
-
-	    <screen>
-let x = s in x end
-</screen>
-
-	  </section>
-
-
-	</section>
+  </section>
 </section>
