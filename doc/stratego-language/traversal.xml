@@ -1,0 +1,168 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<section>
+  <title>Traversals</title>
+  <section>
+    <title>Generic traversal operators</title>
+
+    <para>
+      Generic traversal operators
+    </para>
+
+    <section>
+      <title>All</title>
+      
+      <para>
+	The <code>all(s)</code> strategy transforms a constructor
+	application by applying the parameter strategy <code>s</code>
+	to each direct subterm. An application of <code>all(s)</code>
+	fails if the application to one of the subterms fails.
+      </para>
+
+      <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> all(!Var("a"))
+Plus(Var("a"),Var("a"))
+</screen>
+
+      <para>
+	Using the <code>all</code> traversal primitive we can define
+	generic traversal strategies like <code>topdown</code> and
+	<code>bottomup</code>.
+      </para>
+
+      <screen><include href="xmpl/topdown.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/><include href="xmpl/bottomup.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+    </section>
+
+    <section>
+      <title>One</title>
+
+      <para>
+	The <code>one(s)</code> strategy transforms a constructor
+	application by applying the parameter strategy <code>s</code>
+	to exactly one direct subterm. An application of
+	<code>one(s)</code> fails if the application to all of the
+	subterms fails.
+      </para>
+	 
+      <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> one(!Var("a"))
+Plus(Var("a"),Var("a"))
+</screen>
+
+      <para>
+	We can use the <code>one</code> traversal primitive to define
+	a strategy <code>contains</code>, which checks if the current
+	term contains a given term.
+      </para>
+
+      <screen><include href="xmpl/oncetd.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/><include href="xmpl/contains.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+    </section>
+
+    <section>
+      <title>Some</title>
+
+      <para>
+	The <code>some(s)</code> strategy transforms a constructor
+	application by applying the parameter strategy <code>s</code>
+	to as many direct subterms as possible and at least one. An
+	application of <code>some(s)</code> fails if the application
+	to all of the subterms fails.
+      </para>
+
+    </section>
+  </section>
+
+  <section>
+    <title>Term traversals</title>
+
+    <para>
+      The primitive term traversal operators of Stratego (all, some,
+      one) can be combined with the other control operators in a wide
+      variety of ways to define full term traversals.
+    </para>
+
+    <section>
+      <title>One-Pass traversals</title>
+
+      <para>
+	The most general class of traversals visits every node of a
+	term and applies a transformation to it. The following
+	operators define traversals that apply a strategy
+	<code>s</code> to all nodes of a term.
+      </para>
+
+      <screen><include href="xmpl/everywhere.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+      <para>
+	The strategy <code>topdown(s)</code> first visits a node
+	before it descends to the subterms, <code>bottomup(s)</code>
+	first transforms subterms before applying <code>s</code> to a
+	node, and <code>downup(s)</code> applies the transformation
+	<code>s</code> on the way down and again on the way up. Since
+	<code>s</code> is applied at every subterm, these traversals
+	only succeed if <code>s</code> succeeds everywhere. Therefore,
+	these traversals are typically applied in combination with try
+	or repeat.
+      </para>
+
+      <para>
+	The traversals above go through all constructors. If it is not
+	necessary to traverse the entire tree, the following versions
+	of the traversals can be used.  They are parameterized with a
+	strategy operator <code>stop</code> that will skip the
+	irrelevant subtrees.
+      </para>
+
+      <screen><include href="xmpl/skipping.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+      <para>
+	While full traversals visit every node of a tree, partial
+	traversals may stop at some point. An example is the
+	<code>alltd(s)</code> strategy, which stops as soon as it has
+	found a subterm to which <code>s</code> can be succesfully
+	applied.
+      </para>
+
+      <screen><include href="xmpl/alltd.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+      <para>
+	If s does not succeed, the strategy is applied recursively at
+	all direct subterms. This means that s is applied along a
+	frontier of the subject term.  This strategy is typically
+	used in substitution operations in which subterms are replaced
+	by other terms. For example, the strategy <code>alltd(?Var(x);
+	!e)</code> replaces all occurrences of <code>Var(x)</code> by
+	<code>e</code>.
+      </para>
+
+      <para>
+	Note that <code>alltd(try(s))</code> is not a useful
+	strategy. Since <code>try(s)</code> succeeds at the root of
+	the term, no traversal is done.
+      </para>
+
+    </section>
+
+    <section>
+      <title>Fixpoint traversals</title>
+
+      <para>
+      </para>
+    </section>
+
+    <section>
+      <title>Type unifying strategies</title>
+
+      <para>
+      </para>
+    </section>
+
+  </section>
+
+
+</section>

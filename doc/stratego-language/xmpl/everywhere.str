@@ -1,0 +1,5 @@
+  topdown(s)     = s; all(topdown(s))
+  bottomup(s)    = all(bottomup(s)); s
+  downup(s)      = s; all(downup(s)); s
+  downup(s1, s2) = s1; all(downup(s1, s2)); s2
+
