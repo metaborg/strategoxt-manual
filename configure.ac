@@ -4,9 +4,7 @@ AM_INIT_AUTOMAKE
 
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 
-
 XT_PRE_RELEASE
-XT_USE_XT_PACKAGES
 USE_DOCBOOK
 
 AC_PROG_INSTALL
