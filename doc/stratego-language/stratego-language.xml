@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
@@ -5,9 +6,11 @@
   
   <title>Language</title>
 
-  <include href="terms.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="terms.xml" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
 
-  <include href="currentterm.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="currentterm.xml" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
 
 
   <section>
@@ -19,9 +22,13 @@
       patterns.
     </para>
 
-    <include href="build.xml" xpointer="xpointer(id('build'))" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="build.xml" 
+	     xpointer="xpointer(id('build'))" 
+	     xmlns="http://www.w3.org/2003/XInclude"/>
 
-    <include href="match.xml" xpointer="xpointer(id('match'))" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="match.xml" 
+	     xpointer="xpointer(id('match'))" 
+	     xmlns="http://www.w3.org/2003/XInclude"/>
 
   </section>
     
@@ -51,24 +58,18 @@
 
       </para>
 
-      <include href="seq.xml" xpointer="xpointer(id('seq'))" xmlns="http://www.w3.org/2003/XInclude"/>
+      <include href="seq.xml" 
+	       xpointer="xpointer(id('seq'))" 
+	       xmlns="http://www.w3.org/2003/XInclude"/>
 
-      <section>
-	<title>Apply and match</title>
-	
-	<para>
-	  Apply and match
-	</para>
-      </section>
-      
-      <section>
-	<title>Build and apply</title>
-	
-	<para>
-	  Build and apply
-	</para>
-      </section>
-      
+      <include href="applymatch.xml" 
+	       xpointer="xpointer(id('applymatch'))" 
+	       xmlns="http://www.w3.org/2003/XInclude"/>
+
+      <include href="buildapply.xml" 
+	       xpointer="xpointer(id('buildapply'))" 
+	       xmlns="http://www.w3.org/2003/XInclude"/>
+
       <section>
 	<title>Term variable scope</title>
 	
@@ -148,26 +149,13 @@
 	  recursive call in its body.
 	</para>
 
-	<section>
-	  <title>Fixpoint operator</title>
-	  <para>
-	    Another way to define recursion is using the fixpoint
-	    operator rec x(s), which recurses on applications of x
-	    within s.
-	  </para>
 
-	  <para>
-	    Originally, the rec operator was the only way to define
-	    recursion. It is still in the language in the first place
-	    because it is widely used in many existing programs, and
-	    in the second place because it can be a nice concise
-	    expression of a recursive strategy. An example usage is
-	    the definition of repeat with rec:
-	  </para>
-
-	</section>
+	<include href="rec.xml" 
+		 xpointer="xpointer(id('rec'))" 
+		 xmlns="http://www.w3.org/2003/XInclude"/>
 
       </section>
+
     </section>
 
     <section>
@@ -216,9 +204,11 @@
 	Complete transformations require term traversal
       </para>
 
-      <include href="congruence.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+      <include href="congruence.xml" 
+	       xmlns="http://www.w3.org/2003/XInclude"/>
 
-      <include href="traversal.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+      <include href="traversal.xml" 
+	       xmlns="http://www.w3.org/2003/XInclude"/>
 
       <section>
 	<title>Generic term deconstruction</title>
@@ -230,8 +220,10 @@
 
     </section>
 
-    <include href="dynamic-rules.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    <include href="concrete-syntax.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="dynamic-rules.xml" 
+	     xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="concrete-syntax.xml" 
+	     xmlns="http://www.w3.org/2003/XInclude"/>
 
 
   </chapter>

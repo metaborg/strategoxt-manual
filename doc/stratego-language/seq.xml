@@ -28,4 +28,22 @@ Plus(Int("3"),Var("a"))
 
   </section> 
 
+  <section id="seq-reference">
+    <title>Sequential composition</title>
+
+    <section>
+      <title>Description</title>
+
+      <para>
+      </para>
+
+    </section>
+
+    <section>
+      <title>Syntax</title>
+      <screen>Strategy ";" Strategy -> Strategy</screen>
+    </section>
+
+  </section>
+
 </section>

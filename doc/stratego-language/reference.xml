@@ -37,5 +37,20 @@
 	   xpointer="xpointer(id('negation-reference'))" 
 	   xmlns="http://www.w3.org/2003/XInclude"/>
 
+  <include href="rec.xml" 
+	   xpointer="xpointer(id('rec-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="seq.xml" 
+	   xpointer="xpointer(id('seq-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="applymatch.xml" 
+	   xpointer="xpointer(id('applymatch-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="buildapply.xml" 
+	   xpointer="xpointer(id('buildapply-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
 
 </chapter>
