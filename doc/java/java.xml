@@ -5,10 +5,7 @@
   <chapter id="java">
     <title>Java Transformations</title>
 
-    <para>
-    </para>
-
-    <sect1 id="java-front">
+    <section id="java-front">
       <title>Getting started with java-front</title>
 
       <para>
@@ -31,7 +28,7 @@
 
       </para>
 
-      <sect2>
+      <section>
 	<title>Basics</title>
 	<para>
 	  A basic Java to Java transformation will be a pipeline:
@@ -53,9 +50,9 @@
 	  The parse-java tool will parse the input with a parser for
 	  Java version 1.5 (aka J2SE 5.0).
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Example: Add Blocks</title>
 	<para>
 	  Let's have a look at a real transformation on Java
@@ -85,7 +82,7 @@
   }
 </screen>
 
-	<sect3>
+	<section>
 	  <title>Getting Used to Stratego</title>
 
 	  <para>
@@ -127,8 +124,8 @@
 	    abstract syntax tree to ordinary Java syntax.
 	  </para>
 
-	</sect3>
-	<sect3>
+	</section>
+	<section>
 	  <title>The Real Job</title>
 
 	  <para>
@@ -300,8 +297,8 @@
 	  </para>
 
 
-	</sect3>
-	<sect3>
+	</section>
+	<section>
 	  <title>Conclusion</title>
 
 	  <para>
@@ -313,10 +310,10 @@
 	    many more Java transformations to do next. Have a lot of
 	    fun!
 	  </para>
-	</sect3>
-      </sect2>
+	</section>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Example: Java Generation with Concrete Syntax</title>
 
 	<para>
@@ -350,7 +347,7 @@
 	  when you are using concrete syntax.
 	</para>
 
-	<sect3>
+	<section>
 	  <title>Basic Concrete Syntax Skills</title>
 
 	  <para>
@@ -436,9 +433,9 @@
 	  </para>
 
 
-	</sect3>
+	</section>
 
-	<sect3>
+	<section>
 	  <title>The Structure is Out There</title>
 
 	  <para>
@@ -472,9 +469,9 @@
 	    will discuss next.
 	  </para>
 
-	</sect3>
+	</section>
 
-	<sect3>
+	<section>
 	  <title>Using Anti-Quotation</title>
 
 	  <para>
@@ -555,9 +552,9 @@
 	  <screen>
   $ echo "\"I Like to Quote\"" | parse-java -s Expr | ./gen-print | pp-java</screen>
 
-	</sect3>
+	</section>
 
-	<sect3>
+	<section>
 	  <title>More Variability</title>
 
 	  <para>
@@ -712,9 +709,9 @@
 	    Stratego-Java-15.sdf. The production rules in this syntax
 	    definition correspond to (anti-)quotations.
 	  </para>
-	</sect3>
+	</section>
 
-	<sect3>
+	<section>
 	  <title>Using Meta Variables</title>
 
 	  <para>
@@ -801,12 +798,12 @@
       |[ ~e:e * 1 ]| -> e
 </screen>
 
-	</sect3>
+	</section>
 
 
-      </sect2>
+      </section>
 
-    </sect1>
+    </section>
 
   </chapter>
 
