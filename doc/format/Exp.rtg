@@ -1,0 +1,12 @@
+  regular tree grammar
+    start Exp
+    productions
+      Exp      -> Minus(Exp,Exp)
+      Exp      -> Plus(Exp,Exp)
+      Exp      -> Mod(Exp,Exp)
+      Exp      -> Div(Exp,Exp)
+      Exp      -> Mul(Exp,Exp)
+      Exp      -> Int(IntConst)
+      Exp      -> Var(Id)
+      IntConst -> <string>
+      Id       -> <string>

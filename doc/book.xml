@@ -75,14 +75,16 @@
 
     <include href="xtc/xtc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
+    <include href="format/format.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   </part>
 
   <part>
     <title>Extensions</title>
 
-    <include href="xdoc/xdoc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-
     <include href="java/java.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
+    <include href="xdoc/xdoc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>
 

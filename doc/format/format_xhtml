@@ -1,0 +1,1 @@
+    $ format-check --rtg Exp.rtg -i exp3.trm --xhtml -o foo.html
