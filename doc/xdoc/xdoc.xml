@@ -1,7 +1,7 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-  <chapter>
+  <chapter id="documentation-generation">
 
     <title>Generic Documentation Generation with xDoc (*)</title>
 

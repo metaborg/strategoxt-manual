@@ -51,8 +51,6 @@
 
     <include href="stratego-language/stratego-language.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-    <include href="advanced-stratego/advanced-stratego.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-
     <include href="stratego-library/stratego-library.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
     <include href="sunit/sunit.xml" xmlns="http://www.w3.org/2003/XInclude"/>

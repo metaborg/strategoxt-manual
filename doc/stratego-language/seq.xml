@@ -2,19 +2,30 @@
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
 <section>
-  <title>Match pattern</title>
+  <title>Sequential composition</title>
 
 
   <section id="seq">
     <title>Sequential composition</title>
     
     <para>
-      The sequential composition s1; s2 of the strategies s1 and
-      s2 first applies the strategy s1 to the subject term and
-      then s2 to the result of that first application.
+      The sequential composition <code>s1 ; s2</code> of the
+      strategies <code>s1</code> and <code>s2</code> first applies the
+      strategy <code>s1</code> to the subject term and then
+      <code>s2</code> to the result of that first application. 
     </para>
-  </section>
 
+    <screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?Plus(e1, e2); !Plus(e2, e1)
+Plus(Int("3"),Var("a"))
+</screen>
 
+    <para>
+      The variable bindings are propagated. The strategy fails if
+      either <code>s1</code> or <code>s2</code> fails.
+    </para> 
+
+  </section> 
 
 </section>
