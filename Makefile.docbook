@@ -5,16 +5,16 @@
 	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --postvalid --output $@ --valid $<
 
 %.1 : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) --catalogs --output $@ $(DOCBOOK2MAN_XSL) $<
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2MAN_XSL) $<
 
 %.html : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) --catalogs --output $@ $(DOCBOOK2HTML_XSL) $<
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2HTML_XSL) $<
 
 %.xhtml : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) --catalogs --output $@ $(DOCBOOK2XHTML_XSL) $<
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2XHTML_XSL) $<
 
 index.html : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) --catalogs --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $<
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $<
 
 index.xhtml : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) --catalogs --output $@ $(DOCBOOK2XHTML_CHUNK_XSL) $<
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2XHTML_CHUNK_XSL) $<

@@ -37,6 +37,8 @@
     </copyright>
   </bookinfo>
 
+  <include href="gettingstarted.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   <chapter>
     <title>Stratego</title>
 
