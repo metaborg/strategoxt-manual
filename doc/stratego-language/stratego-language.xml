@@ -36,8 +36,7 @@ Plus(
     "f"
   , [ Mul(Int("5"), Var("x")) ]
   )
-)
-    </programlisting>
+)</programlisting>
 
     <para>
       The format has a few constructs:
@@ -89,7 +88,7 @@ Plus(
   </section>
 
   <section>
-    <title>Transformation Strategies</title>
+    <title>Strategies and the Current Term</title>
 
     <para>
       Strategies are the statements and functions of the Stratego
@@ -102,8 +101,7 @@ Plus(
     <screen>
 stratego> :show
 ()
-stratego>
-    </screen>
+stratego></screen>
 
     <para>
       So, the current term is the empty tuple if you have just started
@@ -116,8 +114,7 @@ stratego>
 <replaceable>current term</replaceable>
 stratego> <replaceable>strategy expression</replaceable>
 <replaceable>transformed current</replaceable>
-stratego>
-    </screen>
+stratego></screen>
 
     <para>
       Strategies can also fail. In that case, the shell will print a
@@ -129,8 +126,7 @@ stratego>
 stratego> <replaceable>strategy expression</replaceable>
 command failed
 stratego> :show
-<replaceable>current term</replaceable>
-    </screen>
+<replaceable>current term</replaceable></screen>
   </section>
 
   <section>
