@@ -1,0 +1,56 @@
+--------------------------------------------------------------------------
+Writing the Stratego/XT Manual
+--------------------------------------------------------------------------
+
+Documentation
+
+  Online book: DocBook, The Definitive Guide
+
+    Introductory text and reference manual
+    http://www.docbook.org/tdg/en/html/docbook.html
+
+  Online book: DocBook XSL, The Complete Guide
+
+    Explains how to use the XSL transformations for DocBook
+    http://www.sagehill.net/docbookxsl/index.html
+
+  Using XInclude
+
+    Explains the basic of XInclude, the language we are using for
+    separating the DocBook sources in multiple XML files.
+    http://www.xml.com/lpt/a/2002/07/31/xinclude.html
+
+Examples
+
+  Nix Manual
+
+    https://svn.cs.uu.nl:12443/repos/trace/nix/trunk/doc/manual/
+
+Software
+
+  Requirements:
+
+  - docbook-xml-4.3
+  - docbook-xsl
+  - recent libxml2
+  - libxslt
+ 
+  Configure the manual with:
+  --with-docbook-xsl=$docbookxsl
+  --with-docbook-xml=$docbookxml
+
+  where:
+  export NIXPKGS=$HOME/.nix-profile
+  export docbookxml=${NIXPKGS}/xml/dtd/docbook
+  export docbookxsl=${NIXPKGS}/xml/xsl/docbook
+
+  nxml-mode is adviced for writing DocBook in emacs.
+
+Buildfarm
+
+  After committing, the manual build by the buildfarm and will be
+  available at:
+  http://catamaran.labs.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/index.html
+
+  The single page version is available at:
+  http://catamaran.labs.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/manual.html
