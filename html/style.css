@@ -152,6 +152,11 @@ tt
     color: #400000;
 }
 
+.prompt 
+{
+    color: darkblue;
+}
+
 .term
 {
     font-weight: bold;
