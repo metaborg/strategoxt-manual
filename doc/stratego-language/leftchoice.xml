@@ -1,0 +1,74 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+
+<section>
+  <section id="leftchoice">
+    <title>Deterministic choice (left choice)</title>
+
+    <para>
+      The left choice or deterministic choice s1 &lt;+ s2 chooses one
+      of the trans- formations to apply. That is, s1 is first applied,
+      and s2 is only applied if s2 fails. Formally, the left choice
+      operator is defined as:
+    </para>
+
+    <para>
+      A typical application of the deterministic choice operator is to
+      declare the priority between rules with overlapping left-hand
+      sides.
+    </para>
+
+    <para>
+      A useful application of &lt;+ in combination with id is the
+      reflexive closure of a strategy s. The strategy try(s) tries to
+      apply the strategy s, but if that fails, just succeeds using id.
+    </para>
+
+    <screen><include href="xmpl/try.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+    <para>
+      Note that the choice is committed once the left-hand side
+      strategy has succeeded, even if the continuation strategy fails.
+    </para>
+    
+  </section>
+
+  <section id="leftchoice-reference">
+    <title>Deterministic choice (left choice)</title>
+
+    <section>
+      <title>Description</title>
+
+      <para>
+      </para>
+
+    </section>
+
+    <section>
+      <title>Syntax</title>
+      <screen>Strategy "&lt;+" Strategy -> Strategy</screen>
+    </section>
+
+    <section>
+      <title>Formatting</title>
+
+      <para>
+      </para>
+      
+      <screen>
+</screen>
+
+    </section>
+
+    <section>
+      <title>Implementation</title>
+
+      <para>
+      </para>
+
+    </section>
+
+  </section>
+
+</section>

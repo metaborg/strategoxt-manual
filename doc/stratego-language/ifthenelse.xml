@@ -1,55 +1,67 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-	<section>
-	  <title>If Then Else</title>
+  <section >
+    <title>If Then Else</title>
 
-	  <section>
-	    <title>Description</title>
+    <section id="ifthenelse">
+      <title>If Then Else</title>
 
-	    <screen>
+      <para>
+      </para>
+
+    </section>
+
+    <section id="ifthenelse-reference">
+      <title>If Then Else</title>
+
+      <section>
+	<title>Description</title>
+
+      <screen>
 &lt;if s1 then s2 else s3 end> t
 </screen>
 
-	    <para>
-	      If <code>s1</code> succeeds then strategy
-	      <code>s2</code> is applied. If <code>s1</code> fails,
-	      then <code>s3</code> is applied.
-	    </para>
+      <para>
+	If <code>s1</code> succeeds then strategy <code>s2</code> is
+	applied. If <code>s1</code> fails, then <code>s3</code> is
+	applied.
+      </para>
 
-	    <para>
-	      The result of condition is ignored. If the condition
-	      succeeds, then the result is,
-	    </para>
+      <para>
+	The result of condition is ignored. If the condition succeeds,
+	then the result is,
+      </para>
 
-	    <screen>
+      <screen>
 &lt;s2> t
 </screen>
 
-	    <para>
-	      If the condition fails, then the result is,
-	    </para>
+      <para>
+	If the condition fails, then the result is,
+      </para>
 
-	    <screen>
+      <screen>
 &lt;s3> t
 </screen>
 
-	  </section>
+      </section>
+    </section>
 
-	  <section>
-	    <title>Syntax</title>
-	    <screen>"if" Strategy "then" Strategy "else" Strategy "end" -> Strategy</screen>
-	  </section>
+    <section>
+      <title>Syntax</title>
+      <screen>"if" Strategy "then" Strategy "else" Strategy "end" -> Strategy</screen>
+    </section>
 
-	  <section>
-	    <title>Formatting</title>
+    <section>
+      <title>Formatting</title>
 
-	    <para>
-	      The if then else construct is usally formatted in the
-	      following way:
-	    </para>
+      <para>
+	The if then else construct is usally formatted in the
+	following way:
+      </para>
 
-	    <screen>
+      <screen>
 if s1 then
   s2
 else
@@ -57,29 +69,29 @@ else
 end
 </screen>
 
-	  </section>
+    </section>
 
-	  <section>
-	    <title>Implementation</title>
+    <section>
+      <title>Implementation</title>
 
-	    <para>
-	      The if-then-else construct is sugar for a guarded
-	      left-choice. The strategy,
-	    </para>
+      <para>
+	The if-then-else construct is sugar for a guarded
+	left-choice. The strategy,
+      </para>
 
-	    <screen>
+      <screen>
 if s1 then s2 else s3 end
 </screen>
 
-	    <para>
-	      translates into,
-	    </para>
+      <para>
+	translates into,
+      </para>
 
-	    <screen>
+      <screen>
 where(s1) &lt; s2 + s3
 </screen>
 
-	  </section>
+    </section>
 
-	</section>
+  </section>
 

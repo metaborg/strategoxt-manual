@@ -3,6 +3,26 @@
 
 <chapter>
   <title>Stratego Language</title>
-  
-  <include href="ifthen.xml" xpointer="xpointer(id('ifthen-reference'))" xmlns="http://www.w3.org/2003/XInclude"/>
+
+
+  <include href="choice.xml" 
+	   xpointer="xpointer(id('choice-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="conditionalchoice.xml" 
+	   xpointer="xpointer(id('conditionalchoice-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="leftchoice.xml" 
+	   xpointer="xpointer(id('leftchoice-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="ifthenelse.xml" 
+	   xpointer="xpointer(id('ifthenelse-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="ifthen.xml" 
+	   xpointer="xpointer(id('ifthen-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
 </chapter>
