@@ -88,4 +88,8 @@
 
   </part>
 
+  <part>
+    <title>Reference</title>
+    <include href="stratego-language/reference.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  </part>
 </book>
