@@ -1,0 +1,20 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<section>
+  <title>Match pattern</title>
+
+
+  <section id="seq">
+    <title>Sequential composition</title>
+    
+    <para>
+      The sequential composition s1; s2 of the strategies s1 and
+      s2 first applies the strategy s1 to the subject term and
+      then s2 to the result of that first application.
+    </para>
+  </section>
+
+
+
+</section>

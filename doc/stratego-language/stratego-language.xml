@@ -170,15 +170,7 @@ command failed
 
       </para>
 
-      <section>
-	<title>Sequential composition</title>
-
-	<para>
-	  The sequential composition s1; s2 of the strategies s1 and
-	  s2 first applies the strategy s1 to the subject term and
-	  then s2 to the result of that first application.
-	</para>
-      </section>
+      <include href="seq.xml" xpointer="xpointer(id('seq'))" xmlns="http://www.w3.org/2003/XInclude"/>
 
       <section>
 	<title>Apply and match</title>
