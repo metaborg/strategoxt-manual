@@ -72,8 +72,8 @@ cd ..
 	  </para>
 
 	  <screen>
-tar zxf strategoxt-0.13.tar.gz
-cd strategoxt-0.13
+tar zxf strategoxt-<replaceable>version</replaceable>.tar.gz
+cd strategoxt-<replaceable>version</replaceable>
 ./configure
 make
 make install
