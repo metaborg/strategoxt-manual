@@ -41,6 +41,9 @@
     <title>Getting started</title>
 
     <include href="gettingstarted/gettingstarted.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
+    <include href="installation/installation.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   </part>
   
   <part>
@@ -51,6 +54,8 @@
     <include href="advanced-stratego/advanced-stratego.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
     <include href="stratego-library/stratego-library.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
+    <include href="sunit/sunit.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>
 

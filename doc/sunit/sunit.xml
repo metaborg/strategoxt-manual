@@ -1,0 +1,143 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+  <chapter>
+
+    <title>Unit testing with SUnit</title>
+
+      <para>
+	StrategoUnit or SUnit is a Unit Testing framework for Stratego
+	inspired by JUnit. The idea is to specify tests that apply a
+	strategy to a specific term and compare the result to the
+	expected output. The tests are combined into a test suite,
+	which runs all tests and reports the number of successes and
+	failures. When all tests pass, the program exits with status
+	0, otherwise it exists with status 1 to flag the error to the
+	calling program, which is typically a makefile.
+      </para>
+
+    <sect1>
+      <title>Setting up a test suite</title>
+
+      <para>
+	Module list-zip-test.str in the StrategoStandardLibrary is an
+	example test suite. SUnit test suites can be compiled to an
+	executable program. When run the program gives the following
+	output:
+      </para>
+
+      <screen>
+test suite: list-zip-test
+nzip0-test
+zip-test1
+zip-test2
+successes: 3
+failures: 0
+(3,0)
+</screen>
+
+      <para>
+	An extract from the module shows how a test suite can be set
+	up:
+      </para>
+
+      <screen>
+module list-zip-test
+imports list-zip sunit
+strategies
+
+  main =
+    test-suite(!"list-zip-test",
+        nzip0-test;
+        zip-test
+     )
+
+  nzip0-test =
+    apply-test(!"nzip0-test"
+        ,nzip0(id)
+        ,!["a","b","c"]
+        ,![(0, "a"), (1, "b"), (2, "c")]
+        )
+</screen>
+
+      <para>
+	The test-suite strategy takes a string and a strategy. The
+	strategy is typically a sequential composition of calls to
+	unit tests. Unit tests such as nzip0-test are defined using
+	one of the unit-test strategies from module sunit, which is in
+	the standard library.
+      </para>
+
+    </sect1>
+
+    <sect1>
+      <title>Compare expected and actual output</title>
+
+      <para>
+	The prototypical unit test is composed with the apply-test
+	strategy, which takes a name, the strategy that is being
+	tested, the input term, and the exptected output term. Note
+	that the name, input, and output term must be specified in
+	strategies, which means that if literal terms are used then
+	you must build them using the ! operator.
+      </para>
+
+      <screen>
+apply-test(!"test3"
+, ltS
+, !("3","5")
+, !("3","5")
+)
+</screen>
+
+    </sect1>
+
+    <sect1>
+      <title>Check for failure</title>
+
+      <para>
+	It is also useful to test that a strategy fails if applied to
+	a certain input. The ordinary apply-test cannot be used for
+	this because it requires an output term to which the result
+	will be compared. For testing failure the apply-and-fail
+	strategy is available in sunit. It ensures that the strategy
+	fails if applied to a certain input.
+      </para>
+
+      <screen>
+apply-and-fail(!"is-double-quote 3"
+, is-double-quoted
+, !"\"fnord"
+)
+</screen>
+
+    </sect1>
+
+    <sect1>
+      <title>Check arbitrary conditions on output</title>
+
+      <para>
+	Sometimes a test just want to check some condition on the
+	output of a strategy application, without actually specifying
+	the output itself. The apply-test strategy cannot be used for
+	this because it performs an equivalence test of the required
+	output and the actual output. In this case apply-and-check can
+	be used. This strategy takes 4 arguments: a name, a strategy
+	(s) to test, an input and a strategy that will be applied to
+	the result of applying s to the input. This strategy must
+	succeed if the output is correct, or fail if the output is
+	incorrect.
+      </para>
+
+      <screen>
+new-test =
+  apply-and-check(!"new test",
+    (new, new)
+  , !(1, 1)
+  , not(eq); (is-string, is-string)
+  )
+</screen>
+
+    </sect1>
+
+  </chapter>
