@@ -38,5 +38,12 @@ Plus(Var("a"),Int("3"))
       <code>[]</code> which 'visits' the empty list.
     </para>
 
+    <para>
+      A good example of the use of list congruences is the
+      <code>map(s)</code> strategy.
+    </para>
+
+      <screen><include href="xmpl/map.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
 
   </section>
