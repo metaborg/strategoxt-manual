@@ -5,10 +5,30 @@
   <title>Stratego/XT Tutorial</title>
 
   <bookinfo>
-    <author>
-      <firstname>Eelco</firstname>
-      <surname>Visser</surname>
-    </author>
+    <authorgroup>
+      <author>
+	<firstname>Martin</firstname>
+	<surname>Bravenboer</surname>
+	<affiliation>
+	  <orgname>Universiteit Utrecht</orgname>
+	</affiliation>
+      </author>
+      <author>
+	<firstname>Rob</firstname>
+	<surname>Vermaas</surname>
+	<affiliation>
+	  <orgname>Universiteit Utrecht</orgname>
+	</affiliation>
+      </author>
+      <author>
+	<firstname>Eelco</firstname>
+	<surname>Visser</surname>
+	<affiliation>
+	  <orgname>Universiteit Utrecht</orgname>
+	</affiliation>
+      </author>
+    </authorgroup>
+
     <copyright>
       <year>2003</year>
       <holder>Eelco Visser</holder>
