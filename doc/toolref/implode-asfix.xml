@@ -1,0 +1,230 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<refentry lang="en" id="ref-implode-asfix">
+  <refnamediv>
+    <refname>implode-asfix</refname>
+    <refpurpose>maps an asfix parse tree to an abstract syntax tree</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>implode-asfix</command>
+      <arg>-i <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable></arg>
+      <arg rep="repeat"><replaceable>options</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>
+      The implode-asfix utility maps an AsFix tree to an abstract
+      syntax tree. The mapping performs several transformations,
+      including:
+    </para>
+
+    <itemizedlist>
+      <listitem>
+	<para>
+	  remove layout
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  flatten lexical subtrees to strings
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  replace <code>appl(prod(...),[...])</code> applications by
+	  constructor applications, if the production is annotated
+	  with a <code>cons(...)</code> attribute.
+	</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+      The input tree is required to be in AsFix2 format. See the <link
+      linkend="asfix">AsFix section</link> for more information about
+      the AsFix format.
+    </para>
+  </refsection>
+
+  <refsection>
+    <title>Example</title>
+
+    <para>
+      The implosion of parse trees by implode-asfix uses the
+      <function>cons</function> annotation of SDF productions. For
+      instance, the following annotation are typical for a small
+      expression language.
+    </para>
+
+    <programlisting><include href="../parse-unit/Exp.sdf"
+    parse="text"
+    xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+
+    <para>
+      Invoking <command>sglr</command> followed by
+      <command>implode-asfix</command> results in an abstract syntax
+      tree.
+    </para>
+
+    <screen><prompt>$</prompt> echo "1 + 2 * 3" | sglr -2 -p Exp.def.tbl | implode-asfix
+Plus(Int("1"),Mul(Int("2"),Int("3")))</screen>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <title>Input/Output Options</title>
+
+      <varlistentry>
+        <term><option>-i <replaceable>file</replaceable></option></term>
+        <listitem>
+          <para>
+	    Implode the AsFix parse tree in
+	    <replaceable>file</replaceable>
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+	  <para>
+	    Write the resulting abstract syntax tree to
+	    <replaceable>file</replaceable>
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <include href="binary-option.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    </variablelist>
+
+    <variablelist>
+      <title>Implode Options</title>
+
+      <varlistentry>
+        <term><option>--alt</option></term>
+        <listitem>
+          <para>
+	    Flatten alternatives
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--appl</option></term>
+        <listitem>
+          <para>
+	    Replace appl applications by constructor applications
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--concrete</option></term>
+        <listitem>
+          <para>
+	    Skip concrete syntax parts of a Stratego program. Concrete
+	    syntax starts a <function>ToTerm</function>,
+	    <function>ToStrategy</function> or
+	    <function>ToBuild</function> and stops at
+	    <function>FromTerm</function> or
+	    <function>FromApp</function>.
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--inj</option></term>
+        <listitem>
+          <para>
+	    Remove injections from the parse tree
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--layout</option></term>
+        <listitem>
+          <para>
+	    Remove layout nodes from the parse tree
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--lex</option></term>
+        <listitem>
+          <para>
+	    Flatten lexical substrings to strings
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--list</option></term>
+        <listitem>
+          <para>
+	    Flatten lists
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--lit</option></term>
+        <listitem>
+          <para>
+	    Remove literal nodes from the parse tree
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--nt</option></term>
+        <listitem>
+          <para>
+	    Replace <function>appl</function> application by non-terminal applications
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--pt</option></term>
+        <listitem>
+          <para>
+	    Remove the outer <function>pt</function> constructor from the
+	    parse tree
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--seq</option></term>
+        <listitem>
+          <para>
+	    Replace sequences by tuples
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <title>General Options</title>
+
+      <include href="help-option.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Reporting Bugs</title>
+    <para>Please report bugs to <email>stratego-bugs@cs.uu.nl</email></para>
+  </refsection>
+
+  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+</refentry>

@@ -1,0 +1,11 @@
+<!DOCTYPE varlistentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<varlistentry>
+  <term><option>-b</option></term>
+  <listitem>
+    <para>
+      Write the resulting term in the Binary ATerm Format (BAF)
+    </para>
+  </listitem>
+</varlistentry>

@@ -1,12 +1,10 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
-
 <chapter>
   <title>Programs and Tools</title>
 
-  <include href="ppgen.xml" xmlns="http://www.w3.org/2003/XInclude"/>  
+  <include href="implode-asfix.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="pack-sdf.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="sdf2rtg.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="pp-aterm.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="ppgen.xml" xmlns="http://www.w3.org/2003/XInclude"/>  
+  <include href="sdf2rtg.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="strc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </chapter>

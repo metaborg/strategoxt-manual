@@ -1,0 +1,11 @@
+<!DOCTYPE varlistentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<varlistentry>
+  <term><option>--help</option></term>
+  <listitem>
+    <para>
+      Display usage information and exit
+    </para>
+  </listitem>
+</varlistentry>
