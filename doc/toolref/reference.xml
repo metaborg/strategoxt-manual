@@ -1,4 +1,4 @@
-<chapter>
+<chapter id="tool-ref">
   <title>Programs and Tools</title>
 
   <include href="implode-asfix.xml" xmlns="http://www.w3.org/2003/XInclude"/>

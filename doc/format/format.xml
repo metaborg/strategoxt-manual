@@ -129,7 +129,7 @@
 
       <mediaobject>
 	<imageobject role="html">
-	  <imagedata format="PNG" fileref="http://catamaran.labs.cs.uu.nl/twiki/pt/pub/Tools/FormatCheck/vis-mode.png" />
+	  <imagedata format="PNG" fileref="vis-mode.png" />
 	</imageobject>
       </mediaobject>
 
