@@ -6,6 +6,7 @@ test "x$prefix" = xNONE && prefix=$ac_default_prefix
 
 
 XT_PRE_RELEASE
+XT_USE_XT_PACKAGES
 USE_DOCBOOK
 USE_XT_PACKAGES
 USE_STRATEGO_SHELL
@@ -18,6 +19,5 @@ AC_CONFIG_FILES([
   man/Makefile
   html/Makefile
   xhtml/Makefile
-  wiki/Makefile
 ])
 AC_OUTPUT
