@@ -278,7 +278,7 @@ strategies
 	</para>
 
 	<include href="ifthenelse.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-	<include href="ifthen.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+	<include href="ifthen.xml" xmlns="http://www.w3.org/2003/XInclude"/> 
 
       </sect2>
 
