@@ -1,7 +1,7 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
-<refentry lang="en">
+<refentry lang="en" id="ref-strc">
   <refnamediv>
     <refname>strc</refname>
     <refpurpose>compiles Stratego programs to C or executable code</refpurpose>
