@@ -1,5 +1,5 @@
-    $ format-check --rtg Exp.rtg -i exp2.trm
-    error: cannot type Var(1)
-        inferred types of subterms:
-        typed 1 as <int>
-    $
+$ format-check --rtg Exp.rtg -i exp2.trm
+error: cannot type Var(1)
+    inferred types of subterms:
+    typed 1 as <int>
+$

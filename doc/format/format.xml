@@ -6,18 +6,19 @@
     <title>Format Checking with format-check</title>
 
     <para>
-      Format-check analyzes whether the input ATerm conforms to the
-      format that is specified in the RTG (Regular Tree Grammar).
+      <command>Format-check</command> analyzes whether the input ATerm
+      conforms to the format that is specified in the RTG (Regular
+      Tree Grammar).
     </para>
 
     <section>
       <title>Description</title>
 
       <para>
-	Format-check verifies that the input ATerm is part of the
-	language defined in the RTG. If this is not the case, then the
-	ATerm contains format errors. format-check can operate in
-	three modes: plain, visualize and XHTML.
+	<command>Format-check</command> verifies that the input ATerm
+	is part of the language defined in the RTG. If this is not the
+	case, then the ATerm contains format errors. Format-check can
+	operate in three modes: plain, visualize and XHTML.
       </para>
 
       <para>
@@ -30,17 +31,17 @@
       </para>
 
       <para>
-	The visualize mode is enabled with the <code>--vis</code>
+	The visualize mode is enabled with the <option>--vis</option>
 	option. In visualize mode format errors are reported and in a
 	pretty-printed ATerm will be written to the output. All
 	innermost parts of the ATerm that cause format errors are
 	printed in red, if your terminal supports control characters
 	for colors. If you want to browse through the ATerm with less,
-	then you should use the <code>-r</code> flag.
+	then you should use the <option>-r</option> flag.
       </para>
 
       <para>
-	The XHTML mode is enabled with the <code>--xhtml</code>
+	The XHTML mode is enabled with the <option>--xhtml</option>
 	option. In XHTML mode format errors are reported and an report
 	in XHTML will be written to the output. This report shows the
 	parts of the ATerm that are not formatted correctly. Also,
@@ -73,7 +74,7 @@
       <title>Example</title>
 
       <para>
-	Consider the RTG generated in the example of sdf2rtg:
+	Consider the RTG generated in the example of <link linkend="ref-sdf2rtg">sdf2rtg</link>:
       </para>
 
       <screen><include href="Exp.rtg" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
@@ -111,8 +112,9 @@
 	In large ATerms it might be difficult to find the incorrect
 	subterm. To help with this, format-check supports the
 	<code>--vis</code> argument. If this argument is used, then
-	the result will pretty-printed (in the same way as PpATerm)
-	and the incorrect parts will be printed in red.
+	the result will pretty-printed (in the same way as <link
+	linkend="ref-pp-aterm">pp-aterm</link>) and the incorrect parts
+	will be printed in red.
       </para>
 
       <para>
