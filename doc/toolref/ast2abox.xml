@@ -68,8 +68,8 @@
 	  <para>
 	    The resulting file is a Box in the ATerm format (called
 	    abox). This, the resulting can immediately and efficiently
-	    be passed to a Box back-end, such as abox2text <!-- TODO:
-	    link -->.
+	    be passed to a Box back-end, such as <link
+	    linkend="ref-abox2text">abox2text</link>.
 	  </para>
         </listitem>
       </varlistentry>

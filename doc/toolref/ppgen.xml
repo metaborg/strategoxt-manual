@@ -1,4 +1,4 @@
-<refentry lang="en">
+<refentry lang="en" id="ref-ppgen">
   <refnamediv>
     <refname>ppgen</refname>
     <refpurpose>generates a pretty-print table from an SDF syntax definition</refpurpose>
@@ -17,12 +17,16 @@
 
     <para>
       <command>ppgen</command> generates from an SDF syntax definition
-      a pretty-print table with an entry for each context-free syntax
-      production with a constructor annotation. Typically, it is
-      necessary to edit the pretty-print table to add appropriate Box
-      markup to the entries. In a package using Make the modified
-      result should be saved under a different name to avoid
-      overwriting it.
+      a <link linkend="pp-table">pretty-print table</link> with an
+      entry for each context-free syntax production with a constructor
+      annotation.
+    </para>
+
+    <para>
+      Typically, it is necessary to edit the pretty-print table to add
+      appropriate Box markup to the entries. In a package using Make
+      the modified result should be saved under a different name to
+      avoid overwriting it.
     </para>
   </refsection>
 

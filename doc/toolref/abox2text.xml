@@ -1,15 +1,15 @@
-<refentry lang="en" id="ref-ast2abox">
+<refentry lang="en" id="ref-abox2text">
   <refnamediv>
-    <refname>ast2abox</refname>
-    <refpurpose>pretty-print and an abstract syntax tree.</refpurpose>
+    <refname>abox2text</refname>
+    <refpurpose>formats a Box term to plain text</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
-      <command>ast2abox</command>
+      <command>abox2text</command>
       <arg>-i <replaceable>file</replaceable></arg>
       <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-p <replaceable>file.pp</replaceable></arg>
+      <arg choice="opt">-w <replaceable>width</replaceable></arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,27 +17,10 @@
     <title>Description</title>
 
     <para>
-      The ast2abox utility is used to pretty-print abstract syntax
-      trees. The utility transforms an abstract syntax tree according
-      to formatting rules contained in pretty-print-tables. The result
-      of ast2abox is a BOX term which describes the intended
-      format. This term can be passed to a formatter which transforms
-      the BOX term to some output form (abox2text for plain text,
-      abox2html for HTML, or abox2latex for LaTeX).
+      The utility abox2text produces plain text according to the
+      formatting defined in a Box. The input must be in abstract Box
+      syntax (also known as abox).
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
-    <para>
-      To pretty-print an abstract syntax tree stored in the file
-      <filename>tree.trm</filename> to text according to the
-      pretty-print rules in <filename>rules.pp</filename> issue the
-      following command:
-    </para>
-
-    <screen><prompt>$ </prompt>ast2abox -i tree.trm -p rules.pp | abox2text</screen>
   </refsection>
 
   <refsection>
@@ -50,9 +33,8 @@
         <term><option>-i <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
-	    Pretty-print the abstract syntax tree in
-	    <replaceable>file</replaceable>. The abstract syntax tree
-	    can be an arbitrary ATerm.
+	    Format the Box in <replaceable>file</replaceable>. The
+	    must be in abstract Box syntax (also known as abox).
 	  </para>
         </listitem>
       </varlistentry>
@@ -61,15 +43,8 @@
         <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
         <listitem>
 	  <para>
-	    Write the resulting Box term to
+	    Write the resulting text to
 	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is a Box in the ATerm format (called
-	    abox). This, the resulting can immediately and efficiently
-	    be passed to a Box back-end, such as abox2text <!-- TODO:
-	    link -->.
 	  </para>
         </listitem>
       </varlistentry>
@@ -79,23 +54,11 @@
       <title>Common Options</title>
 
       <varlistentry>
-        <term><option>-p <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-w <replaceable>width</replaceable></option></term>
         <listitem>
 	  <para>
-	    Use pretty-print rules defined in
-	    <replaceable>file</replaceable>. Multiple tables can be
-	    specified.
-	  </para>
-
-	  <para>
-	    The <replaceable>file</replaceable> must have the
-	    extension <filename>.pp</filename> or
-	    <filename>.pp.af</filename>. The <filename>.pp</filename>
-	    extension is used for pretty-print tables in concrete
-	    syntax. The <filename>.pp.af</filename> extension is used
-	    for pretty-print tables that have already been parsed
-	    using parse-pp-table <!-- TODO link -->. Using parsed
-	    pretty-print tables improves the performance of ast2abox.
+	    Sets the maximum line width to be specified
+	    <replaceable>width</replaceable>. The default value is 80.
 	  </para>
         </listitem>
       </varlistentry>

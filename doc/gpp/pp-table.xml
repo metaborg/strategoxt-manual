@@ -1,8 +1,8 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-<section>
-  <title>Pretty Print Table</title>
+<section id="pp-table">
+  <title>Pretty Print Tables</title>
   
   <para>
     Pretty-print tables are used to specify how language constructs

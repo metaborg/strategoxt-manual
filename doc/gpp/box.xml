@@ -11,12 +11,12 @@
 
   <para>
     Box is a mark-up language to describe the intended layout of text
-    and is used in pretty print tables <!-- TODO: link -->.  A Box
-    expression is constructed by composing sub-boxes using Box
-    operators. These operators specify the relative ordering of
-    boxes. Examples of Box operators are the <function>H</function>
-    and <function>V</function> operator which format boxes
-    horizontally and vertically, respectively.
+    and is used in <link linkend="pp-table">pretty print
+    tables</link>.  A Box expression is constructed by composing
+    sub-boxes using Box operators. These operators specify the
+    relative ordering of boxes. Examples of Box operators are the
+    <function>H</function> and <function>V</function> operator which
+    format boxes horizontally and vertically, respectively.
   </para>
 
   <para>
