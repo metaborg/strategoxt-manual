@@ -1,7 +1,7 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-<refentry lang="en">
+<refentry lang="en" id="ref-pack-sdf">
   <refnamediv>
     <refname>pack-sdf</refname>
     <refpurpose>packs a set of SDF modules into a single definition</refpurpose>
@@ -10,8 +10,8 @@
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>pack-sdf</command>
-      <arg>-i <replaceable>m</replaceable>.sdf</arg>
-      <arg>-o <replaceable>m</replaceable>.def</arg>
+      <arg>-i <replaceable>m.sdf</replaceable></arg>
+      <arg>-o <replaceable>m.def</replaceable></arg>
       <arg rep="repeat">-I <replaceable>dir</replaceable></arg>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -20,15 +20,132 @@
     <title>Description</title>
 
     <para>
-      An SDF syntax definition consists of a set of modules. Pack-sdf collects
-      all modules imported by module
+      An SDF syntax definition consists of a set of
+      modules. <command>Pack-sdf</command> collects all modules
+      imported by module
       <filename><replaceable>m</replaceable></filename> in file
-      <filename><replaceable>m</replaceable>.sdf</filename> and creates a
-      combined syntax definition in file
-      <filename><replaceable>m</replaceable>.def</filename>. Modules are
-      looked for in the current directory and any of the include directories
-      indicated with the <option>-I <replaceable>dir</replaceable></option> arguments.
+      <filename><replaceable>m</replaceable>.sdf</filename> and
+      creates a combined syntax definition in file
+      <filename><replaceable>m</replaceable>.def</filename>.
     </para>
+
+    <para>
+      The search order for SDF modules is:
+      <orderedlist>
+	<listitem>
+	  <para>
+	    The directory of the main module specified with the
+	    <option>-i</option> option
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    The specified include options, in the order they are given
+	    at the command-line.
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    The XTC repository
+	  </para>
+	</listitem>
+      </orderedlist>
+    </para>
+
+    <refsection>
+      <title>Error Reporting</title>
+
+      <para>
+	Pack-sdf checks if the module name specified in an SDF module
+	file, corresponds to the actual filename. Having different
+	names can lead to very nasty problems.
+      </para>
+      
+      <para>
+	Missing modules will be reported by pack-sdf. Usually, the
+	module is not really missing, but the name of this import is
+	incorrect. Therefore, pack-sdf reports the module(s) from
+	where the 'missing' module is imported. Pack-sdf prints a
+	detailed report of all missing modules and the module where
+	these are imported.
+      </para>
+    </refsection>
+
+    <refsection>
+      <title>Generation of Dependency Files</title>
+
+      <para>
+	Pack-sdf supports the creation of a dependency file suitable for
+	inclusion in a <filename>Makefile</filename>. AutoXT's
+	<filename>Makefile.xt</filename> will instruct pack-sdf to do
+	this, so there is no need to specify dependencies of SDF files
+	by hand.
+      </para>
+    </refsection>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <title>Input/Output Options</title>
+
+      <varlistentry>
+        <term><option>-i <replaceable>m.sdf</replaceable></option></term>
+        <listitem>
+          <para>
+	    Pack modules imported from module
+	    <replaceable>m.sdf</replaceable>
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-o <filename><replaceable>m.def</replaceable></filename></option></term>
+        <listitem>
+	  <para>
+	    Write the resulting SDF syntax definition to
+	    <filename><replaceable>m.def</replaceable></filename>
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--dep <filename><replaceable>file.dep</replaceable></filename></option></term>
+        <listitem>
+	  <para>
+	    Write Make dependencies to
+	    <filename><replaceable>file.dep</replaceable></filename>
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <title>Include Options</title>
+
+      <varlistentry>
+        <term><option>-I <replaceable>dir</replaceable></option></term>
+        <listitem>
+          <para>
+	    Include modules from directory
+	    <replaceable>dir</replaceable>. Pack-sdf will give a
+	    warning if the directory does not exist.
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-Idef <replaceable>file.def</replaceable></option></term>
+        <listitem>
+          <para>
+	    Include modules from SDF definition in file
+	    <replaceable>file.def</replaceable>. Pack-sdf will give a
+	    warning if the file does not exist.
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
   </refsection>
 
   <refsection>

@@ -63,7 +63,7 @@ strategies
     <para>
       The test-suite strategy takes a string and a strategy. The
       strategy is typically a sequential composition of calls to unit
-      tests. Unit tests such as <methodname>nzip0-test</methodname>
+      tests. Unit tests such as <function>nzip0-test</function>
       are defined using one of the unit-test strategies from module
       <filename>sunit</filename>, which is in the standard library.
     </para>
@@ -74,7 +74,7 @@ strategies
     
     <para>
       The prototypical unit test is composed with the
-      <methodname>apply-test</methodname> strategy, which takes a
+      <function>apply-test</function> strategy, which takes a
       name, the strategy that is being tested, the input term, and the
       exptected output term. Note that the name, input, and output
       term must be specified in strategies, which means that if
@@ -96,10 +96,10 @@ apply-test(!"test3"
     
     <para>
       It is also useful to test that a strategy fails if applied to a
-      certain input. The ordinary <methodname>apply-test</methodname>
+      certain input. The ordinary <function>apply-test</function>
       cannot be used for this because it requires an output term to
       which the result will be compared. For testing failure the
-      <methodname>apply-and-fail</methodname> strategy is available in
+      <function>apply-and-fail</function> strategy is available in
       sunit. It ensures that the strategy fails if applied to a
       certain input.
     </para>
@@ -118,10 +118,10 @@ apply-and-fail(!"is-double-quote 3"
     <para>
       Sometimes a test just want to check some condition on the output
       of a strategy application, without actually specifying the
-      output itself. The <methodname>apply-test</methodname> strategy
+      output itself. The <function>apply-test</function> strategy
       cannot be used for this because it performs an equivalence test
       of the required output and the actual output. In this case
-      <methodname>apply-and-check</methodname> can be used. This
+      <function>apply-and-check</function> can be used. This
       strategy takes 4 arguments: a name, a strategy (s) to test, an
       input and a strategy that will be applied to the result of
       applying s to the input. This strategy must succeed if the

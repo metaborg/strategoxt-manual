@@ -5,7 +5,7 @@
   <refnamediv>
     <refname>sdf2rtg</refname>
     <refpurpose>
-      Generates an abstract syntax definition in RTG from an SDF
+      generates an abstract syntax definition in RTG from an SDF
       concrete syntax definition.
     </refpurpose>
   </refnamediv>

@@ -5,7 +5,7 @@
   <refnamediv>
     <refname>pp-aterm</refname>
     <refpurpose>
-      Adds layout to an ATerm to make its structure more clear.
+      adds layout to an ATerm to make its structure more clear.
     </refpurpose>
   </refnamediv>
 
