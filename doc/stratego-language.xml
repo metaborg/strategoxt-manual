@@ -9,52 +9,315 @@
       </para>
 
     <sect1>
-      <title>Build pattern</title>
+      <title>Building and matching terms</title>
 
       <para>
-	Build
+	Atomic actions of program transformation
+
+	Creating (building) terms from patterns
+
+	Matching terms against patterns
+
       </para>
-    </sect1>
 
+      <sect2>
+	<title>Current term</title>
+
+	<para>
+	  Current term
+	</para>
+
+      </sect2>
+
+      <sect2>
+	<title>Build pattern</title>
+
+	<para>
+	  Build
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Match pattern</title>
+	
+	<para>
+	  Match
+	</para>
+	
+	<sect3>
+	  <title>Match variables</title>
+	  
+	  <para>
+	    Non-linear patterns
+	  </para>
+	  
+	</sect3>
+	
+	
+	<sect3>
+	  <title>Non-linear patterns</title>
+	  
+	  <para>
+	    Non-linear patterns
+	  </para>
+	  
+	</sect3>
+	
+      </sect2>
+
+    </sect1>
+    
     <sect1>
-      <title>Match pattern</title>
+      <title>Rewrite rules</title>
 
       <para>
-	Match
-      </para>
-    </sect1>
+	Basic transformations are combinations of match and build
 
-    <sect1>
-      <title>Sequential composition</title>
+	Combination requires
 
-      <para>
-	Sequential composition
-      </para>
-    </sect1>
+	Sequential composition of transformations
 
-    <sect1>
-      <title>Apply and match</title>
+	Restricting the scope of term variables
 
-      <para>
+	Syntactic abstractions (sugar) for typical combinations
+
+	Rewrite rules
+
 	Apply and match
-      </para>
-    </sect1>
 
-    <sect1>
-      <title>Build and apply</title>
-
-      <para>
 	Build and apply
+
+	Where
+
+	Conditional rewrite rules
+
       </para>
+
+      <sect2>
+	<title>Sequential composition</title>
+
+	<para>
+	  Sequential composition
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Apply and match</title>
+	
+	<para>
+	  Apply and match
+	</para>
+      </sect2>
+      
+      <sect2>
+	<title>Build and apply</title>
+	
+	<para>
+	  Build and apply
+	</para>
+      </sect2>
+      
+      <sect2>
+	<title>Term variable scope</title>
+	
+	<para>
+	  Term variable scope
+	</para>
+      </sect2>
+
+      <sect2>
+	<title></title>
+	
+	<para>
+	  Anonymous rewrite rule
+	</para>
+      </sect2>
+      
+      <sect2>
+	<title>Where</title>
+	
+	<para>
+	  Where
+	</para>
+      </sect2>
+      
+      <sect2>
+	<title>Conditional rewrite rule</title>
+	
+	<para>
+	  Conditional rewrite rule
+	</para>
+      </sect2>
     </sect1>
 
     <sect1>
-      <title>Term variable scope</title>
+      <title>Stategy definitions</title>
 
       <para>
-	Term variable scope
+	Reuse of transformation requires definitions
       </para>
+
+      <sect2>
+	<title>Named strategy expressions</title>
+
+	<para>
+	  Named strategy expressions
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Named rewrite rules</title>
+
+	<para>
+	  Named rewrite rules
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Modules</title>
+
+	<para>
+	  Modules
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Parameterized and recursive definitions</title>
+
+	<para>
+	  Parameterized and Recursive Definitions
+	</para>
+      </sect2>
     </sect1>
 
+    <sect1>
+      <title>Composition of transformation strategies</title>
+
+      <para>
+	Rules define one-step transformations 
+
+	Program transformations require many one-step transformations
+	and selection of rules
+      </para>
+
+      <sect2>
+	<title>Choice</title>
+
+	<para>
+	  Choice
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Deterministic choice (left choice)</title>
+
+	<para>
+	  Deterministic choice
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Conditional choice</title>
+
+	<para>
+	  Conditional choice
+	</para>
+
+	<sect3>
+	  <title>If Then Else</title>
+
+	  <para>
+	    If Then Else
+	  </para>
+	</sect3>
+
+      </sect2>
+
+      <sect2>
+	<title>Identity</title>
+
+	<para>
+	  Identity
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Failure</title>
+
+	<para>
+	  Failure
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Negation</title>
+
+	<para>
+	  Negation
+	</para>
+      </sect2>
+
+    </sect1>
+
+    <sect1>
+      <title>Combinators for term traversal</title>
+
+      <para>
+	Match, build, sequential composition, and choice only apply
+	transformations to the root of a term
+
+	Complete transformations require term traversal
+      </para>
+
+      <sect2>
+	<title>Congruence operators</title>
+
+	<para>
+	  Congruence operators
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Generic traversal operators</title>
+
+	<para>
+	  Generic traversal operators
+	</para>
+
+	<sect3>
+	  <title>All</title>
+
+	  <para>
+	    all
+	  </para>
+	</sect3>
+
+	<sect3>
+	  <title>One</title>
+
+	  <para>
+	    one
+	  </para>
+	</sect3>
+
+	<sect3>
+	  <title>Some</title>
+
+	  <para>
+	    some
+	  </para>
+	</sect3>
+
+      </sect2>
+
+      <sect2>
+	<title>Generic term deconstruction</title>
+
+	<para>
+	  Generic term deconstruction
+	</para>
+      </sect2>
+
+    </sect1>
 
   </chapter>

@@ -1,0 +1,32 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+  <chapter>
+
+    <title>Advanced language features</title>
+
+      <para>
+	Advanced features
+      </para>
+
+    <sect1>
+      <title>Dynamic rules</title>
+
+      <para>
+	Dynamic rules
+      </para>
+
+
+    </sect1>
+
+    <sect1>
+      <title>Concrete object syntax</title>
+
+      <para>
+	Concrete object syntax
+      </para>
+
+
+    </sect1>
+
+  </chapter>

@@ -37,24 +37,21 @@
     </copyright>
   </bookinfo>
 
-  <include href="gettingstarted.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  
+  <part>
+    <title>Getting started</title>
 
+    <include href="gettingstarted.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  </part>
+  
   <part>
     <title>Stratego</title>
 
     <include href="stratego-language.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
+    <include href="advanced-stratego.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
+    <include href="stratego-library.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   </part>
 
-  <part>
-    <title>SDF</title>
-
-    <include href="pack-sdf.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  </part>
-
-  <part>
-    <title>GPP</title>
-
-    <include href="ppgen.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  </part>
 </book>
