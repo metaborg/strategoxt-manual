@@ -3,7 +3,7 @@
 
 <chapter id="stratego-unit-testing">
   
-  <title>Unit testing with SUnit</title>
+  <title>Unit Testing with SUnit</title>
   
   <para>
     StrategoUnit or SUnit is a Unit Testing framework for Stratego
