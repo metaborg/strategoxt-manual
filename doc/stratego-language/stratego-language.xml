@@ -284,11 +284,6 @@ command failed
 	    the definition of repeat with rec:
 	  </para>
 
-	  <screen>
-strategies
-  repeat(s) = rec x(s; x &lt;+ id)
-</screen>
-
 	</section>
 
       </section>
@@ -432,24 +427,67 @@ strategies
 	  <title>All</title>
 
 	  <para>
-	    all
+	    The <code>all(s)</code> strategy transforms a constructor
+	    application by applying the parameter strategy
+	    <code>s</code> to each direct subterm. An application of
+	    <code>all(s)</code> fails if the application to one of the
+	    subterms fails.
 	  </para>
+
+	  <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> all(!Var("a"))
+Plus(Var("a"),Var("a"))
+</screen>
+
+          <para>
+	    Using the <code>all</code> traversal primitive we can define generic
+	    traversal strategies like <code>topdown</code> and
+	    <code>bottomup</code>.
+	  </para>
+
+	  <screen><include href="xmpl/topdown.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/><include href="xmpl/bottomup.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
 	</section>
 
 	<section>
 	  <title>One</title>
 
 	  <para>
-	    one
+	    The <code>one(s)</code> strategy transforms a constructor
+	    application by applying the parameter strategy
+	    <code>s</code> to exactly one direct subterm. An application of
+	    <code>one(s)</code> fails if the application to all of the
+	    subterms fails.
 	  </para>
+	 
+	  <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> one(!Var("a"))
+Plus(Var("a"),Var("a"))
+</screen>
+
+          <para>
+	    We can use the <code>one</code> traversal primitive to
+	    define a strategy <code>contains</code>, which checks if
+	    the current term contains a given term.
+	  </para>
+
+	  <screen><include href="xmpl/oncetd.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/><include href="xmpl/contains.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
 	</section>
 
 	<section>
 	  <title>Some</title>
 
 	  <para>
-	    some
+	    The <code>some(s)</code> strategy transforms a constructor
+	    application by applying the parameter strategy
+	    <code>s</code> to as many direct subterms as possible and
+	    at least one. An application of <code>some(s)</code> fails
+	    if the application to all of the subterms fails.
 	  </para>
+
 	</section>
       </section>
 
