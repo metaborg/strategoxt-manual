@@ -1,0 +1,32 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+
+<section>
+  <section id="failure">
+    <title>Failure</title>
+
+    <para>
+    </para>
+
+  </section>
+
+  <section id="failure-reference">
+    <title>Failure</title>
+
+    <section>
+      <title>Description</title>
+
+      <para>
+      </para>
+
+    </section>
+
+    <section>
+      <title>Syntax</title>
+      <screen>"fail" -> Strategy</screen>
+    </section>
+
+  </section>
+
+</section>

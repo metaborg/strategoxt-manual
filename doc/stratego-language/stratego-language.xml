@@ -191,32 +191,18 @@
       <include href="conditionalchoice.xml" 
                xpointer="xpointer(id('conditionalchoice'))" 
 	       xmlns="http://www.w3.org/2003/XInclude"/>
+
+      <include href="identity.xml" 
+               xpointer="xpointer(id('identity'))" 
+	       xmlns="http://www.w3.org/2003/XInclude"/>
       
+      <include href="failure.xml" 
+               xpointer="xpointer(id('failure'))" 
+	       xmlns="http://www.w3.org/2003/XInclude"/>
 
-
-      <section>
-	<title>Identity</title>
-
-	<para>
-	  Identity
-	</para>
-      </section>
-
-      <section>
-	<title>Failure</title>
-
-	<para>
-	  Failure
-	</para>
-      </section>
-
-      <section>
-	<title>Negation</title>
-
-	<para>
-	  Negation
-	</para>
-      </section>
+      <include href="negation.xml" 
+               xpointer="xpointer(id('negation'))" 
+	       xmlns="http://www.w3.org/2003/XInclude"/>
 
     </section>
 

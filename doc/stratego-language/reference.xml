@@ -25,4 +25,17 @@
 	   xpointer="xpointer(id('ifthen-reference'))" 
 	   xmlns="http://www.w3.org/2003/XInclude"/>
 
+  <include href="identity.xml" 
+	   xpointer="xpointer(id('identity-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="failure.xml" 
+	   xpointer="xpointer(id('failure-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="negation.xml" 
+	   xpointer="xpointer(id('negation-reference'))" 
+	   xmlns="http://www.w3.org/2003/XInclude"/>
+
+
 </chapter>
