@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-ast2abox">
   <refnamediv>
     <refname>ast2abox</refname>
-    <refpurpose>pretty-print and an abstract syntax tree.</refpurpose>
+    <refpurpose>pretty-prints an abstract syntax tree.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
