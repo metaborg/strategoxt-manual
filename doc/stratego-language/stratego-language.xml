@@ -408,13 +408,7 @@ command failed
 	Complete transformations require term traversal
       </para>
 
-      <section>
-	<title>Congruence operators</title>
-
-	<para>
-	  Congruence operators
-	</para>
-      </section>
+      <include href="congruence.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
       <include href="traversal.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
