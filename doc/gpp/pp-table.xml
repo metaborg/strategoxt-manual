@@ -3,7 +3,7 @@
 
 <section id="pp-table">
   <title>Pretty Print Tables</title>
-  
+
   <para>
     Pretty-print tables are used to specify how language constructs
     have to be pretty-printed. Pretty-print tables are used in
@@ -33,137 +33,164 @@
   </para>
 
   <section>
+    <title>Pretty-Print Table Generation</title>
+
+    <para>
+      Pretty-print tables can be generated from SDF syntax definitions
+      using <link linkend="ref-ppgen">ppgen</link>. Generated
+      pretty-print rules can easiliy be customized by overruling them
+      in additional pretty-print tables. The tool pptable-diff <!--
+      TODO:link --> notifies inconsistensies in pretty-print tables
+      after the syntax definition has changed and can be used to brin
+      inconsistent table up-to-date.
+    </para>
+  </section>
+
+  <section>
     <title>Rule Selectors</title>
 
     <para>
       To be able to specify formattings for all nested constructs that
-      are allowed in SDF productions, so called _selectors_ are used
-      in pretty-print tables to refer to specific parts of an SDF
-      production and to define a formatting for them.
+      are allowed in SDF productions, so called
+      <emphasis>selectors</emphasis> are used in pretty-print tables
+      to refer to specific parts of an SDF production and to define a
+      formatting for them. For example, the SDF prodcution
     </para>
 
+    <programlisting>"return" Exp? ";" -> Stm {cons("Return")}</programlisting>
+
+    <para>
+      contains a nested symbol A?. To specify a formatting for this
+      production, two pretty-print entries can be used:
+    </para>
+
+    <programlisting><include href="selector-opt.pp" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+
+    <para>
+      A selector consists of a constructor name followed by a list of
+      number+type tuples. A number selects a particular subtree of a
+      constructor application, the type denotes the type of the
+      selected construct (sequence, optional, separated list
+      etc.). This rather verbose selector mechanism allows unambiguous
+      selection of subtrees. Its verbosity (by specifying both the
+      number of a subtree and its type), makes pretty-print tables
+      easier to understand and, more importantly, it enables
+      pretty-printing of AST's, because with type information, a
+      concrete term can be correctly recontructed from an
+      AST. Pretty-print tables can thus be used for both formatting of
+      parse-trees <emphasis>and</emphasis> AST's.
+    </para>
+
+    <para>
+      Below we summarize which selector types are available:
+
+      <variablelist>
+	<varlistentry>
+	  <term>opt</term>
+	  <listitem>
+	    <para>For SDF optionals <code>S?</code></para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>iter</term>
+	  <listitem>
+	    <para>For non-empty SDF lists <code>S+</code></para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>iter-star</term>
+	  <listitem>
+	    <para>For possible empty SDF lists <code>S*</code></para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>iter-sep</term>
+	  <listitem>
+	    <para>
+	      For SDF separator lists <code>{S<subscript>1</subscript>
+	      S<subscript>2</subscript>}+</code>. Observe that the
+	      symbol <code>S<subscript>1</subscript></code> and the
+	      separator <code>S<subscript>2</subscript>}+</code> are
+	      ordinary subtrees of the iter-sep construct which can be
+	      refered to as first and second subtree, respectively.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>iter-star-sep</term>
+	  <listitem>
+	    <para>
+	      For SDF separator lists <code>{S<subscript>1</subscript>
+	      S<subscript>2</subscript>}*</code>. Its symbol
+	      <code>S<subscript>1</subscript></code> and separator
+	      <code>S<subscript>2</subscript>}*</code> can be refered
+	      to as first and second sub tree.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>alt</term>
+	  <listitem>
+	    <para>
+	      For SDF alternatives <code>S<subscript>1</subscript> |
+	      S<subscript>2</subscript> |
+	      S<subscript>3</subscript></code>. According to the SDF
+	      syntax, alternatives are binary operators. The
+	      pretty-printer flattens all subsequent
+	      alternatives. Pretty-print rules can be specified for
+	      each alternative individually by specifying the number
+	      of each alternative. To be able to format literals in
+	      alternative, a special formatting rule can be defined
+	      for the construct (See the examples below).
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>seq</term>
+	  <listitem>
+	    <para>
+	      For SDF alternatives <code>(S<subscript>1</subscript>
+	      S<subscript>2</subscript>
+	      S<subscript>3</subscript>)</code>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+
+    </para>
+  </section>
+
+  <section>
+    <title>Examples</title>
+    
+    <para>
+      Below we list a simple SDF module with productions containing
+      all above rule selectors.
+    </para>
+    
+    <programlisting><include href="selectors.sdf" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+    
+    <para>
+      The following pretty-print table shows which pretty-print rules
+      can be defined for this syntax:
+    </para>
+    
+    <programlisting><include href="selectors.pp" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+    
+    <para>
+      The pretty-print rule <code>ex6.1:alt</code> is a special
+      case. It contains three Box expressions, one for each
+      alternative. It is used to specify a formatting for the
+      non-nested literals <code>"one"</code> and
+      <code>"two"</code>. During pretty-printing one of the three Box
+      expressions is selected, depending on alternative contained the
+      term to format.
+    </para>
   </section>
 </section>
-
-
-<!--
-
- For example, the
-      SDF prodcution.
-  f ( A? ) -&gt; B {cons("f")}
-</verbatim>
-
-contains a nested symbol A?. To specify a formatting for this
-production, two pretty-print entries can be used:
-
-<verbatim>
-  f		- - H [ "f" "(" _1 ")" ]
-  f.1:opt	- - H [_1]
-</verbatim>
-
-A selector consists of a constructor name followed by a list of
-number+type tuples. A number selects a particular subtree of an SDF
-construct, the type denotes the type of the selected construct
-(sequence, optional, separator list etc.). This rather verbose
-selector mechanism allows unambiguous selection of subtrees of SDF
-productions. Its verbosity (by specifying both the number of a subtree
-and its type), makes pretty-print tables easier to understand and,
-more importantly, it enables pretty-printing of AST's, because with
-type information, a concrete term can be correctly recontructed from
-an AST. Pretty-print tables can thus be used for both formatting of
-parse-trees _and_ AST's.
-
-Below we summarize which selector types are available:
-
-	opt: For SDF optionals (S?). 
-
-	iter: For non-empty SDF lists (S+). 
-
-	iter-star: For possible empty SDF lists (S*).
-
-	iter-sep: For SDF separator lists ( {S_1 S_2}+). Observe that
-	the symbol S_1 and the separator S_2 are ordinary subtrees of
-	the iter-sep construct which can be refered to as first and
-	second subtree, respectively. 
-
-
-	iter-star-sep: For SDF separator lists ( {S_1 S_2}*). Its
-	symbol and separator can be refered to as first and second sub
-	tree.
-
-	alt: For SDF alternatives (A_1 | A_2 |A_3). According to the
-	SDF syntax, alternatives are binary operators. The
-	pretty-printer flattens all subsequent
-	alternatives. Pretty-print rules can be specified for each
-	alternative individually by specifying the number of each
-	alternative. To be able to format literals in alternative, a
-	special formatting rule can be defined for the construct (See
-	the examples below).
-
-	seq: For SDF sequences ( (S_1 S_2 S_3) ). 
-
-
-Examples
-
-Below we list a simple SDF module with productions containing all above constructs:
-<verbatim>
- module Symbols
- exports
- context-free syntax 
-	A?			 -> S {cons("ex1")}
-	A+			 -> S {cons("ex2")}
-	A*			 ->; S {cons("ex3")}
-	{S1 S2}+		 -> S {cons("ex4")}
-	{S1 S2}*		 -> S {cons("ex5")}
-	"one" | "two" | S?	 -> S {cons("ex6")}
-	("one"  "two" S? )	 -> S {cons("ex7")}
-</verbatim>
-
-The following pretty-print table shows which pretty-print rules can be defined for this syntax:
-
-<verbatim>
- [
-	ex1			 - - _1,
-	ex1.1:opt		 - - _1,
-	ex2			- -  _1,
-	ex2.1:iter		- - _1,
-	ex3			 - - _1,
-	ex3.1:iter-star	 - - _1,
-	ex4			 - - _1,
-	ex4.1:iter-sep		 - - _1 _2,
-	ex5			 - - _1,
-	ex5.1:iter-star-sep	 - - _1 _2,
-	ex6			 - - _1,
-	ex6.1:alt		 - - KW["one"] KW["two"] _1,
-	ex6.1:alt.1:opt		 - - _1,
-	ex7			 - - _1,
-	ex7.1:seq		 - - KW["one"] KW["two"] _1,
-	ex7.1:seq.1:opt	 - - _1
- ]
-</verbatim>
-
-The pretty-print rule 'ex6.1:alt' is a special case. It contains three
-[[BoxLanguage][Box]] expressions, one for each alternative. It is used
-to specify a formatting for the non-nested literals "one" and
-"two". During pretty-printing one of the three BOX expressions is
-selected, depending on alternative contained the term to format. 
-
-Pretty-Print Table Generation
-
-Pretty-print tables can be generated from SDF syntax definitions (see
-[[PrettyPrintTableGenerator][ppgen]]). Generated pretty-print rules
-can easiliy be customized by overruling them in additional
-pretty-print tables. The tool [[PrettyPrintTableDiff][pptable-diff]]
-notifies inconsistensies in pretty-print tables after the syntax
-definition has changed and can be used to brin inconsistent table
-up-to-date.
-
-See Also
-
-GenericPrettyPrinter, [[AsFixToAbox][asfix2abox]],
-[[AstToAbox][ast2aboox]], [[PrettyPrintTableGenerator][ppgen]],
-[[PrettyPrintTableDiff][pptable-diff]]
-
--->
-
-

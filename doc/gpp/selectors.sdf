@@ -1,0 +1,10 @@
+module Symbols
+exports
+context-free syntax
+  A?                  -> S {cons("ex1")}
+  A+                  -> S {cons("ex2")}
+  A*                  -> S {cons("ex3")}
+  {S1 S2}+            -> S {cons("ex4")}
+  {S1 S2}*            -> S {cons("ex5")}
+  "one" | "two" | S?  -> S {cons("ex6")}
+  ("one"  "two" S? )  -> S {cons("ex7")}
