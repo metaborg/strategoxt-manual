@@ -4,8 +4,5 @@
 <chapter>
   <title>Stratego Language</title>
   
-  <section>
-    <title>Conditional choice</title>
-    <include href="ifthen.xml" xpointer="xpointer(id('ifthen-reference'))" xmlns="http://www.w3.org/2003/XInclude"/>
-  </section>
+  <include href="ifthen.xml" xpointer="xpointer(id('ifthen-reference'))" xmlns="http://www.w3.org/2003/XInclude"/>
 </chapter>
