@@ -1,0 +1,123 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+  <chapter>
+
+    <title>Unit testing with parse-unit</title>
+
+    <para>
+      Parse-unit is a tool, part of StrategoXT, for testing SDF syntax
+      definitions. The spirit of unit-testing is implemented in
+      parse-unit by allowing you to check that small code fragements
+      are parsed correctly with you syntax definition.
+    </para>
+
+    <para>
+      In a parse testsuite you can define tests with an input and an
+      expected result. You can specify that a test should succeed
+      (<code>succeeds</code>, for lazy people), fail
+      (<code>fails</code>) or that the Abstract Syntax Tree should
+      have a specific format. The input can be an inline string or the
+      contents of a file for larger tests.
+    </para>
+
+    <section>
+      <title>Usage example</title>
+
+      <section>
+	<title>Syntax Definition</title>
+
+	<para>
+	  Assuming the following grammar for a simple arithmetic
+	  expressions:
+	</para>
+	<screen><include href="Exp.sdf" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+      </section>
+
+      <section>
+	<title>Parse Testsuite</title>
+
+	<para>
+	  You could define the following parse testsuite in a file <code>expression.testsuite</code> :
+	</para>
+
+	<screen><include href="expression.testsuite" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+      </section>
+
+      <section>
+	<title>Running the Parse Testsuite</title>
+
+	<para>
+	  Run this parse testsuite with:
+	</para>
+
+	<screen><include href="run" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+	<para>
+	  will output:
+	</para>
+
+	<screen><include href="output" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+      </section>
+
+    </section>
+
+    <section>
+      <title>Debugging Support</title>
+
+      <para>
+	Parse-unit has an option to parse a single test and write the
+	result to the output. In this mode ambiguities are accepted,
+	which is useful for debugging. The option for the 'single test
+	mode' is <code>--single &lt;nr></code>' where
+	<code>&lt;nr></code>' is the number in the testsuite (printed
+	when the testsuite is executed). The <code>--asfix2</code>
+	flag can be used to produce asfix2 instead of an AST.
+      </para>
+    </section>
+
+<!-- *** TODO ***
+    <section>
+      <title>Invocation in make/automake</title>
+
+      <para>
+	 Generic make rules: Makefile.parse-unit
+      </para>
+
+      <screen><include href="https://svn.cs.uu.nl:12443/repos/StrategoXT/trunk/StrategoXT/stratego-regular/tests/syn/Makefile.parse-unit" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+      <para>
+	 Generic make rules: Makefile.parse-unit
+      </para>
+
+      <screen><include href="https://svn.cs.uu.nl:12443/repos/StrategoXT/trunk/StrategoXT/stratego-regular/tests/syn/rtg/Makefile.am" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+    </section>
+-->
+    <section>
+      <title>Parse Testsuite Syntax</title>
+
+      <para>
+	You cannot escape special characters because there is no need
+	to escape them. The idea of the testsuite syntax is that test
+	input typically contains a lot of special characters, which
+	therefore they should no be special and should not need
+	escaping.
+      </para>
+
+      <para>
+	Anyhow, you still need some mechanism make it clear where the
+	test input stops. Therefore the testsuite syntax supports
+	several quotation symbols. Currently you can choose from:
+	<code>"</code>, <code>""</code>, <code>"""</code>, and
+	<code>[</code>, <code>[[</code>, <code>[[[</code>. Typically,
+	if you need a double quote in your test input, then you use
+	the <code>[</code>.
+      </para>
+    </section>
+
+
+  </chapter>

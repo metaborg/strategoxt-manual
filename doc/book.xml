@@ -64,6 +64,8 @@
 
     <include href="sdf-language/sdf-language.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
+    <include href="parse-unit/parse-unit.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   </part>
 
   <part>
