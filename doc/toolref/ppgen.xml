@@ -16,12 +16,13 @@
     <title>Description</title>
 
     <para>
-      <command>ppgen</command> generates from an SDF syntax definition a
-      pretty-print table with an entry for each context-free syntax production
-      with a constructor annotation. Typically it is necessary to edit the
-      pretty-print table to add appropriate Box markup to the entries. In a
-      package using Make the result should be saved under a different name to
-      avoid overwriting it.
+      <command>ppgen</command> generates from an SDF syntax definition
+      a pretty-print table with an entry for each context-free syntax
+      production with a constructor annotation. Typically, it is
+      necessary to edit the pretty-print table to add appropriate Box
+      markup to the entries. In a package using Make the modified
+      result should be saved under a different name to avoid
+      overwriting it.
     </para>
   </refsection>
 

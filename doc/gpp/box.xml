@@ -1,0 +1,43 @@
+<section>
+  <title>Box language</title>
+  
+  <para>
+    The Box language is used in the GPP framework as a
+    language-independent intermediate representation. The input
+    language dependent parts and the output format dependent parts of
+    GPP are connected through this intermediate representation.
+  </para>
+
+
+  <para>
+    Box is a mark-up language to describe the intended layout of text
+    and is used in pretty print tables <!-- TODO: link -->.  A Box
+    expression is constructed by composing sub-boxes using Box
+    operators. These operators specify the relative ordering of
+    boxes. Examples of Box operators are the <function>H</function>
+    and <function>V</function> operator which format boxes
+    horizontally and vertically, respectively.
+  </para>
+
+  <para>
+    TODO: insert image box.gif
+  </para>
+
+  <para>
+    The exact formatting of each Box operator can be customized using
+    Box options. For example, to control the horizontal layout between
+    boxes the <function>H</function> operator supports the
+    <function>hs</function> space option.
+  </para>
+
+  <para>
+    TODO: insert image space-opts.gif
+  </para>
+
+  <para>
+    For a detailed description of Box (including a description of all
+    available Box operators) we refer to <ulink
+    url="http://www.cs.uu.nl/groups/ST/twiki/bin/view/Merijn/PaperToReuseOrToBeReused">To
+    Reuse Or To Be Reused (Chapter 4)</ulink>
+  </para>
+</section>

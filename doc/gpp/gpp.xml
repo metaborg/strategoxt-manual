@@ -1,28 +1,18 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-  <chapter id="generic-pretty-printing">
+<chapter id="generic-pretty-printing">
+  <title>Pretty Printing with GPP (*)</title>
 
-    <title>Pretty printing with GPP (*)</title>
+  <para>
+    The GPP package is a tool suite for generic pretty-printing. GPP
+    supports pretty-printing of parse-trees in the AsFix format with
+    comment preservation and of abstract syntax trees. GPP supports
+    the output formats plain text, LaTeX, and HTML. Formattings are
+    defined in pretty print tables, which can be generated from SDF
+    syntax definitions.
+  </para>
 
-    <para>
-    </para>
-
-    <section>
-      <title>Box language</title>
-
-      <para>
-      </para>
-
-    </section>
-
-    <section>
-      <title>Pretty print table</title>
-
-      <para>
-      </para>
-
-    </section>
-
-  </chapter>
-
+  <include href="box.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="pp-table.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+</chapter>
