@@ -1,5 +1,5 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
-"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
   <chapter>
 
@@ -97,7 +97,9 @@
 	<title>Sequential composition</title>
 
 	<para>
-	  Sequential composition
+	  The sequential composition s1; s2 of the strategies s1 and
+	  s2 first applies the strategy s1 to the subject term and
+	  then s2 to the result of that first application.
 	</para>
       </sect2>
 
@@ -187,6 +189,39 @@
 	<para>
 	  Parameterized and Recursive Definitions
 	</para>
+
+	<para>
+	  Repeated application of a strategy can be achieved with
+	  recursion. There are two styles for doing this; with a
+	  recursive definition or using the fixpoint operator rec. A
+	  recursive definition is a normal strategy definition with a
+	  recursive call in its body.
+	</para>
+
+	<sect3>
+	  <title>Fixpoint operator</title>
+	  <para>
+	    Fixpoint Operator Another way to define recursion is using
+	    the fixpoint operator rec x(s), which recurses on
+	    applications of x within s. 
+	  </para>
+
+	  <para>
+	    Originally, the rec operator was the only way to define
+	    recursion. It is still in the language in the first place
+	    because it is widely used in many existing programs, and
+	    in the second place because it can be a nice concise
+	    expression of a recursive strategy. An example usage is
+	    the definition of repeat with rec:
+	  </para>
+
+	  <screen>
+strategies
+  repeat(s) = rec x(s; x &lt;+ id)
+</screen>
+
+	</sect3>
+
       </sect2>
     </sect1>
 
@@ -201,19 +236,67 @@
       </para>
 
       <sect2>
-	<title>Choice</title>
-
-	<para>
-	  Choice
-	</para>
-      </sect2>
-
-      <sect2>
 	<title>Deterministic choice (left choice)</title>
 
 	<para>
-	  Deterministic choice
+	  The left choice or deterministic choice s1 &lt;+ s2 chooses one
+	  of the trans- formations to apply. That is, s1 is first
+	  applied, and s2 is only applied if s2 fails. Formally, the
+	  left choice operator is defined as:
 	</para>
+
+	<para>
+	  A typical application of the deterministic choice operator
+	  is to declare the priority between rules with overlapping
+	  left-hand sides.
+	</para>
+
+	<para>
+	  A useful application of &lt;+ in combination with id is the
+	  reflexive closure of a strategy s. The strategy try(s) tries
+	  to apply the strategy s, but if that fails, just succeeds
+	  using id.
+	</para>
+
+	<screen>
+strategies
+  try(s) = s &lt;+ id
+</screen>
+
+      <para>
+	Note that the choice is committed once the left-hand side
+	strategy has succeeded, even if the continuation strategy
+	fails.
+      </para>
+
+      </sect2>
+
+      <sect2>
+	<title>Choice</title>
+
+	<para>
+	  The deterministic choice operator prescribes that the left
+	  alternative should be tried before the right alternative,
+	  and that the latter is only used if the first fails. There
+	  are applications where it is not necessary to define the
+	  order of the alternatives. In those cases non-deterministic
+	  choice can be used.
+	</para>
+
+	<para>
+	  The non-deterministic choice operator s1 + s2 chooses one of
+	  the two strategies s1 or s2 to apply, such that the one it
+	  chooses succeeds. If both strategies fail, then the choice
+	  fails as well.
+	</para>
+
+	<para>
+	  Operationally one can imagine the choice operator to first
+	  try one strategy, and, if that fails, to try the other. The
+	  order in which this is done is undefined, i.e., arbitrarily
+	  chosen by the compiler.
+	</para>
+
       </sect2>
 
       <sect2>
