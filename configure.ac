@@ -12,7 +12,6 @@ AC_PROG_INSTALL
 AC_CONFIG_FILES([
   Makefile
   doc/Makefile
-  man/Makefile
   html/Makefile
 ])
 AC_OUTPUT
