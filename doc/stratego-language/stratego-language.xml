@@ -10,7 +10,7 @@
 
     
 
-    <sect1>
+    <section>
       <title>Building and matching terms</title>
 
       <para>
@@ -22,23 +22,23 @@
 
       </para>
 
-      <sect2>
+      <section>
 	<title>Current term</title>
 
 	<para>
 	  Current term
 	</para>
 
-      </sect2>
+      </section>
 
       <include href="build.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
       <include href="match.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
 
-    </sect1>
+    </section>
     
-    <sect1>
+    <section>
       <title>Rewrite rules</title>
 
       <para>
@@ -64,7 +64,7 @@
 
       </para>
 
-      <sect2>
+      <section>
 	<title>Sequential composition</title>
 
 	<para>
@@ -72,89 +72,89 @@
 	  s2 first applies the strategy s1 to the subject term and
 	  then s2 to the result of that first application.
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Apply and match</title>
 	
 	<para>
 	  Apply and match
 	</para>
-      </sect2>
+      </section>
       
-      <sect2>
+      <section>
 	<title>Build and apply</title>
 	
 	<para>
 	  Build and apply
 	</para>
-      </sect2>
+      </section>
       
-      <sect2>
+      <section>
 	<title>Term variable scope</title>
 	
 	<para>
 	  Term variable scope
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title></title>
 	
 	<para>
 	  Anonymous rewrite rule
 	</para>
-      </sect2>
+      </section>
       
-      <sect2>
+      <section>
 	<title>Where</title>
 	
 	<para>
 	  Where
 	</para>
-      </sect2>
+      </section>
       
-      <sect2>
+      <section>
 	<title>Conditional rewrite rule</title>
 	
 	<para>
 	  Conditional rewrite rule
 	</para>
-      </sect2>
-    </sect1>
+      </section>
+    </section>
 
-    <sect1>
+    <section>
       <title>Stategy definitions</title>
 
       <para>
 	Reuse of transformation requires definitions
       </para>
 
-      <sect2>
+      <section>
 	<title>Named strategy expressions</title>
 
 	<para>
 	  Named strategy expressions
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Named rewrite rules</title>
 
 	<para>
 	  Named rewrite rules
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Modules</title>
 
 	<para>
 	  Modules
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Parameterized and recursive definitions</title>
 
 	<para>
@@ -169,7 +169,7 @@
 	  recursive call in its body.
 	</para>
 
-	<sect3>
+	<section>
 	  <title>Fixpoint operator</title>
 	  <para>
 	    Another way to define recursion is using the fixpoint
@@ -191,12 +191,12 @@ strategies
   repeat(s) = rec x(s; x &lt;+ id)
 </screen>
 
-	</sect3>
+	</section>
 
-      </sect2>
-    </sect1>
+      </section>
+    </section>
 
-    <sect1>
+    <section>
       <title>Composition of transformation strategies</title>
 
       <para>
@@ -206,7 +206,7 @@ strategies
 	and selection of rules
       </para>
 
-      <sect2>
+      <section>
 	<title>Deterministic choice (left choice)</title>
 
 	<para>
@@ -240,9 +240,9 @@ strategies
 	fails.
       </para>
 
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Choice</title>
 
 	<para>
@@ -268,9 +268,9 @@ strategies
 	  chosen by the compiler.
 	</para>
 
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Conditional choice</title>
 
 	<para>
@@ -278,37 +278,37 @@ strategies
 	</para>
 
 	<include href="ifthenelse.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-	<include href="ifthen.xml" xmlns="http://www.w3.org/2003/XInclude"/> 
+	<include href="ifthen.xml" xpointer="xpointer(id('ifthen'))" xmlns="http://www.w3.org/2003/XInclude"/>
 
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Identity</title>
 
 	<para>
 	  Identity
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Failure</title>
 
 	<para>
 	  Failure
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Negation</title>
 
 	<para>
 	  Negation
 	</para>
-      </sect2>
+      </section>
 
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Combinators for term traversal</title>
 
       <para>
@@ -318,55 +318,54 @@ strategies
 	Complete transformations require term traversal
       </para>
 
-      <sect2>
+      <section>
 	<title>Congruence operators</title>
 
 	<para>
 	  Congruence operators
 	</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
 	<title>Generic traversal operators</title>
 
 	<para>
 	  Generic traversal operators
 	</para>
 
-	<sect3>
+	<section>
 	  <title>All</title>
 
 	  <para>
 	    all
 	  </para>
-	</sect3>
+	</section>
 
-	<sect3>
+	<section>
 	  <title>One</title>
 
 	  <para>
 	    one
 	  </para>
-	</sect3>
+	</section>
 
-	<sect3>
+	<section>
 	  <title>Some</title>
 
 	  <para>
 	    some
 	  </para>
-	</sect3>
+	</section>
+      </section>
 
-      </sect2>
-
-      <sect2>
+      <section>
 	<title>Generic term deconstruction</title>
 
 	<para>
 	  Generic term deconstruction
 	</para>
-      </sect2>
+      </section>
 
-    </sect1>
+    </section>
 
   </chapter>

@@ -1,10 +1,16 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-	<sect3 id="ifthen">
+
+<section>
+  <section id="ifthen">
+    <title>If Then</title>
+    <para/>
+  </section>
+  <section id="ifthen-reference">
 	  <title>If Then</title>
 
-	  <sect4>
+	  <section>
 	    <title>Description</title>
 
 	    <screen>
@@ -30,14 +36,14 @@
 	      If the condition fails, then the result is <code>t</code>.
 	    </para>
 
-	  </sect4>
+	  </section>
 
-	  <sect4>
+	  <section>
 	    <title>Syntax</title>
 	    <screen>"if" Strategy "then" Strategy "end" -> Strategy</screen>
-	  </sect4>
+	  </section>
 
-	  <sect4>
+	  <section>
 	    <title>Formatting</title>
 
 	    <para>
@@ -51,9 +57,9 @@ if s1 then
 end
 </screen>
 
-	  </sect4>
+	  </section>
 
-	  <sect4>
+	  <section>
 	    <title>Implementation</title>
 
 	    <para>
@@ -73,7 +79,7 @@ if s1 then s2 end
 where(s1) &lt; s2 + id
 </screen>
 
-	  </sect4>
+	  </section>
 
-	</sect3>
-
+	</section>
+</section>

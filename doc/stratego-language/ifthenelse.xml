@@ -1,10 +1,10 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-	<sect3>
+	<section>
 	  <title>If Then Else</title>
 
-	  <sect4>
+	  <section>
 	    <title>Description</title>
 
 	    <screen>
@@ -34,14 +34,14 @@
 &lt;s3> t
 </screen>
 
-	  </sect4>
+	  </section>
 
-	  <sect4>
+	  <section>
 	    <title>Syntax</title>
 	    <screen>"if" Strategy "then" Strategy "else" Strategy "end" -> Strategy</screen>
-	  </sect4>
+	  </section>
 
-	  <sect4>
+	  <section>
 	    <title>Formatting</title>
 
 	    <para>
@@ -57,9 +57,9 @@ else
 end
 </screen>
 
-	  </sect4>
+	  </section>
 
-	  <sect4>
+	  <section>
 	    <title>Implementation</title>
 
 	    <para>
@@ -79,7 +79,7 @@ if s1 then s2 else s3 end
 where(s1) &lt; s2 + s3
 </screen>
 
-	  </sect4>
+	  </section>
 
-	</sect3>
+	</section>
 

@@ -1,23 +1,22 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-	<sect2>
-	  <title>Build</title>
-
-	  <sect3>
-	    <title>Description</title>
-
-	    <para>
-	    </para>
-
-	  </sect3>
-
-	  <sect3>
-	    <title>Syntax</title>
-
-	    <screen>"!" Term -> Strategy </screen>
-
-	  </sect3>
-
-	</sect2>
+<section>
+  <title>Build</title>
+  
+  <section>
+    <title>Description</title>
+    
+    <para>
+    </para>
+    
+  </section>
+  
+  <section>
+    <title>Syntax</title>
+    
+    <screen>"!" Term -> Strategy </screen>
+    
+  </section>
+</section>
 
