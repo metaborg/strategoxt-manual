@@ -75,6 +75,8 @@
 
     <include href="xdoc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
+    <include href="java.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   </part>
 
 </book>
