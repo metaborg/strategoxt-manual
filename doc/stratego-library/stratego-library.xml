@@ -11,22 +11,6 @@
 	Documentation
       </para>
 
-    <section>
-      <title>Lists</title>
-
-      <para>
-	Lists
-      </para>
-
-    </section>
-
-    <section>
-      <title>Integers</title>
-
-      <para>
-	Integers
-      </para>
-
-    </section>
+      <include href="lists.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </chapter>
