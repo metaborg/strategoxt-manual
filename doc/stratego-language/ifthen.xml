@@ -1,7 +1,7 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-	<sect3>
+	<sect3 id="ifthen">
 	  <title>If Then</title>
 
 	  <sect4>
@@ -41,7 +41,7 @@
 	    <title>Formatting</title>
 
 	    <para>
-	      The if-then construct is usally formatted in the
+	      The if-then construct is usually formatted in the
 	      following way:
 	    </para>
 
