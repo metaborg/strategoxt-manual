@@ -1,0 +1,85 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+	<sect3>
+	  <title>If Then Else</title>
+
+	  <sect4>
+	    <title>Description</title>
+
+	    <screen>
+&lt;if s1 then s2 else s3 end> t
+</screen>
+
+	    <para>
+	      If <code>s1</code> succeeds then strategy
+	      <code>s2</code> is applied. If <code>s1</code> fails,
+	      then <code>s3</code> is applied.
+	    </para>
+
+	    <para>
+	      The result of condition is ignored. If the condition
+	      succeeds, then the result is,
+	    </para>
+
+	    <screen>
+&lt;s2> t
+</screen>
+
+	    <para>
+	      If the condition fails, then the result is,
+	    </para>
+
+	    <screen>
+&lt;s3> t
+</screen>
+
+	  </sect4>
+
+	  <sect4>
+	    <title>Syntax</title>
+	    <screen>"if" Strategy "then" Strategy "else" Strategy "end" -> Strategy</screen>
+	  </sect4>
+
+	  <sect4>
+	    <title>Formatting</title>
+
+	    <para>
+	      The if then else construct is usally formatted in the
+	      following way:
+	    </para>
+
+	    <screen>
+if s1 then
+  s2
+else
+  s3
+end
+</screen>
+
+	  </sect4>
+
+	  <sect4>
+	    <title>Implementation</title>
+
+	    <para>
+	      The if-then-else construct is sugar for a guarded
+	      left-choice. The strategy,
+	    </para>
+
+	    <screen>
+if s1 then s2 else s3 end
+</screen>
+
+	    <para>
+	      translates into,
+	    </para>
+
+	    <screen>
+where(s1) &lt; s2 + s3
+</screen>
+
+	  </sect4>
+
+	</sect3>
+

@@ -8,6 +8,8 @@
       <para>
       </para>
 
+    
+
     <sect1>
       <title>Building and matching terms</title>
 
@@ -306,13 +308,8 @@ strategies
 	  Conditional choice
 	</para>
 
-	<sect3>
-	  <title>If Then Else</title>
-
-	  <para>
-	    If Then Else
-	  </para>
-	</sect3>
+	<include href="ifthenelse.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+	<include href="ifthen.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
       </sect2>
 
