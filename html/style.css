@@ -72,18 +72,11 @@ div.example
     background: #eeeeee;
 }
 
-pre.programlisting
-{
-    color: #600000;
-    font-family: monospace;
-}
-
-
 /***************************************************************************
                             Screen dumps:
  ***************************************************************************/
 
-pre.screen
+pre.screen, pre.programlisting
 {
     border: 1px solid #6185a0;
     padding: 6px 6px;
