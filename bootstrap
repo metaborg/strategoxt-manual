@@ -1,5 +1,4 @@
 #!/bin/sh -e
 
 autoxt
-auto-stratego-shell
 autoreconf -ifv
