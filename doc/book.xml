@@ -40,42 +40,42 @@
   <part>
     <title>Getting started</title>
 
-    <include href="gettingstarted.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="gettingstarted/gettingstarted.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   </part>
   
   <part>
     <title>Stratego</title>
 
-    <include href="stratego-language.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="stratego-language/stratego-language.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-    <include href="advanced-stratego.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="advanced-stratego/advanced-stratego.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-    <include href="stratego-library.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="stratego-library/stratego-library.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>
 
   <part>
     <title>Syntax Definition Formalism (SDF)</title>
 
-    <include href="sdf-language.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="sdf-language/sdf-language.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>
 
   <part>
     <title>Transformation Tools (XT)</title>
 
-    <include href="gpp.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="gpp/gpp.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-    <include href="xtc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="xtc/xtc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>
 
   <part>
     <title>Extensions</title>
 
-    <include href="xdoc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="xdoc/xdoc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-    <include href="java.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="java/java.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>
 
