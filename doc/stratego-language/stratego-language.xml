@@ -31,41 +31,10 @@
 
       </sect2>
 
-      <sect2>
-	<title>Build pattern</title>
+      <include href="build.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-	<para>
-	  Build
-	</para>
-      </sect2>
+      <include href="match.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-      <sect2>
-	<title>Match pattern</title>
-	
-	<para>
-	  Match
-	</para>
-	
-	<sect3>
-	  <title>Match variables</title>
-	  
-	  <para>
-	    Non-linear patterns
-	  </para>
-	  
-	</sect3>
-	
-	
-	<sect3>
-	  <title>Non-linear patterns</title>
-	  
-	  <para>
-	    Non-linear patterns
-	  </para>
-	  
-	</sect3>
-	
-      </sect2>
 
     </sect1>
     
