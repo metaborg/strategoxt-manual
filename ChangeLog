@@ -1,3 +1,7 @@
+2005-01-28  Martin Bravenboer <martin@cs.uu.nl>
+
+	* The Stratego/XT Tool Reference is now the Stratego/XT Tutorial.
+	
 2003-12-26  Martin Bravenboer <martin@cs.uu.nl>
 
 	* docbook.m4: check for HTML chunk stylesheet.
