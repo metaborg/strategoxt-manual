@@ -110,13 +110,6 @@
 	Reuse of transformation requires definitions
       </para>
 
-      <section>
-	<title>Named strategy expressions</title>
-
-	<para>
-	  Named strategy expressions
-	</para>
-      </section>
 
       <section>
 	<title>Named rewrite rules</title>
