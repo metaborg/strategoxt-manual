@@ -1,5 +1,3 @@
-if have_docbook
-
 %.xml-included : %.xml
 	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $<
 
@@ -20,10 +18,3 @@ index.html : $(BOOK).docbook
 
 index.xhtml : $(BOOK).docbook
 	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) --catalogs --output $@ $(DOCBOOK2XHTML_CHUNK_XSL) $<
-
-else
-
-%.1:
-	touch $@
-
-endif

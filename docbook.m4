@@ -1,4 +1,4 @@
-AC_DEFUN(USE_DOCBOOK, [
+AC_DEFUN([USE_DOCBOOK], [
 
 # DocBook XML
 
@@ -92,12 +92,15 @@ END
     DOCBOOK_WORKS=yes
   fi
 
-  AM_CONDITIONAL(have_docbook, test "$DOCBOOK_WORKS" = "yes")
   AC_MSG_RESULT($DOCBOOK_WORKS)
+
+  if test "$DOCBOOK_WORKS" != "yes"; then
+    AC_MSG_ERROR([cannot find all the docbook stuff.])
+  fi
 ])
 
 
-AC_DEFUN(USE_DB2LATEX, [
+AC_DEFUN([USE_DB2LATEX], [
   AC_ARG_WITH(db2latex, 
     AC_HELP_STRING([--with-db2latex=DIR], [use DB2LaTeX at DIR @<:@PREFIX@:>@]), 
     DB2LATEX="$withval", 
@@ -110,6 +113,4 @@ AC_DEFUN(USE_DB2LATEX, [
     DOCBOOK2LTX_WORKS=yes; AC_SUBST(DOCBOOK2LTX_XSL),
     DOCBOOK2LTX_WORKS=
   )
-
-  AM_CONDITIONAL(have_db2latex, test "$DOCBOOK2LTX_WORKS" = "yes")
 ])
