@@ -1,4 +1,65 @@
-Let's first setup the basic transformation.
+We want to transform this Java code:
+----------------------------
+class Try
+{
+  public int x;
+  public double y;
+
+  public void print()
+  {
+    System.out.println(a + " " + b + " " + c);
+  }
+
+  public int getX()
+  {
+    return x;
+  }
+
+  public void set(int x, double z)
+  {
+    this.x = x;
+    y = z;
+  }
+
+  public static void main(String[] args)
+  {
+    Try try = new Try();
+    try.set(7, 8.5);
+  }
+}
+----------------------------
+
+to the following C code:
+----------------------------
+#include <stdio.h>
+
+struct Try
+{
+   int x;
+   double y;
+};
+
+int main(int argc, char** args)
+{
+   int a;
+   int b;
+   double c = 2.5;
+   printf("%d %d %f\n", a, b ,c);
+}
+
+void int getX(Try* this)
+{
+  return *this.x;
+}
+
+void set(Try* this, int x, double z)
+{
+   *this.x = x;
+   *this.y = z;
+}
+----------------------------
+
+Let's first setup the basic transformation.class Try
 
 java2c.str:
 ----------------------------------------------------
@@ -43,19 +104,96 @@ Meta([
 ])
 -----------------------------
 
+To test the concrete syntax support, we are just going to generate a
+simple C file module.
 
+First try:
+-----------------------------
+  java2c =
+    !translation-unit |[ #include <stdio.h> ]|
+-----------------------------
 
-module java2c
-imports
-  liblib Java-15 C
+Too bad, that does not compile. The compiler complains about the ] of
+]|. This rather tricky: the syntax definition of C defines that
+pre-processing lines should be termined by a newline. So, let's add
+some whitespace:
 
-strategies
-
-  main =
-    io-wrap(java2c)
-
+-----------------------------
   java2c =
     !translation-unit |[
       #include <stdio.h>
     ]|
-    
+-----------------------------
+
+Great, that compiles. Run:
+
+-----------------------------
+$ parse-java -i Try.java | ./java2c | pp-c
+#include <stdio.h>
+
+-----------------------------
+
+Excellent, but not very interesting. Let's add a main function.
+
+-----------------------------
+  java2c =
+    !translation-unit |[
+      #include <stdio.h>
+
+      void main(int argc, char** args)
+      {
+        printf("Hi there!");
+      }
+    ]|
+-----------------------------
+
+Ok, it compiles. Run it.
+-----------------------------
+$ parse-java -i Try.java | ./java2c | pp-c
+#include <stdio.h>
+
+void main (int argc, char * * args)
+{
+  printf(Hi there!);
+}
+-----------------------------
+
+Humz, great, but that pretty-printer sucks. It does not quote the
+literal! So, we are going to report a bug to our dear Stratego
+developers. (browse to stratego.org)
+
+Excellent, we have an issue:
+https://catamaran.labs.cs.uu.nl/jira/browse/STR-283
+
+Of course we are hackers: we are not going to wait for a fix and are
+going to use a dirty workaround! Let's try to use two double quotes.
+
+-----------------------------
+  java2c =
+    !translation-unit |[
+      #include <stdio.h>
+
+      void main(int argc, char** args)
+      {
+        printf("\"Hi there!\"");
+      }
+    ]|
+-----------------------------
+
+Run it:
+-----------------------------
+martin@logistico:~/tmp/java2c> parse-java -i Try.java | ./java2c | pp-c
+#include <stdio.h>
+
+void main (int argc, char * * args)
+{
+  printf("Hi there!");
+}
+-----------------------------
+
+Hehe, that works. Fooled you, crappy pretty-printer!
+
+-----------------------------
+
+
+-----------------------------
