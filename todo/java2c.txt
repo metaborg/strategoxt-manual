@@ -1,35 +1,35 @@
-We want to transform this Java code:
-----------------------------
+In this tutorial we will write a tool that transforms simple Java code
+to C. As an example, we will use this Java source file:
+
+<verbatim>
 class Try
 {
   public int x;
   public double y;
 
-  public void print()
-  {
-    System.out.println(a + " " + b + " " + c);
-  }
-
-  public int getX()
-  {
-    return x;
-  }
-
-  public void set(int x, double z)
+  public void set(int x, double y1)
   {
     this.x = x;
-    y = z;
+    y = y1;
+  }
+
+  public void print()
+  {
+    System.out.println("x = " + x + ", y = " + y);
   }
 
   public static void main(String[] args)
   {
-    Try try = new Try();
-    try.set(7, 8.5);
+    Try t = new Try();
+    t.set(7, 8.5);
+    t.print();
   }
 }
+</verbatim>
+
 ----------------------------
 
-to the following C code:
+and we want to transform this to:
 ----------------------------
 #include <stdio.h>
 
