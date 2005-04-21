@@ -1,0 +1,65 @@
+module java2c
+imports
+  liblib Java-15 C
+
+strategies
+
+  main =
+    io-wrap(java2c)
+
+  java2c =
+    !translation-unit |[
+      #include <stdio.h>
+
+      void main(int argc, char** args)
+      {
+        printf("\"Hi there!\"");
+      }
+    ]|
+
+/*
+        <classdecs2struct> decs => structs
+      ; <method2fundecs> decs => fundecs
+
+
+  classdec2struct :
+    class-body-dec |[ mod* class x { ~*decs } ]|
+      ->
+    c:dec |[ typedef struct x { ~mem-dec*:memdecs } ~id:sname; ]|
+    where
+      <filter(fielddec2memdec)> decs => memdecs
+
+  fielddec2memdec :
+    ?FieldDec(_, type, [vdec]) -> c:mem-dec |[ ~type-spec:tname ~id-decl:cvars ;]|
+    where
+        <type2type> type =>tname
+      ; <vardec2vardec> vdec => cvdec
+
+  type2type :
+    |[ int ]| -> |[ int ]|
+
+  type2type :
+    ClassType(x, None()) -> x
+
+  
+  vardec2... :
+    java:vdec |[ vdec ]| -> |[ ~id:vdec ]|
+    where
+      !vdec => cvars
+
+  convertFunctionConcrete:
+    java |[ mod* ty ~x:xyz ( param* ) {bstm*} ]|
+      ->
+    c:fun-def |[ ~type-spec:tname ~id:idname (~param-dec*:args) { return 1;} ]|
+    where
+        !ty => tname
+      ; !xyz => idname
+      ; <paramparse> param* => args
+
+  paramparse =
+    !c:param-dec |[ int a ]|
+
+  buildFuncBody =
+    ! c:stm |[  return a; ]|
+*/
+

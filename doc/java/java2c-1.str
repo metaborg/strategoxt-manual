@@ -1,0 +1,10 @@
+module java2c-1
+imports
+  liblib Java-15 C
+
+strategies
+
+  main =
+    io-wrap(java2c)
+
+  java2c = id

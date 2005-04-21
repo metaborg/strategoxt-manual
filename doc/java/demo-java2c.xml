@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<section id="java2c">
+  <title>Transformation Java to C</title>
+
+  <warning>
+    <para>
+      This demo is a quick hack. Don't read it if you need a solid
+      tutorial.
+    </para>
+  </warning>
+  
+  <para>
+    In this demo I will talk you through the process of implementing a
+    tool that transforms Java code to C. As an example, we will use
+    this Java source file:
+  </para>
+
+  <programlisting><include href="Try.java" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+
+  <para>
+    and we want to transform this to
+  </para>
+
+  <programlisting><include href="Try.c" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+
+  <para>
+    Let's first setup the basic transformation.
+  </para>
+
+  <programlisting><include href="java2c-1.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+
+  <para>
+    Compile:
+  </para>
+
+  <screen>$ strc -i java2c.str `strcflags java-front c-tools` -la stratego-lib</screen>
+
+  <para>
+    where strcflags is an alias in your shell:
+  </para>
+
+  <screen>alias strcflags="pkg-config --variable=strcflags "</screen>
+
+  <para>
+    Of course you can also enter the plain -I arguments. Include the
+    directories share/package and the share/sdf/package. Time for some
+    action:
+  </para>
+
+  <screen>$ parse-java -i Try.java | ./java2c | pp-aterm</screen>
+
+  <para>
+    Well, of course this tool is pretty useless since it does
+    nothing. So, let's produce some plain C code first. We are going
+    to use concrete syntax immediately. Create a file java2c.meta:
+  </para>
+
+  <programlisting><include href="java2c-1.meta" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+
+  <para>
+    To test the concrete syntax support, we are just going to generate
+    a simple C file module.
+  </para>
+  
+  <programlisting>
+  java2c =
+    !translation-unit |[ #include &lt;stdio.h> ]|
+  </programlisting>
+
+  <para>
+    Too bad, that does not compile. The compiler complains about the ]
+    of ]|. This rather tricky: the syntax definition of C defines that
+    pre-processing lines should be termined by a newline. So, let's
+    add some whitespace:
+  </para>
+
+  <programlisting>
+  java2c =
+    !translation-unit |[
+      #include &lt;stdio.h>
+    ]|
+  </programlisting>
+
+  <para>
+    Great, that compiles. Run:
+  </para>
+  
+
+  <screen>
+$ parse-java -i Try.java | ./java2c | pp-c
+#include &lt;stdio.h>
+
+  </screen>
+
+  <para>
+    Excellent, but not very interesting. Let's add a main function.
+  </para>
+
+  <programlisting>
+  java2c =
+    !translation-unit |[
+      #include &lt;stdio.h>
+
+      void main(int argc, char** args)
+      {
+        printf("Hi there!");
+      }
+    ]|
+  </programlisting>
+
+
+  <para>
+    Ok, it compiles. Run it.
+  </para>
+
+<screen>
+$ parse-java -i Try.java | ./java2c | pp-c
+#include &lt;stdio.h>
+
+void main (int argc, char * * args)
+{
+  printf(Hi there!);
+}
+</screen>
+
+<para>
+  Humz, great, but that pretty-printer sucks. It does not quote the
+  literal! So, we are going to report a bug to our dear Stratego
+  developers.
+</para>
+
+<para>
+  Of course we are hackers: we are not going to wait for a fix and are
+  going to use a dirty workaround! Let's try to use two double quotes.
+</para>
+
+  <programlisting>
+  java2c =
+    !translation-unit |[
+      #include &lt;stdio.h>
+
+      void main(int argc, char** args)
+      {
+        printf("\"Hi there!\"");
+      }
+    ]|
+  </programlisting>
+
+<screen>
+$ parse-java -i Try.java | ./java2c | pp-c
+#include &lt;stdio.h>
+
+void main (int argc, char * * args)
+{
+  printf("Hi there!");
+}
+</screen>
+
+<para>
+  Hehe, that works. We fooled that crappy pretty-printer!
+</para>
+</section>
