@@ -242,7 +242,10 @@ $ sdf2table -m Stratego-Java-C -i Stratego-Java-C.def -o Stratego-Java-C.tbl
   "~dec:"  StrategoTerm -> Declaration {cons("FromTerm")}
 </programlisting>
 
-Run the program:
+<para>
+  Run the program:
+</para>
+
 <screen>
 $ parse-java -i Try.java | ./java2c-2 | pp-c
 #include &lt;stdio.h>
