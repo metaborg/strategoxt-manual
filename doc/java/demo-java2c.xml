@@ -129,25 +129,22 @@ void main (int argc, char * * args)
 <para>
   Humz, great, but that pretty-printer sucks. It does not quote the
   literal! So, we are going to report a bug to our dear Stratego
-  developers.
+  developers. Of course we are hackers: we are not going to wait for a
+  fix and are going to use a dirty workaround! Let's try to use two
+  double quotes.
 </para>
 
-<para>
-  Of course we are hackers: we are not going to wait for a fix and are
-  going to use a dirty workaround! Let's try to use two double quotes.
-</para>
-
-  <programlisting>
-  java2c =
-    !translation-unit |[
-      #include &lt;stdio.h>
-
-      void main(int argc, char** args)
-      {
-        printf("\"Hi there!\"");
-      }
-    ]|
-  </programlisting>
+<programlisting>
+java2c =
+  !translation-unit |[
+    #include &lt;stdio.h>
+  
+    void main(int argc, char** args)
+    {
+      printf("\"Hi there!\"");
+    }
+  ]|
+</programlisting>
 
 <screen>
 $ parse-java -i Try.java | ./java2c | pp-c
@@ -160,6 +157,114 @@ void main (int argc, char * * args)
 </screen>
 
 <para>
-  Hehe, that works. We fooled that crappy pretty-printer!
+  Hehe, that works. We fooled that crappy pretty-printer! Next, we are
+  going to declare the classes in the compilation unit as
+  structs. First, we ignore the fields of the class. Now we have tiny
+  problem: we want to use concrete syntax for C as well as Java, and
+  such a combination does not exist yet. So, we have to create it
+  ourselves. We have to create an SDF modules that imports both
+  embeddings and derive the parse table from that. The SDF module is:
 </para>
+
+  <programlisting><include href="Stratego-Java-C.sdf" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+
+<para>
+  Generate a parse table:
+</para>
+
+<screen>
+$ pack-sdf -i Stratego-Java-C.sdf -o Stratego-Java-C.def \
+  -Idef /usr/share/sdf/java-front/Stratego-Java-15.def \
+  -Idef /usr/share/sdf/java-front/Stratego-C.def
+$ sdf2table -m Stratego-Java-C -i Stratego-Java-C.def -o Stratego-Java-C.tbl
+</screen>
+
+<para>
+  and change the meta file of our Stratego module:
+</para>
+
+<programlisting><include href="java2c-2.meta" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+
+<para>
+  Now can implement the real rewriting, which involves quite some
+  concrete syntax constructs.
+</para>
+
+<programlisting>
+  java2c :
+    CompilationUnit(_, _, [dec])
+      ->
+    |[
+      #include &lt;stdio.h>
+
+      ~dec:cdec
+
+      void main(int argc, char** args)
+      {
+        printf("\"Hi there!\"");
+      }
+    ]|
+    where
+      &lt;classdec2struct> dec => cdec
+
+  classdec2struct :
+    type-dec |[ mod* class x { ~*decs } ]| -> dec |[ struct ~id:x { int temp; }; ]|
+</programlisting>
+
+<para>
+  From the <ulink
+  url="https://svn.cs.uu.nl:12443/repos/StrategoXT/java-front/trunk/syn/stratego-v1.5/Embedded-Java-15.sdf">embedding
+  of Java in Stratego</ulink> we are using a quotation for type
+  declarations, the meta variables mod* and x and an anti-quotation
+  for class body declaration. Quote of the productions:
+</para>
+
+<programlisting>
+  "type-dec" "|[" JavaTypeDec "]|" -> StrategoTerm {cons("ToMetaExpr")}
+  "~*" StrategoTerm -> JavaClassBodyDec* {cons("FromMetaExpr")}
+
+  [xyz] [0-9]*     -> JavaID          {prefer}
+  "mod" [0-9]* "*" -> JavaClassMod* {prefer}
+</programlisting>
+
+<para>
+  From the <ulink
+  url="https://svn.cs.uu.nl:12443/repos/StrategoXT/trunk/StrategoXT/c-tools/syn/Stratego-C.sdf">embedding
+  of C in Stratego</ulink> we are using a quotation for declarations
+  and two anti-quotations: one for identifiers and one for
+  declarations. Quote of the productions:
+</para>
+
+<programlisting>
+  "dec" "|[" Declaration "]|" -> StrategoTerm {cons("ToTerm")}
+
+  "~id:"   StrategoTerm -> ID          {cons("FromTerm")}
+  "~dec:"  StrategoTerm -> Declaration {cons("FromTerm")}
+</programlisting>
+
+Run the program:
+<screen>
+$ parse-java -i Try.java | ./java2c-2 | pp-c
+#include &lt;stdio.h>
+
+struct Try
+  {
+  int temp;
+} ;
+void main (int argc, char * * args)
+{
+  printf("Hi there!");
+}
+</screen>
+
+<para>
+  Well, the pretty-printing could be better, but it works!
+</para>
+
+<note>
+  <para>
+    More later!
+  </para>
+</note>
+
 </section>
