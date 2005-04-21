@@ -1,0 +1,27 @@
+module java2c-2
+imports
+  liblib Java-15 C
+
+strategies
+
+  main =
+    io-wrap(java2c)
+
+  java2c :
+    CompilationUnit(_, _, [dec])
+      ->
+    |[
+      #include <stdio.h>
+
+      ~dec:cdec
+
+      void main(int argc, char** args)
+      {
+        printf("\"Hi there!\"");
+      }
+    ]|
+    where
+      <classdec2struct> dec => cdec
+
+  classdec2struct :
+    type-dec |[ mod* class x { ~*decs } ]| -> dec |[ struct ~id:x { int x; }; ]|

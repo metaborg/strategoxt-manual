@@ -1,0 +1,4 @@
+module Stratego-Java-C
+imports
+  Stratego-Java-15
+  Stratego-C
