@@ -1,0 +1,61 @@
+Let's first setup the basic transformation.
+
+java2c.str:
+----------------------------------------------------
+module java2c
+imports
+  liblib Java-15 C
+
+strategies
+
+  main =
+    io-wrap(java2c)
+
+  java2c = id
+----------------------------------------------------
+
+Compile:
+----------------------------------------------------
+$ strc -i java2c.str `strcflags java-front c-tools` -la stratego-lib
+----------------------------------------------------
+
+where strcflags is an alias:
+----------------------------------------------------
+alias strcflags="pkg-config --variable=strcflags "
+----------------------------------------------------
+
+Of course you can also enter the plain -I arguments. Include the
+directories share/package and the share/sdf/package.
+
+Time for some action:
+----------------------------------------------------
+$ parse-java -i Try.java | ./java2c | pp-aterm
+----------------------------------------------------
+
+Well, of course this tool is pretty useless since it does nothing. So,
+let's produce some plain C code first. We are going to use concrete
+syntax immediately.
+
+Create a file java2c.meta:
+-----------------------------
+Meta([
+  Syntax("Stratego-C")
+])
+-----------------------------
+
+
+
+module java2c
+imports
+  liblib Java-15 C
+
+strategies
+
+  main =
+    io-wrap(java2c)
+
+  java2c =
+    !translation-unit |[
+      #include <stdio.h>
+    ]|
+    
