@@ -1,0 +1,78 @@
+parsetree(
+  appl(
+    prod(
+      [cf(opt(layout)), cf(sort("Exp")), cf(opt(layout))]
+    , sort("<START>")
+    , no-attrs
+    )
+  , [ appl(prod([], cf(opt(layout)), no-attrs), [])
+    , appl(
+        prod(
+          [ cf(sort("Exp"))
+          , cf(opt(layout))
+          , lit("+")
+          , cf(opt(layout))
+          , cf(sort("Exp"))
+          ]
+        , cf(sort("Exp"))
+        , attrs([assoc(left), term(cons("Plus"))])
+        )
+      , [ appl(
+            prod(
+              [cf(sort("IntConst"))]
+            , cf(sort("Exp"))
+            , attrs([term(cons("Int"))])
+            )
+          , [ appl(
+                prod(
+                  [lex(sort("IntConst"))]
+                , cf(sort("IntConst"))
+                , no-attrs
+                )
+              , [ appl(
+                    list(iter-star(char-class([range(0, 255)])))
+                  , [49]
+                  )
+                ]
+              )
+            ]
+          )
+        , appl(
+            prod([cf(layout)], cf(opt(layout)), no-attrs)
+          , [32]
+          )
+        , lit("+")
+        , appl(
+            prod([cf(layout)], cf(opt(layout)), no-attrs)
+          , [32]
+          )
+        , appl(
+            prod(
+              [cf(sort("Id"))]
+            , cf(sort("Exp"))
+            , attrs([term(cons("Var"))])
+            )
+          , [ appl(
+                prod(
+                  [lex(sort("Id"))]
+                , cf(sort("Id"))
+                , no-attrs
+                )
+              , [ appl(
+                    list(iter-star(char-class([range(0, 255)])))
+                  , [97]
+                  )
+                ]
+              )
+            ]
+          )
+        ]
+      )
+    , appl(
+        prod([cf(layout)], cf(opt(layout)), no-attrs)
+      , [10]
+      )
+    ]
+  )
+, 0
+)

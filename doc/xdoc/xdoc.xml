@@ -9,7 +9,7 @@
     </para>
 
     <section>
-      <title>Generating documentation</title>
+      <title>Using xDoc to generate documentation</title>
 
       <para>
       </para>
@@ -17,10 +17,79 @@
     </section>
 
     <section>
-      <title>Building your own documentation generator</title>
+      <title>Building your own documentation generator with xDoc</title>
 
       <para>
+	To make a documentation generator for a new language using
+	xDoc, we have to take the following steps. We assume an SDF
+	definition is available for the language.
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Parameterize generic xDoc tools in xdoc.conf
+	    </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+	      Write a program that translates the language into
+	      xDocInfo terms
+	    </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+	      Write a program that does the matching of uses and
+	      definitions
+	    </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+	      Possibly write visualization components for the language
+	      and specify which visualization to be made in the
+	      documentation
+	    </para>
+	  </listitem>
+	</itemizedlist>
+
       </para>
+
+      <para>
+	In the next few sections, we will look into each of these steps
+	more closely.
+      </para>
+
+      <section>
+	<title>Parameterize generic xDoc tools</title>
+	<para>
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		Specify a name for the language and extensions of the
+		corresponding filenames
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		Specify the kind of definitions in the language
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		Specify the constructor names for definitions, uses,
+		syntax highlighting and metatransistion markers
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		Specify what non-terminals in the syntax definition
+		represent the documentation comments
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	  
+	</para>
+      </section>
 
     </section>
 

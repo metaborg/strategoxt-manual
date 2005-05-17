@@ -4,5 +4,152 @@
 <chapter id="asfix">
   
   <title>The AsFix Parse Tree Format</title>
-  <para/>
+
+  <para>
+    AsFix (ASF+SDF fixed format) is a format for representing parse
+    trees in the ATerm format.
+  </para>
+
+  <para>
+    Currently two versions of AsFix are in used: AsFix2ME and
+    AsFix2. AsFix2 is extremely verbose since layout and literals have
+    a structured representation in AsFix2. AsFix2ME is a more concise
+    since lists, layout and literals are flattened. This is the parse
+    tree format that is used in the ASF+SDF Meta-Environment.
+  </para>
+
+  <para>
+    The SGLR parser outputs the result of parsing an input in the
+    AsFix format. The most recent versions of SGLR produce AsFix2ME by
+    default. SGLR produces AsFix2 when the -2 flag is used.
+  </para>
+
+  <para>
+    In StrategoXT program transformation systems usually operate on
+    abstract syntax trees. The AsFix2 output of SGLR is transformed
+    into an abstract syntax tree by implode-asfix.
+  </para>
+
+  <para>
+    Usually you don't actually want to see an AsFix2 or AsFix2ME parse
+    tree. AsFix takes the job of representing the result of parsing an
+    input very serious. It includes all information required to
+    reproduce the original input. This unparsing is implemented by the
+    asfix-yield tool. The AsFix format exactly describes what kind of
+    productions are applied. An AsFix representation is
+    self-contained: all grammar information needed to interpret a term
+    is also included.
+  </para>
+ 
+  <section>
+    <title>Example</title>
+
+    <para>
+      Consider the following SDF syntax definition.
+    </para>
+
+    <programlisting>
+      <include href="../parse-unit/Exp.sdf" 
+               parse="text" 
+               xmlns="http://www.w3.org/2003/XInclude"/>
+    </programlisting>
+
+    <para>
+      PGEN's sdf2table produces an SGLR parse table from this syntax
+      definition:
+    </para>
+
+<screen>
+  sdf2table -m Exp -i Exp.def -o Exp.tbl
+</screen>
+
+    <section>
+      <title>Parsing to AsFix2ME</title>
+      <para>
+	Parsing the expression 1 + a to the compact AsFix variant
+	AsFix2ME using:
+      </para>
+
+<screen>
+  echo "1 + a" | sglr -m -A -p Exp.tbl | pp-aterm
+</screen>
+
+      <para>
+	produces the following parse tree:
+      </para>
+
+      <programlisting>
+	<include href="asfix2me.example" 
+                 parse="text" 
+                 xmlns="http://www.w3.org/2003/XInclude"/>
+      </programlisting>
+
+
+    </section>
+
+    <section>
+      <title>Parsing to AsFix2</title>
+      <para>
+	Parsing the same expression to AsFix2:
+      </para>
+
+<screen>
+  echo "1 + a" | sglr -2 -A -p Exp.tbl | pp-aterm
+</screen>
+
+      <para>
+	produces the following parse tree:
+      </para>
+
+      <programlisting>
+	<include href="asfix2.example" 
+                 parse="text" 
+                 xmlns="http://www.w3.org/2003/XInclude"/>
+      </programlisting>
+
+
+    </section>
+
+    <section>
+      <title>Producing an Abstract Syntax Tree</title>
+
+      <para>
+	Applying implode-asfix to reduce this to an abstract syntax
+	tree:
+      </para>
+
+<screen>
+  echo "1 + a" | sglr -2A -p Exp.tbl | implode-asfix | pp-aterm
+</screen>
+
+      <para>
+	results in:
+      </para>
+
+<screen>
+  Plus(Int("1"), Var("a"))
+</screen>
+
+      <para>
+	implode-asfix only accepts AsFix2. The implodePT (part of the
+	pt-support package, which is in the sdf2-bundle) implements
+	the same implosion for AsFix2ME.
+      </para>
+
+<screen>
+  echo "1 + a" | sglr -mA -p Exp.tbl | implodePT | pp-aterm
+</screen>
+
+      <para>
+	produces:
+      </para>
+
+<screen>
+  Plus(Int("1"), Var("a"))
+</screen>
+
+    </section>
+  </section>
+
+
 </chapter>

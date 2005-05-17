@@ -8,7 +8,8 @@
       <para>
 	Stratego Library
 
-	Documentation
+	Documentation for the Stratego library can be found <ulink
+	url="http://catamaran.labs.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">here</ulink>.
       </para>
 
       <include href="lists.xml" xmlns="http://www.w3.org/2003/XInclude"/>
