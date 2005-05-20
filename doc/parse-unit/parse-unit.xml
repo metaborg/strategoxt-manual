@@ -60,18 +60,6 @@
       </para>
       
       <screen><include href="output" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
-
-      <!-- TODO -->
-      <note>
-	<title>Changes in Stratego/XT 0.14</title>
-	<para>
-	  In Stratego/XT 0.14 the options <option>-o</option> and
-	  <option>--verbose 1</option> are no longer necessary and can
-	  be left out. The results are now visible at the default
-	  verbosity level and parse-unit does no longer produce output
-	  to a file.
-	</para>
-      </note>
     </section>
   </section>
 
