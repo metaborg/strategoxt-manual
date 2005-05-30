@@ -1,29 +1,17 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-    <chapter id="gettingstarted">
-      <title>Introduction (*)</title>
-
-      <para>
-
-	Stratego is a modular language for the specification of fully
-	automatic program transformation systems based on the paradigm
-	of rewriting strategies. The construction of transformation
-	systems with Stratego is supported by the XT bundle of
-	transformation tools. The Stratego/XT distribution integrates
-	Stratego and XT.
-
-      </para>
-      
-      <section>
-	<title>What do I need?</title>
-
-	<para>
-
-	  Stratego Shell
-
-	</para>
-      </section>
-
-    </chapter>
+<chapter id="gettingstarted">
+  <title>Introduction (*)</title>
+  
+  <para>
+    
+    Stratego is a modular language for the specification of fully
+    automatic program transformation systems based on the paradigm of
+    rewriting strategies. The construction of transformation systems
+    with Stratego is supported by the XT bundle of transformation
+    tools. The Stratego/XT distribution integrates Stratego and XT.
+    
+  </para>
+</chapter>
 

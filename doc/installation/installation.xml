@@ -1,31 +1,44 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-    <chapter id="installation">
-      <title>Installation</title>
+<chapter id="installation">
+  <title>Installation</title>
+  
+  <section>
+    <title>What do I Need?</title>
+    
+    <para>
+      Description of the structure of our packages: Stratego/XT and
+      language specific extensions (such as JavaFront).
+    </para>
+    
+    <para>
+      Stratego Shell
+    </para>
+  </section>
 
-      <para>
-	First of all download the required packages (.tar.gz, RPMs or
-	Source RPMs). You need aterm and sdf2-bundle. The
-	URLs are specified in the the release page of StrategoXT.
-      </para>
-
+  <section>
+    <title>Instructions</title>
+  
+    <para>
+      First of all download the required packages (.tar.gz, RPMs or
+      Source RPMs). You need aterm and sdf2-bundle. The URLs are
+      specified in the the release page of StrategoXT.
+    </para>
+    
+    <section>
+      <title>Using source tarballs</title>
+      
       <section>
-	<title>Using source tarballs</title>
-
+	<title>Installation of aterm and sdf2-bundle</title>
+	
 	<para>
+	  The following sequence of commands takes care of building
+	  and installing the aterm and the sdf2-bundle in
+	  /usr/local.
 	</para>
-
-	<section>
-	  <title>Installation of aterm and sdf2-bundle</title>
-
-	  <para>
-	    The following sequence of commands takes care of building
-	    and installing the aterm and the sdf2-bundle in
-	    /usr/local.
-	  </para>
-
-	  <screen>
+	
+	<screen>
 tar zxf aterm-<replaceable>version</replaceable>.tar.gz
 cd aterm-<replaceable>version</replaceable>
 ./configure --with-gcc
@@ -41,7 +54,7 @@ make install
 cd ..
 </screen>
 
-	  <para>
+          <para>
 	    Configuring the aterm library --with-gcc limits the number
 	    of different aterm libraries that are installed. Just
 	    installing the gcc version makes installation of the aterm
@@ -123,4 +136,5 @@ rpm -U *
 	</para>
 
       </section>
-    </chapter>
+  </section>
+</chapter>
