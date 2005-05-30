@@ -2,10 +2,10 @@
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
 <section>
-  <title>Lists</title>
+  <title>Command-line Options</title>
   
   <para>
-    Lists
+    How to handle command-line options.
   </para>
 </section>
 

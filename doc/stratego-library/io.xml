@@ -2,10 +2,10 @@
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
 <section>
-  <title>Lists</title>
+  <title>I/O (*)</title>
   
   <para>
-    Lists
+    Library strategies for file input and output.
   </para>
 </section>
 

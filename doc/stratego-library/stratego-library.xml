@@ -1,17 +1,16 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-  <chapter id="stratego-library">
-
-    <title>Stratego Library (*)</title>
-
-      <para>
-	Stratego Library
-
-	Documentation for the Stratego library can be found <ulink
-	url="http://catamaran.labs.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">here</ulink>.
-      </para>
-
-      <include href="lists.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-
-  </chapter>
+<chapter id="stratego-library">
+  <title>Stratego Library (*)</title>
+  
+  <para>
+    API Documentation for the Stratego library can be found <ulink
+    url="http://catamaran.labs.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">here</ulink>.
+  </para>
+  
+  <include href="lists.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="hashtables.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="io.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+</chapter>
