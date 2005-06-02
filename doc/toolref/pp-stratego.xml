@@ -1,0 +1,52 @@
+<refentry lang="en" id="ref-pp-stratego">
+  <refnamediv>
+    <refname>pp-stratego</refname>
+    <refpurpose>
+      pretty-prints a Stratego program.
+    </refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>pp-stratego</command>
+      <arg>-i <replaceable>file</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>
+      <command>pp-stratego --abstract</command> pretty prints a
+      Stratego module in abstract syntax (usually stored in a .rtree
+      file) to Stratego concrete syntax.
+    </para>
+
+    <para>
+      <command>pp-stratego</command> pretty prints a Stratego module
+      in concrete syntax to concrete syntax by first parsing it and
+      afterwards pretty printing it. This is a useful operation for
+      inspecting the meaning of concrete object syntax fragments.
+    </para>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <title>Input/Output Options</title>
+
+      <varlistentry>
+	<term><option>--abstract</option></term>
+	<listitem>
+	  <para>
+	    Input Stratego module is in abstract syntax.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+</refentry>
