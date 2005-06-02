@@ -161,6 +161,15 @@
   </part>
 
   <part>
+    <title>Developers</title>
+
+    <include href="developers/latestsources.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
+    <include href="developers/stratego-dev.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
+  </part>
+
+  <part>
     <title>Reference</title>
 
     <include href="stratego-language/reference.xml" xmlns="http://www.w3.org/2003/XInclude"/>

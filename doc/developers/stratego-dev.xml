@@ -1,0 +1,136 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<chapter id="stratego-dev">
+  
+  <title>Stratego Developer Guide</title>
+  
+  <para>
+    There are many interesting and less interesting improvements that
+    can be made to the Stratego implementation. Anyone who is
+    interested in doing some work on Stratego/XT.
+  </para>
+
+  <para>
+    This page lists guidelines and tips for contributing to the
+    sources of Stratego/XT. This page is not about contributing to
+    documentation, external packages that use Stratego/XT, or
+    whatever.
+  </para>
+
+  <section>
+    <title>Baseline development</title>
+
+    <section>
+      <title>Why you need a baseline</title>
+
+      <para>
+	The Stratego/XT source code highly depends on itself: Stratego
+	and various generative tools are used everywhere. Therefore,
+	we are using a baseline to compile a Stratego/XT source tree
+	from Subversion. Tarballs that are distributed to users do not
+	need a baseline: they contain all generated and bootstrapped
+	sources. See [[LatestSources][installation from Subversion]]
+	for instructions on how to install Stratego/XT from
+	Subversion.
+      </para>
+
+      <para>
+	The big advantage of a baseline is that you basically cannot
+	break anything. In the past, we used bootstrapped sources in
+	the Subversion repository, which was very fragile and required
+	great care of contributors. The baseline setup is much easier
+	to use and more safe. We hope this will encourage
+	contributions.
+      </para>
+
+    </section>
+
+    <section>
+      <title>Baseline restrictions</title>
+
+      <para>
+	Since we are using a baseline, you cannot *use* a new feature
+	you have added to Stratego/XT in Stratego/XT itself until this
+	feature is in the baseline.
+      </para>
+
+      <para>
+	This might sound difficult, but in practice it is easy to
+	ensure that you don't do this. You should use the baseline we
+	provide to compile Stratego/XT from Subversion and you should
+	not change the configuration of Stratego/XT with this baseline
+	after installation. The baseline now ensures that you are not
+	using new features that you've added to Stratego/XT: it will
+	just not compile. Of course this positive note assumes that
+	you do actually compile before committing ;).
+      </para>
+
+    </section>
+
+    <section>
+      <title>Baseline upgrading</title>
+
+      <para>
+	Baselines are taken from the buildfarm. The baselines are
+	thoroughly checked there, which makes sure that we don't get
+	into nasty bootstrap problems if something fails. If the build
+	jobs do not succeed, then we will not upgrade the
+	baseline. Baselines will never be created in an
+	ad-hoc way on machines of developers.
+      </para>
+
+      <para>
+	Baselines are currently updated by hand. If you have added a
+	feature that would you like to have in the baseline as soon as
+	possible, then please request a baseline update at
+	=stratego-dev@cs.uu.nl= or the IRC channel <command>#stratego</command>.
+      </para>
+
+    </section>
+  </section>
+
+  <section>
+    <title>Contributing</title>
+
+    <section>
+      <title>Committing your changes</title>
+
+      <para>
+	Although it is time-consuming, it is strongly advised to run a
+	=make check= on the complete source tree before committing
+	anything.
+      </para>
+
+      <para>
+	Before committing you should review the files that you have
+	modified. After a =make clean= and =make bootclean= the =svn
+	status= will show these files. We have configured the source
+	tree not to show files in this status overview that are not
+	important.
+      </para>
+
+      <para>
+	Please explain your changes in the =ChangeLog= of the
+	subpackages. Also, use this changelog as your Subversion
+	commit message.
+      </para>
+
+    </section>
+
+    <section>
+      <title>Submitting your changes</title>
+
+      <para>
+	We are fond of patches submitted by users. You don't have to
+	fix a big issue: small fixes in error reporting and
+	documentation of tools are very valuable as well. Please
+	contribute, or at least report, if anything annoys you!
+      </para>
+
+    </section>
+
+  </section>
+
+
+</chapter>

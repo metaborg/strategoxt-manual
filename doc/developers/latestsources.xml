@@ -1,0 +1,119 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<chapter id="latest-sources">
+  
+  <title>Installation from Subversion</title>
+  
+  <para>
+    Distribution (stable and continuous) are available from the
+    [[StrategoDownload][download]] section. It is also possible to
+    obtain the sources directly from Subversion. This is only useful
+    if you want to modify the sources of Stratego/XT and might want to
+    commit your changes.
+  </para>
+
+  <section>
+    <title>Requirements</title>
+
+    <para>
+      Installation from Subversion requires some packages from the GNU
+      build system. You need:
+    </para>
+
+    <itemizedlist>
+      <listitem>
+	<para>Autoconf 2.58 or newer (2.57 will not do)</para>
+      </listitem>
+      <listitem>
+	<para>Automake 1.7.9 or newer. Very recent versions (1.9.x) are
+	recommended and required if you want to create a distribution</para>
+      </listitem>
+      <listitem>
+	<para>Libtool 1.5 or newer</para>
+      </listitem>
+      <listitem>
+	<para>pkg-config 0.15 or newer</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+      Unfortunately, many Linux distributions contain old versions of
+      these packages, so please check te versions that are installed
+      on your system. Also, check that libtool is installed at the
+      same location (prefix) as Automake, otherwise =aclocal= will not
+      be able to find the Autoconf macros of Libtool (=libtool.m4=)
+    </para>
+
+    <para>
+      You now need a baseline to install Stratego/XT from
+      Subversion. The latest baseline is available at:
+      ftp://ftp.stratego-language.org/pub/stratego/StrategoXT/baseline/latest/strategoxt.tar.gz
+    </para>
+
+    <para>
+      Follow the [[installation instructions]] for end-users for this
+      tarball.
+    </para>
+
+  </section>
+
+  <section>
+    <title>How to checkout</title>
+
+    <para>
+      You can do a checkout using the following command:
+    </para>
+
+<screen>
+  $ svn checkout %SVNSTRATEGOXT%/trunk/StrategoXT
+</screen>
+
+    <para>
+      Note that your Subversion client has to support SSL
+      support. Install Subversion =--with-ssl=.
+    </para>
+
+  </section>
+
+  <section>
+    <title>How to install</title>
+
+    <para>
+      To bring the source tree into a state where you can follow the
+      [[installation instructions]] you must run the =bootstrap=
+      script (see also [[WhyBootstrap][why bootstrap]]).
+    </para>
+
+<screen>
+  $ ./bootstrap
+</screen>
+
+    <para>
+      Now you can proceed with the [[installation instructions]] for a
+      Stratego/XT distribution, with one exception: you must configure
+      Stratego/XT with your baseline installation:
+      =--with-strategoxt=$baselineprefix=
+    </para>
+
+    <para>
+      Historical note: in the past, a separate =make= and =make
+      install= was not possible if you were installing for
+      Subversion. This is no longer the case: you can use a separate
+      and =make= and =make install= now we are using a baseline.
+    </para>
+
+  </section>
+
+  <section>
+    <title>Subversion Repoman</title>
+
+    <para>
+      The repoman for gives an overview of possible ways to view the
+      sources the StrategoXT repository:
+    </para>
+
+    <screen>https://svn.cs.uu.nl:12443/repoman/info/StrategoXT</screen>
+
+  </section>
+</chapter>
