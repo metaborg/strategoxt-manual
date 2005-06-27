@@ -46,83 +46,8 @@
 
   </part>
 
-  <part>
-    <title>Examples (*)</title>
+  <include href="demos/demos.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-    <chapter>
-      <title>Introduction (*)</title>
-
-      <para>
-	examples of different types of applications
-      </para>
-    </chapter>
-
-    <chapter>
-       <title>Syntax Definition and Pretty-Printing (*)</title>
-       <para>SDF definition of a tiny imperative language</para>
-       <para></para>
-    </chapter>
-
-    <chapter>
-       <title>Simplification (Desugaring) (*)</title>
-       <para>Stratego rules</para>
-       <para></para>
-       <para>Topic: term rewriting</para>
-    </chapter>
-
-    <chapter>
-       <title>Interpretation (*)</title>
-       <para>From calculator to TIL interpreter</para>
-       <para></para>
-       <para>Dynamic rules</para>
-    </chapter>
-
-    <chapter>
-       <title>Optimization (*)</title>
-       <para></para>
-       <para></para>
-       <para>Topic: dynamic rules</para>
-    </chapter>
-
-    <chapter>
-       <title>Compilation (Translation) (*)</title>
-       <para>Translation to C(?)</para>
-       <para></para>
-       <para></para>
-    </chapter>
-
-    <chapter>
-       <title>Analysis (*)</title>
-       <para></para>
-       <para></para>
-       <para></para>
-    </chapter>
-
-    <chapter>
-       <title>Domain-Specific Language (*)</title>
-       <para></para>
-    </chapter>
-
-    <chapter>
-       <title>Code Generation (*)</title>
-       <para></para>
-    </chapter>
-
-    <chapter>
-       <title>Language Embedding (*)</title>
-       <para></para>
-    </chapter>
-
-    <chapter>
-       <title>Custom Pretty-Printing (*)</title>
-       <para></para>
-    </chapter>
-
-    <chapter>
-       <title>Typechecking (*)</title>
-       <para></para>
-    </chapter>
-  </part>
   
   <part>
     <title>Stratego</title>

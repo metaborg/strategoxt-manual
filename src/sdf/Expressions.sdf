@@ -1,0 +1,7 @@
+module Expressions
+imports Identifiers Layout
+exports 
+  sorts Exp
+  context-free syntax
+    Id          -> Exp {cons("Var")}
+    Exp "+" Exp -> Exp {cons("Plus")}

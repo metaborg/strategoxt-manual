@@ -1,0 +1,34 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<chapter>
+  <title>Syntax Definition and Pretty-Printing (*)</title>
+       
+  
+  <para>
+
+    SDF definition of a tiny imperative language
+
+  </para>
+
+<section>
+  <title>An Expression Language</title>
+
+  <para>
+    foo bar
+  </para>
+
+  <screen>
+context-free syntax
+  foo bar -> baz</screen>
+
+
+<screen><include parse="text" href="../../src/sdf/Expressions.sdf" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+</section>
+
+
+
+
+    
+</chapter>
