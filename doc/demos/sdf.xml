@@ -4,26 +4,33 @@
 <chapter>
   <title>Syntax Definition and Pretty-Printing (*)</title>
        
-  
   <para>
 
-    SDF definition of a tiny imperative language
+    This chapter shows syntax definition in SDF
 
   </para>
 
 <section>
-  <title>An Expression Language</title>
+  <title>Defining a Small Programming Language</title>
 
   <para>
-    foo bar
+    In this section we define the syntax of the TIL, a Tiny Imperative Language.
   </para>
 
-  <screen>
-context-free syntax
-  foo bar -> baz</screen>
-
-
 <screen><include parse="text" href="../../src/sdf/Expressions.sdf" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+</section>
+
+<section>
+  <title>Generating and Using a Parse Table</title>
+
+  <screen>
+pack-sdf -i Expressions.sdf 
+</screen>
+
+  <screen>
+sdf2table -i Expressions.def
+</screen>
 
 </section>
 
