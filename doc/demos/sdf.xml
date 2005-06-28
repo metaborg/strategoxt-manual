@@ -84,7 +84,10 @@
 
   <para>
 
-     The <code>sglri</code> tool parses a text file given a parse table. 
+     The <code>sglri</code> tool parses a text file given a parse
+     table. The result is an abstract syntax term in the ATerm
+     format. In order to inspect this term it is useful to
+     `pretty-print' it using the <code>pp-aterm</code> tool.
 
   </para>
 
@@ -100,30 +103,119 @@
 
   </para>
 
-  <screen>[ Declaration("n")
-, Read("n")
-, Declaration("x")
-, Declaration("fact")
-, Assign("fact", Int("1"))
-, For(
-    "x"
-  , Int("1")
-  , Var("n")
-  , [Assign("fact", Mul(Var("x"), Var("fact")))]
-  )
-, Write(Var("fact"))
-]</screen>
+  <screen>file: til/xmpl/test1.atil</screen>
+  <screen><include parse="text"
+  href="../../src/til/xmpl/test1.atil"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+</section>
+
+<section>
+  <title>Signature</title>
+
+  <screen>file: til/sig/maak</screen>
+  <screen><include parse="text"
+  href="../../src/til/sig/maak"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  <screen>file: til/sig/TIL.rtg</screen>
+  <screen><include parse="text"
+  href="../../src/til/sig/TIL.rtg"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  <screen>file: til/sig/TIL.rtg</screen>
+  <screen><include parse="text"
+  href="../../src/til/sig/TIL.str"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
 </section>
 
 <section>
   <title>Pretty-Printing</title>
 
-  <screen>pp-gen
-</screen>
+  <screen>file: til/pp/maak</screen>
+  <screen><include parse="text"
+  href="../../src/til/pp/maak"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  <para>
+
+     Generated pretty-print table
+
+  </para>
+
+  <screen>file: til/pp/TIL.pp</screen>
+  <screen><include parse="text"
+  href="../../src/til/pp/TIL.pp"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  <para>
+
+     Applying pretty-print table
+
+  </para>
+
+
+  <screen>file: til/xmpl/pp-test1</screen>
+  <screen><include parse="text"
+  href="../../src/til/xmpl/pp-test1"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  <para>
+
+     The result 
+
+  </para>
+
+  <screen>file: til/xmpl/test1.txt1</screen>
+  <screen><include parse="text"
+  href="../../src/til/xmpl/test1.txt1"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
 </section>
 
+<section>
+  <title>Adapting the Pretty-Print Table</title>
+
+  <screen>file: til/pp/TIL-pretty.pp</screen>
+  <screen><include parse="text"
+  href="../../src/til/pp/TIL-pretty.pp"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  <screen>file: til/xmpl/pp-test2</screen>
+  <screen><include parse="text"
+  href="../../src/til/xmpl/pp-test2"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  <para>
+
+     The result 
+
+  </para>
+
+  <screen>file: til/xmpl/test1.txt2</screen>
+  <screen><include parse="text"
+  href="../../src/til/xmpl/test1.txt2"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+</section>
+
+
+<section>
+  <title>Restoring Parentheses</title>
+
+  <screen>file: til/pp/til-parenthesize.str</screen>
+  <screen><include parse="text"
+  href="../../src/til/pp/til-parenthesize.str"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  <para>
+
+     pretty-printing with parenthesizing
+
+  </para>
+
+</section>
 
 
 

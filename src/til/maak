@@ -1,0 +1,8 @@
+
+(cd syn; ./maak)
+
+(cd sig; ./maak)
+
+(cd pp; ./maak)
+
+(cd xmpl; ./maak)

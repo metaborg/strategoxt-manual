@@ -1,0 +1,5 @@
+# generate regular tree grammar from syntax definition
+sdf2rtg -i ../syn/TIL.def -o TIL.rtg -m TIL
+
+# generate Stratego signature from regular tree grammar
+rtg2sig -i TIL.rtg -o TIL.str 
