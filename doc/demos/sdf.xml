@@ -4,32 +4,122 @@
 <chapter>
   <title>Syntax Definition and Pretty-Printing (*)</title>
        
-  <para>
-
-    This chapter shows syntax definition in SDF
-
-  </para>
-
 <section>
-  <title>Defining a Small Programming Language</title>
+  <title>Introduction</title>
 
   <para>
-    In this section we define the syntax of the TIL, a Tiny Imperative Language.
-  </para>
 
-<screen><include parse="text" href="../../src/sdf/Expressions.sdf" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+    This chapter shows how to define a syntax definition in SDF and
+    how to derive a number of artifacts from such a definition, i.e.,
+    a parser, a pretty-printer, and a Stratego signature. The chapter
+    also introduces TIL, a Tiny Imperative Language, which is used in
+    many of the examples.
+
+  </para>
 
 </section>
 
 <section>
-  <title>Generating and Using a Parse Table</title>
+  <title>TIL: a Tiny Imperative Language</title>
 
-  <screen>
-pack-sdf -i Expressions.sdf 
-</screen>
+  <para>
 
-  <screen>
-sdf2table -i Expressions.def
+     TIL is a tiny imperative language designed for the demonstration
+     of language and transformation definition formalisms. The
+     language has two data-types, integers and strings. A TIL program
+     consists of a list of statements, which can be variable
+     declarations, assignments, I/O instructions, and control-flow
+     statements. Statements can use expressions to compute values from
+     integer and string constants, and the values of variables.
+
+  </para>
+
+  <para>
+   
+     The following example gives an impression of the language. 
+
+  </para>
+
+  <screen>file: til/xmpl/test1.til</screen>
+  <screen><include parse="text" href="../../src/til/xmpl/test1.til"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+</section>
+
+<section>
+  <title>Syntax Definition</title>
+
+  <para>
+
+    The syntax of TIL defined in SDF
+
+  </para>
+
+  <screen>file: til/syn/TIL.sdf</screen>
+  <screen><include parse="text" href="../../src/til/syn/TIL.sdf"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+</section>
+
+<section>
+  <title>Parse Table Generation</title>
+
+  <para>
+
+     The following <code>maak</code> script first collects the modules
+     of the syntax definition and then generates a parse table. (The
+     TIL syntax definition only consists of one definition.)
+
+  </para>
+
+  <screen>file: til/syn/maak</screen>
+  <screen><include parse="text"
+  href="../../src/til/syn/maak"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+</section>
+
+<section>
+  <title>Parsing Programs</title>
+
+  <para>
+
+     The <code>sglri</code> tool parses a text file given a parse table. 
+
+  </para>
+
+  <screen>file: til/xmpl/parse-test</screen>
+  <screen><include parse="text"
+  href="../../src/til/xmpl/parse-test"
+  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  
+  <para>
+
+     The result 
+
+  </para>
+
+  <screen>[ Declaration("n")
+, Read("n")
+, Declaration("x")
+, Declaration("fact")
+, Assign("fact", Int("1"))
+, For(
+    "x"
+  , Int("1")
+  , Var("n")
+  , [Assign("fact", Mul(Var("x"), Var("fact")))]
+  )
+, Write(Var("fact"))
+]</screen>
+
+</section>
+
+<section>
+  <title>Pretty-Printing</title>
+
+  <screen>pp-gen
 </screen>
 
 </section>

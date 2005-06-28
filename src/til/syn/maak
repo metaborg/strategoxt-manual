@@ -1,0 +1,5 @@
+# collect modules 
+pack-sdf -i TIL.sdf -o TIL.def
+
+# generate parse table
+sdf2table -i TIL.def -o TIL.tbl -m TIL

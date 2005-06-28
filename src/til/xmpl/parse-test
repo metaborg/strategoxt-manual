@@ -1,0 +1,5 @@
+# parse input file
+sglri -p ../syn/TIL.tbl -i test1.til -o test1.atil
+
+# `pretty-print' abstract syntax term
+pp-aterm -i test1.atil

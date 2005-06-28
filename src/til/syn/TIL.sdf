@@ -1,12 +1,12 @@
 module TIL
 exports 
   lexical syntax
-    [\ \t\n]    -> LAYOUT
-    "//" ~[\n]* -> LAYOUT
+    [\ \t\n\r]    -> LAYOUT
+    "//" ~[\n\r]* -> LAYOUT
   context-free restrictions
-    LAYOUT -/- [\ \t\n]
+    LAYOUT? -/- [\ \t\n\r]
 
-  sorts Id
+  sorts Id Int String StrChar
   lexical syntax
     [A-Za-z][A-Za-z0-9]* -> Id
     [0-9]+               -> Int
@@ -20,22 +20,39 @@ exports
   sorts Exp
   context-free syntax
     Id           -> Exp {cons("Var")}
-    Exp "*" Exp  -> Exp {cons("Plus"),right}
-    Exp "/" Exp  -> Exp {cons("Plus"),right}
-    Exp "+" Exp  -> Exp {cons("Plus"),right}
-    Exp "-" Exp  -> Exp {cons("Plus"),right}
+    Int          -> Exp {cons("Int")}
+    String       -> Exp {cons("String")}
+    Exp "*" Exp  -> Exp {cons("Mul"),right}
+    Exp "/" Exp  -> Exp {cons("Div"),right}
+    Exp "+" Exp  -> Exp {cons("Add"),right}
+    Exp "-" Exp  -> Exp {cons("Sub"),right}
+    Exp "=" Exp  -> Exp {cons("Equ"),right}
+    Exp "!=" Exp -> Exp {cons("Neq"),right}
     "(" Exp ")"  -> Exp {bracket}
   context-free priorities
-    {left: Exp "*" Exp -> Exp 
-           Exp "/" Exp -> Exp }
-  > {left: Exp "+" Exp -> Exp 
-           Exp "-" Exp -> Exp }
+    {left: 
+       Exp "*" Exp -> Exp 
+       Exp "/" Exp -> Exp }
+  > {left: 
+       Exp "+" Exp -> Exp 
+       Exp "-" Exp -> Exp }
+  > {non-assoc: 
+       Exp "="  Exp -> Exp 
+       Exp "!=" Exp -> Exp }
 
   sorts Stat
   context-free syntax
-    Id ":=" Exp                                -> Stat {cons("Assign")}
-    Stat ";" Stat		               -> Stat {cons("Seq"),right}
-    "if" Exp "then" Stat "else" Stat "end"     -> Stat {cons("If")}
-    "while" Exp "do" Stat "end"                -> Stat {cons("While")}
-    "for" Id ":=" Exp "to" Exp "do" Stat "end" -> Stat {cons("For")}
-              
+    "var" Id ";"			        -> Stat {cons("Declaration")}
+    Id ":=" Exp ";"                             -> Stat {cons("Assign")}
+    "read" Id ";"                               -> Stat {cons("Read")}
+    "write" Exp ";"                             -> Stat {cons("Write")}
+    "if" Exp "then" Stat* "end"                 -> Stat {cons("IfThen")}
+    "if" Exp "then" Stat* "else" Stat* "end"    -> Stat {cons("IfElse")}
+    "while" Exp "do" Stat* "end"                -> Stat {cons("While")}
+    "for" Id ":=" Exp "to" Exp "do" Stat* "end" -> Stat {cons("For")}
+
+  sorts Program
+  context-free syntax
+    Stat* -> Program
+
+  context-free start-symbols Program

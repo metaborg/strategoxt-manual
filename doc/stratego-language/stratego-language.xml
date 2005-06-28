@@ -24,6 +24,16 @@
      </para>
   </section>
 
+  <section>
+     <title>Structure of a Stratego Program</title>
+
+     <para>
+        
+        module
+
+     </para>
+
+  </section>
   <include href="terms.xml" 
 	   xmlns="http://www.w3.org/2003/XInclude"/>
 

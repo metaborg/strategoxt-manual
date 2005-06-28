@@ -1,0 +1,11 @@
+// TIL program computing the factorial
+
+var n;
+read n;
+var x;
+var fact;
+fact := 1;
+for x := 1 to n do
+  fact := x * fact;
+end
+write fact;
