@@ -113,20 +113,51 @@
 <section>
   <title>Signature</title>
 
+  <para>
+
+     The result 
+
+  </para>
+
   <screen>file: til/sig/maak</screen>
   <screen><include parse="text"
   href="../../src/til/sig/maak"
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+  
+  <para>
+
+     Regular tree grammar generated from syntax definition
+
+  </para>
 
   <screen>file: til/sig/TIL.rtg</screen>
   <screen><include parse="text"
   href="../../src/til/sig/TIL.rtg"
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
-  <screen>file: til/sig/TIL.rtg</screen>
+  
+  <para>
+
+     Stratego signature generated from regular tree grammar
+
+  </para>
+
+  <screen>file: til/sig/TIL.str</screen>
   <screen><include parse="text"
   href="../../src/til/sig/TIL.str"
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+</section>
+
+<section>
+  <title>Format Checking</title>
+
+  <para>
+
+     Check format of term using regular tree grammar
+
+  </para>
 
 </section>
 
@@ -217,7 +248,17 @@
 
 </section>
 
+<section>
+  <title>A Complete Pipeline</title>
 
+  <para>
+
+     a complete parse-transform-pretty-print pipeline
+
+  </para>
+
+
+</section>
 
     
 </chapter>
