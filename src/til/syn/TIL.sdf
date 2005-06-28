@@ -53,6 +53,6 @@ exports
 
   sorts Program
   context-free syntax
-    Stat* -> Program
+    Stat* -> Program {cons("Program")}
 
   context-free start-symbols Program
