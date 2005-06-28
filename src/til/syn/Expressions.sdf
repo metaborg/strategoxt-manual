@@ -1,7 +1,41 @@
 module Expressions
-imports Identifiers Layout
 exports 
+  lexical syntax
+    [\ \t\n]    -> LAYOUT
+    "//" ~[\n]* -> LAYOUT
+  context-free restrictions
+    LAYOUT -/- [\ \t\n]
+
+  sorts Id
+  lexical syntax
+    [A-Za-z][A-Za-z0-9]* -> Id
+    [0-9]+               -> Int
+    "\"" StrChar* "\""   -> String
+    ~[\"\\\n]            -> StrChar
+    [\\][\"\\n]          -> StrChar
+  lexical restrictions
+    Id  -/- [A-Za-z0-9]
+    Int -/- [0-9]    
+
   sorts Exp
   context-free syntax
-    Id          -> Exp {cons("Var")}
-    Exp "+" Exp -> Exp {cons("Plus")}
+    Id           -> Exp {cons("Var")}
+    Exp "*" Exp  -> Exp {cons("Plus"),right}
+    Exp "/" Exp  -> Exp {cons("Plus"),right}
+    Exp "+" Exp  -> Exp {cons("Plus"),right}
+    Exp "-" Exp  -> Exp {cons("Plus"),right}
+    "(" Exp ")"  -> Exp {bracket}
+  context-free priorities
+    {left: Exp "*" Exp -> Exp 
+           Exp "/" Exp -> Exp }
+  > {left: Exp "+" Exp -> Exp 
+           Exp "-" Exp -> Exp }
+
+  sorts Stat
+  context-free syntax
+    Id ":=" Exp                                -> Stat {cons("Assign")}
+    Stat ";" Stat		               -> Stat {cons("Seq"),right}
+    "if" Exp "then" Stat "else" Stat "end"     -> Stat {cons("If")}
+    "while" Exp "do" Stat "end"                -> Stat {cons("While")}
+    "for" Id ":=" Exp "to" Exp "do" Stat "end" -> Stat {cons("For")}
+              
