@@ -1,0 +1,85 @@
+<refentry lang="en" id="ref-template">
+  <refnamediv>
+    <refname>template</refname>
+    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>template</command>
+      <arg>-i <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable></arg>
+      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>
+      The template utility is used to 
+    </para>
+  </refsection>
+
+  <refsection>
+    <title>Example</title>
+
+    <para>
+      To ...
+    </para>
+
+    <screen><prompt>$ </prompt>template -i tree.trm -o tree.tmpl</screen>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <title>Input/Output Options</title>
+
+      <varlistentry>
+        <term><option>-i <replaceable>file</replaceable></option></term>
+        <listitem>
+          <para>
+	    Template the abstract syntax tree in
+	    <replaceable>file</replaceable>. 
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+	  <para>
+	    Write the resulting template term to
+	    <filename><replaceable>file</replaceable></filename>.
+	  </para>
+
+	  <para>
+	    The resulting file is ...
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <title>Common Options</title>
+
+      <varlistentry>
+        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
+        <listitem>
+	  <para>
+	    Use YYY to ...
+	  </para>
+
+	  <para>
+	    The <replaceable>YYY</replaceable> ...
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+</refentry>

@@ -1,0 +1,99 @@
+<refentry lang="en" id="ref-ast2text">
+  <refnamediv>
+    <refname>ast2text</refname>
+    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>ast2text</command>
+      <arg>-i <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable></arg>
+      <arg rep="repeat">-p <replaceable>file.pp</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>
+      The ast2text utility is used to pretty-print abstract syntax
+      trees. The utility transforms an abstract syntax tree according
+      to formatting rules contained in pretty-print-tables. The result
+      of ast2text is an ASCII text file. The tool is a convenience
+      composition of <xref linkend="ref-ast2abox"/> and <xref
+      linkend="ref-abox2text"/>.
+    </para>
+  </refsection>
+
+  <refsection>
+    <title>Example</title>
+
+    <para>
+      To pretty-print an abstract syntax tree stored in the file
+      <filename>tree.trm</filename> to text according to the
+      pretty-print rules in <filename>rules.pp</filename> issue the
+      following command:
+    </para>
+
+    <screen><prompt>$ </prompt>ast2text -i tree.trm -p rules.pp</screen>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <title>Input/Output Options</title>
+
+      <varlistentry>
+        <term><option>-i <replaceable>file</replaceable></option></term>
+        <listitem>
+          <para>
+	    Pretty-print the abstract syntax tree in
+	    <replaceable>file</replaceable>. The abstract syntax tree
+	    can be an arbitrary ATerm.
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+	  <para>
+	    Write the resulting ASCII text to
+	    <filename><replaceable>file</replaceable></filename>.
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <title>Common Options</title>
+
+      <varlistentry>
+        <term><option>-p <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+	  <para>
+	    Use pretty-print rules defined in
+	    <replaceable>file</replaceable>. Multiple tables can be
+	    specified.
+	  </para>
+
+	  <para>
+	    The <replaceable>file</replaceable> must have the
+	    extension <filename>.pp</filename> or
+	    <filename>.pp.af</filename>. The <filename>.pp</filename>
+	    extension is used for pretty-print tables in concrete
+	    syntax. The <filename>.pp.af</filename> extension is used
+	    for pretty-print tables that have already been parsed
+	    using parse-pp-table <!-- TODO link -->. Using parsed
+	    pretty-print tables improves the performance of ast2abox.
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+</refentry>

@@ -3,6 +3,7 @@
 
   <include href="abox2text.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="ast2abox.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="ast2text.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="implode-asfix.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="pack-sdf.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="pp-aterm.xml" xmlns="http://www.w3.org/2003/XInclude"/>
