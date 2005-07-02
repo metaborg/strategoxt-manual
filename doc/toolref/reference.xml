@@ -57,5 +57,6 @@
   <include href="unpack-sdf.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="visamb.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="xtc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="xml2aterm.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
 </chapter>
