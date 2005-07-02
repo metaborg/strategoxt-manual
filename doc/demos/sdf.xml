@@ -184,6 +184,13 @@
 
      Applying pretty-print table
 
+     <xref linkend="ref-ast2text" /> translates an abstract syntax
+     term to text given a pretty-print table
+
+     In fact ast2text is a composition of
+     <xref linkend="ref-ast2abox" />
+     and <xref linkend="ref-abox2text" />
+
   </para>
 
 
