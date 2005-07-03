@@ -48,6 +48,17 @@
 
   <para>
 
+     This section shows a modular definition of the syntax of TIL, the
+     generation of a parse table from that definition, and its use for
+     parsing program texts into abstract syntax trees.
+
+  </para>
+
+<sect2>
+  <title>Modules</title>
+
+  <para>
+
     The following files define the syntax of TIL in the syntax
     definition formalism SDF. SDF is a modular formalism that supports
     the definition of lexical and context-free syntax. Modularity
@@ -58,19 +69,22 @@
 
   </para>
 
+  <sect3>
+     <title>Layout</title>
+
   <para>
 
      Module <code>TIL-layout</code> defines the syntax of
      <code>LAYOUT</code>, the symbols that occur between every two
      context-free non-terminals. This is the way to introduce the
-     whitespace and comments for a language. The definition uses <xref
-     linkend="ref-character-classes"/> to indicate classes of
-     characters. For instance, whitespace consists of spaces, tabs,
-     newlines, and carriage returns. Likewise, comments consist of two
-     slashes followed by zero or more characters which are not
-     newlines or carriage returns. The <xref
-     linkend="ref-follow-restriction"/> prevents ambiguities in
-     parsing layout.
+     whitespace and comments for a language. The definition uses <link
+     linkend="ref-sdf-character-classes">character classes</link> to
+     indicate classes of characters. For instance, whitespace consists
+     of spaces, tabs, newlines, and carriage returns. Likewise,
+     comments consist of two slashes followed by zero or more
+     characters which are not newlines or carriage returns. The <link
+     linkend="ref-sdf-follow-restriction">follow restriction</link>
+     prevents ambiguities in parsing layout.
    
   </para>
 
@@ -80,11 +94,23 @@
         href="../../src/til/syn/TIL-layout.sdf"
         xmlns="http://www.w3.org/2003/XInclude"/></screen>
   </figure>
+  
+  </sect3>
 
+  <sect3>
+    <title>Literals</title>
   <para>
 
      Module <code>TIL-literals</code> defines the syntax of
-     identifiers, integer constants, and string literals. <xref linkend="ref-character-classes"/>
+     identifiers, integer constants, and string literals. Note again
+     the use of <link linkend="ref-sdf-character-classes">character
+     classes</link> to indicate collections of characters and <link
+     linkend="ref-sdf-regular-expressions">regular expressions</link> to
+     indicate lists of zero or more (<code>*</code>), or one or more
+     (<code>+</code>) elements. String characters
+     (<code>StrChar</code>) are any characters other than double
+     quote, backslash, or newline, and escaped versions of these
+     characters.
    
   </para>
 
@@ -94,10 +120,27 @@
        href="../../src/til/syn/TIL-literals.sdf"
        xmlns="http://www.w3.org/2003/XInclude"/></screen>
   </figure>
+  
+  </sect3>
+
+  <sect3>
+    <title>Expressions</title>
 
   <para>
    
-     Module <code>TIL-expressions</code> defines the syntax of 
+     Module <code>TIL-expressions</code> defines the syntax of
+     expressions that compute a value. Basic expressions are
+     identifiers (variables), integer constants, and string literals.
+     More complex expressions are obtained by the arithmetic and
+     relational operators.
+
+     The constructor attributes of productions (e.g.,
+     <code>cons("Add")</code>) indicates the constructor to be used in
+     the construction of an abstract syntax tree from a parse tree.
+
+     Ambiguities of and between productions are solved by means of
+     <link linkend="ref-sdf-associativity">associativity</link> and <link
+     linkend="ref-sdf-priority">priority</link> declarations.
 
   </para>
 
@@ -106,6 +149,11 @@
     <screen><include parse="text" href="../../src/til/syn/TIL-expressions.sdf"
     xmlns="http://www.w3.org/2003/XInclude"/></screen>
   </figure>
+  
+  </sect3>
+
+  <sect3>
+    <title>Statements</title>
 
   <para>
    
@@ -124,6 +172,11 @@
     <screen><include parse="text" href="../../src/til/syn/TIL-statements.sdf"
     xmlns="http://www.w3.org/2003/XInclude"/></screen>
   </figure>
+  
+  </sect3>
+
+  <sect3>
+    <title>Programs</title>
 
   <para>
    
@@ -141,6 +194,9 @@
     <screen><include parse="text" href="../../src/til/syn/TIL.sdf"
     xmlns="http://www.w3.org/2003/XInclude"/></screen>
   </figure>
+
+  </sect3>
+</sect2>
 
 
 <sect2>

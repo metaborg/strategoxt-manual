@@ -8,59 +8,136 @@
     TODO
   </para>
 
-<section>
+<sect1>
   <title>Basics</title>
 
   <para>
 	TODO
   </para>
 
-</section>
+</sect1>
 
-<section>
+
+
+<sect1>
   <title>Sorts and Productions</title>
 
   <para>
 	TODO
   </para>
 
-</section>
+<sect2 id="ref-sdf-sorts">
+  <title>Sorts</title>
 
-<section id="ref-character-classes">
+  <para>
+	TODO
+  </para>
+
+</sect2>
+
+<sect2 id="ref-sdf-productions">
+  <title>Productions</title>
+
+  <para>
+	TODO
+  </para>
+
+</sect2>
+
+<sect2 id="ref-sdf-literals">
+  <title>Literals</title>
+
+  <para>
+	TODO
+  </para>
+
+</sect2>
+
+<sect2 id="ref-sdf-character-classes">
   <title>Character Classes</title>
 
   <para>
 	TODO
   </para>
 
-</section>
+</sect2>
 
-<section id="ref-regular-expressions">
+<sect2 id="ref-sdf-regular-expressions">
   <title>Regular Expressions</title>
 
   <para>
 	TODO
   </para>
 
-</section>
+</sect2>
   
-<section id="ref-follow-restriction">
+</sect1>
+
+
+
+
+<sect1 id="ref-sdf-disambiguation">
+  <title>Disambiguation</title>
+
+<sect2 id="ref-sdf-associativity">
+  <title>Associativity</title>
+
+  <para>
+	TODO
+  </para>
+
+</sect2>
+
+<sect2 id="ref-sdf-priority">
+  <title>Priority</title>
+
+  <para>
+	TODO
+  </para>
+
+</sect2>
+
+<sect2 id="ref-sdf-follow-restriction">
   <title>Follow Restrictions</title>
 
   <para>
 	TODO
   </para>
 
-</section>
+</sect2>
 
-<section id="ref-reject-productions">
+<sect2 id="ref-sdf-reject-productions">
   <title>Reject Productions</title>
 
   <para>
 	TODO
   </para>
 
-</section>
+</sect2>
+
+</sect1>
+  
+
+
+<sect1 id="ref-sdf-lexical-and-context-free">
+  <title>Lexical and Context-free Syntax</title>
+
+  <para>
+	TODO
+  </para>
+
+</sect1>
+
+
+
+<sect1 id="ref-sdf-modules">
+  <title>Modules</title>
+
+  <para>
+	TODO
+  </para>
+
+</sect1>
 
 
 </chapter>
