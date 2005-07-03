@@ -2,10 +2,10 @@
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
 <chapter>
-  <title>Syntax Definition and Pretty-Printing (*)</title>
-       
-<section>
-  <title>Introduction</title>
+  <title>Syntax Definition and Pretty-Printing</title>
+
+<sect1>
+  <title>TIL: a Tiny Imperative Language</title>
 
   <para>
 
@@ -16,11 +16,6 @@
     many of the examples.
 
   </para>
-
-</section>
-
-<section>
-  <title>TIL: a Tiny Imperative Language</title>
 
   <para>
 
@@ -40,54 +35,162 @@
 
   </para>
 
-  <screen>file: til/xmpl/test1.til</screen>
-  <screen><include parse="text" href="../../src/til/xmpl/test1.til"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <figure id="til-xmpl-test1.til">
+    <title>file: til/xmpl/test1.til</title>
+    <screen><include parse="text" href="../../src/til/xmpl/test1.til"
+    xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </figure>
 
-</section>
+</sect1>
 
-<section>
+<sect1>
   <title>Syntax Definition</title>
 
   <para>
 
-    The syntax of TIL defined in SDF
+    The following files define the syntax of TIL in the syntax
+    definition formalism SDF. SDF is a modular formalism that supports
+    the definition of lexical and context-free syntax. Modularity
+    entails that a syntax definition can be composed from multiple
+    modules, and that such modules can be reused in multiple syntax
+    definitions. Also, syntax definitions of different languages can
+    be combined.
 
   </para>
 
-  <screen>file: til/syn/TIL.sdf</screen>
-  <screen><include parse="text" href="../../src/til/syn/TIL.sdf"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <para>
 
-</section>
+     Module <code>TIL-layout</code> defines the syntax of
+     <code>LAYOUT</code>, the symbols that occur between every two
+     context-free non-terminals. This is the way to introduce the
+     whitespace and comments for a language. The definition uses <xref
+     linkend="ref-character-classes"/> to indicate classes of
+     characters. For instance, whitespace consists of spaces, tabs,
+     newlines, and carriage returns. Likewise, comments consist of two
+     slashes followed by zero or more characters which are not
+     newlines or carriage returns. The <xref
+     linkend="ref-follow-restriction"/> prevents ambiguities in
+     parsing layout.
+   
+  </para>
 
-<section>
+  <figure>
+     <title>file: til/syn/TIL-layout.sdf</title>
+     <screen><include parse="text" 
+        href="../../src/til/syn/TIL-layout.sdf"
+        xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </figure>
+
+  <para>
+
+     Module <code>TIL-literals</code> defines the syntax of
+     identifiers, integer constants, and string literals. <xref linkend="ref-character-classes"/>
+   
+  </para>
+
+  <figure>
+     <title>file: til/syn/TIL-literals.sdf</title>
+     <screen><include parse="text" 
+       href="../../src/til/syn/TIL-literals.sdf"
+       xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </figure>
+
+  <para>
+   
+     Module <code>TIL-expressions</code> defines the syntax of 
+
+  </para>
+
+  <figure id="ref-TIL-expressions.sdf">
+    <title>file: til/syn/TIL-expressions.sdf</title>
+    <screen><include parse="text" href="../../src/til/syn/TIL-expressions.sdf"
+    xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </figure>
+
+  <para>
+   
+     Module <code>TIL-statements</code> defines the syntax of
+     statements, i.e., instructions to be executed. The assignment
+     statement assigns the value of the right-hand side expression to
+     the variable in the left-hand side. The <code>read</code> and
+     <code>write</code> statements read a value from standard input or
+     write a value to standard output. The control-flow constructs use
+     lists of statements.
+
+  </para>
+
+  <figure id="ref-TIL-statements.sdf">
+    <title>file: til/syn/TIL-statements.sdf</title>
+    <screen><include parse="text" href="../../src/til/syn/TIL-statements.sdf"
+    xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </figure>
+
+  <para>
+   
+     Module <code>TIL</code> (<xref linkend="ref-TIL.sdf"/>) defines the
+     syntax of the complete language by importing the modules above,
+     and defining a <code>Program</code> as a list of statements. In
+     addition, the module introduces a <code>start-symbol</code>. This
+     is the sort that a parser will start parsing with. There may be
+     multiple start symbols.
+
+  </para>
+  
+  <figure id="ref-TIL.sdf">
+    <title>file: til/syn/TIL.sdf</title>
+    <screen><include parse="text" href="../../src/til/syn/TIL.sdf"
+    xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </figure>
+
+
+<sect2>
   <title>Parse Table Generation</title>
 
   <para>
 
      The following <code>maak</code> script first collects the modules
-     of the syntax definition and then generates a parse table. (The
-     TIL syntax definition only consists of one definition.)
+     of the syntax definition and then generates a parse table. 
+
+     The result of <xref linkend="ref-pack-sdf"/> is a `definition'
+     file (as opposed to a single module file, as we saw above) that
+     contains all modules imported by the main module,
+     <code>TIL.sdf</code> in this case (<xref
+     linkend="ref-TIL.def"/>).
+
+     The parser generator <xref linkend="ref-sdf2table"/> creates a
+     parse table from a syntax definition. Note the use of the
+     <code>-m</code> flag to indicate the main module from which to
+     generate the table. The parse table (<code>TIL.tbl</code>) is a
+     file in ATerm format, that is interpreted by the <xref
+     linkend="ref-sglri"/> tool to parse text files.
 
   </para>
 
-  <screen>file: til/syn/maak</screen>
-  <screen><include parse="text"
-  href="../../src/til/syn/maak"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <figure id="ref-til-syn-maak">
+    <title>file: til/syn/maak</title>
+    <screen><include parse="text"
+      href="../../src/til/syn/maak"
+      xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </figure>
 
-</section>
+  <figure id="ref-TIL.def">
+    <title>file: til/syn/TIL.def</title>
+    <screen><include parse="text" href="../../src/til/syn/TIL.def"
+    xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </figure>
 
-<section>
+</sect2>
+
+<sect2 id="sdf-parsing-programs">
   <title>Parsing Programs</title>
 
   <para>
 
-     The <code>sglri</code> tool parses a text file given a parse
-     table. The result is an abstract syntax term in the ATerm
-     format. In order to inspect this term it is useful to
-     `pretty-print' it using the <code>pp-aterm</code> tool.
+     The <xref linkend="ref-sglri"/> tool parses a text file given a
+     parse table generated by <xref linkend="ref-sdf2table"/>. The
+     result is an abstract syntax term in the ATerm format. In order
+     to inspect this term it is useful to `pretty-print' it using the
+     <xref linkend="ref-pp-aterm"/> tool.
 
   </para>
 
@@ -108,10 +211,12 @@
   href="../../src/til/xmpl/test1.atil"
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
-</section>
+</sect2>
 
-<section>
-  <title>Signature</title>
+</sect1>
+
+<sect1>
+  <title>Term Format</title>
 
   <para>
 
@@ -125,6 +230,9 @@
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
   
+<sect2>
+  <title>Regular Tree Grammars</title>
+
   <para>
 
      Regular tree grammar generated from syntax definition
@@ -136,6 +244,10 @@
   href="../../src/til/sig/TIL.rtg"
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
+</sect2>
+
+<sect2>
+  <title>Signatures</title>
   
   <para>
 
@@ -148,9 +260,9 @@
   href="../../src/til/sig/TIL.str"
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>Format Checking</title>
 
   <para>
@@ -159,9 +271,11 @@
 
   </para>
 
-</section>
+</sect2>
 
-<section>
+</sect1>
+
+<sect1>
   <title>Pretty-Printing</title>
 
   <screen>file: til/pp/maak</screen>
@@ -210,9 +324,7 @@
   href="../../src/til/xmpl/test1.txt1"
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
-</section>
-
-<section>
+<sect2>
   <title>Adapting the Pretty-Print Table</title>
 
   <screen>file: til/pp/TIL-pretty.pp</screen>
@@ -236,10 +348,10 @@
   href="../../src/til/xmpl/test1.txt2"
   xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
-</section>
+</sect2>
 
 
-<section>
+<sect2>
   <title>Restoring Parentheses</title>
 
   <screen>file: til/pp/til-parenthesize.str</screen>
@@ -253,9 +365,11 @@
 
   </para>
 
-</section>
+</sect2>
 
-<section>
+</sect1>
+
+<sect1>
   <title>A Complete Pipeline</title>
 
   <para>
@@ -277,7 +391,7 @@
   </para>
 
 
-</section>
+</sect1>
 
     
 </chapter>

@@ -1,0 +1,13 @@
+module TIL-statements
+imports TIL-expressions
+exports 
+  sorts Stat
+  context-free syntax
+    "var" Id ";"			        -> Stat {cons("Declaration")}
+    Id ":=" Exp ";"                             -> Stat {cons("Assign")}
+    "read" Id ";"                               -> Stat {cons("Read")}
+    "write" Exp ";"                             -> Stat {cons("Write")}
+    "if" Exp "then" Stat* "end"                 -> Stat {cons("IfThen")}
+    "if" Exp "then" Stat* "else" Stat* "end"    -> Stat {cons("IfElse")}
+    "while" Exp "do" Stat* "end"                -> Stat {cons("While")}
+    "for" Id ":=" Exp "to" Exp "do" Stat* "end" -> Stat {cons("For")}

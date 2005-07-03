@@ -1,0 +1,25 @@
+module TIL-expressions
+imports TIL-literals
+exports 
+  sorts Exp
+  context-free syntax
+    Id           -> Exp {cons("Var")}
+    Int          -> Exp {cons("Int")}
+    String       -> Exp {cons("String")}
+    Exp "*" Exp  -> Exp {cons("Mul"),right}
+    Exp "/" Exp  -> Exp {cons("Div"),right}
+    Exp "+" Exp  -> Exp {cons("Add"),right}
+    Exp "-" Exp  -> Exp {cons("Sub"),right}
+    Exp "=" Exp  -> Exp {cons("Equ"),right}
+    Exp "!=" Exp -> Exp {cons("Neq"),right}
+    "(" Exp ")"  -> Exp {bracket}
+  context-free priorities
+    {left: 
+       Exp "*" Exp -> Exp 
+       Exp "/" Exp -> Exp }
+  > {left: 
+       Exp "+" Exp -> Exp 
+       Exp "-" Exp -> Exp }
+  > {non-assoc: 
+       Exp "="  Exp -> Exp 
+       Exp "!=" Exp -> Exp }
