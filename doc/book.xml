@@ -45,9 +45,10 @@
     <include href="gettingstarted/architecture.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>
-
+  
   <include href="demos/demos.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
+  <include href="aterms/aterms.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   
   <part>
     <title>Stratego</title>
@@ -89,7 +90,6 @@
     <title>Developers</title>
 
     <include href="developers/latestsources.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-
     <include href="developers/stratego-dev.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>

@@ -1,4 +1,10 @@
-%.xml-included : %.xml
+%.xml-included1 : %.xml
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $<
+
+%.xml-expanded : %.xml-included1
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(top_srcdir)/xslt/macros.xsl $<
+
+%.xml-included : %.xml-expanded
 	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $<
 
 %.docbook : %.xml-included

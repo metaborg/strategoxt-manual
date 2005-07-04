@@ -1,0 +1,79 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<part id="ref-aterms">
+  <title>ATerms (*)</title>
+
+<chapter>
+  <title>The Annotated Term Format</title>
+
+<section>
+  <title>Definition</title>
+  <para>
+     
+     definition of the ATerm format
+
+  </para>
+</section>
+
+<section>
+  <title>Physical Representations</title>
+  <para>
+     sharing
+  </para>
+</section>
+
+<section>
+  <title>Representing Concrete Syntax Trees</title>
+  <para>
+     
+  </para>
+</section>
+
+<section>
+  <title>Representing Abstract Syntax Trees</title>
+  <para>
+     
+  </para>
+</section>
+
+</chapter>
+
+<chapter>
+  <title>The ATerm Library</title>
+
+  <para>
+
+     overview of the library
+
+  </para>
+
+</chapter>
+
+<chapter>
+  <title>ATerm Tools</title>
+
+  <para>
+
+     tools available for manipulating ATerms
+
+     imploding parse trees
+
+     pretty-printing aterms
+
+  </para>
+
+</chapter>
+
+<chapter>
+  <title>ATerm and XML</title>
+
+  <para>
+
+     relation between ATerms and XML, and conversion
+
+  </para>
+
+</chapter>
+
+</part>
