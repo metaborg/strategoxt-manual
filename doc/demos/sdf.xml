@@ -228,9 +228,15 @@
 
   </para>
 
-  <includefile id="ref-til-xmpl-parse-test" root="../../src" file="til/xmpl/parse-test" />
+  <includefile 
+    id="ref-til-xmpl-parse-test" 
+    root="../../src" 
+    file="til/xmpl/parse-test" />
 
-  <includefile id="ref-til-xmpl-test1.atil" root="../../src" file="til/xmpl/test1.atil" />
+  <includefile 
+    id="ref-til-xmpl-test1.atil" 
+    root="../../src" 
+    file="til/xmpl/test1.atil" />
 
 </sect2>
 
@@ -241,16 +247,33 @@
 
   <para>
 
-     The result 
+     The result of parsing a text is an abstract syntax tree
+     represented by means of an <link
+     linkend="ref-aterms">ATerm</link>. When produced by a parser, one
+     can be sure that an ATerm has the right format, since it was
+     derived directly from a parse tree. However, terms can also be
+     produced by other components, e.g., be the result of a
+     transformation. In those cases it may worthwhile to check that
+     the term is well-formed according to some schema. In Stratego/XT
+     tree schemas are described by Regular Tree Grammars
+     (RTGs). Stratego signatures are used within Stratego programs to
+     verify some aspects of Stratego programs. RTGs and signatures can
+     be derived automatically from a syntax definition in SDF.
 
   </para>
 
-  <screen>file: til/sig/maak</screen>
-  <screen><include parse="text"
-  href="../../src/til/sig/maak"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <para>
+ 
+     The following <code>maak</code> scripts derives from a syntax
+     definition first an RTG, and from the RTG a Stratego signature.
 
-  
+  </para>
+
+  <includefile 
+    id="ref-til-sig-maak" 
+    root="../../src" 
+    file="til/sig/maak" />
+
 <sect2>
   <title>Regular Tree Grammars</title>
 
@@ -260,10 +283,10 @@
 
   </para>
 
-  <screen>file: til/sig/TIL.rtg</screen>
-  <screen><include parse="text"
-  href="../../src/til/sig/TIL.rtg"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <includefile 
+    id="ref-til-sig-TIL.rtg" 
+    root="../../src" 
+    file="til/sig/TIL.rtg" />
 
 </sect2>
 
@@ -276,10 +299,10 @@
 
   </para>
 
-  <screen>file: til/sig/TIL.str</screen>
-  <screen><include parse="text"
-  href="../../src/til/sig/TIL.str"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <includefile 
+    id="ref-til-sig-TIL.str" 
+    root="../../src" 
+    file="til/sig/TIL.str" />
 
 </sect2>
 
@@ -291,6 +314,31 @@
      Check format of term using regular tree grammar
 
   </para>
+
+  <includefile 
+    id="ref-til-xmpl-fc-test1" 
+    root="../../src" 
+    file="til/xmpl/fc-test1" />
+
+  <includefile 
+    id="ref-til-xmpl-test1.atil.fc" 
+    root="../../src" 
+    file="til/xmpl/test1.atil.fc" />
+
+  <includefile 
+    id="ref-til-xmpl-fc-test2" 
+    root="../../src" 
+    file="til/xmpl/fc-test1" />
+
+  <includefile 
+    id="ref-til-xmpl-test1-wrong.atil" 
+    root="../../src" 
+    file="til/xmpl/test1-wrong.atil" />
+
+  <includefile 
+    id="ref-til-xmpl-test1-wrong.atil.fc" 
+    root="../../src" 
+    file="til/xmpl/test1-wrong.atil.fc" />
 
 </sect2>
 

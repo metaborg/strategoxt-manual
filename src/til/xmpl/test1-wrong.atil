@@ -1,0 +1,15 @@
+Program(
+  [ Declaration("n")
+  , Read("n")
+  , Declaration("x")
+  , Declaration("fact")
+  , Assig("fact", Int("1"))
+  , For(
+      "x"
+    , Int("1")
+    , Var("n")
+    , [Assign("fact", Mul("x", Var("fact")))]
+    )
+  , Write(Var("fact"))
+  ]
+)
