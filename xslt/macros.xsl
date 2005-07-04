@@ -11,7 +11,7 @@
 
   <xsl:template match="includefile">
     <figure id="{@id}">
-      <title>file: <xsl:value-of select="@file" /></title>
+      <title>file: <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink></title>
       <screen><include parse="text"
         href="{@root}/{@file}"
         xmlns="http://www.w3.org/2003/XInclude"/></screen>
