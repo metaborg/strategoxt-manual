@@ -1,0 +1,35 @@
+<chapter>
+  <title>Interpretation (*)</title>
+      
+  <para>
+
+     From calculator to TIL interpreter
+
+     Dynamic rules
+
+  </para>
+
+<sect1>
+  <title>Evaluating Expressions</title>
+
+  <para>
+
+     
+
+  </para>
+
+  <para>
+
+     
+
+  </para>
+
+  <includefile 
+     id="ref-til-run-til-run.str" 
+     root="../../src" 
+     file="til/run/til-run.str" />
+
+</sect1>
+
+</chapter>
+  

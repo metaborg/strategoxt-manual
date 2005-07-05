@@ -31,13 +31,8 @@
 
   <include href="simplify.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-  <chapter>
-    <title>Interpretation (*)</title>
-    <para>From calculator to TIL interpreter</para>
-    <para></para>
-    <para>Dynamic rules</para>
-  </chapter>
-  
+  <include href="run.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   <chapter>
     <title>Optimization (*)</title>
     <para></para>

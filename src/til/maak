@@ -7,4 +7,6 @@
 
 (cd sim; ./maak)
 
+(cd run; ./maak)
+
 (cd xmpl; ./maak)

@@ -5,6 +5,9 @@ rules
   EvalAdd :
     Add(Int(i), Int(j)) -> Int(<addS>(i,j))
 
+  EvalAdd :
+    Add(String(i), String(j)) -> String(<conc-strings>(i,j))
+
   EvalSub :
     Sub(Int(i), Int(j)) -> Int(<subtS>(i,j))
 
@@ -41,4 +44,3 @@ rules
 
   EvalWhile :
      While(Int("0"), st*) -> Block([])
-

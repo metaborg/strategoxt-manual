@@ -1,0 +1,69 @@
+module til-run
+imports liblib til-eval
+signature
+  constructors
+    Goto : String -> Stat
+strategies
+
+  io-til-run = 
+    io-wrap(eval-program)
+
+  eval-program = debug(!""); 
+    ?Program(<eval-stats>)
+    ; <exit> 0
+
+  eval-stats = debug(!""); 
+    {| EvalVar : map(eval-stat) |}
+
+  eval-stat =
+    eval-assign
+    <+ eval-read
+    <+ eval-write
+    <+ eval-declaration
+    <+ eval-block
+    <+ eval-if
+    <+ eval-while
+    <+ EvalGoto
+
+  eval-declaration = debug(!"") ;
+    ?Declaration(x)
+    ; rules( EvalVar+x : Var(x) -> Int("0") )
+
+  eval-assign = debug(!""); 
+    Assign(?x, eval-exp => e)
+    ; rules(EvalVar : Var(x) -> e)
+
+  eval-read = debug(!""); 
+    ?Read(x)
+    ; <readline; implode-string> stdin
+    ; debug(!"input: ")
+    ; if string-to-int then 
+        !Int(<id>)
+      else 
+        !String(<id>) 
+      end => val
+    ; rules( EvalVar : Var(x) -> val )
+
+  eval-write = debug(!""); 
+    Write(eval-exp => e)
+    ; where(<printnl>(stdout, [e]))
+
+  eval-block = debug(!""); 
+    ?Block(<eval-stats>)
+
+  eval-if = debug(!""); 
+    IfElse(eval-exp, id, id)
+    ; EvalIf
+    ; eval-stats
+
+  eval-while = debug(!""); 
+    ?While(e, st*)
+    ; where(new => label)
+    ; where(<conc>(st*, [Goto(label)]) => st2*)
+    ; rules( EvalGoto : Goto(label) -> <eval-if>IfElse(e, st2*, []) )
+
+  eval-exp = debug(!""); 
+    bottomup(try(
+      EvalVar <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv
+      <+ EvalEqu <+ EvalNeq
+    ))
