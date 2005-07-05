@@ -1,2 +1,2 @@
 # compile til-simplify
-strc -i til-simplify.str -I ../sig -la stratego-lib
+strc -i til-simplify.str -I ../sig -la stratego-lib -m io-til-simplify

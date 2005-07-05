@@ -1,34 +1,14 @@
 module til-simplify
-imports TIL liblib
+imports liblib til-eval til-desugar 
 strategies
 
-  main =
+  io-til-simplify =
     io-wrap(til-simplify)
 
   til-simplify =
     innermost(
-      ForToWhile <+ AddZero <+ EvalAdd
+      ForToWhile <+ IfThenToIfElse 
+      <+ AddZero <+ MulOne 
+      <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv
+      <+ EvalEqu <+ EvalNeq
     )
-
-rules
-
-  ForToWhile :
-    For(x, e1, e2, st*) ->
-      Block([
-        Declaration(y), 
-        Assign(x, e1), 
-        Assign(y, e2), 
-        While(Neq(Var(x), Var(y)), 
-          <conc>(st*, [Assign(x, Add(Var(x), Int("1")))])
-        )
-      ])
-    where new => y
-
-  AddZero :
-    Add(e, Int("0")) -> e
-
-  AddZero :
-    Add(Int("0"), e) -> e
-
-  EvalAdd :
-    Add(Int(i), Int(j)) -> Int(<addS>(i,j))

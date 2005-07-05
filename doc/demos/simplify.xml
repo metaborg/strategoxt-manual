@@ -1,23 +1,83 @@
-<chapter>
-  <title>Simplification (Desugaring)</title>
+<chapter id="demo-rewriting">
+  <title>Simplification and Desugaring</title>
     
   <para>
 
-     In this chapter we present a basic Stratego program using rewrite
-     rules and the standard <code>innermost</code> strategy to
-     simplify TIL programs.
+     Given the infrastructure presented in <link
+     linkend="demo-sdf">the previous chapter</link> we can create a
+     basic pipeline for performing transformations on abstract syntax
+     trees. What is missing is the actual transformations to
+     perform. In the Stratego/XT setting, we use the Stratego language
+     for defining transformations on abstract syntax trees.
+
+     In this chapter we show how to define a collection of basic term
+     rewrite rules, and how to combine these using the standard
+     <code>innermost</code> strategy to simplify TIL programs.
 
   </para>
 
-<section>
-  <title>Term Rewriting in Stratego</title>
+<sect1>
+  <title>Constant Folding Rules</title>
+
+  <para>
+
+     Stratego is a modular programming languages and supports the
+     definition of named rewrite rules. These rules can be used in
+     many different transformations by importing the module defining
+     them and using their names as arguments of rewriting strategies.
+
+  </para>
+
+  <para>
+
+     Module <code>til-eval</code> imports the <link
+     linkend="ref-til-sig-TIL.str">signature of TIL</link>, which
+     defines the constructors of the abstract syntax of TIL.  Then the
+     module defines rewrite rules for evaluating constructs that are
+     (partially) constant. For instance, the addition of two integer
+     constants can be reduced to the integer constant of their sum.
+
+  </para>
+
+  <includefile 
+     id="ref-til-sim-til-eval.str" 
+     root="../../src" 
+     file="til/sim/til-eval.str" />
+
+</sect1>
+
+<sect1>
+  <title>Desugaring Rules</title>
+
+  <para>
+    
+     Another common kind of rules are desugaring rules, which define a
+     language construct in terms of other language constructs. Module
+     <code>til-desugar</code> defines rules <code>ForToWhile</code>
+     and <code>IfThenToIfElse</code>. The <code>ForToWhile</code> rule
+     rewrites <code>For</code> loops to a <code>While</code> loop,
+     which requires the introduction of a new variable to hold the
+     value of the upperbound.  The <code>IfThenToIfElse</code>
+     transforms <code>if-then</code> statements into
+     <code>if-then-else</code> statements.
+
+  </para>
+
+  <includefile 
+     id="ref-til-sim-til-desugar.str" 
+     root="../../src" 
+     file="til/sim/til-desugar.str" />
+
+</sect1>
+
+<sect1>
+  <title>Simplying by Term Rewriting</title>
 
   <para>
 
      Module <code>til-simplify</code> is a basic Stratego program. It
-     imports the <link linkend="ref-til-sig-TIL.str">signature of
-     TIL</link>, which defines the constructors of the abstract syntax
-     of TIL, and the Stratego standard library (<code>liblib</code>),
+     imports the <code>til-eval</code> and <code>til-desugar</code>
+     modules, and the Stratego standard library (<code>liblib</code>),
      which defines standard rewriting strategies and additional
      utilities for I/O and such.
 
@@ -25,10 +85,11 @@
 
   <para>
 
-     The <code>main</code> strategy of <code>til-simplify</code>
-     represents the entry point for the program when it is invoked. It
-     uses the <code>io-wrap</code> strategy to parse command-line
-     arguments, read the input term, and write the output term.
+     The <code>io-til-simplify</code> strategy of
+     <code>til-simplify</code> represents the entry point for the
+     program when it is invoked. It uses the <code>io-wrap</code>
+     strategy to parse command-line arguments, read the input term,
+     and write the output term.
 
   </para>
 
@@ -36,20 +97,10 @@
 
      The <code>til-simplify</code> strategy defines the actual
      transformation, which is a complete normalization of the input
-     term with respect to a number of rewrite rules. The normalization
-     strategy chosen here is <code>innermost</code>, which
-     exhaustively applies its argument strategy starting with the
-     innermost nodes of the tree.
-
-  </para>
-
-  <para>
-
-     The rewrite rules define transformations on TIL statements and
-     expressions. For example, the <code>ForToWhile</code> rule
-     rewrites <code>For</code> loops to a <code>While</code> loop,
-     which requires the introduction of a new variable to hold the
-     value of the upperbound.
+     term with respect to the rewrite rules introduced above. The
+     normalization strategy chosen here is <code>innermost</code>,
+     which exhaustively applies its argument strategy starting with
+     the innermost nodes of the tree.
 
   </para>
 
@@ -58,10 +109,10 @@
      root="../../src" 
      file="til/sim/til-simplify.str" />
 
-</section>
+</sect1>
 
-<section>
-  <title>Compiling Stratego Programs</title>
+<sect1>
+  <title>Compiling the Simplifier</title>
 
   <para>
 
@@ -79,10 +130,10 @@
      root="../../src" 
      file="til/sim/maak" />
 
-</section>
+</sect1>
 
-<section>
-  <title>Applying Stratego Programs</title>
+<sect1>
+  <title>Applying the Simplifier</title>
 
   <para>
 
@@ -113,6 +164,6 @@
      root="../../src" 
      file="til/xmpl/test1.sim.txt" />
 
-</section>
+</sect1>
 
 </chapter>

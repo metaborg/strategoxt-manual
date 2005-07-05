@@ -1,0 +1,18 @@
+module til-desugar
+imports TIL 
+rules
+
+  ForToWhile :
+    For(x, e1, e2, st*) ->
+      Block([
+        Declaration(y), 
+        Assign(x, e1), 
+        Assign(y, e2), 
+        While(Neq(Var(x), Var(y)), 
+          <conc>(st*, [Assign(x, Add(Var(x), Int("1")))])
+        )
+      ])
+    where new => y
+
+  IfThenToIfElse :
+    IfThen(e, st*) -> IfElse(e, st*, [])
