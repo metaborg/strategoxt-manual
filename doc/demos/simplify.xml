@@ -1,0 +1,118 @@
+<chapter>
+  <title>Simplification (Desugaring)</title>
+    
+  <para>
+
+     In this chapter we present a basic Stratego program using rewrite
+     rules and the standard <code>innermost</code> strategy to
+     simplify TIL programs.
+
+  </para>
+
+<section>
+  <title>Term Rewriting in Stratego</title>
+
+  <para>
+
+     Module <code>til-simplify</code> is a basic Stratego program. It
+     imports the <link linkend="ref-til-sig-TIL.str">signature of
+     TIL</link>, which defines the constructors of the abstract syntax
+     of TIL, and the Stratego standard library (<code>liblib</code>),
+     which defines standard rewriting strategies and additional
+     utilities for I/O and such.
+
+  </para>
+
+  <para>
+
+     The <code>main</code> strategy of <code>til-simplify</code>
+     represents the entry point for the program when it is invoked. It
+     uses the <code>io-wrap</code> strategy to parse command-line
+     arguments, read the input term, and write the output term.
+
+  </para>
+
+  <para>
+
+     The <code>til-simplify</code> strategy defines the actual
+     transformation, which is a complete normalization of the input
+     term with respect to a number of rewrite rules. The normalization
+     strategy chosen here is <code>innermost</code>, which
+     exhaustively applies its argument strategy starting with the
+     innermost nodes of the tree.
+
+  </para>
+
+  <para>
+
+     The rewrite rules define transformations on TIL statements and
+     expressions. For example, the <code>ForToWhile</code> rule
+     rewrites <code>For</code> loops to a <code>While</code> loop,
+     which requires the introduction of a new variable to hold the
+     value of the upperbound.
+
+  </para>
+
+  <includefile 
+     id="ref-til-sim-til-simplify.str" 
+     root="../../src" 
+     file="til/sim/til-simplify.str" />
+
+</section>
+
+<section>
+  <title>Compiling Stratego Programs</title>
+
+  <para>
+
+     Stratego programs are compiled to executable programs by the
+     Stratego compiler <xref linkend="ref-strc"/>. The <code>-I</code>
+     option is used to indicate that some modules imported by this
+     program (<code>TIL.str</code>) resides in the <code>../sig</code>
+     directory. The <code>-la</code> option is used to link the
+     separately compiled Stratego library.
+
+  </para>
+
+  <includefile 
+     id="ref-til-sim-til-maak" 
+     root="../../src" 
+     file="til/sim/maak" />
+
+</section>
+
+<section>
+  <title>Applying Stratego Programs</title>
+
+  <para>
+
+     A compiled Stratego program is an ordinary executable. When the
+     <code>io-wrap</code> strategy was used the program has a
+     <code>-i</code> option for indicating the input file, and a
+     <code>-o</code> option to indicate the output file. Thus, the
+     program reads the ATerm in the input file, transforms it, and
+     writes the resulting ATerm back to the output file.
+
+  </para>
+
+  <para>
+
+     The following test script shows how the <link
+     linkend="ref-til-xmpl-test1.til">til/xmpl/test1.til</link> file
+     is simplified, and the result pretty-printed.
+
+  </para>
+
+  <includefile 
+     id="ref-til-xmpl-simplify-test" 
+     root="../../src" 
+     file="til/xmpl/simplify-test" />
+
+  <includefile 
+     id="ref-til-xmpl-test1.sim.txt" 
+     root="../../src" 
+     file="til/xmpl/test1.sim.txt" />
+
+</section>
+
+</chapter>

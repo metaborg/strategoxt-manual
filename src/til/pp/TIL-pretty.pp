@@ -12,6 +12,8 @@
    Assign              -- H hs=0[H[_1 KW[":="] _2] KW[";"]],
    Read                -- H hs=0[H[KW["read"] _1] KW[";"]],
    Write               -- H hs=0[H[KW["write"] _1] KW[";"]],
+   Block               -- V[V is=2[KW["begin"] V[_1]] KW["end"]],
+   Block.1:iter-star   -- _1,
    IfThen              -- V[V is=2[H[KW["if"] _1 KW["then"]] V[_2]] KW["end"]],   
    IfThen.2:iter-star  -- _1,
    IfElse              -- V[V is=2[H[KW["if"] _1 KW["then"]] V[_2]] V is=2[KW["else"] V[_3]] KW["end"]],

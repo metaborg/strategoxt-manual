@@ -7,6 +7,7 @@ exports
     Id ":=" Exp ";"                             -> Stat {cons("Assign")}
     "read" Id ";"                               -> Stat {cons("Read")}
     "write" Exp ";"                             -> Stat {cons("Write")}
+    "begin" Stat* "end"                         -> Stat {cons("Block")}
     "if" Exp "then" Stat* "end"                 -> Stat {cons("IfThen")}
     "if" Exp "then" Stat* "else" Stat* "end"    -> Stat {cons("IfElse")}
     "while" Exp "do" Stat* "end"                -> Stat {cons("While")}
