@@ -3,7 +3,15 @@ all : examples.tar.gz
 	-(cd til; ./maak)
 	$(MAKE) examples-full.tar.gz
 
-EXTRA_DIST = `find til -type f -a -print | grep -v .svn | grep -v \*~`
+EXTRA_DIST =					\
+	$(wildcard til/*/maak)			\
+	$(wildcard til/*/maak-clean)		\
+	$(wildcard til/*/*.grm)			\
+	$(wildcard til/*/*.sdf)			\
+	$(wildcard til/*/*.str)			\
+	$(wildcard til/*/*.pp)			\
+	$(wildcard til/*/*-test*)		\
+	$(wildcard til/*/*.til) 
 
 examples.tar.gz : 
 	mkdir -p examples
