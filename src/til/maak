@@ -5,4 +5,6 @@
 
 (cd pp; ./maak)
 
+(cd sim; ./maak)
+
 (cd xmpl; ./maak)
