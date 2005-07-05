@@ -1,6 +1,6 @@
 
 all : examples.tar.gz
-	(cd til; ./maak)
+	-(cd til; ./maak)
 	$(MAKE) examples-full.tar.gz
 
 EXTRA_DIST = `find til -type f -a -print | grep -v .svn | grep -v \*~`

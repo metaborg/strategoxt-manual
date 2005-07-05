@@ -279,7 +279,11 @@
 
   <para>
 
-     Regular tree grammar generated from syntax definition
+     A <link linkend="ref-rtg">regular tree grammar</link> defines
+     well-formedness rules for a set of trees (or terms).  The
+     following regular tree grammar has been generated from the syntax
+     definition of TIL and precisely describes the abstract syntax
+     trees of TIL programs.
 
   </para>
 
@@ -295,7 +299,12 @@
   
   <para>
 
-     Stratego signature generated from regular tree grammar
+     Algebraic signatures are similar to regular tree
+     grammars. Stratego requires signatures for the declaration of
+     term constructors to be used in transformation programs.  The
+     following Stratego signature is generated from the regular tree
+     grammar above, and thus describes the constructors of TIL
+     abstract syntax trees.
 
   </para>
 
@@ -311,7 +320,12 @@
 
   <para>
 
-     Check format of term using regular tree grammar
+     The well-formedness of a term with respect to a regular tree
+     grammar can be checked using the <xref
+     linkend="ref-format-check"/> tool. When well-formed the tool
+     prints the type of the term. If not it indicates, which subterms
+     cannot be typed.  The following examples illustrate checking of a
+     well-formed and non well-formed term.
 
   </para>
 
@@ -325,15 +339,16 @@
     root="../../src" 
     file="til/xmpl/test1.atil.fc" />
 
-  <includefile 
-    id="ref-til-xmpl-fc-test2" 
-    root="../../src" 
-    file="til/xmpl/fc-test1" />
 
   <includefile 
     id="ref-til-xmpl-test1-wrong.atil" 
     root="../../src" 
     file="til/xmpl/test1-wrong.atil" />
+
+  <includefile 
+    id="ref-til-xmpl-fc-test2" 
+    root="../../src" 
+    file="til/xmpl/fc-test2" />
 
   <includefile 
     id="ref-til-xmpl-test1-wrong.atil.fc" 
@@ -347,92 +362,165 @@
 <sect1>
   <title>Pretty-Printing</title>
 
-  <screen>file: til/pp/maak</screen>
-  <screen><include parse="text"
-  href="../../src/til/pp/maak"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
-
   <para>
+ 
+     After transforming a program we need to turn it into a program
+     text again. Unparsing is the reverse of parsing and turns an
+     abstract syntax tree into a text. Pretty-printing is unparsing
+     with an attempt at creating a readable program text.
 
-     Generated pretty-print table
+     There is a direct correspondence between abstract syntax trees
+     and the program text from which they were produced defined by the
+     syntax definition. This can be used in the other direction as well
+     to generate a pretty-printer from a syntax definition. 
+
+     The following <code>maak</code> script generates from the TIL
+     syntax definition a pretty-print table <code>TIL.pp</code> using
+     <xref linkend="ref-ppgen"/> and a parenthesizer using <xref
+     linkend="ref-sdf2parenthesize"/>. The latter is a Stratego
+     program, which is compiled using the Stratego compiler <xref
+     linkend="ref-strc"/>.
 
   </para>
 
-  <screen>file: til/pp/TIL.pp</screen>
-  <screen><include parse="text"
-  href="../../src/til/pp/TIL.pp"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <includefile 
+    id="ref-til-pp-maak" 
+    root="../../src" 
+    file="til/pp/maak" />
+
+<sect2>
+  <title>Pretty-Print Table</title>
 
   <para>
 
-     Applying pretty-print table
-
-     <xref linkend="ref-ast2text" /> translates an abstract syntax
-     term to text given a pretty-print table
-
-     In fact ast2text is a composition of
-     <xref linkend="ref-ast2abox" />
-     and <xref linkend="ref-abox2text" />
+     A <link linkend="pp-table">pretty-print table</link> defines a
+     mapping from abstract syntax trees to expressions in the <link
+     linkend="box">Box Formatting Language</link>. The following
+     pretty-print table is generated from the syntax definition for
+     TIL. It is a default table and only ensures that the program text
+     resulting from pretty-printing is syntactically correct, not that
+     it is actually pretty.
 
   </para>
 
+  <includefile 
+    id="ref-til-pp-TIL.pp" 
+    root="../../src" 
+    file="til/pp/TIL.pp" />
 
-  <screen>file: til/xmpl/pp-test1</screen>
-  <screen><include parse="text"
-  href="../../src/til/xmpl/pp-test1"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+</sect2>
+
+<sect2>
+  <title>Applying Pretty-Print Tables</title>
 
   <para>
 
-     The result 
+     A pretty-print table is applied using the <xref
+     linkend="ref-ast2text" /> tool, which translates an abstract
+     syntax term to text given a pretty-print table. (In fact,
+     ast2text is a composition of <xref linkend="ref-ast2abox" /> and
+     <xref linkend="ref-abox2text" />.) The <code>pp-test1</code>
+     script shows how to use a pretty-print table.  The result of
+     unparsing the AST for the <code>test1.til</code> program is
+     clearly not very pretty, but it is a syntactically correct TIL
+     program. This is tested by the subsequent commands in the script,
+     which parse the <code>test1.txt1</code> program and compare the
+     resulting AST to the original AST. It turns out that the two
+     programs have the exact same AST.
 
   </para>
 
-  <screen>file: til/xmpl/test1.txt1</screen>
-  <screen><include parse="text"
-  href="../../src/til/xmpl/test1.txt1"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <includefile 
+    id="ref-til-xmpl-pp-test1" 
+    root="../../src" 
+    file="til/xmpl/pp-test1" />
+
+  <includefile 
+    id="ref-til-xmpl-test1.txt1" 
+    root="../../src" 
+    file="til/xmpl/test1.txt1" />
+
+</sect2>
 
 <sect2>
   <title>Adapting the Pretty-Print Table</title>
 
-  <screen>file: til/pp/TIL-pretty.pp</screen>
-  <screen><include parse="text"
-  href="../../src/til/pp/TIL-pretty.pp"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
-
-  <screen>file: til/xmpl/pp-test2</screen>
-  <screen><include parse="text"
-  href="../../src/til/xmpl/pp-test2"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
-
   <para>
 
-     The result 
+     To get more readable programs after pretty-printing we adapt the
+     generated pretty-print table using constructs from the <link
+     linkend="box">Box Formatting Language</link> to indicate how each
+     construct should be formatted. 
 
   </para>
 
-  <screen>file: til/xmpl/test1.txt2</screen>
-  <screen><include parse="text"
-  href="../../src/til/xmpl/test1.txt2"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <includefile 
+    id="ref-til-pp-TIL-pretty.pp" 
+    root="../../src" 
+    file="til/pp/TIL-pretty.pp" />
+
+  <para>
+
+     Using the same procedure as before, but using the adapted pretty-print
+     table (see <linkfile file="til/xmpl/pp-test2" />) we not get a program
+     that is much closer to the original.
+
+  </para>
+
+  <includefile 
+    id="ref-til-xmpl-test1.txt2" 
+    root="../../src" 
+    file="til/xmpl/test1.txt2" />
 
 </sect2>
-
 
 <sect2>
   <title>Restoring Parentheses</title>
 
-  <screen>file: til/pp/til-parenthesize.str</screen>
-  <screen><include parse="text"
-  href="../../src/til/pp/til-parenthesize.str"
-  xmlns="http://www.w3.org/2003/XInclude"/></screen>
-
   <para>
 
-     pretty-printing with parenthesizing
+     The <code>til-parenthesize</code> program generated by <xref
+     linkend="ref-sdf2parenthesize"/> is a simple rewrite system with
+     rules that add a <code>Parenthetical</code> constructor around
+     subtrees that have a priority or associativity conflict with
+     their parent node.
+
+     The implementation in <linkfile
+     file="til/pp/til-parenthesize.str" /> is not of interest here.
+
+     The program is used before applying the pretty-print table, as
+     illustrated with the following example. The
+     <code>test2.txt1</code> program is produced without introducing
+     parentheses and clearly has a different meaning than the original
+     program. The <code>test2.txt2</code> program has parentheses in
+     the right places.
 
   </para>
+
+  <includefile 
+    id="ref-til-xmpl-pp-test3" 
+    root="../../src" 
+    file="til/xmpl/pp-test3" />
+
+  <includefile 
+    id="ref-til-xmpl-test2.atil" 
+    root="../../src" 
+    file="til/xmpl/test2.atil" />
+
+  <includefile 
+    id="ref-til-xmpl-test2.txt1" 
+    root="../../src" 
+    file="til/xmpl/test2.txt1" />
+
+  <includefile 
+    id="ref-til-xmpl-test2.atil.par" 
+    root="../../src" 
+    file="til/xmpl/test2.atil.par" />
+
+  <includefile 
+    id="ref-til-xmpl-test2.txt2" 
+    root="../../src" 
+    file="til/xmpl/test2.txt2" />
 
 </sect2>
 
@@ -443,22 +531,21 @@
 
   <para>
 
-     a complete parse-transform-pretty-print pipeline
+     Given an SDF syntax definition we can produce a parser, a format
+     checker, a parenthesizer, and a pretty-printer. Together these
+     tools form the basic ingredients of a transformation
+     pipeline. The composition in <code>til-process</code> shows how
+     the tools are combined. This composition is not so useful as it
+     only turns a program in a pretty-printed version of itself. In
+     the next chapters we'll see how this pipeline can be extended
+     with transformation tools.
 
   </para>
 
-  <para>
-
-     a complete parse-transform-pretty-print pipeline
-
-  </para>
-
-  <para>
-
-     a complete parse-transform-pretty-print pipeline
-
-  </para>
-
+  <includefile 
+    id="ref-til-xmpl-til-process" 
+    root="../../src" 
+    file="til/xmpl/til-process" />
 
 </sect1>
 

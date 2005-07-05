@@ -1,5 +1,7 @@
 ./parse-test
+./parse-test2
 ./pp-test1
 ./pp-test2
+./pp-test3
 ./fc-test1
 ./fc-test2

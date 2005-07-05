@@ -9,6 +9,7 @@
     doctype-public="-//OASIS//DTD DocBook XML V4.3//EN" 
     doctype-system="http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" />
 
+
   <xsl:template match="includefile">
     <figure id="{@id}">
       <title>file: <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink></title>
@@ -17,6 +18,12 @@
         xmlns="http://www.w3.org/2003/XInclude"/></screen>
     </figure>
   </xsl:template>
+
+
+  <xsl:template match="linkfile">
+    <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink>
+  </xsl:template>
+
 
   <xsl:template match="@*|node()">
     <xsl:copy>
