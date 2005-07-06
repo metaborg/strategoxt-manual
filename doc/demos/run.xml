@@ -1,11 +1,35 @@
 <chapter>
-  <title>Interpretation (*)</title>
+  <title>Interpretation</title>
       
   <para>
 
-     From calculator to TIL interpreter
+     Interpreting programs does not seem a typical application of
+     program transformation. However, in partial evaluation a program
+     is evaluated as far as possible. Also in simpler transformations,
+     evaluating a part of a program is a common
+     operation. Furthermore, in order to execute programs in our TIL
+     language, it is useful have an interpreter.
 
-     Dynamic rules
+  </para>
+
+  <para>
+
+     This chapter shows how to construct an interpreter for typical
+     elements of an imperative language, such as expressions, variable
+     access constructs, and control-flow statements. The specification
+     uses advanced features of Stratego such as traversal strategies,
+     pattern match operations, match-project, and dynamic rewrite
+     rules. So don't be surprised if you don't get it all on a first
+     reading.
+
+  </para>
+
+  <para>
+
+     The interpreter developed in this chapter requires the parsing
+     and simplification infrastructure from the previous
+     chapters. That is, the interpreter operates on the abstract
+     syntax tree of a program after simplification.
 
   </para>
 
@@ -14,7 +38,18 @@
 
   <para>
 
-     
+     Expressions can be evaluated using a simple bottom-up traversal
+     of the AST. The <code>bottomup</code> traversal strategy does
+     just that; it applies its argument strategy first to the leaves
+     of the tree, and then to each level above. The <code>try</code>
+     strategy makes its argument strategy always succeeding. Thus, the
+     <code>eval-exp</code> strategy performs a bottomup traversal of
+     the AST of an expression, applying the <code>Eval</code> rules
+     from module <link
+     linkend="ref-til-sim-til-eval.str">sim/til-eval</link>. The
+     <code>eval-exp</code> strategy is parameterized with a strategy
+     for evaluating variables; their values depend on prior
+     assignments in the program.
 
   </para>
 
@@ -30,7 +65,43 @@
 
   <para>
 
-     
+     The essence of an imperative language is the manipulation of
+     values in the store, held by variables. In TIL variables are
+     introduced by the <code>Declaration</code> construct. The values
+     of variables is set, or changed by the <code>Assign</code>
+     assignment statement, and the <code>Read</code> input
+     statement. The <code>Write</code> statement prints the value of
+     an expression. The interpreter uses the dynamic rewrite rule
+     EvalVar to store the mappings from variables to their values.
+
+  </para>
+
+  <para>
+
+     When encountering a variable declaration, the current scope
+     is labeled with the name of that variable, and its mapping is
+     undefined, reflecting the fact that the variable doesn't have a
+     value after being declared. Note that the scope of a variable in
+     TIL is the rest of the current block.
+
+     When encountering an assignment statement the
+     <code>EvalVar</code> rule for the variable being assigned is
+     updated. Thus, after an assignment to a variable <code>x</code>,
+     <code>EvalVar</code> rewrites that variable to its value.
+
+     Similarly, the <code>Read</code> input statement reads the next
+     line from the <code>stdin</code> stream, decides whether it
+     represents an integer or a string, and defines the
+     <code>EvalVar</code> rule for the variable.
+
+     Finally, the <code>eval-exp</code> strategy is now defined in
+     terms of the parameterized <code>eval-exp</code> strategy from
+     module <link
+     linkend="ref-til-run-til-eval-exp.str">run/til-eval-exp</link>
+     using the <code>EvalVar</code> rule as strategy for evaluating
+     variables. In addition, the <code>VarUndefined</code> strategy is
+     provided to catch variables that are used before being assigned
+     to.
 
   </para>
 
@@ -47,7 +118,27 @@
 
   <para>
 
-     
+     What remains is the interpretation of control-flow statements. A
+     block statements simply entails the execution of each statement
+     in the block in order. Any variables declared within the block
+     are local, and shadow variables with the same name in outer
+     blocks. For this purpose a dynamic rule scope <code>{| EvalVar :
+     ... |}</code> is used to restrict the scope of
+     <code>EvalVar</code> rules to the block. The statements in a
+     block are evaluated by <code>map</code>ping the
+     <code>eval-stat</code> strategy over the list of statements.      
+
+     For the execution of the <code>if-then-else</code> construct,
+     first the condition is evaluated. The <code>EvalIf</code> rule
+     then evaluates the construct, reducing it to one of its
+     branches. The resulting block statement is then evaluated by
+     <code>eval-stat</code>.
+
+     The <code>while</code> statement is evaluated by transforming the
+     loop to an <code>if-then-else</code> statement, with a
+     <code>Goto</code> at the end of the body. The dynamic rule
+     <code>EvalGoto</code> maps the goto statement for the new label
+     to the <code>if-then-else</code> statement.
 
   </para>
 

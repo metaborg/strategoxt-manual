@@ -14,7 +14,7 @@ strategies
     ?Read(x)
     ; <readline; implode-string> stdin
     ; if string-to-int then !Int(<id>) else !String(<id>) end => val
-    ; rules( EvalVar : Var(x) -> val )
+    ; rules( EvalVar.x : Var(x) -> val )
 
   eval-write = 
     ?Write(<eval-exp>)
