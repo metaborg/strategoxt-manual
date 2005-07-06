@@ -1,0 +1,8 @@
+AC_INIT([tiger],[1.3],[stratego-bugs@cs.uu.nl])
+AC_CONFIG_AUX_DIR([config])
+AM_INIT_AUTOMAKE
+
+# set the prefix immediately to the default prefix
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+
+XT_USE_XT_PACKAGES

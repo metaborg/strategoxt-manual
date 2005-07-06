@@ -1,0 +1,16 @@
+
+    <screen><prompt>$ </prompt>echo "A([1], \"b\")" | aterm2xml --implicit</screen>
+
+    <screen><?xml version="1.0" ?>
+<A xmlns:at="http://aterm.org">1b</A></screen>
+
+    <screen><prompt>$ </prompt>echo "A([1], \"b\")" | aterm2xml --explicit</screen>
+
+    <screen><?xml version="1.0" ?>
+<A xmlns:at="http://aterm.org"><at:list><at:int>1</at:int></at:list><at:string>b</at:string></A></screen>
+
+
+    <screen><prompt>$ </prompt>echo "A([1], \"b\")" | aterm2xml --very-explicit</screen>
+
+    <screen><?xml version="1.0" ?>
+<at:appl xmlns:at="http://aterm.org" at:fun="A"><at:list><at:int><at:value>1</at:value></at:int></at:list><at:string><at:value>b</at:value></at:string></at:appl></screen>

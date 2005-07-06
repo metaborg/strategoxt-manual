@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-aterm2xml">
   <refnamediv>
     <refname>aterm2xml</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>translates an ATerm to XML</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -10,6 +10,9 @@
       <arg>-i <replaceable>file</replaceable></arg>
       <arg>-o <replaceable>file</replaceable></arg>
       <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>--explicit</arg>
+      <arg>--very-explicit</arg>
+      <arg>--implicit</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,18 +20,8 @@
     <title>Description</title>
 
     <para>
-      The aterm2xml utility is used to 
+      The aterm2xml utility is used to translate an ATerm to an XML document.
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
-    <para>
-      To ...
-    </para>
-
-    <screen><prompt>$ </prompt>aterm2xml -i tree.trm -o tree.tmpl</screen>
   </refsection>
 
   <refsection>
@@ -41,7 +34,7 @@
         <term><option>-i <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
-	    Aterm2xml the abstract syntax tree in
+	    Translate the ATerm in 
 	    <replaceable>file</replaceable>. 
 	  </para>
         </listitem>
@@ -51,13 +44,10 @@
         <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
         <listitem>
 	  <para>
-	    Write the resulting aterm2xml term to
+	    Write the resulting XML document to
 	    <filename><replaceable>file</replaceable></filename>.
 	  </para>
 
-	  <para>
-	    The resulting file is ...
-	  </para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -66,18 +56,44 @@
       <title>Common Options</title>
 
       <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
+        <term><option>--explicit</option></term>
         <listitem>
 	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
+	    Use explicit XML elements for strings, lists, integers,and
+	    tuples (default)
 	  </para>
         </listitem>
       </varlistentry>
+
+      <varlistentry>
+        <term><option>--very-explicit</option></term>
+        <listitem>
+	  <para>
+	    Use explicit XML elements for applications, strings,
+	    lists, integers, and tuples
+	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--implicit</option></term>
+        <listitem>
+	  <para>
+	    Don't use any explicit XML elements. This results in the
+	    most attractive XML, but it lacks structure.
+	  </para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
+  </refsection>
+
+
+  <refsection>
+    <title>Example</title>
+
+    <para></para>
+
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>

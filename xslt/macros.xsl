@@ -20,6 +20,13 @@
   </xsl:template>
 
 
+  <xsl:template match="showfile">
+      <screen><include parse="text"
+        href="{@root}/{@file}"
+        xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  </xsl:template>
+
+
   <xsl:template match="linkfile">
     <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink>
   </xsl:template>
