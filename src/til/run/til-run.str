@@ -1,8 +1,5 @@
 module til-run
-imports liblib til-eval
-signature
-  constructors
-    Goto : String -> Stat
+imports liblib til-eval-stats
 strategies
 
   io-til-run = 
@@ -11,61 +8,3 @@ strategies
   eval-program = 
     ?Program(<eval-stats>)
     ; <exit> 0
-
-  eval-stats = 
-    {| EvalVar : map(eval-stat) |}
-
-  eval-stat = 
-    eval-assign
-    <+ eval-read
-    <+ eval-write
-    <+ eval-declaration
-    <+ eval-block
-    <+ eval-if
-    <+ eval-while
-    <+ EvalGoto
-
-  eval-declaration = 
-    ?Declaration(x)
-    ; rules( EvalVar+x :- Var(x) )
-
-  eval-assign = 
-    Assign(?x, eval-exp => val)
-    ; rules(EvalVar.x : Var(x) -> val)
-
-  eval-read = 
-    ?Read(x)
-    ; <readline; implode-string> stdin
-    ; if string-to-int then !Int(<id>) else !String(<id>) end => val
-    ; rules( EvalVar : Var(x) -> val )
-
-  eval-write = 
-    ?Write(<eval-exp>)
-    ; (?Int(<id>) <+ ?String(<un-double-quote; unescape>))
-    ; <print>(stdout, [<id>])
-
-  eval-block = 
-    ?Block(<eval-stats>)
-
-  eval-if = 
-    IfElse(eval-exp, id, id)
-    ; EvalIf
-    ; eval-stat
-
-  eval-while = 
-    ?While(e, st*)
-    ; where(new => label)
-    ; where(<conc>(st*, [Goto(label)]) => st2*)
-    ; rules( EvalGoto : Goto(label) -> <eval-stat>IfElse(e, st2*, []) )
-    ; <eval-stat> Goto(label)
-
-  VarUndefined =
-    ?Var(<id>)
-    ; fatal-err(|<concat-strings>["variable ", <id>, " used before being defined"])
-
-  eval-exp = 
-    bottomup(try(
-      EvalVar <+ VarUndefined 
-      <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv <+ EvalMod
-      <+ EvalLt <+ EvalGt <+ EvalEqu <+ EvalNeq
-    ))

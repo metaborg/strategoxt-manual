@@ -1,0 +1,9 @@
+module til-eval-exp
+imports til-eval
+strategies
+
+  eval-exp(eval-var) = 
+    bottomup(try(
+      eval-var <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv <+ EvalMod
+      <+ EvalLt <+ EvalGt <+ EvalEqu <+ EvalNeq
+    ))

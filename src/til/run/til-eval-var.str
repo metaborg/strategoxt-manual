@@ -1,0 +1,29 @@
+module til-eval-var
+imports til-eval-exp
+strategies
+
+  eval-declaration = 
+    ?Declaration(x)
+    ; rules( EvalVar+x :- Var(x) )
+
+  eval-assign = 
+    Assign(?x, eval-exp => val)
+    ; rules(EvalVar.x : Var(x) -> val)
+
+  eval-read = 
+    ?Read(x)
+    ; <readline; implode-string> stdin
+    ; if string-to-int then !Int(<id>) else !String(<id>) end => val
+    ; rules( EvalVar : Var(x) -> val )
+
+  eval-write = 
+    ?Write(<eval-exp>)
+    ; (?Int(<id>) <+ ?String(<un-double-quote; unescape>))
+    ; <print>(stdout, [<id>])
+
+  VarUndefined =
+    ?Var(<id>)
+    ; fatal-err(|<concat-strings>["variable ", <id>, " used before being defined"])
+
+  eval-exp = 
+    eval-exp(EvalVar <+ VarUndefined)

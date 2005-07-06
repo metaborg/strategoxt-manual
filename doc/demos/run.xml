@@ -18,6 +18,16 @@
 
   </para>
 
+  <includefile 
+     id="ref-til-run-til-eval-exp.str" 
+     root="../../src" 
+     file="til/run/til-eval-exp.str" />
+
+</sect1>
+
+<sect1>
+  <title>Evaluating Variable Accesses</title>
+
   <para>
 
      
@@ -25,9 +35,70 @@
   </para>
 
   <includefile 
+     id="ref-til-run-til-eval-var.str" 
+     root="../../src" 
+     file="til/run/til-eval-var.str" />
+
+
+</sect1>
+
+<sect1>
+  <title>Evaluating Statements</title>
+
+  <para>
+
+     
+
+  </para>
+
+  <includefile 
+     id="ref-til-run-til-eval-stats.str" 
+     root="../../src" 
+     file="til/run/til-eval-stats.str" />
+
+
+</sect1>
+
+<sect1>
+  <title>The Complete Interpreter</title>
+
+  <para>
+
+     To complete the interpreter we define an interpretation strategy
+     for the <code>Program</code> constructor, and a main strategy
+     that takes care of I/O.
+ 
+     The program is compiled in the usual way, taking into account the
+     include paths for the <code>../sig</code> and <code>../sim</code>
+     directories that contain the TIL signature and evaluation rules,
+     respectively.
+
+  </para>
+
+  <includefile 
      id="ref-til-run-til-run.str" 
      root="../../src" 
      file="til/run/til-run.str" />
+
+  <includefile 
+     id="ref-til-run-maak" 
+     root="../../src" 
+     file="til/run/maak" />
+
+</sect1>
+
+<sect1>
+  <title>Running TIL Programs</title>
+
+  <para>
+
+     Now it is time to try out the interpreter at our <link
+     linkend="ref-til-xmpl-test1.til">test1.til</link> program that
+     computes the factorial of its input. Note that the interpreter
+     operates on a parsed and simplified version of the program; not
+     directly on the text file.
+
+  </para>
 
   <includefile 
      id="ref-til-xmpl-run-test1" 
