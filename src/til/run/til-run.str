@@ -60,8 +60,8 @@ strategies
     ; <eval-stat> Goto(label)
 
   VarUndefined =
-    ?Var(x)
-    ; <fatal-error>["*** error: variable ", x, " used before being defined"]
+    ?Var(<id>)
+    ; fatal-err(|<concat-strings>["variable ", <id>, " used before being defined"])
 
   eval-exp = 
     bottomup(try(
