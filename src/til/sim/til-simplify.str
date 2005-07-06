@@ -7,7 +7,7 @@ strategies
 
   til-simplify =
     innermost(
-      ForToWhile <+ IfThenToIfElse 
+      ForToWhile <+ IfThenToIfElse <+ AndIsMul <+ OrIsAdd
       <+ AddZero <+ MulOne 
       <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv
       <+ EvalEqu <+ EvalNeq

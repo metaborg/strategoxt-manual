@@ -8,14 +8,14 @@ strategies
   io-til-run = 
     io-wrap(eval-program)
 
-  eval-program = debug(!""); 
+  eval-program = 
     ?Program(<eval-stats>)
     ; <exit> 0
 
-  eval-stats = debug(!""); 
+  eval-stats = 
     {| EvalVar : map(eval-stat) |}
 
-  eval-stat =
+  eval-stat = 
     eval-assign
     <+ eval-read
     <+ eval-write
@@ -25,45 +25,47 @@ strategies
     <+ eval-while
     <+ EvalGoto
 
-  eval-declaration = debug(!"") ;
+  eval-declaration = 
     ?Declaration(x)
-    ; rules( EvalVar+x : Var(x) -> Int("0") )
+    ; rules( EvalVar+x :- Var(x) )
 
-  eval-assign = debug(!""); 
-    Assign(?x, eval-exp => e)
-    ; rules(EvalVar : Var(x) -> e)
+  eval-assign = 
+    Assign(?x, eval-exp => val)
+    ; rules(EvalVar.x : Var(x) -> val)
 
-  eval-read = debug(!""); 
+  eval-read = 
     ?Read(x)
     ; <readline; implode-string> stdin
-    ; debug(!"input: ")
-    ; if string-to-int then 
-        !Int(<id>)
-      else 
-        !String(<id>) 
-      end => val
+    ; if string-to-int then !Int(<id>) else !String(<id>) end => val
     ; rules( EvalVar : Var(x) -> val )
 
-  eval-write = debug(!""); 
-    Write(eval-exp => e)
-    ; where(<printnl>(stdout, [e]))
+  eval-write = 
+    ?Write(<eval-exp>)
+    ; (?Int(<id>) <+ ?String(<un-double-quote; unescape>))
+    ; <print>(stdout, [<id>])
 
-  eval-block = debug(!""); 
+  eval-block = 
     ?Block(<eval-stats>)
 
-  eval-if = debug(!""); 
+  eval-if = 
     IfElse(eval-exp, id, id)
     ; EvalIf
-    ; eval-stats
+    ; eval-stat
 
-  eval-while = debug(!""); 
+  eval-while = 
     ?While(e, st*)
     ; where(new => label)
     ; where(<conc>(st*, [Goto(label)]) => st2*)
-    ; rules( EvalGoto : Goto(label) -> <eval-if>IfElse(e, st2*, []) )
+    ; rules( EvalGoto : Goto(label) -> <eval-stat>IfElse(e, st2*, []) )
+    ; <eval-stat> Goto(label)
 
-  eval-exp = debug(!""); 
+  VarUndefined =
+    ?Var(x)
+    ; <fatal-error>["*** error: variable ", x, " used before being defined"]
+
+  eval-exp = 
     bottomup(try(
-      EvalVar <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv
-      <+ EvalEqu <+ EvalNeq
+      EvalVar <+ VarUndefined 
+      <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv <+ EvalMod
+      <+ EvalLt <+ EvalGt <+ EvalEqu <+ EvalNeq
     ))

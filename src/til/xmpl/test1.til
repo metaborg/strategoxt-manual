@@ -8,4 +8,8 @@ fact := 1;
 for x := 1 to n do
   fact := x * fact;
 end
+write "factorial of ";
+write n;
+write " is ";
 write fact;
+write "\n";

@@ -1,12 +1,7 @@
 
 (cd syn; ./maak)
-
 (cd sig; ./maak)
-
 (cd pp; ./maak)
-
 (cd sim; ./maak)
-
 (cd run; ./maak)
-
 (cd xmpl; ./maak)

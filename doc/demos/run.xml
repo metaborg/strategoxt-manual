@@ -29,6 +29,16 @@
      root="../../src" 
      file="til/run/til-run.str" />
 
+  <includefile 
+     id="ref-til-xmpl-run-test1" 
+     root="../../src" 
+     file="til/xmpl/run-test1" />
+
+  <includefile 
+     id="ref-til-xmpl-test1.run" 
+     root="../../src" 
+     file="til/xmpl/test1.run" />
+
 </sect1>
 
 </chapter>

@@ -17,6 +17,15 @@ rules
   EvalDiv :
     Div(Int(i), Int(j)) -> Int(<divS>(i,j))
 
+  EvalMod :
+    Mod(Int(i), Int(j)) -> Int(<modS>(i,j))
+
+  EvalLt :
+    Lt(Int(i), Int(j)) -> Int(<if ltS then !"1" else !"0" end>(i,j))
+
+  EvalGt :
+    Gt(Int(i), Int(j)) -> Int(<if gtS then !"1" else !"0" end>(i,j))
+
   EvalEqu :
     Equ(Int(i), Int(j)) -> Int(<if eq then !"1" else !"0" end>(i,j))
     
