@@ -1,11 +1,9 @@
-
-  
 <chapter>
   <title>Compilation by Transformation (*)</title>
 
   <para>
 
-     transformation to `three address code'
+     now we define a `compiler' to a subset of a superset of TIL
 
   </para>
   
@@ -24,10 +22,25 @@
      root="../../src" 
      file="til/til-goto/TIL-goto.sdf" />
 
+  <para>
+
+     follow the same steps as for the basic TIL language to generate
+     parse tables, signatures, and such
+
+  </para>
+
   <includefile 
      id="ref-til-til-goto-maak" 
      root="../../src" 
      file="til/til-goto/maak" />
+
+  <para>
+
+     we have to copy the adapted pretty-print table and add the new
+     constructs to it; a modular pretty-print table mechanism would be
+     useful for this purpose.
+
+  </para>
 
 </sect1>
 
