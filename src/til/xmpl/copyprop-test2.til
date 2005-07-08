@@ -1,0 +1,7 @@
+var x;
+var y;
+read x;
+y := x;
+y := y + 1;
+x := y;
+write x;

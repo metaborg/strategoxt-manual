@@ -26,7 +26,7 @@
      file2="til/xmpl/propconst-test2.txt" />
 
   <includefile 
-     id="ref-til-opt-til-constprop.str" 
+     id="ref-til-opt-til-propconst.str" 
      root="../../src" 
      file="til/opt/til-propconst.str" />
 
@@ -39,12 +39,44 @@
 
   </para>
 
+  <includefile 
+     id="ref-til-xmpl-copyprop-test2" 
+     root="../../src" 
+     file="til/xmpl/copyprop-test2" />
+
+  <beforeafter 
+     id="ref-til-xmpl-copyprop-test2-run" 
+     root="../../src" 
+     file1="til/xmpl/copyprop-test2.til"
+     file2="til/xmpl/copyprop-test2.txt" />
+
+  <includefile 
+     id="ref-til-opt-til-copyprop.str" 
+     root="../../src" 
+     file="til/opt/til-copyprop.str" />
+
 </sect1>
 
 <sect1>
   <title>Common-subexpression Elimination</title>
 
   <para></para>
+
+  <includefile 
+     id="ref-til-xmpl-cse-test2" 
+     root="../../src" 
+     file="til/xmpl/cse-test2" />
+
+  <beforeafter 
+     id="ref-til-xmpl-cse-test2-run" 
+     root="../../src" 
+     file1="til/xmpl/cse-test2.til"
+     file2="til/xmpl/cse-test2.txt" />
+
+  <includefile 
+     id="ref-til-opt-til-cse.str" 
+     root="../../src" 
+     file="til/opt/til-cse.str" />
 
 
 </sect1>
@@ -54,8 +86,6 @@
 
   <para></para>
 
-
-</sect1>
 
 </sect1>
 

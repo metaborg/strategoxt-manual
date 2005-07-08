@@ -1,20 +1,20 @@
 var x; 
-x := 1;
-var z; 
-read z;
 var y;
-y := z;
 var z; 
-x := 3;
 var a; 
-a := 4;
-x := x + z;
-a := 5;
+read z;
+x := 1;        // constant value
+y := 2;        // not constant
+x := 3;        // override
+a := x + 4;    // compute constant
+y := x + z;    // not constant
 if y then
   z := 8;
+  x := z - 5;  // constant
 else
-  z := a + z;
+  x := a - 4;  // constant
+  z := a + z;  // z is not constant
 end
-b := a + z;
-z := z + x;
+b := a + z;    // a still constant, z not
+z := a + x;
 write b + z;

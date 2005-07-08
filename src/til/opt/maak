@@ -1,1 +1,5 @@
+# compile propconst
 strc -i til-propconst.str -I ../sig -I ../sim -la stratego-lib -m io-til-propconst
+
+# compile copyprop
+strc -i til-copyprop.str -I ../sig -I ../sim -la stratego-lib -m io-til-copyprop
