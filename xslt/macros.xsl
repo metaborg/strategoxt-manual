@@ -20,7 +20,7 @@
   </xsl:template>
 
   <xsl:template match="beforeafter">
-    <table frame='none' align="center">
+    <table frame='none'>
       <title>files: <ulink url="examples-full/{@file1}"><xsl:value-of
          select="@file1" /></ulink>, <ulink
          url="examples-full/{@file2}"><xsl:value-of select="@file2"

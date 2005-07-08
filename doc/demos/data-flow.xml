@@ -78,7 +78,6 @@
      root="../../src" 
      file="til/opt/til-cse.str" />
 
-
 </sect1>
 
 <sect1>
@@ -86,6 +85,21 @@
 
   <para></para>
 
+  <includefile 
+     id="ref-til-xmpl-dce-test2" 
+     root="../../src" 
+     file="til/xmpl/dce-test2" />
+
+  <beforeafter 
+     id="ref-til-xmpl-dce-test2-run" 
+     root="../../src" 
+     file1="til/xmpl/dce-test2.til"
+     file2="til/xmpl/dce-test2.txt" />
+
+  <includefile 
+     id="ref-til-opt-til-dce.str" 
+     root="../../src" 
+     file="til/opt/til-dce.str" />
 
 </sect1>
 

@@ -1,5 +1,8 @@
 INCL="-I ../sig -I ../sim"
 
+# compile dce
+strc ${INCL} -i til-dce.str -la stratego-lib -m io-til-dce
+
 # compile cse
 strc ${INCL} -i til-cse.str -la stratego-lib -m io-til-cse
 

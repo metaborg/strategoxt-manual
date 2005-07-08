@@ -2,6 +2,7 @@ var x;
 var y;
 var z; 
 var a; 
+var b;
 read z;
 x := 1;        // constant value
 y := 2;        // not constant
