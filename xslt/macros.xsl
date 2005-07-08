@@ -36,10 +36,10 @@
         </thead>
         <tbody>
           <row>
-            <entry><screen><include parse="text"
+            <entry align="left"><screen><include parse="text"
             href="{@root}/{@file1}"
             xmlns="http://www.w3.org/2003/XInclude"/></screen></entry>
-            <entry><screen><include parse="text"
+            <entry align="left"><screen><include parse="text"
             href="{@root}/{@file2}"
             xmlns="http://www.w3.org/2003/XInclude"/></screen></entry>
           </row>
