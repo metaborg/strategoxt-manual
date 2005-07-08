@@ -1,0 +1,14 @@
+var x; x := 1;
+var y; y := z;
+var z; x := 3;
+var a; a := 4;
+x := x + z;
+a := 5;
+if y then
+  z := 8;
+else
+  z := a + z;
+end
+b := a + z;
+z := z + x;
+

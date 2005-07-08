@@ -19,6 +19,18 @@
     </figure>
   </xsl:template>
 
+  <xsl:template match="beforeafter">
+    <figure id="{@id}">
+      <title>files: <ulink url="examples-full/{@file1}"><xsl:value-of select="@file1" /></ulink>, <ulink url="examples-full/{@file2}"><xsl:value-of select="@file2" /></ulink></title>
+      <screen><include parse="text"
+        href="{@root}/{@file1}"
+        xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><include parse="text"
+        href="{@root}/{@file2}"
+        xmlns="http://www.w3.org/2003/XInclude"/></screen>
+    </figure>
+  </xsl:template>
+
 
   <xsl:template match="showfile">
       <screen><include parse="text"

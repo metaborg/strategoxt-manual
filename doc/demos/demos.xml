@@ -33,19 +33,7 @@
 
   <include href="run.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
-  <chapter>
-    <title>Optimization (*)</title>
-    <para></para>
-    <para></para>
-    <para>Topic: dynamic rules</para>
-  </chapter>
-
-  <chapter>
-    <title>Constant Propagation (*)</title>
-    <para></para>
-    <para></para>
-    <para>Topic: dynamic rules</para>
-  </chapter>
+  <include href="data-flow.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   <chapter>
     <title>Partial Evaluation (*)</title>

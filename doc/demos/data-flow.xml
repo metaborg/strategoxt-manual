@@ -1,0 +1,61 @@
+<chapter>
+  <title>Data-flow Transformation (*)</title>
+    
+  <para>
+
+     This chapter shows examples of data-flow transformations
+
+  </para>
+
+<sect1>
+  <title>Constant Propagation</title>
+
+  <para>
+
+  </para>
+
+  <includefile 
+     id="ref-til-xmpl-propconst-test2" 
+     root="../../src" 
+     file="til/xmpl/propconst-test2" />
+
+  <beforeafter 
+     id="ref-til-xmpl-propconst-test2-run" 
+     root="../../src" 
+     file1="til/xmpl/propconst-test2.til"
+     file2="til/xmpl/propconst-test2.txt" />
+
+  <includefile 
+     id="ref-til-opt-til-constprop.str" 
+     root="../../src" 
+     file="til/opt/til-propconst.str" />
+
+</sect1>
+
+<sect1>
+  <title>Copy Propagation</title>
+
+  <para>
+
+  </para>
+
+</sect1>
+
+<sect1>
+  <title>Common-subexpression Elimination</title>
+
+  <para></para>
+
+
+</sect1>
+
+<sect1>
+  <title>Dead Code Elimination</title>
+
+  <para></para>
+
+
+</sect1>
+
+  
+</chapter>
