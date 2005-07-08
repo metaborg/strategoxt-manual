@@ -169,6 +169,25 @@
   </sect3>
 
   <sect3>
+    <title>Function and Procedure Calls</title>
+
+  <para>
+   
+     Module <code>TIL-calls</code> defines the syntax of function and
+     procedure calls. Even though TIL does not have function
+     definitions, it is useful to be able to call primitive functions
+     and procedures.
+
+  </para>
+
+  <includefile 
+    id="ref-til-syn-TIL-calls.sdf" 
+    root="../../src"
+    file="til/syn/TIL-calls.sdf" />
+  
+  </sect3>
+
+  <sect3>
     <title>Programs</title>
 
   <para>

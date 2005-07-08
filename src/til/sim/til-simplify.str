@@ -11,4 +11,5 @@ strategies
       <+ AddZero <+ MulOne 
       <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv
       <+ EvalEqu <+ EvalNeq
+      <+ ReadIsFunCall <+ WriteIsProcCall
     )

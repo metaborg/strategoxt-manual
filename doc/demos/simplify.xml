@@ -159,10 +159,11 @@
      root="../../src" 
      file="til/xmpl/simplify-test" />
 
-  <includefile 
+  <beforeafter
      id="ref-til-xmpl-test1.sim.txt" 
      root="../../src" 
-     file="til/xmpl/test1.sim.txt" />
+     file1="til/xmpl/test1.til"
+     file2="til/xmpl/test1.sim.txt" />
 
 </sect1>
 

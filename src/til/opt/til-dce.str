@@ -21,8 +21,7 @@ strategies
   dce-stat = 
     ElimAssign
     <+ dce-assign 
-    <+ dce-read
-    <+ dce-write
+    <+ dce-proccall
     <+ dce-if; try(ElimIf)
     <+ dce-block
     <+ dce-while
@@ -59,12 +58,8 @@ strategies
     ; rules( VarNeeded.x :- Var(x) )
     ; Assign(id, declare-var-needed)
 
-  dce-read =
-    ?Read(x)
-    ; rules( VarNeeded.x :- Var(x) )
-
-  dce-write =
-    Write(declare-var-needed)    
+  dce-proccall =
+    ProcCall(id, map(declare-var-needed))
 
   declare-var-needed = 
     alltd({x :

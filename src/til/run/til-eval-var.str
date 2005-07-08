@@ -10,14 +10,13 @@ strategies
     Assign(?x, eval-exp => val)
     ; rules(EvalVar.x : Var(x) -> val)
 
-  eval-read = 
-    ?Read(x)
-    ; <readline; implode-string> stdin
-    ; if string-to-int then !Int(<id>) else !String(<id>) end => val
-    ; rules( EvalVar.x : Var(x) -> val )
+  EvalRead :
+    FunCall("read", []) -> val
+    where <readline; implode-string> stdin
+        ; if string-to-int then !Int(<id>) else !String(<id>) end => val
 
   eval-write = 
-    ?Write(<eval-exp>)
+    ?ProcCall("write", [<eval-exp>])
     ; (?Int(<id>) <+ ?String(<un-double-quote; unescape>))
     ; <print>(stdout, [<id>])
 
@@ -26,4 +25,4 @@ strategies
     ; fatal-err(|<concat-strings>["variable ", <id>, " used before being defined"])
 
   eval-exp = 
-    eval-exp(EvalVar <+ VarUndefined)
+    eval-exp(EvalVar <+ VarUndefined <+ EvalRead)

@@ -9,6 +9,7 @@ strategies
     PropConst
     <+ propconst-declaration
     <+ propconst-assign 
+    <+ propconst-proccall
     <+ propconst-block
     <+ propconst-if
     <+ propconst-while
