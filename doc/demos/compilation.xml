@@ -1,0 +1,52 @@
+
+  
+<chapter>
+  <title>Compilation by Transformation (*)</title>
+
+  <para>
+
+     transformation to `three address code'
+
+  </para>
+  
+<sect1>
+  <title>Extending TIL with Jumps</title>
+
+  <para>
+
+     we extend the TIL language with labels, jumps, and conditional
+     jumps
+
+  </para>
+
+  <includefile 
+     id="ref-til-til-goto-TIL-goto.sdf" 
+     root="../../src" 
+     file="til/til-goto/TIL-goto.sdf" />
+
+  <includefile 
+     id="ref-til-til-goto-maak" 
+     root="../../src" 
+     file="til/til-goto/maak" />
+
+</sect1>
+
+<sect1>
+  <title>Translating Control-Flow Constructs</title>
+
+  <para>
+
+  </para>
+
+</sect1>
+
+<sect1>
+  <title>Flattening programs</title>
+
+  <para>
+
+  </para>
+
+</sect1>
+
+</chapter>

@@ -35,19 +35,14 @@
 
   <include href="data-flow.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
+  <include href="compilation.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   <chapter>
     <title>Partial Evaluation (*)</title>
     <para></para>
     <para></para>
     <para>Topic: dynamic rules</para>
     <para>power program</para>
-  </chapter>
-
-  <chapter>
-    <title>Compilation (Translation) (*)</title>
-    <para>Translation to C(?)</para>
-    <para></para>
-    <para></para>
   </chapter>
 
   <chapter>
