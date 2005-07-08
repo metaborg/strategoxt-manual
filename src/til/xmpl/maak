@@ -10,3 +10,4 @@
 ./propconst-test2
 ./copyprop-test2
 ./cse-test2
+./dce-test2
