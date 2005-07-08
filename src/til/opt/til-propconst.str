@@ -9,6 +9,7 @@ strategies
     PropConst
     <+ propconst-declaration
     <+ propconst-assign 
+    <+ propconst-block
     <+ propconst-if
     <+ propconst-while
     <+ all(propconst); try(EvalExp)

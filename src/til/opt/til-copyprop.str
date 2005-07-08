@@ -9,6 +9,7 @@ strategies
     CopyProp
     <+ copyprop-declaration
     <+ copyprop-assign 
+    <+ copyprop-block
     <+ copyprop-if
     <+ copyprop-while
     <+ all(copyprop)

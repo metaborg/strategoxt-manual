@@ -1,0 +1,10 @@
+var a;
+var b;
+var x;
+read a;
+read b;
+x := a + b;
+write a + b;
+a := 23;
+x := a + b;
+write a + b;

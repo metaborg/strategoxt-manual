@@ -8,3 +8,5 @@
 ./simplify-test
 ./run-test1
 ./propconst-test2
+./copyprop-test2
+./cse-test2

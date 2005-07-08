@@ -1,0 +1,56 @@
+module til-cse
+imports TIL til-eval liblib
+strategies
+
+  io-til-cse = 
+    io-wrap(cse)
+
+  cse = 
+    CSE
+    <+ cse-declaration
+    <+ cse-assign 
+    <+ cse-if
+    <+ cse-block
+    <+ cse-while
+    <+ all(cse)
+
+  cse-block =
+    Block({| CSE : map(cse) |})
+
+  cse-declaration = 
+    ?Declaration(x)
+    ; new-CSE(|x, x)
+
+  cse-assign = 
+    Assign(?x, cse => e)
+    ; undefine-CSE(|x)
+    ; if <not(contains(|Var(x)))> e then
+        where( innermost-scope-CSE => z )
+        ; where( get-var-dependencies => deps )
+        ; rules( CSE.z : e -> Var(x) depends on deps )
+      end
+
+  cse-if =
+    IfElse(cse, id, id)
+    ; (EvalIf; cse
+       <+ IfElse(id, cse, id) /CSE\ IfElse(id,id,cse))
+
+  cse-while =
+    ?While(_, _)
+    ; (/CSE\* While(cse, cse))
+
+  innermost-scope-CSE = 
+    get-var-names => vars
+    ; innermost-scope-CSE(elem-of(|vars))
+
+  get-var-names =
+    collect(?Var(<id>))
+
+  get-var-dependencies =
+    collect(?Var(<!(<id>,<id>)>))
+
+  contains(|x) =  // should be in stratego-lib
+    oncetd(?x)
+
+  elem-of(|xs) = // should be in stratego-lib
+    ?x; where(<fetch(?x)> xs)
