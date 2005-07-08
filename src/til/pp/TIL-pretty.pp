@@ -1,7 +1,7 @@
 [
    FunCall                  -- H hs=0 [_1 KW["("] H  [_2] KW[")"]],
    FunCall.2:iter-star-sep  -- H hs=0 [_1 KW[","]],
-   ProcCall                 -- H hs=0 [_1 KW["("] H  [_2] KW[")"]],
+   ProcCall                 -- H hs=0 [_1 KW["("] H  [_2] KW[")"] KW[";"]],
    ProcCall.2:iter-star-sep -- H hs=0 [_1 KW[","]],
    Declaration              -- H hs=0 [H  [KW["var"] _1] KW[";"]],
    Assign                   -- H hs=0 [H  [_1 KW[":="] _2] KW[";"]],
