@@ -38,6 +38,14 @@
   <include href="compilation.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   <chapter>
+    <title>Bound Variable Renaming (*)</title>
+    <para></para>
+    <para></para>
+    <para>Topic: dynamic rules</para>
+    <para>power program</para>
+  </chapter>
+
+  <chapter>
     <title>Partial Evaluation (*)</title>
     <para></para>
     <para></para>

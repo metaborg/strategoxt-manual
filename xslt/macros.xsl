@@ -20,15 +20,32 @@
   </xsl:template>
 
   <xsl:template match="beforeafter">
-    <figure id="{@id}">
-      <title>files: <ulink url="examples-full/{@file1}"><xsl:value-of select="@file1" /></ulink>, <ulink url="examples-full/{@file2}"><xsl:value-of select="@file2" /></ulink></title>
-      <screen><include parse="text"
-        href="{@root}/{@file1}"
-        xmlns="http://www.w3.org/2003/XInclude"/></screen>
-      <screen><include parse="text"
-        href="{@root}/{@file2}"
-        xmlns="http://www.w3.org/2003/XInclude"/></screen>
-    </figure>
+    <table frame='none' align="center">
+      <title>files: <ulink url="examples-full/{@file1}"><xsl:value-of
+         select="@file1" /></ulink>, <ulink
+         url="examples-full/{@file2}"><xsl:value-of select="@file2"
+         /></ulink></title>
+      <tgroup cols='2' align='center' colsep='1' rowsep='1'>
+        <colspec colname='before'/>
+        <colspec colname='after'/>
+        <thead>
+          <row>
+            <entry>before</entry>
+            <entry>after</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><screen><include parse="text"
+            href="{@root}/{@file1}"
+            xmlns="http://www.w3.org/2003/XInclude"/></screen></entry>
+            <entry><screen><include parse="text"
+            href="{@root}/{@file2}"
+            xmlns="http://www.w3.org/2003/XInclude"/></screen></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
   </xsl:template>
 
 

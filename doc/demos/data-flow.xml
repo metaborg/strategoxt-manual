@@ -57,5 +57,18 @@
 
 </sect1>
 
-  
+</sect1>
+
+<sect1>
+  <title>Compiling the Transformations</title>
+
+  <para></para>
+
+  <includefile 
+     id="ref-til-opt-maak" 
+     root="../../src" 
+     file="til/opt/maak" />
+
+</sect1>
+
 </chapter>

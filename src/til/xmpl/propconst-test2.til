@@ -1,7 +1,13 @@
-var x; x := 1;
-var y; y := z;
-var z; x := 3;
-var a; a := 4;
+var x; 
+x := 1;
+var z; 
+read z;
+var y;
+y := z;
+var z; 
+x := 3;
+var a; 
+a := 4;
 x := x + z;
 a := 5;
 if y then
@@ -11,3 +17,4 @@ else
 end
 b := a + z;
 z := z + x;
+write b + z;
