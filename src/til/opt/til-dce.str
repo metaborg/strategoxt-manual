@@ -3,7 +3,7 @@ imports TIL til-eval liblib
 rules
 
   ElimDecl : 
-    [Declaration(x) | xs] -> xs
+    [Declaration(x) | st*] -> st*
     where <not(VarUsed)> Var(x)
 
   ElimAssign :
@@ -18,13 +18,14 @@ strategies
   io-til-dce = 
     io-wrap(dce-program)
 
-  dce-stat = 
+  dce-stat = debug(!"in: "); (
     ElimAssign
     <+ dce-assign 
     <+ dce-proccall
     <+ dce-if; try(ElimIf)
     <+ dce-block
     <+ dce-while
+  ); debug(!"out: ")
 
   dce-program = 
     Program(dce-stats)
@@ -32,24 +33,35 @@ strategies
   dce-block =
     Block(dce-stats)
 
-  dce-stats =
+  dce-stats = debug(!"dce-stats in: "); (
     dce-stats-decl
     <+ dce-stats-other 
     <+ []
+  ); debug(!"dce-stats out: ")
 
   dce-stats-decl = 
     ?[Declaration(x) | _]
-    ; {| VarNeeded, Varused 
+    ; {| VarNeeded, VarUsed 
        : rules(
            VarNeeded+x :- Var(x)
            VarUsed+x   :- Var(x)
          )
        ; [id | dce-stats]
+       ; debug(!"a: ")
        ; try(ElimDecl)
+       ; debug(!"VarNeeded: ")
+       ; dr-print-rule-set(|"VarNeeded")
+       ; debug(!"VarUsed: ")
+       ; dr-print-rule-set(|"VarUsed")
        |}
+       ; debug(!"c: ")
+       ; debug(!"VarNeeded: ")
+       ; dr-print-rule-set(|"VarNeeded")
+       ; debug(!"VarUsed: ")
+       ; dr-print-rule-set(|"VarUsed")
 
   dce-stats-other =
-    [id | dce-stats]
+    [not(?Declaration(_)) | dce-stats]
     ; [dce-stat | id]
     ; try(?[Block([]) | <id>])
 

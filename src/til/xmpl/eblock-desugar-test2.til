@@ -1,0 +1,9 @@
+write
+  begin
+    var x;
+    read x;
+    return 
+      x + begin read x; return x; end + 1;
+    write "done";
+  end
+;
