@@ -1,5 +1,5 @@
 module til-copyprop
-imports TIL til-eval liblib
+imports til-opt-lib
 strategies
 
   io-til-copyprop = 
@@ -31,8 +31,7 @@ strategies
 
   copyprop-if =
     IfElse(copyprop, id, id)
-    ; (EvalIf; copyprop
-       <+ IfElse(id, copyprop, id) /CopyProp\ IfElse(id,id,copyprop))
+    ; (IfElse(id, copyprop, id) /CopyProp\ IfElse(id,id,copyprop))
 
   copyprop-while =
     ?While(_, _)
@@ -41,9 +40,3 @@ strategies
   innermost-scope-CopyProp = 
     get-var-names => vars
     ; innermost-scope-CopyProp(elem-of(|vars))
-
-  get-var-names =
-    collect(?Var(<id>))
-
-  elem-of(|xs) = // should be in stratego-lib
-    ?x; where(<fetch(?x)> xs)

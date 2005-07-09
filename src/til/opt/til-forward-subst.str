@@ -1,5 +1,5 @@
 module til-forward-subst
-imports TIL liblib
+imports til-opt-lib
 strategies
 
   io-til-forward-subst = 
@@ -23,14 +23,12 @@ strategies
 
   forward-subst-assign = 
     Assign(?x, forward-subst => e)
-    //; debug(!"forward-subst-assign: ")
     ; undefine-ForwardSubst(|x)
     ; if <not(is-var); is-pure-exp; not(contains(|Var(x)))> e then
         where( innermost-scope-ForwardSubst => z )
         ; where( get-var-dependencies => deps )
         ; rules( ForwardSubst.z : Var(x) -> e depends on deps )
       end
-    //; dr-print-rule-set(|"ForwardSubst")
 
   forward-subst-if =
     IfElse(forward-subst, id, id)
@@ -40,30 +38,6 @@ strategies
     ?While(_, _)
     ; (/ForwardSubst\* While(forward-subst, forward-subst))
 
-strategies // auxiliary
-
-  is-pure-exp = // should be in TIL-lib
-    ?Var(_) <+ ?Int(_) <+ ?String(_) <+ is-bin-op#([is-pure-exp, is-pure-exp])
-    
-  is-bin-op = // should be in TIL-lib
-    ?"Or" <+ ?"And" <+ ?"Neq" <+ ?"Equ" <+ ?"Gt" <+ ?"Lt" <+ ?"Sub"
-    <+ ?"Add" <+ ?"Mod" <+ ?"Div" <+ ?"Mul"
-
-  is-var = 
-    ?Var(_)
-
   innermost-scope-ForwardSubst = 
     get-var-names => vars
     ; innermost-scope-ForwardSubst(elem-of(|vars))
-
-  get-var-names = // should be in TIL-lib
-    collect(?Var(<id>))
-
-  get-var-dependencies = // should be in TIL-lib
-    collect(?Var(<!(<id>,<id>)>))
-
-  contains(|x) =  // should be in stratego-lib
-    oncetd(?x)
-
-  elem-of(|xs) = // should be in stratego-lib
-    ?x; where(<fetch(?x)> xs)

@@ -1,5 +1,5 @@
 module til-cse
-imports TIL liblib
+imports til-opt-lib
 strategies
 
   io-til-cse = 
@@ -38,20 +38,6 @@ strategies
     ?While(_, _)
     ; (/CSE\* While(cse, cse))
 
-strategies // auxiliary
-
   innermost-scope-CSE = 
     get-var-names => vars
     ; innermost-scope-CSE(elem-of(|vars))
-
-  get-var-names =
-    collect(?Var(<id>))
-
-  get-var-dependencies =
-    collect(?Var(<!(<id>,<id>)>))
-
-  contains(|x) =  // should be in stratego-lib
-    oncetd(?x)
-
-  elem-of(|xs) = // should be in stratego-lib
-    ?x; where(<fetch(?x)> xs)

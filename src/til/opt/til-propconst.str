@@ -1,5 +1,5 @@
 module til-propconst
-imports TIL til-eval liblib
+imports til-opt-lib
 strategies
 
   io-til-propconst = 
@@ -37,10 +37,3 @@ strategies
   propconst-while =
     ?While(_, _)
     ; (/PropConst\* While(propconst, propconst))
-
-  is-value = 
-    ?Int(_) <+ ?String(_)
-
-  EvalExp = 
-    EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv <+ EvalMod
-    <+ EvalLt <+ EvalGt <+ EvalEqu <+ EvalNeq

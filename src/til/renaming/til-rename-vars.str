@@ -18,5 +18,3 @@ strategies
     Declaration(x) -> Declaration(y)
     where <new> x => y
         ; rules( RenameVar : x -> y )
-
-    // use newname instead of new to get copies of old names
