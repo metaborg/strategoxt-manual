@@ -33,7 +33,7 @@ Software
   - docbook-xml-4.3
   - docbook-xsl
   - recent libxml2
-  - libxslt
+  - libxslt/xsltproc
  
   Configure the manual with:
   --with-docbook-xsl=$docbookxsl
@@ -46,10 +46,14 @@ Software
 
   nxml-mode is adviced for writing DocBook in emacs.
 
+  Debian:
+  export docbookxml=/usr/share/sgml/docbook/dtd/4.3/
+  export docbookxsl=/usr/share/xml/docbook/stylesheet/nwalsh/
+
 Buildfarm
 
-  After committing, the manual build by the buildfarm and will be
-  available at:
+  After committing, the manual will automatically be rebuilt by the Nix
+  buildfarm and made available at:
   http://catamaran.labs.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/index.html
 
   The single page version is available at:

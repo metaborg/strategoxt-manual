@@ -20,9 +20,22 @@ Stratego/XT Manual
   
 --------------------------------------------------------------------------
 
-Deps:
+To build this manual, you need the following packages from Nix:
+
    * docbook-xsl
    * docbook-xml
    * recent libxml2 (2.6.5 works)
    * libxslt
+
+You can also build it on a Debian system, by installing
+
+   * docbook-xsl
+   * docbook-xml
+   * xsltproc
+
+In either case, you will also need a working version of Stratego/XT on 
+your system to compile the examples, as part of the manual building.
+
 --------------------------------------------------------------------------
+
+See the HOWTO for how to build this beast.
