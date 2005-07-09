@@ -58,6 +58,20 @@
 </sect1>
 
 <sect1>
+  <title>Reverse Copy Propagation</title>
+
+  <para>
+
+  </para>
+
+  <includefile 
+     id="ref-til-opt-til-copyprop-rev.str" 
+     root="../../src" 
+     file="til/opt/til-copyprop-rev.str" />
+
+</sect1>
+
+<sect1>
   <title>Common-subexpression Elimination</title>
 
   <para></para>
@@ -77,6 +91,18 @@
      id="ref-til-opt-til-cse.str" 
      root="../../src" 
      file="til/opt/til-cse.str" />
+
+</sect1>
+
+<sect1>
+  <title>Forward Substitution</title>
+
+  <para></para>
+
+  <includefile 
+     id="ref-til-opt-til-forward-subst.str" 
+     root="../../src" 
+     file="til/opt/til-forward-subst.str" />
 
 </sect1>
 

@@ -3,7 +3,12 @@ write
     var x;
     read x;
     return 
-      x + begin read x; return x; end + 1;
-    write "done";
+      x + begin 
+            read x; 
+            return x; 
+            x := x * 2; 
+          end + 1;
+    x := x + 1;
+    write x;
   end
 ;

@@ -1,5 +1,5 @@
 module til-cse
-imports TIL til-eval liblib
+imports TIL liblib
 strategies
 
   io-til-cse = 
@@ -32,12 +32,13 @@ strategies
 
   cse-if =
     IfElse(cse, id, id)
-    ; (EvalIf; cse
-       <+ IfElse(id, cse, id) /CSE\ IfElse(id,id,cse))
+    ; (IfElse(id, cse, id) /CSE\ IfElse(id,id,cse))
 
   cse-while =
     ?While(_, _)
     ; (/CSE\* While(cse, cse))
+
+strategies // auxiliary
 
   innermost-scope-CSE = 
     get-var-names => vars

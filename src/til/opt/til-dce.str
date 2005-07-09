@@ -37,17 +37,6 @@ strategies
     <+ dce-stats-other 
     <+ []
 
-  dce-stats-decl' = 
-    ?[Declaration(x) | _]
-    ; {| VarNeeded, VarUsed 
-       : rules(
-           VarNeeded+x :- Var(x)
-           VarUsed+x   :- Var(x)
-         )
-       ; [id | dce-stats]
-       ; try(ElimDecl)
-       |}
-
   dce-stats-decl = 
     ?[Declaration(x) | _]
     ; {| VarNeeded, VarUsed 

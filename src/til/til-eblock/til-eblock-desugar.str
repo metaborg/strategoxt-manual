@@ -6,8 +6,8 @@ strategies
     io-wrap(til-eblock-desugar)
 
   til-eblock-desugar =
-    bottomup(try(FunCallToEBlock));
-    innermost(
+    bottomup(try(FunCallToEBlock))
+    ; innermost(
         EBlockEBlock
 	<+ NoStatements
 	<+ MovePostStatementsInFront
@@ -19,7 +19,8 @@ strategies
 	<+ HoistEBlockFromIf 
 	<+ HoistEBlockFromWhile 
 	<+ HoistEBlockFromFor
-    )
+      )
+    ; bottomup(try(flatten-block))
 
 rules
 
@@ -33,12 +34,12 @@ rules
 
   MovePostStatementsInFront :
     EBlock(st1*, e, st2*@[_|_]) -> 
-    EBlock(<concat>[[Declaration(x)], st1*, [Assign(x, e)], st2*], Var(x), [])
+    EBlock([Declaration(x), st1*, Assign(x, e), st2*], Var(x), [])
     where new => x
 
   EBlockEBlock :
     EBlock(st1*, EBlock(st2*, e, st3*), st4*) ->
-    EBlock(<concat>[st1*, st2*], e, <concat>[st3*, st4*])
+    EBlock([st1*, st2*], e, [st3*, st4*])
 
   HoistEBlockFromFunCall :
     FunCall(f, e1*) -> EBlock(st1*, FunCall(f, e2*), [])
@@ -54,26 +55,26 @@ rules
     <+ ?"Add" <+ ?"Mod" <+ ?"Div" <+ ?"Mul"
 
   HoistEBlockFromAssign :
-    Assign(x, EBlock(st1*, e, st2*)) -> Block(<concat>[st1*, st2*, [Assign(x, e)]])
+    Assign(x, EBlock(st1*, e, st2*)) -> Block([st1*, st2*, Assign(x, e)])
 
   HoistEBlockFromProcCall :
-    ProcCall(f, e1*) -> Block(<concat>[st*, [ProcCall(f, e2*)]])
+    ProcCall(f, e1*) -> Block([st*, ProcCall(f, e2*)])
     where <collect-eblocks> e1* => (st*, e2*)
 
   HoistEBlockFromWrite :
-    Write(EBlock(st1*, e, st2*)) -> Block(<concat>[st1*, [Write(e)], st2*])
+    Write(EBlock(st1*, e, st2*)) -> Block([st1*, Write(e), st2*])
 
   HoistEBlockFromIf :
     IfElse(EBlock(st1*, e, st2*), st3*, st4*) -> 
-    Block([st1*, IfElse(e, <concat>[st2*,st3*], <concat>[st2*,st4*])])
+    Block([st1*, IfElse(e, [st2*,st3*], [st2*,st4*])])
 
   HoistEBlockFromIf :
     IfThen(EBlock(st1*, e, st2*), st3*) -> 
-    Block([st1*, IfElse(e, <concat>[st2*,st3*], st2*)])
+    Block([st1*, IfElse(e, [st2*,st3*], st2*)])
 
   HoistEBlockFromWhile :
     While(EBlock(st1*, e, st2*), st3*) -> 
-    Block([st1*, While(e, <concat>[st2*,st3*,st1*])])
+    Block([st1*, While(e, [st2*,st3*,st1*])])
 
   HoistEBlockFromFor :
     For(x, e1, e2, st1*) -> 
@@ -85,3 +86,13 @@ rules
     ; map({where(new => x); !([Declaration(x), Assign(x, <id>)], Var(x))})
     ; unzip
     ; (concat, id)
+
+  
+  flatten-block =
+    Block(
+      foldr(![], \ (Block(st2*), st3*) -> [st2*, st3*] \ 
+                     <+ \ (st, st*) -> [st | st*] \ )
+      ; partition(?Declaration(_))
+      ; conc
+    )
+   
