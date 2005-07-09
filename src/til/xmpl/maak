@@ -12,3 +12,4 @@
 ./cse-test2
 ./dce-test2
 ./eblock-desugar-test2
+./rename-test

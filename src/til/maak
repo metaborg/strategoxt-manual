@@ -3,6 +3,8 @@
 (cd sig; ./maak)
 (cd pp; ./maak)
 (cd sim; ./maak)
+(cd renaming; ./maak)
 (cd run; ./maak)
 (cd opt; ./maak)
+(cd til-eblock; ./maak)
 (cd xmpl; ./maak)

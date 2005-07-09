@@ -1,0 +1,44 @@
+<chapter>
+  <title>Bound Variable Renaming (*)</title>
+
+  <para>
+
+     renaming of bound variables
+
+  </para>
+
+<sect1>
+  <title>Renaming Bound Variables</title>
+
+  <para>
+
+  </para>
+
+  <includefile 
+     id="ref-til-renaming-til-rename-vars.str" 
+     root="../../src" 
+     file="til/renaming/til-rename-vars.str" />
+
+</sect1>
+
+<sect1>
+  <title>Example</title>
+
+  <para>
+
+  </para>
+
+  <includefile 
+     id="ref-til-xmpl-rename-test" 
+     root="../../src" 
+     file="til/xmpl/rename-test" />
+
+  <beforeafter 
+     id="ref-til-xmpl-rename-test-run" 
+     root="../../src" 
+     file1="til/xmpl/test1.til"
+     file2="til/xmpl/test1.rn.txt" />
+
+</sect1>
+
+</chapter>

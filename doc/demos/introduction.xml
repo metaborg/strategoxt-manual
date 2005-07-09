@@ -1,0 +1,26 @@
+<chapter>
+  <title>Introduction (*)</title>
+    
+  <para>
+	This tutorial contains examples of typical applications of Stratego/XT.
+  </para>
+
+<section>
+  <title>Code Examples</title>
+      
+  <para>
+
+     All the code examples in this tutorial are available for separate
+     download, such that you can experiment based on these.
+
+  </para>
+      
+  <para>
+        
+     <ulink url="./examples.tar.gz">examples.tar.gz</ulink>
+      
+  </para>
+    
+</section>
+
+</chapter>
