@@ -22,26 +22,45 @@
     <title>Baseline development</title>
 
     <section>
-      <title>Why you need a baseline</title>
+      <title>What is a baseline and why do I need it?</title>
 
       <para>
-	The Stratego/XT source code highly depends on itself: Stratego
-	and various generative tools are used everywhere. Therefore,
-	we are using a baseline to compile a Stratego/XT source tree
-	from Subversion. Tarballs that are distributed to users do not
-	need a baseline: they contain all generated and bootstrapped
-	sources. See [[LatestSources][installation from Subversion]]
-	for instructions on how to install Stratego/XT from
-	Subversion.
+       A baseline is a snapshot of the Stratego/XT source repository that
+       only requires a C compiler to build itself. It is used for the traditional
+       "bootstrapping" which is so common in the world of compilers.
+      </para>
+               
+      <para>
+       The compiler for Stratego is implemented in Stratego. Also, many of the
+       tools used to build Stratego/XT are written in Stratego and depend on
+       themselves. Therefore, you will need a full Stratego/XT environment to 
+       build the Stratego/XT environment. This process is called bootstrapping.
+       The baseline provides the initial Stratego/XT environment.
+      </para>
+	  
+      <para>
+       Unlike many bootstrapping compilers, the baseline provided for
+       Stratego/XT is not a pre-built binary. It is a a source release of
+       Stratego that requires a C compiler to build. We can therefore boostrap
+       Stratego/XT on any of the supported platforms, with just one baseline.
+      </para>
+	  
+      <para>
+       Bootstrapping using the baseline is only necessary for developers of
+       Stratego/XT itself. Normal users of Stratego/XT receive tarballs which
+       do not need a baseline: they contain all generated and bootstrapped
+       sources. See [[LatestSources][installation from Subversion]]
+       for instructions on how to install Stratego/XT from
+       Subversion.
       </para>
 
       <para>
-	The big advantage of a baseline is that you basically cannot
-	break anything. In the past, we used bootstrapped sources in
-	the Subversion repository, which was very fragile and required
-	great care of contributors. The baseline setup is much easier
-	to use and more safe. We hope this will encourage
-	contributions.
+       The big advantage of a baseline is that the development process of 
+       Stratego/XT becomes cleaner and more robust. In the past, the bootstrapped
+       sources were kept alongside the normal source code in the Subversion
+       repository. This was very fragile and required great care on the part of
+       the contributors. The baseline setup is much easier to use and a lot safer.
+       We hope this will encourage contributions.
       </para>
 
     </section>
@@ -52,7 +71,8 @@
       <para>
 	Since we are using a baseline, you cannot *use* a new feature
 	you have added to Stratego/XT in Stratego/XT itself until this
-	feature is in the baseline.
+	feature has made it to the baseline. Remember that Stratego/XT must
+	be built by the baseline.
       </para>
 
       <para>
@@ -62,8 +82,7 @@
 	not change the configuration of Stratego/XT with this baseline
 	after installation. The baseline now ensures that you are not
 	using new features that you've added to Stratego/XT: it will
-	just not compile. Of course this positive note assumes that
-	you do actually compile before committing ;).
+	just not compile.
       </para>
 
     </section>
@@ -72,18 +91,19 @@
       <title>Baseline upgrading</title>
 
       <para>
-	Baselines are taken from the buildfarm. The baselines are
-	thoroughly checked there, which makes sure that we don't get
-	into nasty bootstrap problems if something fails. If the build
-	jobs do not succeed, then we will not upgrade the
-	baseline. Baselines will never be created in an
-	ad-hoc way on machines of developers.
+	Baselines are taken always from the buildfarm. The baselines are
+	thoroughly checked there. If the build job for a particular revision
+	of Strateo/XT does not succeed, this revision cannot be promoted to a
+	new baseline. This avoids us getting into nasty bootstrap problems because
+	of uncaught build failures. In general, the release of a new baseline is
+	careful process.  Baselines will never be created in an ad-hoc way on 
+	machines of developers.
       </para>
 
       <para>
-	Baselines are currently updated by hand. If you have added a
-	feature that would you like to have in the baseline as soon as
-	possible, then please request a baseline update at
+	Picking a successful build from the buildfarm as a new baseline is done by
+	hand. If you have added a feature that would you like to have in the baseline
+	as soon as possible, then please request a baseline update at
 	=stratego-dev@cs.uu.nl= or the IRC channel <command>#stratego</command>.
       </para>
 
@@ -107,7 +127,10 @@
 	modified. After a =make clean= and =make bootclean= the =svn
 	status= will show these files. We have configured the source
 	tree not to show files in this status overview that are not
-	important.
+	important. Please use =svn diff= to verify that your changes are
+	as intended. Further, please try to keep the granularity of the
+	commits to one fix per commit. Specifically, do not commit many,
+	unrelated fixes in one go.
       </para>
 
       <para>

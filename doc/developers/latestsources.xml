@@ -49,6 +49,7 @@
       You now need a baseline to install Stratego/XT from
       Subversion. The latest baseline is available at:
       ftp://ftp.stratego-language.org/pub/stratego/StrategoXT/baseline/latest/strategoxt.tar.gz
+      See below for an explanation of the baseline.
     </para>
 
     <para>
@@ -62,7 +63,10 @@
     <title>How to checkout</title>
 
     <para>
-      You can do a checkout using the following command:
+      The Stratego/XT sources are kept in a source repository managed by 
+      Subversion. Before checking out, you need to install recent Subversion
+      release. After you have done so, you may do a checkout using the following
+      command:
     </para>
 
 <screen>
@@ -83,8 +87,18 @@
       To bring the source tree into a state where you can follow the
       [[installation instructions]] you must run the =bootstrap=
       script (see also [[WhyBootstrap][why bootstrap]]).
-    </para>
+	</para>
 
+    <para>
+      Note that on many distributions, the older versions of =automake=
+      and =autoconf= are invoked by default.  You can check which version
+      is invoked by issuing =automake --version= and =autoconf --version=.
+      Unfortunately, the mechanism for switching to a newer version is 
+      distribution-specific. We automatically figure this out for some 
+      distributions. Look inside the boostrap for details, adjust and
+      provide us with a patch, if your distribution is not supported. 
+    </para>
+          	
 <screen>
   $ ./bootstrap
 </screen>
