@@ -8,6 +8,16 @@
   </para>
 
 <sect1>
+  <title>Preliminaries</title>
+
+  <includefile 
+     id="ref-til-opt-til-opt-lib.str" 
+     root="../../src" 
+     file="til/opt/til-opt-lib.str" />
+
+</sect1>
+
+<sect1>
   <title>Constant Propagation</title>
 
   <para>
