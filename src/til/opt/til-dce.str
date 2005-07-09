@@ -18,14 +18,13 @@ strategies
   io-til-dce = 
     io-wrap(dce-program)
 
-  dce-stat = debug(!"in: "); (
+  dce-stat = 
     ElimAssign
     <+ dce-assign 
     <+ dce-proccall
     <+ dce-if; try(ElimIf)
     <+ dce-block
     <+ dce-while
-  ); debug(!"out: ")
 
   dce-program = 
     Program(dce-stats)
@@ -33,11 +32,21 @@ strategies
   dce-block =
     Block(dce-stats)
 
-  dce-stats = debug(!"dce-stats in: "); (
+  dce-stats = 
     dce-stats-decl
     <+ dce-stats-other 
     <+ []
-  ); debug(!"dce-stats out: ")
+
+  dce-stats-decl' = 
+    ?[Declaration(x) | _]
+    ; {| VarNeeded, VarUsed 
+       : rules(
+           VarNeeded+x :- Var(x)
+           VarUsed+x   :- Var(x)
+         )
+       ; [id | dce-stats]
+       ; try(ElimDecl)
+       |}
 
   dce-stats-decl = 
     ?[Declaration(x) | _]
@@ -47,18 +56,8 @@ strategies
            VarUsed+x   :- Var(x)
          )
        ; [id | dce-stats]
-       ; debug(!"a: ")
        ; try(ElimDecl)
-       ; debug(!"VarNeeded: ")
-       ; dr-print-rule-set(|"VarNeeded")
-       ; debug(!"VarUsed: ")
-       ; dr-print-rule-set(|"VarUsed")
        |}
-       ; debug(!"c: ")
-       ; debug(!"VarNeeded: ")
-       ; dr-print-rule-set(|"VarNeeded")
-       ; debug(!"VarUsed: ")
-       ; dr-print-rule-set(|"VarUsed")
 
   dce-stats-other =
     [not(?Declaration(_)) | dce-stats]
@@ -83,7 +82,8 @@ strategies
     })
 
   dce-if =
-    (IfElse(id,dce-stats,id) /VarNeeded,VarUsed\ IfElse(id,id,dce-stats))
+    ?IfElse(_,_,_)
+    ; (IfElse(id,dce-stats,id) /VarNeeded,VarUsed\ IfElse(id,id,dce-stats))
     ; IfElse(declare-var-needed, id, id)
 
   dce-while =

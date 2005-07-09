@@ -1,0 +1,70 @@
+<chapter>
+   <title>Expression Blocks (*)</title>
+
+   <para>
+
+     Sometimes it is useful to extend a language in order to ease
+     transformations.
+
+   </para>
+  
+<sect1>
+  <title>Syntax of Expression Blocks</title>
+
+  <para>
+
+  </para>
+
+  <includefile 
+     id="ref-til-til-eblock-TIL-eblocks.sdf" 
+     root="../../src" 
+     file="til/til-eblock/TIL-eblocks.sdf" />
+
+
+</sect1>
+
+<sect1>
+  <title>Desugaring Expression Blocks</title>
+
+  <para>
+
+  </para>
+
+  <includefile 
+     id="ref-til-til-eblock-til-eblock-desugar.str" 
+     root="../../src" 
+     file="til/til-eblock/til-eblock-desugar.str" />
+
+</sect1>
+
+<sect1>
+  <title>Example</title>
+
+  <para>
+
+     desugar expresion blocks, then perform simplification, copy
+     propagation, constant propagation, and finally dead code
+     elimination.
+
+  </para>
+
+  <includefile 
+     id="ref-til-xmpl-eblock-desugar-test2" 
+     root="../../src" 
+     file="til/xmpl/eblock-desugar-test2" />
+
+  <beforeafter 
+     id="ref-til-xmpl-eblock-desugar-test2-run" 
+     root="../../src" 
+     file1="til/xmpl/eblock-desugar-test2.til"
+     file2="til/xmpl/eblock-desugar-test2.txt" />
+
+  <beforeafter 
+     id="ref-til-xmpl-eblock-desugar-test2-run" 
+     root="../../src" 
+     file1="til/xmpl/eblock-desugar-test2.txt"
+     file2="til/xmpl/eblock-desugar-test2.cp.txt" />
+
+</sect1>
+
+</chapter>
