@@ -137,4 +137,68 @@ new-test =
   )
     </programlisting>
   </section>
+  
+  <section>
+    <title>Unit testing with XTC</title>
+    
+    <para>
+      XTC is the preferred system for writing components in Stratego/XT. Testing
+      that an XTC component acts as intended is not much more difficult than
+      for individual strategies. As the semantics of the interfaces to XTC 
+      programs is open-ended, there is currently no generic testing
+      framework for handling all the details.  
+    </para>
+    
+    <para>
+      Nevertheless, adapting the unit testing framework explained above for 
+      testing your components is easy. Consider the strategy 
+      <function>xtc-apply-test</function>, given below.
+    </para>
+    
+    <programlisting>
+xtc-apply-test(|nm, prog, args, inp, outp) =
+  xtc-temp-files(
+    apply-test(!nm,
+        write-to
+      ; xtc-transform(!prog, !args)
+      ; read-from
+    , !inp
+    , !outp
+    )
+  )
+    </programlisting>
+
+    <para>
+      This is a straightforward extension of <function>apply-test</function>. It
+      will invoke the XTC program given in the <varname>prog</varname> term argument
+      with the list of command line arguments in <varname>args</varname>. The input to the
+      program is the term given by <varname>inp</varname>. The resulting term after
+      <varname>prog</varname> has been run is checked against <varname>outp</varname>. 
+      If they match, the test succeeds. 
+    </para>
+    
+    <para>
+      The simple code above does not account for additional file arguments to 
+      <varname>prog</varname>. This may be useful if <varname>prog</varname> if 
+      <varname>prog</varname> is, say, a pretty-printer which takes both a document
+      and a style sheet as arguments. The code below provides an example of how
+      this may be handled.
+    </para>      
+    
+    <programlisting>
+xtc-apply-pp-test(|nm, prog, ssheet, args, inp, outp) =
+  xtc-temp-files(
+    apply-test(!nm,
+      where(&lt;print-to&gt; [ssheet] => FILE(f))
+      ; write-to
+      ; xtc-transform(!prog, &lt;concat&gt; [ args, "--stylesheet", f])
+      ; read-from
+    , !inp
+    , !outp
+    )
+  )      
+    </programlisting>
+    
+  </section>
+      
 </chapter>
