@@ -31,24 +31,26 @@
     <title>Description</title>
 
     <para>
-      sglr is a scannerless, generalized LR parser. It interprets a parse table on a given
-      textual input file. The parse table must be generated from an SDF2 grammar definition 
-      using the sdf2table. If the result of the parse is unambiguous, a parse tree
-      is emitted. In the case of an ambiguity, a parse forest is emitted.
+      <command>sglr</command> is a scannerless, generalized LR parser. It interprets a parse 
+      table on a given textual input file. The parse table must be generated from an SDF2 
+      grammar definition using the <command>sdf2table</command> tool. If the result of the 
+      parse is unambiguous, a parse tree is emitted. In the case of an ambiguity, a parse
+      forest is emitted.
     </para>
     
     <para>
       The term "scannerless" refers to the fact that the parser treats characters as tokens.
       There is no separate token scanner. The term "generalized" indicates that the parser
       finds all possible derivations for a given input string. Together, these two features
-      allows users to construct ambiguous grammars, if they desire. sglr will not complain
-      about conflicts in the parse table, but output the ambiguous result.
+      allows users to construct ambiguous grammars, if they desire. <command>sglr</command>
+      will not complain about conflicts in the parse table, but output the ambiguous result.
     </para>
     
     <para>
       For the ambiguous cases, the user is free to construct problem-specific disambiguation
-      tools which must be applied to the output from sglr. This is useful for dealing with
-      various complicated programming languages that are highly ambiguous and context-sensitive.  
+      tools which must be applied to the output from <command>sglr</command>. This is useful
+      for dealing with various complicated programming languages that are highly ambiguous
+      and context-sensitive.  
     </para>
     
   </refsection>
@@ -67,7 +69,7 @@
           </para>
           
           <para>
-            In the absence of the <option>-i</option> option,  sglr will read 
+            In the absence of the <option>-i</option> option,  <command>sglr</command> will read 
             from <filename>stdin</filename>.
           </para>  
         </listitem>
@@ -82,8 +84,8 @@
           </para>
           
           <para>
-            In the absence of the <option>-o</option> option, sglr will write
-            to <filename>stdout</filename>.
+            In the absence of the <option>-o</option> option, <command>sglr</command> will
+            write to <filename>stdout</filename>.
           </para>
         </listitem>
       </varlistentry>
@@ -100,7 +102,7 @@
             Note: This option is always required.
           </para>
           <para>
-            Refer to the tool <filename>sdf2table</filename> for how to create parse tables.
+            Refer to the tool <command>sdf2table</command> for how to create parse tables.
           </para>
         </listitem>
       </varlistentry>
@@ -109,7 +111,7 @@
         <term><option>-b</option></term>
         <listitem>
           <para>
-            Use the binary ATerm (baf) output format. Default is yes.
+            Use the binary ATerm (BAF) output format. Default is yes.
           </para>  
         </listitem>
       </varlistentry>
@@ -285,9 +287,10 @@
     <title>Example</title>
 
     <para>
-      Assuming you have used sdf2table to generate a parse table for you language in
-      the file <filename>lang.tbl</filename>, and that your input program is in the 
-      file <filename>input.lang</filename>, you can apply sglr as follows:
+      Assuming you have used <command>sdf2table</command> to generate a parse table for
+      you language in the file <filename>lang.tbl</filename>, and that your input program
+      is in the file <filename>input.lang</filename>, you can apply <command>sglr</command>
+      as follows:
     </para>
 
     <screen><prompt>$ </prompt>sglr -p lang.tbl -i input.lang -o lang.trm</screen>
