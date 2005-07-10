@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-sglri">
   <refnamediv>
     <refname>sglri</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>parse a text file using <command>sglri</command> and implode using <command>implode-asfix</command></refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -9,7 +9,18 @@
       <command>sglri</command>
       <arg>-i <replaceable>file</replaceable></arg>
       <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-p <replaceable>file</replaceable></arg>
+      <arg>-s <replaceable>symbol</replaceable> | --start <replaceable>symbol</replaceable></arg>
+      <arg>--no-heuristic-filters</arg>
+      <arg>--sglr <replaceable>opt</replaceable></arg>
+      <arg>--impl <replaceable>opt</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,18 +28,19 @@
     <title>Description</title>
 
     <para>
-      The sglri utility is used to 
+      The <command>sglri</command> utility combines the functionality of the
+      <command>sglr</command> parser and the <command>implode-asfix</command> 
+      implosion tool into one convenient bundle. 
+      <command>sglri</command> will first invoke <command>sglr</command> with the parse
+      table provided by the <option>-p</option> option, then apply 
+      <command>implode-asfix</command> to the resulting parse tree. The imploded tree is
+      then the final result of <command>sglri</command>.
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
+    
     <para>
-      To ...
+      See documentation for <command>sglr</command> and <command>implode-asfix</command>
+      for details on each of the components.
     </para>
-
-    <screen><prompt>$ </prompt>sglri -i tree.trm -o tree.tmpl</screen>
   </refsection>
 
   <refsection>
@@ -36,48 +48,192 @@
 
     <variablelist>
       <title>Input/Output Options</title>
-
+      
       <varlistentry>
         <term><option>-i <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
-	    Sglri the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
+            The input term given by the file name <filename><replaceable>file</replaceable></filename>.
+          </para>
+          
+          <para>
+            In the absence of the <option>-i</option> option,  <command>sglri</command> 
+            will read from <filename>stdin</filename>.
+          </para>  
         </listitem>
       </varlistentry>
-
+      
       <varlistentry>
         <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
         <listitem>
-	  <para>
-	    Write the resulting sglri term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
+          <para>
+            The output will be written to the file given by the file name <filename><replaceable>file</replaceable></filename>.
+          </para>
+          
+          <para>
+            In the absence of the <option>-o</option> option, <command>sglri</command> will
+            write to <filename>stdout</filename>.
+          </para>
         </listitem>
       </varlistentry>
-    </variablelist>
+      
+      <varlistentry>
+        <term><option>-b</option></term>
+        <listitem>
+          <para>
+            The output will be written in the binary (BAF) ATerm format.
+          </para>
+          
+          <para>
+            ATerms in the BAF format require a lot less space than ones in the TAF format, 
+            but the Java ATerm library does not currently support baf ATerms. ATerms in the
+            baf format is the preferred format of exchange between Stratego tools.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+    </variablelist>    
 
     <variablelist>
-      <title>Common Options</title>
-
+      <title>Other Options</title>
+      
       <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
+        <term><option>-s <replaceable>symbol</replaceable></option></term>
         <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
+          <para>
+            Specific start symbol to use in the input grammar. Default is unspecified. 
+          </para>  
         </listitem>
       </varlistentry>
+      
+      <varlistentry>
+        <term>--no-heuristic-filters</term>
+        <listitem>
+          <para>
+            Do not use heuristic disambiguation filters. Enabling this option is highly
+            encouraged.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--sglr <replaceable>opt</replaceable></option></term>
+        <listitem>
+          <para>
+            Pass the option <replaceable>opt</replaceable> to <command>sglr</command>.
+          </para>  
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--sglr <replaceable>opt</replaceable></option></term>
+        <listitem>
+          <para>
+            Pass the option <replaceable>opt</replaceable> to <command>implode-asfix</command>.
+          </para>  
+        </listitem>
+      </varlistentry>
+      
+
+      <varlistentry>
+        <term><option>-s <replaceable>symbol</replaceable></option></term>
+        <listitem>
+          <para>
+            Specific start symbol to use in the input grammar. Default is unspecified. 
+          </para>  
+        </listitem>
+      </varlistentry>
+      
     </variablelist>
+    
+    <variablelist>
+      <title>Debugging Options</title>
+      
+      <varlistentry>
+        <term><option>--about</option></term>
+        <listitem>
+          <para>
+            See <option>--version</option>.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-h | -? | --help</option></term>
+        <listitem>
+          <para>
+            Display usage information.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--keep <replaceable>int</replaceable></option></term>
+        <listitem>
+          <para>
+            Keep intermediate results produced by the internal stages in the 
+            pretty-printing process. This is only useful for debugging.  A high
+            value of <replaceable>int</replaceable> indicates increased eagerness
+            for keeping intermediate results. 
+          </para>
+          <para>
+            Default setting is 0, indicating that no intermediates will be kept.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-S | --silent</option></term>
+        <listitem>
+          <para>
+            Silent execution. Same as <option>--verbose <replaceable>0</replaceable></option>.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--verbose <replaceable>int</replaceable></option></term>
+        <listitem>
+          <para>
+            Set verbosity level to numerical value <replaceable>int</replaceable>. The
+            higher the number, the more information about pp-aterm's inner workings are
+            printed.
+          </para>  
+          
+          <para>
+            Alternatively, <replaceable>int</replaceable> can be set to either of the 
+            following verbosity levels, given in increasing order of verbosity: 
+            <option>emergency</option>, <option>alert</option>, <option>critical</option>,
+            <option>error</option>, <option>warning</option>, <option>notice</option>,
+            <option>info</option>, <option>debug</option>, <option>vomit</option>. 
+          </para>
+          
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--version</option></term>
+        <listitem>
+          <para>
+            Displays the tool name and version.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      
+    </variablelist>
+    
+  </refsection>
+  
+  
+  <refsection>
+    <title>Example</title>
+
+    <para>
+      See the commands <command>sglr</command> and <command>implode-asfix</command> for 
+      examples.
+    </para>
+    
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
