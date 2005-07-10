@@ -7,9 +7,15 @@
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>sglr</command>
+      <arg>-2</arg>
+      <arg>-A</arg>
+      <arg>-b</arg>
+      <arg>-c</arg>
+      <arg>-d</arg>
       <arg>-i <replaceable>file</replaceable></arg>
       <arg>-o <replaceable>file</replaceable></arg>
       <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      
     </cmdsynopsis>
   </refsynopsisdiv>
 

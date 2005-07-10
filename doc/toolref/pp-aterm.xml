@@ -2,7 +2,7 @@
   <refnamediv>
     <refname>pp-aterm</refname>
     <refpurpose>
-      adds layout to an ATerm to make its structure more clear.
+      pretty-prints an ATerm in text format to make it readable to humans.
     </refpurpose>
   </refnamediv>
 
@@ -10,9 +10,161 @@
     <cmdsynopsis>
       <command>pp-aterm</command>
       <arg>-i <replaceable>file</replaceable></arg>
+      <arg>--max-term-size <replaceable>int</replaceable></arg>
+      <arg>--max-depth <replaceable>int</replaceable></arg>
+      <arg>-u | --unescaped</arg>
+      <arg>-o <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>--keep <replaceable>level</replaceable> | -k <replaceable>level</replaceable></arg>
     </cmdsynopsis>
   </refsynopsisdiv>
+  
+  <refsection>
+    <title>Description</title>
+    
+    <para>
+      The pp-aterm utility is primarily used for inspecting an ATerm. It prints
+      an ATerm as text and adds layout to make the structure more clear. Some 
+      aspects of the formatting may be controlled by command line switches.
+    </para>
+    
+    <para>
+      pp-aterm may also be used to convert between the binary (baf) and textual
+      (taf) ATerm formats. This is useful for interoperability with the Java
+      ATerm library, which does not currently support ATerms in the baf format.
+    </para> 
+  </refsection>
 
+  <refsection>
+    <title>Options</title>
+    
+    <variablelist>
+      <title>Input/Output Options</title>
+      
+      <varlistentry>
+        <term><option>-i <replaceable>file</replaceable></option></term>
+        <listitem>
+          <para>
+            The input term given by the file name <filename><replaceable>file</replaceable></filename>.
+          </para>
+
+          <para>
+            In the absence of an <option>-i</option>, pp-aterm will read from <filename>stdin</filename>.
+          </para>  
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            The output will be written to the file given by the file name <filename><replaceable>file</replaceable></filename>.
+          </para>
+          
+          <para>
+            In the absence of an <option>-o</option>, pp-aterm will write to <filename>stdout</filename>.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    
+    <variablelist>
+      <title>Formatting Options</title>
+      <varlistentry>
+        <term><option>--max-depth <replaceable>int</replaceable></option></term>
+        <listitem>
+          <para>
+            The depth, i.e. nested level of subterms pp-aterm will traverse before a generic subterm
+            marker will be printed. By default, there is no restriction to the depth.
+          </para>
+          
+          <para>
+            Note that if you use this option, you cannot feed the resulting output to other tools.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--max-term-size <replaceable>int</replaceable></option></term>
+        <listitem>
+          <para>
+            The maximal number of terms allowed per line. The higher the number, the more
+            columns are required for the result.
+          </para>
+          
+          <para>
+            Default is 8. Minimum is 1 (0 will be adjusted to 1).
+          </para>
+        </listitem>
+      </varlistentry>
+      
+    </variablelist>
+          
+  </refsection>
+    
+  <refsection>
+    <title>Example</title>
+    
+    <para>
+      The following is a typical term stored in a textual ATerm (taf) file: 
+    </para>
+    
+    <programlisting>
+Let([FunDecs([FunDec("fact",[FArg("n",Tp(Tid("int")))],Tp(Tid("int")),
+If(Lt(Var("n"),Int("1")),Int("1"),Seq([Times(Var("n"),Call(
+Var("fact"),[Minus(Var("n"),Int("1"))]))])))])],[Call(
+Var("printint"),[Call(Var("fact"),[Int("10")])])])
+    </programlisting>
+
+    <para>
+      By running <screen><prompt>$ </prompt>pp-aterm -i prot.trm</screen>, we get
+      the readable version below:
+    </para>
+    
+    <programlisting>
+Let(
+  [ FunDecs(
+      [ FunDec(
+          "fact"
+        , [FArg("n", Tp(Tid("int")))]
+        , Tp(Tid("int"))
+        , If(
+            Lt(Var("n"), Int("1"))
+          , Int("1")
+          , Seq(
+              [ Times(
+                  Var("n")
+                , Call(
+                    Var("fact")
+                  , [Minus(Var("n"), Int("1"))]
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  ]
+, [ Call(
+      Var("printint")
+    , [Call(Var("fact"), [Int("10")])]
+    )
+  ]
+)
+    </programlisting>
+    
+    <para>
+      By using the options <function>--max-term-size</function> and 
+      <function>--max-depth</function> you can control the number of terms you 
+      want per line and the level of "detail" you want to see, respectively.
+    </para> 
+      
+  </refsection>
+
+ 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </refentry>
