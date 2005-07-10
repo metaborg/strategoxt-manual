@@ -28,15 +28,15 @@
     <title>Description</title>
     
     <para>
-      The pp-aterm utility is primarily used for inspecting an ATerm. It prints
-      an ATerm as text and adds layout to make the structure more clear. Some 
-      aspects of the formatting may be controlled by command line switches.
+      The <command>pp-aterm</command> utility is primarily used for inspecting an
+      ATerm. It prints an ATerm as text and adds layout to make the structure more
+      clear. Some aspects of the formatting may be controlled by command line switches.
     </para>
     
     <para>
-      pp-aterm may also be used to convert between the binary (baf) and textual
-      (taf) ATerm formats. This is useful for interoperability with the Java
-      ATerm library, which does not currently support ATerms in the baf format.
+      <command>pp-aterm</command> may also be used to convert between the binary (BAF)
+      and textual (TAF) ATerm formats. This is useful for interoperability with the
+      Java ATerm library, which does not currently support ATerms in the BAF format.
     </para> 
   </refsection>
 
@@ -54,8 +54,8 @@
           </para>
 
           <para>
-            In the absence of the <option>-i</option> option,  pp-aterm will read 
-            from <filename>stdin</filename>.
+            In the absence of the <option>-i</option> option,  <command>pp-aterm</command> 
+            will read from <filename>stdin</filename>.
           </para>  
         </listitem>
       </varlistentry>
@@ -68,8 +68,8 @@
           </para>
           
           <para>
-            In the absence of the <option>-o</option> option, pp-aterm will write
-            to <filename>stdout</filename>.
+            In the absence of the <option>-o</option> option, <command>pp-aterm</command> will
+            write to <filename>stdout</filename>.
           </para>
         </listitem>
       </varlistentry>
@@ -78,11 +78,11 @@
         <term><option>-b</option></term>
         <listitem>
           <para>
-            The output will be written in the binary (baf) ATerm format.
+            The output will be written in the binary (BAF) ATerm format.
           </para>
           
           <para>
-            ATerms in the baf format require a lot less space than ones in the taf format, 
+            ATerms in the BAF format require a lot less space than ones in the TAF format, 
             but the Java ATerm library does not currently support baf ATerms. ATerms in the
             baf format is the preferred format of exchange between Stratego tools.
           </para>
@@ -97,8 +97,9 @@
         <term><option>--max-depth <replaceable>int</replaceable></option></term>
         <listitem>
           <para>
-            The depth, i.e. nested level of subterms pp-aterm will traverse before a generic subterm
-            marker will be printed. By default, there is no restriction to the depth.
+            The depth, i.e. nested level of subterms <command>pp-aterm</command> will traverse
+            before a generic subterm marker will be printed. By default, there is no 
+            restriction to the depth.
           </para>
           
           <para>
