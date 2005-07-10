@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-sglr">
   <refnamediv>
     <refname>sglr</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>given a grammar definition, sglr parses a text file and produces an ATerm conforming to the grammar.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -12,10 +12,18 @@
       <arg>-b</arg>
       <arg>-c</arg>
       <arg>-d</arg>
+      <arg>-f[adefipr]</arg>
       <arg>-i <replaceable>file</replaceable></arg>
+      <arg>-l</arg>
+      <arg>-m</arg>
+      <arg>-m</arg>
       <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
-      
+      <arg>-p <replaceable>file</replaceable></arg>
+      <arg>-s <replaceable>symbol</replaceable></arg>
+      <arg>t</arg>
+      <arg>-v</arg>
+      <arg>-V</arg>
+<!--      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg> -->
     </cmdsynopsis>
   </refsynopsisdiv>
 
