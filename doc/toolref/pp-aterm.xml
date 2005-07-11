@@ -44,54 +44,6 @@
     <title>Options</title>
     
     <variablelist>
-      <title>Input/Output Options</title>
-      
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>
-            The input term given by the file name <filename><replaceable>file</replaceable></filename>.
-          </para>
-
-          <para>
-            In the absence of the <option>-i</option> option,  <command>pp-aterm</command> 
-            will read from <filename>stdin</filename>.
-          </para>  
-        </listitem>
-      </varlistentry>
-      
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-          <para>
-            The output will be written to the file given by the file name <filename><replaceable>file</replaceable></filename>.
-          </para>
-          
-          <para>
-            In the absence of the <option>-o</option> option, <command>pp-aterm</command> will
-            write to <filename>stdout</filename>.
-          </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-b</option></term>
-        <listitem>
-          <para>
-            The output will be written in the binary (BAF) ATerm format.
-          </para>
-          
-          <para>
-            ATerms in the BAF format require a lot less space than ones in the TAF format, 
-            but the Java ATerm library does not currently support baf ATerms. ATerms in the
-            baf format is the preferred format of exchange between Stratego tools.
-          </para>
-        </listitem>
-      </varlistentry>
-      
-    </variablelist>
-    
-    <variablelist>
       <title>Formatting Options</title>
       <varlistentry>
         <term><option>--max-depth <replaceable>int</replaceable></option></term>
@@ -133,82 +85,9 @@
       
     </variablelist>
 
-    <variablelist>
-      <title>Debugging Options</title>
-
-      <varlistentry>
-        <term><option>--about</option></term>
-        <listitem>
-          <para>
-            See <option>--version</option>.
-          </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-h | -? | --help</option></term>
-        <listitem>
-          <para>
-            Display usage information.
-          </para>
-        </listitem>
-      </varlistentry>
-      
-      <varlistentry>
-        <term><option>--keep <replaceable>int</replaceable></option></term>
-        <listitem>
-          <para>
-            Keep intermediate results produced by the internal stages in the 
-            pretty-printing process. This is only useful for debugging.  A high
-            value of <replaceable>int</replaceable> indicates increased eagerness
-            for keeping intermediate results. 
-          </para>
-          <para>
-            Default setting is 0, indicating that no intermediates will be kept.
-          </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-S | --silent</option></term>
-        <listitem>
-          <para>
-            Silent execution. Same as <option>--verbose <replaceable>0</replaceable></option>.
-          </para>
-        </listitem>
-      </varlistentry>
-      
-      <varlistentry>
-        <term><option>--verbose <replaceable>int</replaceable></option></term>
-        <listitem>
-          <para>
-            Set verbosity level to numerical value <replaceable>int</replaceable>. The
-            higher the number, the more information about pp-aterm's inner workings are
-            printed.
-          </para>  
-          
-          <para>
-           Alternatively, <replaceable>int</replaceable> can be set to either of the 
-           following verbosity levels, given in increasing order of verbosity: 
-           <option>emergency</option>, <option>alert</option>, <option>critical</option>,
-           <option>error</option>, <option>warning</option>, <option>notice</option>,
-           <option>info</option>, <option>debug</option>, <option>vomit</option>. 
-          </para>
-          
-        </listitem>
-      </varlistentry>
-      
-      <varlistentry>
-        <term><option>--version</option></term>
-        <listitem>
-          <para>
-            Displays the tool name and version.
-          </para>
-        </listitem>
-      </varlistentry>
-      
-      
-    </variablelist>
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
   </refsection>
     
