@@ -28,7 +28,15 @@
     <title>Description</title>
 
     <para>
-      The xtc utility is used to 
+      The Stratego/XT component model is called XTC. It allows developers to compose XT 
+      components (Stratego programs) together, creating new components in a flexible, scalable
+      and modular way. Components live together in XTC repositories, which have an internal
+      directory structure.
+    </para>
+    
+    <para>
+      The <command>xtc</command> tool is used to administer components in an XTC repository.
+      It can add and remove components from a repository as well as inspect repositories. 
     </para>
   </refsection>
 
@@ -36,64 +44,185 @@
     <title>Options</title>
     
     <variablelist>
-      <title>Input/Output Options</title>
+      <title>Repository Manipulation Options</title>
       
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>-r <replaceable>rep</replaceable> | --repository <replaceable>rep</replaceable></option></term>
+
         <listitem>
           <para>
-            Xtc the abstract syntax tree in
-            <replaceable>file</replaceable>. 
+            The repository to work on. <replaceable>rep</replaceable> is the base path to the
+            repository. This option is mandatory.
           </para>
         </listitem>
       </varlistentry>
       
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <term>
+          <option>
+            i <filename><replaceable>rep</replaceable></filename> 
+            | import <filename><replaceable>rep</replaceable></filename>
+          </option>
+        </term>
+        
         <listitem>
           <para>
-            Write the resulting xtc term to
-            <filename><replaceable>file</replaceable></filename>.
+            Import the repository in <replaceable>rep</replaceable>.
           </para>
           
           <para>
-            The resulting file is ...
+            This command will import the entire contents (all components) of the repository
+            <replaceable>rep</replaceable>. 
           </para>
         </listitem>
       </varlistentry>
-    </variablelist>
-    
-    <variablelist>
-      <title>Common Options</title>
-      
+
       <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
+        <term><option>r | register</option></term>
+        
         <listitem>
           <para>
-            Use YYY to ...
-          </para>
-          
-          <para>
-            The <replaceable>YYY</replaceable> ...
+            Register a file in the repository. This option must be followed by <option>-t</option>,
+            <option>-V</option> and <option>-l</option>.
           </para>
         </listitem>
       </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>
+            -t <filename><replaceable>name</replaceable></filename>
+            | --tool <filename><replaceable>name</replaceable></filename>
+          </option>
+        </term>
+        
+        <listitem>
+          <para>
+            Name of the tool to register (<option>r</option> command) or query for (<option>q</option> command).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>
+            -l <filename><replaceable>loc</replaceable></filename>
+            | --location <filename><replaceable>name</replaceable></filename>
+          </option>
+        </term>
+        
+        <listitem>
+          <para>
+            Location inside the repository to place a new tool. Used with the register (<option>r</option>) command.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>
+            -V <replaceable>num</replaceable>
+            | --Version <replaceable>num</replaceable>
+          </option>
+        </term>
+        
+        <listitem>
+          <para>
+            Version of the tool to register (<option>r</option> command) or query for (<option>q</option>).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>q | query</option></term>
+        
+        <listitem>
+          <para>
+            Queries the repository for all installed components. May be used with <option>-L</option>.
+          </para>
+          <para>
+            By using the <option>-a</option>, <option>-t</option> and <option>-V</option> option, filtering
+            may be done.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-a | --all</option></term>
+        
+        <listitem>
+          <para>
+            List all registered tools. Used with the <option>q</option> command.
+          </para>
+        </listitem>
+      </varlistentry>
+            
+      <varlistentry>
+        <term><option>-L | --Location</option></term>
+        
+        <listitem>
+          <para>
+            List only locations. Used with the <option>q</option> command.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-R | --Repository</option></term>
+        
+        <listitem>
+          <para>
+            List the location of the repository as a Bash-compatible shell environment variable setting.
+          </para>
+        </listitem>
+      </varlistentry>
+      
     </variablelist>
     
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <!-- FIXME: Actually, this tool does not support keep -->
     
   </refsection>
   
   <refsection>
-    <title>Example</title>
+    <title>Examples</title>
 
     <para>
-      To ...
+      Consider the following command.
+    </para>
+    
+    <screen><prompt>$ </prompt>xtc -r /usr/share/StrategoXT/XTC register -t sglr -l /bin -V 3.8</screen>    
+
+    <para>    
+      This will register version 3.8 of <command>sglr</command> with the XTC repository located in 
+      <filename>/usr/share/StrategoXT</filename>. It will be placed in the <filename>/bin</filename>
+      directory inside the repository.
+    </para>
+      
+     <para>
+       Note that the generic <filename>Makefile.xt</filename> provided by AutoXT automatically 
+       registers all installed tools with the package repository.
+     </para>       
+    
+    <para>
+      XTC repositories can be used to find the installation location of a tool without needing to
+      know all the installation paths. For example, the following query can be used to find out 
+      where <command>sglr</command> is installed:
     </para>
 
-    <screen><prompt>$ </prompt>xtc -i tree.trm -o tree.tmpl</screen>
+    <screen><prompt>$ </prompt>xtc -r /usr/share/StrategoXT/XTC query -t sglr
+sglr (3.8) : /bin/sglr</screen>
+    
+    
+    <para>
+      An existing repository can be inherited by importing it:  
+    </para>
+    
+    
+    <screen><prompt>$ </prompt>xtc -r /home/user/share/tiger/XTC import /usr/share/StrategoXT/XTC</screen>    
+    
   </refsection>
 
 
