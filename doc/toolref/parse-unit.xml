@@ -1,15 +1,28 @@
 <refentry lang="en" id="ref-parse-unit">
   <refnamediv>
     <refname>parse-unit</refname>
-    <refpurpose>(TODO) performs the test cases in a testsuite for an SDF syntax definition</refpurpose>
+    <refpurpose>performs the test cases in a testsuite for an SDF syntax definition</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>parse-unit</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-p <replaceable>file</replaceable></arg>
+      <arg>--abstract-input</arg>
+      <arg>--no-heuristic-filters</arg>
+      <arg>--single <replaceable>int</replaceable></arg>
+      <arg>--asfix2</arg>
+      <arg>--ast</arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>--check</arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,28 +30,103 @@
     <title>Description</title>
 
     <para>
-      The parse-unit utility is used to 
+      The <command>parse-unit</command> utility is used for testing SDF syntax definitions. Using 
+      it, you can check that small code fragements are parsed correctly
+      with your syntax definition.
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
+    
     <para>
-      To ...
-    </para>
+      The testsuites that <command>parse-unit</command> employes, have tests with an input and an 
+      expected result. You can specify that a test should succeed, fail or that the abstract syntax
+      tree should have a specific format. The input to <command>parse-unit</command> is a string or
+      the contents of a file.
+    </para>      
 
-    <screen><prompt>$ </prompt>parse-unit -i tree.trm -o tree.tmpl</screen>
   </refsection>
 
   <refsection>
     <title>Options</title>
 
+    <variablelist>
+      <title>Parsing Options</title>
+
+      <varlistentry>
+        <term><option>-p <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            Use parse table from the file <filename>file</filename>. Refer to the 
+            <link linkend="ref-sdf2table"><command>sdf2table</command></link> tool for how
+            to create one.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--abstract-input</option></term>
+        <listitem>
+          <para>
+            Indicates to <command>parse-unit</command> that the testsuite input is already in abstract syntax.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--no-heuristic-filters</option></term>
+        <listitem>
+          <para>
+            Do not use heuristic disambiguation filters. It is recommended to enable this options.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--single <replaceable>num</replaceable></option></term>
+        <listitem>
+          <para>
+            Run parse test number <replaceable>num</replaceable> and output the result.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--asfix2</option></term>
+        <listitem>
+          <para>Enable production of an AsFix2 parse tree instead of an abstract syntax tree.</para>  
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--ast</option></term>
+        <listitem>
+          <para>Enable production of an abstract syntax tree. This is the default.</para>  
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+        
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-
+    
   </refsection>
+  
+  <refsection>
+    <title>Example</title>
+
+    <para>
+      Refer to the chapter <link linkend="sdf-unit-testing">Unit Testing with Parse-unit</link>
+      for a full discussion of <command>parse-unit</command> in action.
+    </para>
+
+    <para>
+      Given an appropriate language parse table in <filename>lang.tbl</filename>, you can run
+      the fifth test available from the testsuite <filename>mytests.testsuite</filename>
+      as follows:
+    </para>
+     
+    <screen><prompt>$ </prompt>parse-unit --single 5 -p lang.tbl -i mytests.testsuite</screen>
+  </refsection>
+
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
