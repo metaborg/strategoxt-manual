@@ -1,15 +1,24 @@
 <refentry lang="en" id="ref-xml2aterm">
   <refnamediv>
     <refname>xml2aterm</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>converts an XML document to a comparable ATerm.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>xml2aterm</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>--explicit</arg>
+      <arg>--very-explicit</arg>
+      <arg>--implicit</arg>
+      <arg>-i <replaceable>f</replaceable> | --input <replaceable>f</replaceable></arg>
+      <arg>-o <replaceable>f</replaceable> | --output <replaceable>f</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>int</replaceable></arg>
+      <arg>-k <replaceable>int</replaceable> | --keep <replaceable>int</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,72 +26,149 @@
     <title>Description</title>
 
     <para>
-      The xml2aterm utility is used to 
+      The <command>xml2aterm</command> utility is used to convert an XML document to a corresponding
+      ATerm. The ATerm and XML languages are slightly different, so there is a tradeoff between how
+      "natural" the result of the conversion feels and how faithfully it can be converted back into
+      XML. 
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
+    
     <para>
-      To ...
+      Since applications have different needs, there are three conversion modes available: 
+      <emphasis>implicit</emphasis>, <emphasis>explicit</emphasis>, and 
+      <emphasis>very explicit</emphasis>.
     </para>
-
-    <screen><prompt>$ </prompt>xml2aterm -i tree.trm -o tree.tmpl</screen>
+    
+    <para>
+      The <emphasis>explicit</emphasis> mode is the default mode and supports a roundtrip for 
+      almost all ATerms. This means that an ATerm can be converted to XML and back without
+      changing its structure.
+    </para>
+    
+    <para>
+      The <emphasis>implicit</emphasis> mode does not support such a roundtrip, but the XML is
+      usually more attractive. Use this mode if you only want to export some ATerm to an XML
+      application. The name 'implicit' is related to the more implicit structure in the resulting
+      XML.
+    </para>
+    
+    <para>
+      The <emphasis>very explicit</emphasis> mode supports a roundtrip for all ATerms. This mode
+      is the way to go if you need the guarantee that a roundtrip preserves the structure of all
+      your ATerms.
+    </para>
+    
+    <para>
+      The structure of the XML documents in the very explicit mode is generic: there are no language
+      specific elements in these XML documents. The structure is described as a RELAX NG schema.
+    </para> 
   </refsection>
 
   <refsection>
     <title>Options</title>
-
+    
     <variablelist>
-      <title>Input/Output Options</title>
-
+      <title>XML Processing Options</title>
+      
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>--explicit</option></term>
         <listitem>
           <para>
-	    Xml2aterm the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
+            Do conversion in explicit mode. This is the default. See below for details.
+          </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>--very-explicit</option></term>
         <listitem>
-	  <para>
-	    Write the resulting xml2aterm term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
+          <para>
+            Do conversion in very explicit mode. See below for details.            
+          </para>
         </listitem>
       </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
-
+      
       <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
+        <term><option>--implicit</option></term>
         <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
+          <para>
+            Do conversion in implicit mode. See below for details.
+          </para>
         </listitem>
       </varlistentry>
     </variablelist>
-    
+
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
+  </refsection>
+  
+  <refsection>
+    <title>Example</title>
+
+    <para>
+      Consider the ATerm below.
+    </para>
+
+    <programlisting>
+fred(None, [foo, bar])
+    </programlisting>
+    
+    <para>
+      In the explicit mode, the corresponding XML would be:
+    </para>
+    
+    <programlisting>
+&lt;fred xmlns:at="http://aterm.org"&gt;
+  &lt;None/&gt;
+  &lt;at:list&gt;
+    &lt;foo/&gt;
+      &lt;bar/&gt;
+  &lt;/at:list&gt;
+&lt;/fred&gt;
+    </programlisting>
+    
+    <para>
+      In the very explicit mode, the corresponding XML would be:
+    </para>
+    
+    <programlisting>
+&lt;at:appl xmlns:at="http://aterm.org" at:fun="fred"&gt;
+ &lt;at:appl at:fun="None"/&gt;
+  &lt;at:list&gt;
+   &lt;at:appl at:fun="foo"/&gt;
+   &lt;at:appl at:fun="bar"/&gt;
+ &lt;/at:list&gt;
+&lt;/at:appl&gt;
+    </programlisting>
+
+    <para>
+      In the implicit mode, the corresponding XML would be
+    </para>
+    
+    <programlisting>
+&lt;fred xmlns:at="http://aterm.org"&gt;
+ &lt;foo/&gt;
+ &lt;bar/&gt;
+&lt;/fred&gt;
+    </programlisting>
+
+    
+    <para>
+      The following terms cannot be encoded into XML in the implicit mode, but will work in either
+      of the explicit noes.
+    </para>
+    
+    <programlisting>
+1 "abc" () (1, 2) [] [1, 2] 
+    </programlisting>
+    
+    
+    <para>
+      Invocation is straightforward:
+    </para>
+    
+    <screen><prompt>$ </prompt>xml2aterm --very-explicit -i tree.trm -o tree.xml</screen>
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
