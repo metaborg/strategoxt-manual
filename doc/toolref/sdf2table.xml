@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-sdf2table">
   <refnamediv>
     <refname>sdf2table</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>generates a parse table from an SDF syntax definition.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -78,6 +78,7 @@
         </listitem>
       </varlistentry>
     </variablelist>
+    
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>

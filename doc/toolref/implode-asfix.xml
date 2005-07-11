@@ -219,6 +219,11 @@ Plus(Int("1"),Mul(Int("2"),Int("3")))</screen>
 
       <include href="help-option.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     </variablelist>
+    
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>

@@ -175,6 +175,11 @@
       </varlistentry>
 
     </variablelist>
+    
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
   </refsection>
 
 
