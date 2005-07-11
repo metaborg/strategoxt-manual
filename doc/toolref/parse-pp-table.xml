@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-parse-pp-table">
   <refnamediv>
     <refname>parse-pp-table</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>

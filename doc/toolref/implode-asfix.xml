@@ -4,7 +4,7 @@
 <refentry lang="en" id="ref-implode-asfix">
   <refnamediv>
     <refname>implode-asfix</refname>
-    <refpurpose>maps an asfix parse tree to an abstract syntax tree</refpurpose>
+    <refpurpose>(TODO) maps an asfix parse tree to an abstract syntax tree</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>

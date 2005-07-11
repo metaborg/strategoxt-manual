@@ -2,7 +2,7 @@
   <refnamediv>
     <refname>sdf2parenthesize</refname>
     <refpurpose>
-      generates a Stratego module that puts Parenthetical constructors at the correct places.
+      (TODO) generates a Stratego module that puts Parenthetical constructors at the correct places.
     </refpurpose>
   </refnamediv>
 

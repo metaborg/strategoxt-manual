@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-format-check">
   <refnamediv>
     <refname>format-check</refname>
-    <refpurpose>analyzes whether the input ATerm conforms to the format that is
+    <refpurpose>(TODO) analyzes whether the input ATerm conforms to the format that is
    specified in the RTG (Regular Tree Grammar)</refpurpose>
   </refnamediv>
 

@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-sdf2table">
   <refnamediv>
     <refname>sdf2table</refname>
-    <refpurpose>generates a parse table from an SDF syntax definition.</refpurpose>
+    <refpurpose>(TODO) generates a parse table from an SDF syntax definition.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>

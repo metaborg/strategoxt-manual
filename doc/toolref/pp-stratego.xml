@@ -1,9 +1,7 @@
 <refentry lang="en" id="ref-pp-stratego">
   <refnamediv>
     <refname>pp-stratego</refname>
-    <refpurpose>
-      pretty-prints a Stratego program.
-    </refpurpose>
+    <refpurpose>(TODO) pretty-prints a Stratego program </refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>

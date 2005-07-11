@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-rtg-script">
   <refnamediv>
     <refname>rtg-script</refname>
-    <refpurpose>produces a regular tree grammar (RTG) by executing an RTG script</refpurpose>
+    <refpurpose>(TODO) produces a regular tree grammar (RTG) by executing an RTG script</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>

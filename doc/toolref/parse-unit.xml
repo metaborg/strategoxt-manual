@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-parse-unit">
   <refnamediv>
     <refname>parse-unit</refname>
-    <refpurpose>performs the test cases in a testsuite for an SDF syntax definition</refpurpose>
+    <refpurpose>(TODO) performs the test cases in a testsuite for an SDF syntax definition</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>

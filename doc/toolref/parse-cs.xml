@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-parse-cs">
   <refnamediv>
     <refname>parse-cs</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>

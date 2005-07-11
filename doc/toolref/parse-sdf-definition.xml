@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-parse-sdf-definition">
   <refnamediv>
     <refname>parse-sdf-definition</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
