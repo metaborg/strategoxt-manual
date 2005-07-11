@@ -1,0 +1,50 @@
+
+<variablelist>
+  <title>Common Input/Output Options</title>
+  
+  <varlistentry>
+    <term><option>-i <replaceable>file</replaceable></option></term>
+    <listitem>
+      <para>
+        The input term given by the file name <filename><replaceable>file</replaceable></filename>.
+      </para>
+      
+      <para>
+        In the absence of the <option>-i</option> option, <command>pp-aterm</command>
+        will read from <filename>stdin</filename>.
+      </para>
+    </listitem>
+  </varlistentry>
+  
+  <varlistentry>
+    <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+    
+    <listitem>
+      <para>
+        The output will be written to the file given by the file name 
+        <filename><replaceable>file</replaceable></filename>.
+      </para>
+      
+      <para>
+        In the absence of the <option>-o</option> option, 
+        output will be writte to <filename>stdout</filename>.
+      </para>
+    </listitem>
+  </varlistentry>
+  
+  <varlistentry>
+    <term><option>-b</option></term>
+    
+    <listitem>
+      <para>
+        The output will be written in the binary (BAF) ATerm format.
+      </para>
+      
+      <para>
+        ATerms in the BAF format require a lot less space than ones in the TAF format,
+        but the Java ATerm library does not currently support baf ATerms. ATerms in the baf
+        format is the preferred format of exchange between Stratego tools.
+      </para>
+    </listitem>
+  </varlistentry>
+</variablelist>

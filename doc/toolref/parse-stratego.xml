@@ -1,15 +1,27 @@
 <refentry lang="en" id="ref-parse-stratego">
   <refnamediv>
     <refname>parse-stratego</refname>
-    <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>parses a Stratego source file</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>parse-stratego</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-I <replaceable>dir</replaceable> | --Include <replaceable>dir</replaceable></arg>
+      <arg>--syntax <replaceable>syn</replaceable></arg>
+      <arg>--default-syntax <replaceable>syn</replaceable></arg>
+      <arg>--asfix</arg>
+      <arg>--desugaring <replaceable>on|off</replaceable></arg>
+      <arg>--assimilation <replaceable>on|off</replaceable></arg>
+      <arg></arg>  
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --output<replaceable>file</replaceable></arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>--k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,68 +29,185 @@
     <title>Description</title>
 
     <para>
-      The parse-stratego utility is used to 
+      The <command>parse-stratego</command> utility is used to parse Stratego source files.
+      The result of the parsing is an abstract syntax tree of the input program, output
+      as a binary ATerm.
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
+    
     <para>
-      To ...
+      Stratego source code may include modules from other directories. Specifying the search
+      path is done by the <option>-I</option> option. A parse error will occur if all referenced
+      modules cannot be found. By default the standard library is automatically included in
+      the search path.
+    </para>
+    
+     
+    <para>
+      Stratego source code can be extended with embedded languages having their own concrete 
+      syntax, making Stratego a syntactically extensible language. When the source code contains
+      a Stratego program extended in this way, <command>parse-stratego</command> must be told
+      which syntax to use when parsing the source code. This is the task of the 
+      <option>--syntax</option> and <option>--default-syntax</option> options.
+    </para>
+    
+    <para>
+      As a part of embedding languages in Stratego, the new language constructs can be 
+      translated into Stratego library functions and code. This is called assimilation, and
+      is controlled by the <option>--assimilation</option> switch.
     </para>
 
-    <screen><prompt>$ </prompt>parse-stratego -i tree.trm -o tree.tmpl</screen>
   </refsection>
 
   <refsection>
     <title>Options</title>
-
+    
     <variablelist>
-      <title>Input/Output Options</title>
+      <title>Module and Syntax Options</title>
 
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>-I <replaceable>dir</replaceable></option> | <option>--Include <replaceable>dir</replaceable></option></term>
+        
+        <listitem>
+          <para>Add <replaceable>dir</replaceable> to the module search path.</para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--syntax <replaceable>syn</replaceable></option></term>
+        
         <listitem>
           <para>
-	    Parse-Stratego the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
+            Use syntax <replaceable>syn</replaceable>.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--default-syn <replaceable>syn</replaceable></option></term>
+        
+        <listitem>
+          <para>
+            Use syntax <replaceable>syn</replaceable> as the default syntax.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--asfix</option></term>
+        <listitem>
+          <para>
+            Use the AsFix format.
+          </para>
+        </listitem>
+      </varlistentry>  
+        
+      <varlistentry>
+        <term><option>--desugaring <replaceable>on | off</replaceable></option></term>
+        <listitem>
+          <para>
+            Toggle desugaring on/off. Default is off
+          </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>--assimilation <replaceable>on | off</replaceable></option></term>
         <listitem>
-	  <para>
-	    Write the resulting parse-stratego term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
+          <para>
+            Toggle assimilation on/off. Default is on.
+          </para>
         </listitem>
       </varlistentry>
+      
     </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
+    
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
   </refsection>
+  
+  
+  <refsection>
+    <title>Example</title>
+
+    <para>
+      Given the file <filename>myunit.str</filename> given below.
+    </para>
+    
+    <programlisting>
+module myunit
+imports
+  sunit
+signature
+  constructors
+    F: A -> F
+    A: A
+      
+strategies
+      
+  main = 
+    test-suite(!"foo",
+      apply-test(
+        !"all-test1a"
+      , all(id)
+      , !F(A)
+      , !F(A)
+      )
+    )
+    </programlisting>
+
+    <para>
+      We can obtain the abstract syntax tree for this program as an ATerm by issuing
+      the following command:
+    </para>    
+    
+    <screen><prompt>$ </prompt>parse-stratego -i myunit.str -o tree.trm</screen>
+    
+    <para>
+      The result will be the following term:
+    </para>
+    
+    <programlisting>
+Module(
+  "parse-stratego-example"
+, [ Imports([Import("sunit")])
+  , Signature(
+      [ Constructors(
+          [ OpDecl(
+              "F"
+            , FunType([ConstType(SortNoArgs("A"))], ConstType(SortNoArgs("F")))
+            )
+          , OpDecl("A", ConstType(SortNoArgs("A")))
+          ]
+        )
+      ]
+    )
+  , Strategies(
+      [ SDefNoArgs(
+          "main"
+        , Call(
+            SVar("test-suite")
+          , [ Build(NoAnnoList(Str("\"foo\"")))
+            , Call(
+                SVar("apply-test")
+              , [ Build(NoAnnoList(Str("\"all-test1a\"")))
+                , All(Id)
+                , Build(NoAnnoList(Op("F", [Var("A")])))
+                , Build(NoAnnoList(Op("F", [Var("A")])))
+                ]
+              )
+            ]
+          )
+        )
+      ]
+    )
+  ]
+)
+    </programlisting>
+    
+  </refsection>
+
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
