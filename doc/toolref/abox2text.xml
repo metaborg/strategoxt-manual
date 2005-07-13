@@ -1,15 +1,22 @@
 <refentry lang="en" id="ref-abox2text">
   <refnamediv>
     <refname>abox2text</refname>
-    <refpurpose>(TODO) formats a Box term to plain text</refpurpose>
+    <refpurpose>formats a Box term to plain text</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>abox2text</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg choice="opt">-w <replaceable>width</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --output<replaceable>file</replaceable></arg>
+      <arg choice="opt">-S | --silent</arg>
+      <arg choice="opt">--verbose <replaceable>level</replaceable></arg>
+      <arg choice="opt">-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg choice="opt">-w <replaceable>width</replaceable> | --width <replaceable>width</replaceable></arg>
+      <arg choice="opt">-l</arg>
+      <arg choice="opt">-h | -? | --help</arg>
+      <arg choice="opt">--about</arg>
+      <arg choice="opt">--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,9 +24,9 @@
     <title>Description</title>
 
     <para>
-      The utility abox2text produces plain text according to the
-      formatting defined in a Box. The input must be in abstract Box
-      syntax (also known as abox).
+      The utility <command>abox2text</command> produces plain text according to the
+      formatting defined in a Box. The input must be in abstract Box syntax (also known as 
+      <emphasis>abox</emphasis>).
     </para>
   </refsection>
 
@@ -27,43 +34,29 @@
     <title>Options</title>
 
     <variablelist>
-      <title>Input/Output Options</title>
+      <title>Formatting Options</title>
 
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>-w <replaceable>width</replaceable> | --width <replaceable>width</replaceable></option></term>
         <listitem>
           <para>
-	    Format the Box in <replaceable>file</replaceable>. The
-	    must be in abstract Box syntax (also known as abox).
-	  </para>
+            Sets the maximum line width to the specified <replaceable>width</replaceable>.
+            The default value is 80.
+  	      </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-l</option></term>
         <listitem>
-	  <para>
-	    Write the resulting text to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
+          <para>
+            Add no additional newlines (same as <option>--width 0</option>).
+          </para>
         </listitem>
       </varlistentry>
-    </variablelist>
 
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-w <replaceable>width</replaceable></option></term>
-        <listitem>
-	  <para>
-	    Sets the maximum line width to be specified
-	    <replaceable>width</replaceable>. The default value is 80.
-	  </para>
-        </listitem>
-      </varlistentry>
     </variablelist>
-    
+          
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
