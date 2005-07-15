@@ -1,15 +1,22 @@
 <refentry lang="en" id="ref-ast2abox">
   <refnamediv>
     <refname>ast2abox</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>pretty prints an abstract syntax tree to the Box layout formalism</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>ast2abox</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-p <replaceable>file.pp</replaceable></arg>
+      <arg>-p <replaceable>file</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,96 +24,62 @@
     <title>Description</title>
 
     <para>
-      The ast2abox utility is used to pretty-print abstract syntax
+      The <command>ast2abox</command> utility is used to pretty-print abstract syntax
       trees. The utility transforms an abstract syntax tree according
-      to formatting rules contained in pretty-print-tables. The result
-      of ast2abox is a BOX term which describes the intended
-      format. This term can be passed to a formatter which transforms
-      the BOX term to some output form (abox2text for plain text,
-      abox2html for HTML, or abox2latex for LaTeX).
+      to formatting rules contained in pretty-print tables, supplied by the 
+      <option>-p</option> option. The result of <command>ast2abox</command> is a Box
+      term which describes the intended format. This term can be passed to a formatter
+      which transforms the Box term to some output format. 
+    </para>
+    
+    <para>      
+      Consult <link linkend="ref-abox2text"><command>abox2text</command></link> for
+      pretty-printing to plain text.
+      
+<!-- ,  <link linkend="ref-abox2html"><command>abox2html</command></link>
+      for HTML, or
+       <link linkend="ref-abox2latex"><command>abox2latex</command></link> for LaTeX.
+-->
+      
     </para>
   </refsection>
 
-  <refsection>
-    <title>Example</title>
-
-    <para>
-      To pretty-print an abstract syntax tree stored in the file
-      <filename>tree.trm</filename> to text according to the
-      pretty-print rules in <filename>rules.pp</filename> issue the
-      following command:
-    </para>
-
-    <screen><prompt>$ </prompt>ast2abox -i tree.trm -p rules.pp | abox2text</screen>
-  </refsection>
 
   <refsection>
     <title>Options</title>
 
     <variablelist>
-      <title>Input/Output Options</title>
+      <title>Parsing Options</title>
 
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>-p <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
-	    Pretty-print the abstract syntax tree in
-	    <replaceable>file</replaceable>. The abstract syntax tree
-	    can be an arbitrary ATerm.
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting Box term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is a Box in the ATerm format (called
-	    abox). This, the resulting can immediately and efficiently
-	    be passed to a Box back-end, such as <link
-	    linkend="ref-abox2text">abox2text</link>.
-	  </para>
+            Use the pretty print table in <filename>file</filename>. Required option.
+	    </para>
         </listitem>
       </varlistentry>
     </variablelist>
 
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-p <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Use pretty-print rules defined in
-	    <replaceable>file</replaceable>. Multiple tables can be
-	    specified.
-	  </para>
-
-	  <para>
-	    The <replaceable>file</replaceable> must have the
-	    extension <filename>.pp</filename> or
-	    <filename>.pp.af</filename>. The <filename>.pp</filename>
-	    extension is used for pretty-print tables in concrete
-	    syntax. The <filename>.pp.af</filename> extension is used
-	    for pretty-print tables that have already been parsed
-	    using parse-pp-table <!-- TODO link -->. Using parsed
-	    pretty-print tables improves the performance of ast2abox.
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-    
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
   </refsection>
 
+  <refsection>
+    <title>Examples</title>
+    
+    <para>
+      To pretty-print an abstract syntax tree stored in the file
+      <filename>tree.trm</filename> to text according to the
+      pretty-print rules in <filename>rules.pp</filename> issue the
+      following command:
+    </para>
+    
+    <screen><prompt>$ </prompt>ast2abox -i tree.trm -p rules.pp | abox2text</screen>
+  </refsection>
+  
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </refentry>
