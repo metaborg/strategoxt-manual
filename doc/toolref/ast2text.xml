@@ -1,15 +1,23 @@
 <refentry lang="en" id="ref-ast2text">
   <refnamediv>
     <refname>ast2text</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>pretty-prints an abstract syntax tree to plain text</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>ast2text</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-p <replaceable>file.pp</replaceable></arg>
+      <arg>-w <replaceable>width</replaceable> | --width <replaceable>width</replaceable></arg>
+      <arg>-p <replaceable>file</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>      
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -18,9 +26,9 @@
 
     <para>
       The ast2text utility is used to pretty-print abstract syntax
-      trees. The utility transforms an abstract syntax tree according
-      to formatting rules contained in pretty-print-tables. The result
-      of ast2text is an ASCII text file. The tool is a convenience
+      trees to plain text. The utility transforms an abstract syntax tree
+      according to formatting rules contained in pretty-print tables. The
+      result of ast2text is an ASCII text file. The tool is a convenience
       composition of <xref linkend="ref-ast2abox"/> and <xref
       linkend="ref-abox2text"/>.
     </para>
@@ -43,32 +51,7 @@
     <title>Options</title>
 
     <variablelist>
-      <title>Input/Output Options</title>
-
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>
-	    Pretty-print the abstract syntax tree in
-	    <replaceable>file</replaceable>. The abstract syntax tree
-	    can be an arbitrary ATerm.
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting ASCII text to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
+      <title>Parsing and Formatting Options</title>
 
       <varlistentry>
         <term><option>-p <filename><replaceable>file</replaceable></filename></option></term>
@@ -86,9 +69,19 @@
 	    extension is used for pretty-print tables in concrete
 	    syntax. The <filename>.pp.af</filename> extension is used
 	    for pretty-print tables that have already been parsed
-	    using parse-pp-table <!-- TODO link -->. Using parsed
-	    pretty-print tables improves the performance of ast2abox.
+	    using <link linkend="ref-parse-pp-table">parse-pp-table</link>. Using
+	    parsed pretty-print tables improves the performance of
+	    <command>ast2abox</command>.
 	  </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-w <replaceable>width</replaceable> | --width <replaceable>width</replaceable></option></term>
+        <listitem>
+          <para>
+            Specifies maximal line width. Default is 80 characters.
+          </para>
         </listitem>
       </varlistentry>
     </variablelist>
