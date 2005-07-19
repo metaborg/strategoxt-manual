@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-autoxt">
   <refnamediv>
     <refname>autoxt</refname>
-    <refpurpose>(TODO) installs autoconf/make resources for Stratego/XT packages</refpurpose>
+    <refpurpose>installs autoconf/make resources for Stratego/XT packages</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -49,10 +49,13 @@ autoreconf -ifv || exit 1
 <screen>
 include Makefile.xt
 </screen>
-
-
     </para>
 
+    <para>
+      As usual, the <file>bootstrap</file> script should make certain that
+      the correct versions of <command>automake</command>, and 
+      <command>autoconf</command> are used. 
+    </para>
 
   </refsection>
 
