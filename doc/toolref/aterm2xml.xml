@@ -1,92 +1,102 @@
 <refentry lang="en" id="ref-aterm2xml">
   <refnamediv>
     <refname>aterm2xml</refname>
-    <refpurpose>(TODO) translates an ATerm to XML</refpurpose>
+    <refpurpose>translates an ATerm to XML</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>aterm2xml</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
       <arg>--explicit</arg>
       <arg>--very-explicit</arg>
       <arg>--implicit</arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
   <refsection>
     <title>Description</title>
-
+    
     <para>
-      The aterm2xml utility is used to translate an ATerm to an XML document.
+      The <command>aterm2xml</command> utility is used to convert an ATerm to a corresponding
+      XML. The ATerm and XML languages are slightly different, so there is a tradeoff between how
+      "natural" the result of the conversion feels and how faithfully it can be converted back into
+      XML. 
     </para>
+    
+    <para>
+      Since applications have different needs, there are three conversion modes available: 
+      <emphasis>implicit</emphasis>, <emphasis>explicit</emphasis>, and 
+      <emphasis>very explicit</emphasis>.
+    </para>
+    
+    <para>
+      The <emphasis>explicit</emphasis> mode is the default mode and supports a roundtrip for 
+      almost all ATerms. This means that an ATerm can be converted to XML and back without
+      changing its structure.
+    </para>
+    
+    <para>
+      The <emphasis>implicit</emphasis> mode does not support such a roundtrip, but the XML is
+      usually more attractive. Use this mode if you only want to export some ATerm to an XML
+      application. The name 'implicit' is related to the more implicit structure in the resulting
+      XML.
+    </para>
+    
+    <para>
+      The <emphasis>very explicit</emphasis> mode supports a roundtrip for all ATerms. This mode
+      is the way to go if you need the guarantee that a roundtrip preserves the structure of all
+      your ATerms.
+    </para>
+    
+    <para>
+      The structure of the XML documents in the very explicit mode is generic: there are no language
+      specific elements in these XML documents. The structure is described as a RELAX NG schema.
+    </para> 
   </refsection>
-
+  
   <refsection>
     <title>Options</title>
-
+    
     <variablelist>
-      <title>Input/Output Options</title>
-
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>
-	    Translate the ATerm in 
-	    <replaceable>file</replaceable>. 
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting XML document to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
-
+      <title>XML Processing Options</title>
+      
       <varlistentry>
         <term><option>--explicit</option></term>
         <listitem>
-	  <para>
-	    Use explicit XML elements for strings, lists, integers,and
-	    tuples (default)
-	  </para>
+          <para>
+            Do conversion in explicit mode. This is the default. See below for details.
+          </para>
         </listitem>
       </varlistentry>
-
+      
       <varlistentry>
         <term><option>--very-explicit</option></term>
         <listitem>
-	  <para>
-	    Use explicit XML elements for applications, strings,
-	    lists, integers, and tuples
-	  </para>
+          <para>
+            Do conversion in very explicit mode. See below for details.            
+          </para>
         </listitem>
       </varlistentry>
-
+      
       <varlistentry>
         <term><option>--implicit</option></term>
         <listitem>
-	  <para>
-	    Don't use any explicit XML elements. This results in the
-	    most attractive XML, but it lacks structure.
-	  </para>
+          <para>
+            Do conversion in implicit mode. See below for details.
+          </para>
         </listitem>
       </varlistentry>
-
     </variablelist>
-
+    
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
@@ -97,8 +107,41 @@
   <refsection>
     <title>Example</title>
 
-    <para></para>
+    <para>
+      The following will convert the term <command>A([], "b")</command> to
+      its implicit XML representation:  
+    </para>
+    
+    <screen><prompt>$ </prompt>echo "A([1], \"b\")" | aterm2xml --implicit</screen>
+    
+    <screen>&lt;?xml version="1.0" ?&gt;
+&lt;A xmlns:at="http://aterm.org"&gt;1b&lt;/A&gt;</screen>
 
+    <para>
+      The following will convert the term <command>A([], "b")</command> to
+      its explicit XML representation:  
+    </para>
+    
+    <screen><prompt>$ </prompt>echo "A([1], \"b\")" | aterm2xml --explicit</screen>
+    
+    <screen>&lt;?xml version="1.0" ?&gt;
+&lt;A xmlns:at="http://aterm.org"&gt;&lt;at:list&gt;&lt;at:int&gt;1&lt;/at:int&gt;&lt;/at:list&gt;&lt;at:string&gt;b&lt;/at:string&gt;&lt;/A&gt;</screen>
+
+    <para>
+      The following will convert the term <command>A([], "b")</command> to
+      its very explicit XML representation:  
+    </para>
+    
+    
+    <screen><prompt>$ </prompt>echo "A([1], \"b\")" | aterm2xml --very-explicit</screen>
+    
+    <screen>&lt;?xml version="1.0" ?&gt;
+&lt;at:appl xmlns:at="http://aterm.org" at:fun="A"&gt;&lt;at:list&gt;&lt;at:int&gt;&lt;at:value&gt;1&lt;/at:value&gt;&lt;/at:int&gt;&lt;/at:list&gt;&lt;at:string&gt;&lt;at:value&gt;b&lt;/at:value&gt;&lt;/at:string&gt;&lt;/at:appl&gt;</screen>
+
+    <para>
+      See <link linkend="ref-xml2aterm">xml2aterm</link> for more examples.
+    </para>
+    
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
