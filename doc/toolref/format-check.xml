@@ -1,8 +1,7 @@
 <refentry lang="en" id="ref-format-check">
   <refnamediv>
     <refname>format-check</refname>
-    <refpurpose>(TODO) analyzes whether the input ATerm conforms to the format that is
-   specified in the RTG (Regular Tree Grammar)</refpurpose>
+    <refpurpose>checks whether an ATerm conforms to a given regular tree grammar (RTG)</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -11,14 +10,24 @@
       <arg>--rtg <replaceable>file</replaceable></arg>
       <arg>--rtg-nf <replaceable>file</replaceable></arg>
 
-      <arg>-s|--start <replaceable>s</replaceable></arg>
+      <arg>-s <replaceable>s</replaceable> |--start <replaceable>s</replaceable></arg>
 
       <arg>--xhtml</arg>
       <arg>--vis</arg>
       <arg>--fast</arg>
 
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
+      <arg>--check</arg>
+      
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --output <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -26,53 +35,47 @@
     <title>Description</title>
 
     <para>
-
-      format-check verifies that the input ATerm is part of the
+      <command>format-check</command> checks the input ATerm against a 
+      regular tree grammar (RTG), to see if this term is part of the 
       language defined in the RTG. If this is not the case, then the
-      ATerm contains format errors.  format-check can operate in three
-      modes: plain, visualize and XHTML.
-
+      ATerm contains format errors, analogous to syntax errors in normal
+      source code.  <command>format-check</command> can operate in three
+      modes: <emphasis>plain</emphasis>, <emphasis>visualize</emphasis>
+      and <emphasis>XHTML</emphasis>.
     </para>
 
     <para>
-
-      The plain mode is used if the other modes are not enabled. In
-      the plain mode format errors are reported and no result is
-      written the the output (stdout or a file). Hence, if
-      format-check is included in a pipeline, then the following tool
-      will probably fail. If the input term is correct, then it is
-      written to the output.
-
+      The plain mode is used by default. In this mode, format errors are
+      reported and no result is written the the output (<filename>stdout</filename>
+      or file). Hence, if <command>format-check</command> is included in
+      a pipeline, then the following tool will probably fail. If the input
+      term is correct, then it is written to the output.
     </para>
 
     <para>
-
-      The visualize mode is enabled with the --vis option. In
-      visualize mode format errors are reported and in a
+      The visualize mode is enabled with the <option>--vis</option> option.
+      In visualize mode, format errors are reported and in a
       pretty-printed ATerm will be written to the output. All
       innermost parts of the ATerm that cause format errors are
       printed in red, if your terminal supports control characters for
-      colors. If you want to browse through the ATerm with less, then
-      you should use the -r flag.
-
+      colors. If you want to inspect the ATerm with a pager, like 
+      <command>more</command> or <command>less</command>, then
+      you should use the <option>-r</option> flag.
     </para>
 
     <para>
-
-      The XHTML mode is enabled with the --xhtml option. In XHTML mode
-      format errors are reported and an report in XHTML will be
-      written to the output.  This report shows the parts of the ATerm
-      that are not formatted correctly.  Also, moving with your mouse
-      over the nodes of ATerm, will show the non-terminals that have
-      be inferred by format-check (do not use IE6. Firefox or Mozilla
-      is recommended).
-
+      The XHTML mode is enabled with the <option>--xhtml</option> option. 
+      In XHTML mode, format errors are reported and a report in XHTML will
+      be written to the output. The result should be inspected in a web
+      browser (not IE6). As with the visualize mode, this report shows the
+      parts of the ATerm that are not formatted correctly.  By moving your
+      mouse over the nodes of ATerm, you can see the non-terminals that have
+      be inferred by format-check.
     </para>
 
     <para>
-
-      format-check reports all innermost format errors. That is, only
-      the deepest format errors are reported. A format error is
+      <command>format-check</command> reports all innermost format errors. 
+      That is, only the deepest format errors are reported. A format error is
       reported by showing the ATerm that is not in the correct format,
       and the inferred types of the children of the ATerm. In XHTML
       and visualize mode a format error of term in a list is presented
@@ -80,15 +83,12 @@
       inferred for the term itself, but that it is not expected at
       this point in the list.  If only the term is red, then no type
       could be inferred for the term itself.
-
     </para>
 
     <para>
-
-      In all modes format-check succeeds (exit code 0) if the ATerm
-      contains no format errors. If the term does contain format
-      errors, then format-check fails (exit code 1).
-
+      In all modes <command>format-check</command> succeeds (exit code 0) if
+      the ATerm contains no format errors. If the term does contain format
+      errors, then <command>format-check</command> fails (exit code 1).
     </para>
   </refsection>
 
@@ -96,81 +96,78 @@
     <title>Options</title>
 
     <variablelist>
-      <title>Input/Output Options</title>
-
+      <title>Grammar Options</title>
+      
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>--rtg <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
-	    Format-check the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
+            Use the regular tree grammar defined in <replaceable>file</replaceable>.
+          </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>--rtg-nf <replaceable>file</replaceable></option></term>
         <listitem>
-	  <para>
-	    Write the resulting term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is just a copy of the input file.
-	  </para>
+          <para>
+            Use the normalized, regular tree grammar defined in <replaceable>file</replaceable>.
+          </para>
         </listitem>
       </varlistentry>
+
+      <varlistentry>
+        <term><option>-s <replaceable>s</replaceable> | --start <replaceable>s</replaceable></option></term>
+        <listitem>
+          <para>
+            Use <replaceable>s</replaceable> as the start symbol, i.e. root of the ATerm. By default,
+            the start non-terminals defined for in the regular tree grammar are used.
+          </para>
+        </listitem>
+      </varlistentry>
+      
     </variablelist>
-
     <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>--rtg <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Format check against rtg in
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--rtg-nf <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Format check against normalized rtg in
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-        </listitem>
-      </varlistentry>
+      <title>Reporting Options</title>
 
       <varlistentry>
         <term><option>--xhtml</option></term>
         <listitem>
-	  <para>
-	    Present the result in XHTML
-	  </para>
+          <para>
+	        Output report as an XHTML document. See above for a detailed description.
+	      </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><option>--vis</option></term>
         <listitem>
-	  <para>
-	    Visualize in colored pp-aterm
-	  </para>
+          <para>
+            Output report as a coloured, pretty-printed ATerm. See above for a detailed description.
+          </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><option>--fast</option></term>
         <listitem>
-	  <para>
-	     Run as fast as possible. Might reduce quality of error
-	     messages.
-	  </para>
+          <para>
+            Run as fast as possible. Might reduce quality of error messages.
+          </para>
+        </listitem>
+      </varlistentry>
+
+  </variablelist>
+  
+    <variablelist>
+      <title>Other Options</title>  
+    
+      <varlistentry>
+        <term><option>--check</option></term>
+        <listitem>
+          <para>
+            Check tool dependencies.
+          </para>
         </listitem>
       </varlistentry>
 
@@ -183,15 +180,23 @@
   </refsection>
 
 
-  <!--refsection>
+  <refsection>
     <title>Example</title>
 
     <para>
-      To ...
+      To check the ATerm <filename>tree.trm</filename> against the regular tree grammar in
+      <filename>tree-grammar.rtg</filename>, issue:
     </para>
 
-    <screen><prompt>$ </prompt>format-check -i tree.trm -o tree.tmpl</screen>
-  </refsection-->
+    <screen><prompt>$ </prompt>format-check --rtg tree-grammar.rtg -i tree.trm -o tree.checked.trm</screen>
+    
+    <para>
+      If the term in <filename>tree.trm</filename> is syntactially valid, i.e. it conforms to
+      the regular tree grammar, it will be copied to <filename>tree.checked.trm</filename>. If not,
+      <command>format-check</command> wille exit with an error code and 
+      <filename>tree.checked.trm</filename> will not be written to.
+    </para>
+  </refsection>
 
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
