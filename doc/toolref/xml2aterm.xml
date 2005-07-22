@@ -62,41 +62,41 @@
       specific elements in these XML documents. The structure is described as a RELAX NG schema.
     </para> 
   </refsection>
-
+  
   <refsection>
-    <title>Options</title>
-    
-    <variablelist>
-      <title>XML Processing Options</title>
+      <title>Options</title>
       
-      <varlistentry>
-        <term><option>--explicit</option></term>
-        <listitem>
-          <para>
-            Do conversion in explicit mode. This is the default. See below for details.
-          </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--very-explicit</option></term>
-        <listitem>
-          <para>
-            Do conversion in very explicit mode. See below for details.            
-          </para>
-        </listitem>
-      </varlistentry>
+      <variablelist>
+        <title>XML Processing Options</title>
+        
+        <varlistentry>
+          <term><option>--explicit</option></term>
+          <listitem>
+            <para>
+              Do conversion in explicit mode. This is the default. See below for details.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term><option>--very-explicit</option></term>
+          <listitem>
+            <para>
+              Do conversion in very explicit mode. See below for details.            
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+          <term><option>--implicit</option></term>
+          <listitem>
+            <para>
+              Do conversion in implicit mode. See below for details.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
       
-      <varlistentry>
-        <term><option>--implicit</option></term>
-        <listitem>
-          <para>
-            Do conversion in implicit mode. See below for details.
-          </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>

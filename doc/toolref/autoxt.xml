@@ -52,7 +52,7 @@ include Makefile.xt
     </para>
 
     <para>
-      As usual, the <file>bootstrap</file> script should make certain that
+      As usual, the <filename>bootstrap</filename> script should make certain that
       the correct versions of <command>automake</command>, and 
       <command>autoconf</command> are used. 
     </para>
