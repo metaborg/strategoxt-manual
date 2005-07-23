@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-pp-xml-doc">
   <refnamediv>
     <refname>pp-xml-doc</refname>
-    <refpurpose>pretty-prints an xml-term into an XML document</refpurpose>
+    <refpurpose>pretty-prints an xml-doc term into an XML document</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
