@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-pptable-diff">
   <refnamediv>
     <refname>pptable-diff</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>diffs and synchronizes two pretty-print tables</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -26,14 +26,71 @@
     <title>Description</title>
 
     <para>
-      The pptable-diff utility is used to 
+      The <command>pptable-diff</command> utility is used to calculate the
+      difference between two pretty-print tables, which both must provided
+      in abstract syntax, as ATerms. It takes two tables,
+      one provided via the <option>-i</option> option (or <filename>stdin</filename>),
+      and the other via the <option>--old</option> option. Any rule found
+      in the old table but not in the new is printed to <filename>stderr</filename>.
     </para>
+    
+    <para> 
+      If the <option>--patch</option> switch is specified, the old pretty-print
+      table is updated by adding pretty-print rules that are in the new table 
+      but not in the old.
+    </para>
+    
+    <para>
+      If the <option>--prune</option> switch is specified, the old pretty-print
+      table is returned, and with all entries not found the new file removed.
+    </para>
+    
+    <para>
+      The utility <link linkend="ref-parse-pp-table">parse-pp-table</link> can
+      be used to convert a concrete pretty-print table to its abstract form.
+    </para>
+    
   </refsection>
 
 
   <refsection>
     <title>Options</title>
 
+    <variablelist>
+      <title>Parse Table Options</title>
+
+      <varlistentry>
+        <term><option>--patch</option></term>
+        <listitem>
+          <para>
+            Bring old table up to date by adding all new entries from
+            the new table.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--prune</option></term>
+        <listitem>
+          <para>
+            Remove obsolete entries by removing from the old table all
+            entries not found in the new table.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--old <replaceable>table</replaceable></option></term>
+        <listitem>
+          <para>
+            Use the table in the file <replaceable>table</replaceable> as the old
+            table.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+    </variablelist>
+        
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   </refsection>
@@ -42,10 +99,10 @@
     <title>Example</title>
     
     <para>
-      To ...
+      Refer to <link linkend="generic-pretty-printing">Generic Pretty-Printing</link>
+      for a detailed discussion on pretty-printing.
     </para>
-    
-    <screen><prompt>$ </prompt>pptable-diff -i tree.trm -o tree.tmpl</screen>
+
   </refsection>
   
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
