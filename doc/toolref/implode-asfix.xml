@@ -4,15 +4,32 @@
 <refentry lang="en" id="ref-implode-asfix">
   <refnamediv>
     <refname>implode-asfix</refname>
-    <refpurpose>(TODO) maps an asfix parse tree to an abstract syntax tree</refpurpose>
+    <refpurpose>maps an asfix parse tree to an abstract syntax tree</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>implode-asfix</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat"><replaceable>options</replaceable></arg>
+      <arg>--lex</arg>
+      <arg>--layout</arg>
+      <arg>--lit</arg>
+      <arg>--alt</arg>
+      <arg>--appl</arg>
+      <arg>--nt</arg>
+      <arg>--inj</arg>
+      <arg>--list</arg>
+      <arg>--seq</arg>
+      <arg>--pt</arg>
+      <arg>--concrete</arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --output <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>--k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -53,6 +70,123 @@
   </refsection>
 
   <refsection>
+    <title>Options</title>
+    
+    <variablelist>
+      <title>Implode Options</title>
+      
+      <varlistentry>
+        <term><option>--alt</option></term>
+        <listitem>
+          <para>
+            Flatten alternatives.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--appl</option></term>
+        <listitem>
+          <para>
+            Replace <function>appl</function> applications by constructor applications.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--concrete</option></term>
+        <listitem>
+          <para>
+            Skip concrete syntax parts of a Stratego program. Concrete
+            syntax starts a <function>ToTerm</function>,
+            <function>ToStrategy</function> or
+            <function>ToBuild</function> and stops at
+            <function>FromTerm</function> or
+            <function>FromApp</function>.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--inj</option></term>
+        <listitem>
+          <para>
+            Remove injections from the parse tree.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--layout</option></term>
+        <listitem>
+          <para>
+            Remove layout nodes from the parse tree.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--lex</option></term>
+        <listitem>
+          <para>
+            Flatten lexical substrings to strings.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--list</option></term>
+        <listitem>
+          <para>
+            Flatten lists.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--lit</option></term>
+        <listitem>
+          <para>
+            Remove literal nodes from the parse tree.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--nt</option></term>
+        <listitem>
+          <para>
+            Replace <function>appl</function> application by non-terminal applications.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--pt</option></term>
+        <listitem>
+          <para>
+            Remove the outer <function>pt</function> constructor from the
+            parse tree
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--seq</option></term>
+        <listitem>
+          <para>
+            Replace sequences by tuples
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
+  </refsection>
+  <refsection>
     <title>Example</title>
 
     <para>
@@ -76,155 +210,6 @@
 Plus(Int("1"),Mul(Int("2"),Int("3")))</screen>
   </refsection>
 
-  <refsection>
-    <title>Options</title>
-
-    <variablelist>
-      <title>Input/Output Options</title>
-
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>
-	    Implode the AsFix parse tree in
-	    <replaceable>file</replaceable>
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting abstract syntax tree to
-	    <replaceable>file</replaceable>
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <include href="binary-option.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    </variablelist>
-
-    <variablelist>
-      <title>Implode Options</title>
-
-      <varlistentry>
-        <term><option>--alt</option></term>
-        <listitem>
-          <para>
-	    Flatten alternatives
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--appl</option></term>
-        <listitem>
-          <para>
-	    Replace appl applications by constructor applications
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--concrete</option></term>
-        <listitem>
-          <para>
-	    Skip concrete syntax parts of a Stratego program. Concrete
-	    syntax starts a <function>ToTerm</function>,
-	    <function>ToStrategy</function> or
-	    <function>ToBuild</function> and stops at
-	    <function>FromTerm</function> or
-	    <function>FromApp</function>.
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--inj</option></term>
-        <listitem>
-          <para>
-	    Remove injections from the parse tree
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--layout</option></term>
-        <listitem>
-          <para>
-	    Remove layout nodes from the parse tree
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--lex</option></term>
-        <listitem>
-          <para>
-	    Flatten lexical substrings to strings
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--list</option></term>
-        <listitem>
-          <para>
-	    Flatten lists
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--lit</option></term>
-        <listitem>
-          <para>
-	    Remove literal nodes from the parse tree
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--nt</option></term>
-        <listitem>
-          <para>
-	    Replace <function>appl</function> application by non-terminal applications
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--pt</option></term>
-        <listitem>
-          <para>
-	    Remove the outer <function>pt</function> constructor from the
-	    parse tree
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--seq</option></term>
-        <listitem>
-          <para>
-	    Replace sequences by tuples
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>General Options</title>
-
-      <include href="help-option.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    </variablelist>
-    
-    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
-    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
-  </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
