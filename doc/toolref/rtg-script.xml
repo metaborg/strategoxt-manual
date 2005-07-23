@@ -7,9 +7,16 @@
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>rtg-script</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-I <replaceable>dir</replaceable> | --Include <replaceable>dir</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --output <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -21,70 +28,24 @@
     </para>
   </refsection>
 
-  <refsection>
-    <title>Example</title>
-
-    <para>
-      To ...
-    </para>
-
-    <screen><prompt>$ </prompt>rtg-script -i tree.trm -o tree.tmpl</screen>
-  </refsection>
 
   <refsection>
     <title>Options</title>
-
-    <variablelist>
-      <title>Input/Output Options</title>
-
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>
-	    Rtg-Script the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting rtg-script term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
     
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
   </refsection>
 
+  <refsection>
+    <title>Example</title>
+    
+    <para>
+      To ...
+    </para>
+    
+    <screen><prompt>$ </prompt>rtg-script -i tree.trm -o tree.tmpl</screen>
+  </refsection>
+  
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </refentry>

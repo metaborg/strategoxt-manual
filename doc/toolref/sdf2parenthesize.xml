@@ -36,70 +36,24 @@
     </para>
   </refsection>
 
-  <refsection>
-    <title>Example</title>
-
-    <para>
-      To ...
-    </para>
-
-    <screen><prompt>$ </prompt>sdf2parenthesize -i tree.trm -o tree.tmpl</screen>
-  </refsection>
 
   <refsection>
     <title>Options</title>
 
-    <variablelist>
-      <title>Input/Output Options</title>
-
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>
-	    Sdf2parenthesize the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting sdf2parenthesize term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-    
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
   </refsection>
 
+  <refsection>
+    <title>Example</title>
+    
+    <para>
+      To ...
+    </para>
+    
+    <screen><prompt>$ </prompt>sdf2parenthesize -i tree.trm -o tree.tmpl</screen>
+  </refsection>
+  
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </refentry>
