@@ -1,14 +1,24 @@
 <refentry lang="en" id="ref-ppgen">
   <refnamediv>
     <refname>ppgen</refname>
-    <refpurpose>(TODO) generates a pretty-print table from an SDF syntax definition</refpurpose>
+    <refpurpose>generates a pretty-print table from an SDF syntax definition</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>ppgen</command>
-      <arg>-i <replaceable>file</replaceable>.def</arg>
-      <arg>-o <replaceable>file</replaceable>.pp</arg>
+      <arg>-A</arg>
+      <arg>-a</arg>
+      <arg>-t</arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --output <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>          
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -24,20 +34,50 @@
 
     <para>
       Typically, it is necessary to edit the pretty-print table to add
-      appropriate Box markup to the entries. In a package using Make
-      the modified result should be saved under a different name to
-      avoid overwriting it.
+      appropriate Box markup to the entries. In a package using 
+      <command>make</command> the modified result should be saved under
+      a different name to avoid overwriting it.
     </para>
   </refsection>
 
   <refsection>
     <title>Options</title>
 
+    <variablelist>
+      <title>Format Options</title>
+
+      <varlistentry>
+        <term><option>-A</option></term>
+        <listitem>
+          <para>
+            Input is a parse tree.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-a</option></term>
+        <listitem>
+          <para>
+            Input as an abstract syntax tree.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-t</option></term>
+        <listitem>
+          <para>
+            Output should be an abstract syntax tree.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>     
+
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
   </refsection>
+  
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </refentry>
