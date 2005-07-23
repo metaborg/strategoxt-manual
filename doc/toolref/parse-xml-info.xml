@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-parse-xml-info">
   <refnamediv>
     <refname>parse-xml-info</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>parses an XML file into a xml-info term</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
