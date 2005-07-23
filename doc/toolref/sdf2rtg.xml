@@ -68,7 +68,7 @@
       Consider the following SDF syntax definition for a simple expression language:
     </para>
 
-    <programlisting>
+<programlisting>
 definition
 module Exp
 exports
@@ -100,27 +100,28 @@ exports
       Exp "+"  Exp -> Exp
       Exp "-"  Exp -> Exp
     }
-    </programlisting>
+</programlisting>
 
     <para>
       Invoking <command>sdf2rtg</command> with <command>sdf2rtg -i
-      Exp.def --main Exp</command> will result in the following RTG:
+      Exp.def --main Exp</command> will result in the following regular
+      tree grammar:
     </para>
 
-    <programlisting>
+<programlisting>
 regular tree grammar
-  start Exp
-  productions
-    Exp      -> Minus(Exp,Exp)
-    Exp      -> Plus(Exp,Exp)
-    Exp      -> Mod(Exp,Exp)
-    Exp      -> Div(Exp,Exp)
-    Exp      -> Mul(Exp,Exp)
-    Exp      -> Int(IntConst)
-    Exp      -> Var(Id)
-    IntConst -> &lt;string&gt;
-    Id       -> &lt;string&gt;
-    </programlisting>
+start Exp
+productions
+  Exp      -> Minus(Exp,Exp)
+  Exp      -> Plus(Exp,Exp)
+  Exp      -> Mod(Exp,Exp)
+  Exp      -> Div(Exp,Exp)
+  Exp      -> Mul(Exp,Exp)
+  Exp      -> Int(IntConst)
+  Exp      -> Var(Id)
+  IntConst -> &lt;string&gt;
+  Id       -> &lt;string&gt;
+</programlisting>
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
