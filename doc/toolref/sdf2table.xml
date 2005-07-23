@@ -1,15 +1,23 @@
 <refentry lang="en" id="ref-sdf2table">
   <refnamediv>
     <refname>sdf2table</refname>
-    <refpurpose>(TODO) generates a parse table from an SDF syntax definition.</refpurpose>
+    <refpurpose>generates a parse table from an SDF syntax definition.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>sdf2table</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-h</arg>
+      <arg>-i <replaceable>file</replaceable>.def</arg>
+      <arg>-l</arg>
+      <arg>-m <replaceable>name</replaceable></arg>
+      <arg>-n</arg>
+      <arg>-o <replaceable>file</replaceable>.tbl</arg>
+      <arg>-s</arg>
+      <arg>-t</arg>
+      <arg>-v</arg>
+      <arg>-V</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,64 +25,108 @@
     <title>Description</title>
 
     <para>
-      The sdf2table utility is used to 
+      The <command>sdf2table</command> utility is used to compute a parse table
+      from a syntax definition. The syntax definition must have been created 
+      from a set of <filename>.sdf</filename> files using the
+      <link linkend="ref-pack-sdf"><command>pack-sdf</command></link> utility,
+      or written manually. The resulting <filename>.tbl</filename> file is
+      used as input to the <link linkend="ref-sglr"><command>sglr</command></link>
+      parser. 
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
-    <para>
-      To ...
-    </para>
-
-    <screen><prompt>$ </prompt>sdf2table -i tree.trm -o tree.tmpl</screen>
   </refsection>
 
   <refsection>
     <title>Options</title>
-
+    
     <variablelist>
       <title>Input/Output Options</title>
-
+      
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>-b</option></term>
         <listitem>
           <para>
-	    Sdf2table the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
+            Write output in binary ASFix (BAF) format.
+          </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-i <filename><replaceable>file</replaceable>.def</filename></option></term>
         <listitem>
-	  <para>
-	    Write the resulting sdf2table term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
+          <para>
+            Read input from <filename><replaceable>file</replaceable>.def</filename>. Multiple
+            files may be specified.
+          </para>
         </listitem>
       </varlistentry>
+
+      <varlistentry>
+        <term><option>-o <filename><replaceable>file</replaceable>.tbl</filename></option></term>
+        <listitem>
+          <para>
+            Write output to <filename><replaceable>file</replaceable>.tbl</filename>. If not
+            speficied, <filename>.tbl</filename> will be added as a suffix to the input file
+            name.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-s</option></term>
+        <listitem>
+          <para>
+            Check SDF definition and show warnings on <filename>stderr</filename>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-n</option></term>
+        <listitem>
+          <para>
+            Normalize grammar.
+          </para>
+        </listitem>
+      </varlistentry>
+      
     </variablelist>
-
+    
     <variablelist>
-      <title>Common Options</title>
+      <title>Help and Debugging Options</title>
 
       <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
+        <term><option>-h</option></term>
         <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
+          <para>
+            Show usage information.
+          </para>
+        </listitem>
+      </varlistentry>
 
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
+      <varlistentry>
+        <term><option>-l</option></term>
+        <listitem>
+          <para>
+            Show statistics information.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-v</option></term>
+        <listitem>
+          <para>
+            Enable verbose mode.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-V</option></term>
+        <listitem>
+          <para>
+            Show version number.
+          </para>
         </listitem>
       </varlistentry>
     </variablelist>
