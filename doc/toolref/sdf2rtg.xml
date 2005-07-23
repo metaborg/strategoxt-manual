@@ -2,24 +2,38 @@
   <refnamediv>
     <refname>sdf2rtg</refname>
     <refpurpose>
-      (TODO) generates an abstract syntax definition in RTG from an SDF
-      concrete syntax definition.
+      generates a abstract regular tree grammar (RTG) from an SDF concrete syntax definition.
     </refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>sdf2rtg</command>
-      <arg>-i <replaceable>file.def</replaceable></arg>
-      <arg>-o <replaceable>file.rtg</replaceable></arg>
+      <arg>-m <replaceable>mod</replaceable> | --main <replaceable>mod</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>--check</arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
   <refsection>
     <title>Description</title>
     <para>
-      <command>sdf2rtg</command> generates an abstract syntax
-      definition in RTG from an SDF concrete syntax definition.
+      The <command>sdf2rtg</command> utility is used to generate an abstract regular
+      tree grammar (RTG) from a SDF concrete syntax definition.
+    </para>
+    
+    <para>
+      Regular tree grammars are useful for doing format checking of terms. Refer to
+      <link linkend="format-checking">Format Checking with format-check</link> for
+      further details.
     </para>
   </refsection>
 
@@ -27,37 +41,22 @@
     <title>Options</title>
 
     <variablelist>
-      <title>Common Options</title>
+      <title>Grammar Options</title>
 
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+	    <term><option>-m     <filename><replaceable>mod</replaceable></filename></option></term>
+	    <term><option>--main <filename><replaceable>mod</replaceable></filename></option></term>
         <listitem>
-          <para>SDF syntax definition that must be converted to an RTG</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o       <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>Write output to <filename><replaceable>file</replaceable></filename></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-m     <filename><replaceable>mod</replaceable></filename></option></term>
-	<term><option>--main <filename><replaceable>mod</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Set the main module in the SDF syntax definition to
-	    <filename><replaceable>mod</replaceable></filename>. The
-	    default main module is <filename>Main</filename>.
-	  </para>
-	</listitem>
+  	      <para>
+            Set the main module in the SDF syntax definition to
+  	        <filename><replaceable>mod</replaceable></filename>. The
+  	        default main module is <filename>Main</filename>.
+  	      </para>
+    	</listitem>
       </varlistentry>
     </variablelist>
     
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
   </refsection>
@@ -66,8 +65,7 @@
     <title>Example</title>
 
     <para>
-      Consider the following SDF syntax definition for a simple
-      expression language:
+      Consider the following SDF syntax definition for a simple expression language:
     </para>
 
     <programlisting>
@@ -120,8 +118,8 @@ regular tree grammar
     Exp      -> Mul(Exp,Exp)
     Exp      -> Int(IntConst)
     Exp      -> Var(Id)
-    IntConst -> &lt;string>
-    Id       -> &lt;string>
+    IntConst -> &lt;string&gt;
+    Id       -> &lt;string&gt;
     </programlisting>
   </refsection>
 
