@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-pp-xml-info">
   <refnamediv>
     <refname>pp-xml-info</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>pretty-prints an xml-info term into an XML document</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -23,26 +23,50 @@
     <title>Description</title>
 
     <para>
-      The pp-xml-info utility is used to 
+      The <command>pp-xml-info</command> utility is used to pretty-print an ATerm
+      containing an xml-info term into a plain XML document. 
     </para>
   </refsection>
-
-
   <refsection>
     <title>Options</title>
     
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   </refsection>
-
+  
   <refsection>
     <title>Example</title>
     
     <para>
-      To ...
+      Assume the following xml-info term is in the file <filename>info.trm</filename>.
+    </para>
+
+<programlisting>
+Document(
+  Element(
+    Name(None, "foo")
+  , [Attribute(Name(None, "bar"), "zap")]
+  , [Element(Name(None, "znip"), [], [])]
+  )
+)
+</programlisting>   
+    
+    <para>
+      This can be converted into a valid XML document by running 
+      <command>pp-xml-info</command>, as follows:
     </para>
     
-    <screen><prompt>$ </prompt>pp-xml-info -i tree.trm -o tree.tmpl</screen>
+    <screen><prompt>$ </prompt>pp-xml-info -i info.trm -o info.xml</screen>
+    
+    <para>
+      The resulting term in <filename>info.xml</filename> will look like this:
+    </para>
+
+<programlisting>
+&lt;?xml version="1.0"?&gt;
+      
+&lt;foo bar="zap"&gt;&lt;znip/&gt;&lt;/foo&gt;
+</programlisting> 
   </refsection>
   
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
