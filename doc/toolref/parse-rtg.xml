@@ -28,7 +28,7 @@
     </para>
     
     <para>
-      Regular tree grammars are used for format checking ATerms. See 
+      Regular tree grammars are used for format checking of terms. See 
       <link linkend="format-checking">Format Checking with format-check</link>.
     </para>
   </refsection>
