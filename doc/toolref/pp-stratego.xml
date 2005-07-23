@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-pp-stratego">
   <refnamediv>
     <refname>pp-stratego</refname>
-    <refpurpose>(TODO) pretty-prints a Stratego program </refpurpose>
+    <refpurpose>pretty-prints a Stratego program </refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -15,17 +15,27 @@
     <title>Description</title>
 
     <para>
-      <command>pp-stratego --abstract</command> pretty prints a
-      Stratego module in abstract syntax (usually stored in a .rtree
-      file) to Stratego concrete syntax.
+      The <command>pp-stratego</command> utility is used to pretty-print
+      Stratego source code to concrete syntax. It has two different modes
+      of operation, depending on whether the input is in abstract syntax
+      (an <command>.rtree</command> file) or concrete syntax (an 
+      <command>.str</command> file).
+    </para> 
+    
+    <para>
+      In concrete syntax mode, <command>pp-stratego</command> pretty-prints
+      a Stratego module in concrete syntax (<filename>.str</filename>) to
+      concrete syntax by first parsing it and  afterwards pretty printing
+      it. This is a useful operation for inspecting the meaning of concrete
+      object syntax fragments. This is the default mode.
+    </para>
+    
+    <para>
+      In abstract syntax mode, <command>pp-stratego --abstract</command>
+      pretty-prints a Stratego module in abstract syntax (<filename>.rtree</filename>)
+      to Stratego concrete syntax.
     </para>
 
-    <para>
-      <command>pp-stratego</command> pretty prints a Stratego module
-      in concrete syntax to concrete syntax by first parsing it and
-      afterwards pretty printing it. This is a useful operation for
-      inspecting the meaning of concrete object syntax fragments.
-    </para>
   </refsection>
 
   <refsection>
@@ -45,9 +55,7 @@
     </variablelist>
     
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
