@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-gen-renamed-sdf-module">
   <refnamediv>
     <refname>gen-renamed-sdf-module</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>generates an SDF module that renames all SDF sorts in a given SDF definition.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -22,72 +22,125 @@
       <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
-
+  
   <refsection>
     <title>Description</title>
-
+    
     <para>
-      The gen-renamed-sdf-module utility is used to 
+      The gen-renamed-sdf-module utility is used to generate modules where sorts are either
+      prefixed (with the <option>--prefix</option> option) or renamed (using the 
+      <option>--scheme</option> option).
     </para>
+    
+    <para>
+      This tool is useful for concrete object syntax embeddings, where the sorts in 
+      the embedded language syntax definitions must be renamed before being imported into
+      the host language, so as to avoid name space conflicts between the two syntax 
+      declarations. For example, both the embedded and the host language may declare
+      an <code>Exp</code> sort.
+    </para>
+    
   </refsection>
+
+  <refsection>
+    <title>Options</title>
+    
+    <variablelist>
+      <title>Grammar Options</title>
+      
+      <varlistentry>
+        <term><option>-m <replaceable>mod</replaceable> | --main <replaceable>mod</replaceable></option></term>
+        <listitem>
+          <para>
+            Use <replaceable>mod</replaceable> as the main module in the SDF definition. By default,
+            this is <code>Main</code>.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--name <replaceable>mod</replaceable></option></term>
+        <listitem>
+          <para>
+            Name of the resulting module. This option is mandatory.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--prefix <replaceable>id</replaceable></option></term>
+        <listitem>
+          <para>
+            Prefix all sort names with <replaceable>id</replaceable>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--scheme <replaceable>[...]</replaceable></option></term>
+        <listitem>
+          <para>
+            Rename the sorts according to the scheme in <replaceable>[...]</replaceable>.
+            <!-- FIXME: Needs elaboration -->
+          </para>
+        </listitem>
+      </varlistentry>
+      
+    </variablelist>
+
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
+  </refsection>
+
 
   <refsection>
     <title>Example</title>
 
     <para>
-      To ...
+    Consider the following syntax definition.
     </para>
 
-    <screen><prompt>$ </prompt>gen-renamed-sdf-module -i tree.trm -o tree.tmpl</screen>
-  </refsection>
+<programlisting>
+  definition
+  module Expressions
+  imports Identifiers [Id => MyId]
+  exports
+    sorts Exp
+  
+  context-free syntax
+    Id        -> Exp {cons("Var")}
+    IntConst  -> Exp {cons("Int")}
+  
+    Exp "+"  Exp -> Exp  {left, cons("Plus")}
 
-  <refsection>
-    <title>Options</title>
+  module Identifiers
+  exports
+    sorts Id
+  
+  lexical syntax
+    [a-zA-Z]+ -> Id  
+</programlisting>  
+    
+    <para>
+      By applying <command>gen-renamed-sdf-module</command> as follows, all sorts will
+      be prefixed by <code>Exp</code>.  
+    </para>
 
-    <variablelist>
-      <title>Input/Output Options</title>
-
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>
-	    Gen-Renamed-Sdf-Module the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting gen-renamed-sdf-module term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
+    <screen><prompt>$ </prompt>gen-renamed-sdf-module -i Exp.def -m Expressions --name Exp-Prefixed --prefix Exp</screen>
+    
+    <para>
+      The generated definition is:
+    </para>
+    
+<programlisting>
+  module Exp-Prefixed
+  imports Expressions
+    [ IntConst => ExpIntConst
+      MyId     => ExpMyId
+      Exp      => ExpExp ]
+</programlisting>    
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
