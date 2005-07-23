@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-rtg2sig">
   <refnamediv>
     <refname>rtg2sig</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>generates a Stratego signature from a regular tree grammar (RTG)</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -24,12 +24,30 @@
     <title>Description</title>
 
     <para>
-      The rtg2sig utility is used to 
+      The <command>rtg2sig</command> utility is used to generates a Stratego 
+      signature from a regular tree grammar.
     </para>
+    
   </refsection>
 
   <refsection>
     <title>Options</title>
+
+    <variablelist>
+      <title>Module Options</title>
+      
+      <varlistentry>
+        <term><option>--module <replaceable>name</replaceable></option></term>
+        <listitem>
+          <para>
+            Specifies that the module name of the resulting Stratego file should
+            be <replaceable>name</replaceable>. If <option>--module</option> is
+            not given, the output file name is used. If that is not known, the
+            input file name is used.
+          </para>  
+        </listitem>
+      </varlistentry>
+    </variablelist>
     
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
@@ -39,10 +57,55 @@
     <title>Example</title>
     
     <para>
-      To ...
+      Consider the regular tree grammar given below (the exciting part 
+      about how we created this from an SDF definition can be gleaned
+      from the example for <link linkend="ref-sdf2rtg">sdf2rtg</link>):
+    </para>
+  
+<programlisting>
+regular tree grammar
+  start Exp
+  productions
+    Exp      -> Minus(Exp,Exp)
+    Exp      -> Plus(Exp,Exp)
+    Exp      -> Mod(Exp,Exp)
+    Exp      -> Div(Exp,Exp)
+    Exp      -> Mul(Exp,Exp)
+    Exp      -> Int(IntConst)
+    Exp      -> Var(Id)
+    IntConst -> &lt;string>
+    Id       -> &lt;string>
+</programlisting>
+ 
+   <para>
+     Provided that this this regular tree grammar is stored in the file 
+     <filename>Exp.rtg</filename>, it can be converted into a Stratego
+     signature using <command>rtg2sig</command>, as follows:
+   </para>
+   
+    <screen><prompt>$ </prompt>rtg2sig -i Exp.rtg -o Exp.str</screen>
+    
+    <para>
+      The resulting Stratego signature given below may be used directly
+      by your Stratego programs by importing the <code>Exp</code> module.
     </para>
     
-    <screen><prompt>$ </prompt>rtg2sig -i tree.trm -o tree.tmpl</screen>
+<programlisting>
+module Exp
+imports list-cons option
+signature
+  constructors
+    Minus : Exp * Exp -> Exp
+    Plus  : Exp * Exp -> Exp
+    Mod   : Exp * Exp -> Exp
+    Div   : Exp * Exp -> Exp
+    Mul   : Exp * Exp -> Exp
+    Int   : IntConst -> Exp
+    Var   : Id -> Exp
+          : String -> IntConst
+          : String -> Id
+</programlisting>    
+            
   </refsection>
   
   
