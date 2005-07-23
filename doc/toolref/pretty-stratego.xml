@@ -1,7 +1,7 @@
 <refentry lang="en" id="ref-pretty-stratego">
   <refnamediv>
     <refname>pretty-stratego</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>pretty-prints a Stratego program.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
@@ -25,27 +25,34 @@
     <title>Description</title>
 
     <para>
-      The pretty-stratego utility is used to 
-    </para>
+      The <command>pretty-stratego</command> utility is used to pretty-print
+      Stratego source code to concrete syntax. It has two different modes
+      of operation, depending on whether the input is in abstract syntax
+      (an <command>.rtree</command> file) or concrete syntax (an 
+      <command>.str</command> file).
+    </para>     
   </refsection>
 
   <refsection>
     <title>Options</title>
-    
+
+    <variablelist>
+      <title>Input/Output Options</title>
+      
+      <varlistentry>
+        <term><option>-a</option></term>
+        <term><option>--abstract</option></term>
+        <listitem>
+          <para>
+            Input Stratego module is in abstract syntax.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+        
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   </refsection>
-
-  <refsection>
-    <title>Example</title>
-    
-    <para>
-      To ...
-    </para>
-    
-    <screen><prompt>$ </prompt>pretty-stratego -i tree.trm -o tree.tmpl</screen>
-  </refsection>
-  
   
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>

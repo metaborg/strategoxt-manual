@@ -7,6 +7,10 @@
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>pp-stratego</command>
+      <arg>-a | --abstract</arg>
+      <arg>--annotations</arg>
+      <arg>-I <replaceable>dir</replaceable> | --Include <replaceable>dir</replaceable></arg>
+      <arg>-p <replaceable>file</replaceable></arg>
       <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
       <arg>-o <replaceable>file</replaceable> | --output <replaceable>file</replaceable></arg>
       <arg>-b</arg>
@@ -53,13 +57,44 @@
       <title>Input/Output Options</title>
 
       <varlistentry>
-	<term><option>--abstract</option></term>
-	<listitem>
-	  <para>
-	    Input Stratego module is in abstract syntax.
-	  </para>
-	</listitem>
+        <term><option>-a</option></term>
+        <term><option>--abstract</option></term>
+    	<listitem>
+    	  <para>
+    	    Input Stratego module is in abstract syntax.
+    	  </para>
+    	</listitem>
       </varlistentry>
+      
+      <varlistentry>
+        <term><option>--annotations</option></term>
+        <listitem>
+          <para>
+            Print annotations on the abstract syntax tree.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-I <replaceable>dir</replaceable></option></term>
+        <term><option>-Include <replaceable>dir</replaceable></option></term>
+        <listitem>
+          <para>
+            Include modules from directory <replaceable>dir</replaceable>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-p <replaceable>file</replaceable></option></term>
+        <listitem>
+          <para>
+            Use pretty-print table <replaceable>file</replaceable> instead of
+            the default builtin. 
+          </para>
+        </listitem>
+      </varlistentry>
+      
     </variablelist>
     
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
