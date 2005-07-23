@@ -7,9 +7,15 @@
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>parse-xml-info</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --output <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>      
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,74 +23,54 @@
     <title>Description</title>
 
     <para>
-      The parse-xml-info utility is used to 
+      The parse-xml-info utility is used to parse an XML document into an xml-info term.
+      xml-info terms capture only the essential content of the document, and cannot be
+      converted back to XML without loss of some information.
     </para>
+  </refsection>
+
+
+  <refsection>
+    <title>Options</title>
+
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   </refsection>
 
   <refsection>
     <title>Example</title>
 
     <para>
-      To ...
+      Assume the following XML document is in <filename>doc.xml</filename>.
     </para>
-
-    <screen><prompt>$ </prompt>parse-xml-info -i tree.trm -o tree.tmpl</screen>
-  </refsection>
-
-  <refsection>
-    <title>Options</title>
-
-    <variablelist>
-      <title>Input/Output Options</title>
-
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>
-	    Parse-Xml-Info the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting parse-xml-info term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
+<programlisting>
+&lt;?xml version="1.0"?&gt;
+&lt;foo bar="zap"&gt;
+  &lt;znip/&gt;
+&lt;/foo&gt;
+</programlisting>
     
-    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <para>
+      By issuing the command
+    </para>
     
-    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <screen><prompt>$ </prompt>parse-xml-info -i foo.xml -o foo.trm</screen>
     
-  </refsection>
-
+    <para>
+      we get the following content in <filename>foo.trm</filename>.
+    </para>
+    
+    <programlisting>
+ Document(
+  Element(
+    Name(None, "foo")
+  , [Attribute(Name(None, "bar"), "zap")]
+  , [Element(Name(None, "znip"), [], [])]
+  )
+)
+</programlisting>    
+  </refsection>  
+  
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 </refentry>
