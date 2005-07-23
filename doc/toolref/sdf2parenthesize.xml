@@ -9,9 +9,22 @@
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>sdf2parenthesize</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-m <replaceable>mod</replaceable> | --main <replaceable>mod</replaceable></arg>
+      <arg>--omod <replaceable>module</replaceable></arg>
+      <arg>--main-strategy <replaceable>strategy</replaceable></arg>
+      <arg>--sig-module <replaceable>module</replaceable></arg>
+      <arg>--lang <replaceable>lang</replaceable></arg>
+      <arg>--rule-prefix <replaceable>string</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>--check</arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
