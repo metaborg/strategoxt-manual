@@ -1,15 +1,23 @@
 <refentry lang="en" id="ref-unpack-sdf">
   <refnamediv>
     <refname>unpack-sdf</refname>
-    <refpurpose>(TODO) pretty-prints an abstract syntax tree</refpurpose>
+    <refpurpose>splits an SDF definition into its constituent modules.</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>unpack-sdf</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-d <replaceable>dir</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-b</arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>-k <replaceable>level</replaceable> | --keep <replaceable>level</replaceable></arg>
+      <arg>--check</arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>      
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -17,67 +25,40 @@
     <title>Description</title>
 
     <para>
-      The unpack-sdf utility is used to 
+      The <command>unpack-sdf</command> utility is used to unpack an SDF definition into
+      its constituent modules. In effect, this utility undoes the job of
+      <link linkend="ref-pack-sdf">pack-sdf</link>. When applied to an SDF definition,
+      each module declared will be written to a file. The directory given by
+      the <option>-d</option> option is taken as the base path. The module name will
+      be used as the file name.
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
+    
     <para>
-      To ...
+      SDF modules may have path-like names, such as <code>stmts/decl</code>. In this
+      case, a directory named <filename>stmts</filename> will be created in the
+      base path, and a <filename>decl.sdf</filename> will be placed inside it.
     </para>
-
-    <screen><prompt>$ </prompt>unpack-sdf -i tree.trm -o tree.tmpl</screen>
   </refsection>
 
   <refsection>
     <title>Options</title>
 
     <variablelist>
-      <title>Input/Output Options</title>
+      <title>Directory Options</title>
 
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>-d <filename><replaceable>dir</replaceable></filename></option></term>
         <listitem>
           <para>
-	    Unpack-Sdf the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Write the resulting unpack-sdf term to
-	    <filename><replaceable>file</replaceable></filename>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
+	        The base directory to unpack into. By default, the current directory is used. 
+	        Subdirectories may be created as part of the unpack process. 
+         </para>
         </listitem>
       </varlistentry>
     </variablelist>
 
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
