@@ -2,7 +2,7 @@
   <refnamediv>
     <refname>sdf2parenthesize</refname>
     <refpurpose>
-      (TODO) generates a Stratego module that puts Parenthetical constructors at the correct places.
+      generates a Stratego module that puts parenthetical constructors at the correct places.
     </refpurpose>
   </refnamediv>
 
@@ -32,13 +32,129 @@
     <title>Description</title>
 
     <para>
-      The sdf2parenthesize utility is used to 
+      The <command>sdf2parenthesize</command> utility is used to generate a Stratego
+      transformation tool that adds the necessary parentheses to an abstract syntax
+      tree. The information is obtained from an SDF syntax definition.
     </para>
+    
+    <para>
+      The following SDF situations are supported by <command>sdf2parenthesize</command>:
+    </para>
+
+<orderedlist>
+  <listitem>
+    <para>Relative priorities</para>
+<programlisting>    
+Exp "&amp;&amp;"  Exp -> Exp
+> Exp "||"  Exp -> Exp
+</programlisting>
+    </listitem>
+    
+  <listitem>
+    <para>Groups of associative productions</para>
+<programlisting>    
+{left:
+  Exp "*" Exp -> Exp
+  Exp "/" Exp -> Exp
+}
+> {left:
+  Exp "+" Exp -> Exp
+  Exp "-" Exp -> Exp
+  }
+</programlisting>
+  </listitem>
+  
+  <listitem>
+    <para>Associativity attributes: non-assoc, assoc, left, right.</para>
+<programlisting>    
+Exp "+"   Exp -> Exp  {left, cons("Plus")}
+</programlisting>
+  </listitem>
+  
+  <listitem>
+    <para>Kernel SDF associativities</para>
+<programlisting>    
+prod1 assoc prod2
+</programlisting>    
+  </listitem>
+  
+  </orderedlist>
   </refsection>
 
 
   <refsection>
     <title>Options</title>
+
+    <variablelist>
+      <title>Generator Options</title>
+      
+      <varlistentry>
+        <term><option>-m     <filename><replaceable>mod</replaceable></filename></option></term>
+        <term><option>--main <filename><replaceable>mod</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            Set the main module in the SDF syntax definition to
+            <filename><replaceable>mod</replaceable></filename>. The
+            default main module is <filename>Main</filename>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--omod <filename><replaceable>mod</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            Set the name of the resulting Stratego module. The default is to
+            use the filename (basename, i.e. without file type suffix) of the
+            output file.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--main-strategy <replaceable>strategy</replaceable></option></term>
+        <listitem>
+          <para>
+            Set the name of the main strategy for the generated tool. The 
+            default is to use <function>io-<replaceable>module</replaceable></function>,
+            where <replaceable>module</replaceable> is the module name.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--sig-module <replaceable>module</replaceable></option></term>
+        <listitem>
+          <para>
+            Specify the Stratego module which contains the signature for the language.
+            The default is to use <replaceable>language</replaceable>, see the
+            <option>--lang</option> option.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--lang <replaceable>language</replaceable></option></term>
+        <listitem>
+          <para>
+            Name of the language. The default is to use the basename of the
+            output file.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--rule-prefix <replaceable>string</replaceable></option></term>
+        <listitem>
+          <para>
+            Prefix to use for the generated parenthesize rules. The default is
+            to use <replaceable>language</replaceable>, see the <option>--lang</option>
+            option.
+          </para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
 
     <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
@@ -48,10 +164,27 @@
     <title>Example</title>
     
     <para>
-      To ...
+      Assume <function>Plus</function> is declared as left associative. In this case,
+      <command>sdf2parenthesize</command> will create the following rule:
     </para>
-    
-    <screen><prompt>$ </prompt>sdf2parenthesize -i tree.trm -o tree.tmpl</screen>
+
+<programlisting>    
+ExpParenthesize :
+  Plus(q_15, Plus(o_15, p_15)) -> Plus(q_15, Parenthetical(Plus(o_15, p_15)))
+</programlisting>    
+  
+    <para>
+      The following shows how <command>sdf2parenthesize</command> deals with relative
+      priorities.
+    </para>
+
+<programlisting>
+ExpParenthesize :
+  Mul(Plus(v_2, w_2), u_2) -> Mul(Parenthetical(Plus(v_2, w_2)), u_2)
+
+ExpParenthesize :
+  Mul(t_2, Plus(v_2, w_2)) -> Mul(t_2, Parenthetical(Plus(v_2, w_2)))
+</programlisting>    
   </refsection>
   
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
