@@ -49,7 +49,8 @@
       <title>Grammar Options</title>
       
       <varlistentry>
-        <term><option>-m <replaceable>mod</replaceable> | --main <replaceable>mod</replaceable></option></term>
+        <term><option>-m <replaceable>mod</replaceable></option></term>
+        <term><option>--main <replaceable>mod</replaceable></option></term>
         <listitem>
           <para>
             Use <replaceable>mod</replaceable> as the main module in the SDF definition. By default,
@@ -99,7 +100,7 @@
     <title>Example</title>
 
     <para>
-    Consider the following syntax definition.
+      Consider the following syntax definition.
     </para>
 
 <programlisting>

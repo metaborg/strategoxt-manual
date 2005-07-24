@@ -37,7 +37,8 @@
       <title>Formatting Options</title>
 
       <varlistentry>
-        <term><option>-w <replaceable>width</replaceable> | --width <replaceable>width</replaceable></option></term>
+        <term><option>-w <replaceable>width</replaceable></option></term>
+        <term><option>--width <replaceable>width</replaceable></option></term>
         <listitem>
           <para>
             Sets the maximum line width to the specified <replaceable>width</replaceable>.

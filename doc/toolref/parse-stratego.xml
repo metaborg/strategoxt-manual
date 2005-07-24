@@ -65,7 +65,8 @@
       <title>Module and Syntax Options</title>
 
       <varlistentry>
-        <term><option>-I <replaceable>dir</replaceable></option> | <option>--Include <replaceable>dir</replaceable></option></term>
+        <term><option>-I <replaceable>dir</replaceable></option></term>
+        <term><option>--Include <replaceable>dir</replaceable></option></term>
         
         <listitem>
           <para>Add <replaceable>dir</replaceable> to the module search path.</para>

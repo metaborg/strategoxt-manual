@@ -117,7 +117,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-s <replaceable>s</replaceable> | --start <replaceable>s</replaceable></option></term>
+        <term><option>-s <replaceable>s</replaceable></option></term>
+        <term><option>--start <replaceable>s</replaceable></option></term>
         <listitem>
           <para>
             Use <replaceable>s</replaceable> as the start symbol, i.e. root of the ATerm. By default,

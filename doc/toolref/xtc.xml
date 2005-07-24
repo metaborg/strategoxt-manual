@@ -47,7 +47,8 @@
       <title>Repository Manipulation Options</title>
       
       <varlistentry>
-        <term><option>-r <replaceable>rep</replaceable> | --repository <replaceable>rep</replaceable></option></term>
+        <term><option>-r <replaceable>rep</replaceable></option></term>
+        <term><option>--repository <replaceable>rep</replaceable></option></term>
 
         <listitem>
           <para>
@@ -58,12 +59,8 @@
       </varlistentry>
       
       <varlistentry>
-        <term>
-          <option>
-            i <filename><replaceable>rep</replaceable></filename> 
-            | import <filename><replaceable>rep</replaceable></filename>
-          </option>
-        </term>
+        <term><option>i <filename><replaceable>rep</replaceable></filename></option></term>
+        <term><option>import <filename><replaceable>rep</replaceable></filename></option></term>
         
         <listitem>
           <para>
@@ -78,7 +75,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>r | register</option></term>
+        <term><option>r</option></term>
+        <term><option>register</option></term>
         
         <listitem>
           <para>
@@ -89,12 +87,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term>
-          <option>
-            -t <filename><replaceable>name</replaceable></filename>
-            | --tool <filename><replaceable>name</replaceable></filename>
-          </option>
-        </term>
+        <term><option>-t <filename><replaceable>name</replaceable></filename></option></term>
+        <term><option>--tool <filename><replaceable>name</replaceable></filename></option></term>
         
         <listitem>
           <para>
@@ -104,12 +98,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term>
-          <option>
-            -l <filename><replaceable>loc</replaceable></filename>
-            | --location <filename><replaceable>name</replaceable></filename>
-          </option>
-        </term>
+        <term><option>-l <filename><replaceable>loc</replaceable></filename></option></term>
+        <term><option>--location <filename><replaceable>name</replaceable></filename></option></term>
         
         <listitem>
           <para>
@@ -119,12 +109,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term>
-          <option>
-            -V <replaceable>num</replaceable>
-            | --Version <replaceable>num</replaceable>
-          </option>
-        </term>
+        <term><option>-V <replaceable>num</replaceable></option></term>
+        <term><option>--Version <replaceable>num</replaceable></option></term>
         
         <listitem>
           <para>
@@ -134,7 +120,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>q | query</option></term>
+        <term><option>q</option></term>
+        <term><option>query</option></term>
         
         <listitem>
           <para>
@@ -148,7 +135,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-a | --all</option></term>
+        <term><option>-a</option></term>
+        <term><option>--all</option></term>
         
         <listitem>
           <para>
@@ -158,7 +146,8 @@
       </varlistentry>
             
       <varlistentry>
-        <term><option>-L | --Location</option></term>
+        <term><option>-L</option></term>
+        <term><option>--Location</option></term>
         
         <listitem>
           <para>
@@ -168,7 +157,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-R | --Repository</option></term>
+        <term><option>-R</option></term>
+        <term><option>--Repository</option></term>
         
         <listitem>
           <para>

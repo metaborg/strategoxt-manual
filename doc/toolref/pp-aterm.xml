@@ -75,7 +75,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-u | --unescaped</option></term>
+        <term><option>-u</option></term>
+        <term><option>--unescaped</option></term>
         <listitem>
           <para>
             Prints strings without escapes.

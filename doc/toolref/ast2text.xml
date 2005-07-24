@@ -77,7 +77,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-w <replaceable>width</replaceable> | --width <replaceable>width</replaceable></option></term>
+        <term><option>-w <replaceable>width</replaceable></option></term>
+        <term><option>--width <replaceable>width</replaceable></option></term>
         <listitem>
           <para>
             Specifies maximal line width. Default is 80 characters.
