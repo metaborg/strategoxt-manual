@@ -3,10 +3,8 @@
 
   <para>
      This chapter provides references for the main tools in the
-     Stratego/XT collection.  (Note that the references with synopsis
-     'pretty-prints an abstract syntax tree' are templates that have
-     to be filled in, except for the ones that actually do
-     pretty-print an abstract syntax tree ;-)
+     Stratego/XT collection. Where relevant, cross references to
+     sections and chapters in the Stratego manual is given. 
   </para>
 
   <include href="abox2text.xml" xmlns="http://www.w3.org/2003/XInclude"/>
