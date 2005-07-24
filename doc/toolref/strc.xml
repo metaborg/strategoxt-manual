@@ -1,15 +1,42 @@
 <refentry lang="en" id="ref-strc">
   <refnamediv>
     <refname>strc</refname>
-    <refpurpose>(TODO) compiles Stratego programs to C or executable code</refpurpose>
+    <refpurpose>compiles Stratego programs to C or executable code</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>strc</command>
-      <arg>-i <replaceable>file</replaceable></arg>
-      <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat"><replaceable>options</replaceable></arg>
+      <arg>-i <replaceable>file</replaceable> | --input <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable> | --output <replaceable>file</replaceable></arg>
+      <arg>-I <replaceable>dir</replaceable> | --Include <replaceable>dir</replaceable></arg>
+      <arg>-m <replaceable>name</replaceable> | --main <replaceable>name</replaceable></arg>
+      <arg>--lib | --library</arg>
+      <arg>-C-include <replaceable>file</replaceable></arg>
+      <arg>-CI <replaceable>dir</replaceable></arg>
+      <arg>-CD <replaceable>name</replaceable>=<replaceable>def</replaceable></arg>
+      <arg>-CL <replaceable>dir</replaceable></arg>
+      <arg>-Cl <replaceable>file</replaceable></arg>
+      <arg>-la <replaceable>name</replaceable></arg>
+      <arg>-Xlinker <replaceable>arg</replaceable></arg>
+      <arg>--xtc-repo <replaceable>file</replaceable></arg>
+      <arg>-c</arg>
+      <arg>--ast</arg>
+      <arg>-F</arg>
+      <arg>--keep <replaceable>level</replaceable></arg>
+      <arg>--format-check <replaceable>level</replaceable></arg>
+      <arg>-O <replaceable>level</replaceable></arg>
+      <arg>--fusion</arg>
+      <arg>--choice-lib <replaceable>file</replaceable></arg>
+      <arg>-S | --silent</arg>
+      <arg>--verbose <replaceable>level</replaceable></arg>
+      <arg>--man</arg>
+      <arg>-v | --version</arg>
+      <arg>-W | --warning <replaceable>category</replaceable></arg>
+      <arg>--asfix</arg>
+      <arg>-h | -? | --help</arg>
+      <arg>--about</arg>
+      <arg>--version</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -21,23 +48,293 @@
       paradigm of rewriting strategies.
 
       The Stratego compiler <command>strc</command> translates a Stratego
-      program to a C program and to an executable if necessary. Stratego
-      modules have file extension .str.
+      program to a C program then uses <command>gcc</command> to compile the C
+      file into an executable binary. Stratego modules have the file extension
+      <filename>.str</filename>.
     </para>
 
     <para>
-      Note that <command>strc</command> is a whole program compiler. This
-      means that it completely reads all imported modules and then compiles
-      the result in its entirety to one C program. Thus, there is no separate
-      compilation for modules. This compilation scheme is prompted by some
-      features of the language, and also allows aggressive optimization of
-      programs. A downside however, is that compilation may take longer than
-      expected. Even for a seemingly small module, a large part of the library
-      of over 8000 lines of code is compiled. When developing, compile time
-      can be reduced by reducing the optimization level.
+      <command>strc</command> is nominally a whole program compiler. This means
+      that in its normal mode of operation, it completely reads all imported
+      modules and then compiles this collection in its entirety to one C
+      program. This compilation scheme is used because the current Stratego
+      language design does not permit separate compilation. Whole program
+      compilation allows aggressive optimization of programs.
+    </para>
+    
+    <para>
+      There is some rudimentary support for separate compilation of modules
+      using the <option>-lib</option> option. For non-trivial applications,
+      separate compilation speeds up compilation time drastically, but 
+      prevents some language features to be used.
+    </para>
+
+    <para>
+      The Stratego language definition is provided in the 
+      <link linkend="stratego-language">Stratego Language</link> chapter.
+      For up to date information, refer to the 
+      <ulink url="http://www.stratego-language.org">stratego-language.org</ulink>
+      website.
     </para>
   </refsection>
 
+  <refsection>
+    <title>Options</title>
+    
+    <variablelist>
+      <title>Common Options</title>
+      
+      <varlistentry>
+        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>--input <replaceable>file</replaceable></option></term>
+        <listitem>
+          <para>Main module to compile (required)</para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-o       <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>--output <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+          <para>Write output to <filename><replaceable>file</replaceable></filename></para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-I        <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
+        <term><option>--Include <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
+        <listitem>
+          <para>Include modules from directory <filename
+            class="directory"><replaceable>dir</replaceable></filename></para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-m     <function><replaceable>s</replaceable></function></option></term>
+        <term><option>--main <function><replaceable>s</replaceable></function></option></term>
+        <listitem>
+          <para>
+            Use the strategy <function><replaceable>s</replaceable></function>
+            as main strategy instead of <function>main</function>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--lib</option></term>
+        <term><option>--library</option></term>
+        <listitem>
+          <para>
+            Build a library instead of an application.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--C-Include <filename class="headerfile"><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            Include C header 
+            <filename class="headerfile"><replaceable>file</replaceable></filename>
+            (<filename class="headerfile">"foo.h"</filename> or
+            <filename class="headerfile">&lt;foo.h&gt;</filename>)
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-CI <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
+        <listitem>
+          <para>Include C header files from directory <filename
+            class="directory"><replaceable>dir</replaceable></filename></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-CD <replaceable>name</replaceable>=<replaceable>def</replaceable></option></term>
+        <listitem>
+          <para>
+            Predefine <replaceable>name</replaceable> as macro, with definition <replaceable>def</replaceable>.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-CL <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
+        <listitem>
+          <para>Include binary libraries from directory <filename
+            class="directory"><replaceable>dir</replaceable></filename></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-Cl <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            Search the library named <filename><replaceable>file</replaceable></filename> when linking.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-la <filename><replaceable>name</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            Search the libtool library <filename>lib<replaceable>name</replaceable>.la</filename> when linking.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-Xlinker <replaceable>arg</replaceable></option></term>
+        <listitem>
+          <para>
+            Pass the argument <replaceable>arg</replaceable> to the linker.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--xtc-repo <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            Set the default XTC repository in the compiled output program to
+            <filename><replaceable>file</replaceable></filename>. The default is
+            to not set any XTC repository.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-c</option></term>
+        <listitem>
+          <para>
+            Produce C code only, i.e. don't invoke <command>gcc</command> to 
+            compile to binary executable.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--ast</option></term>
+        <listitem><para>Produce Stratego abstract syntax tree</para></listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-F</option></term>
+        <listitem><para>Produce normalized specification</para></listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--keep <replaceable>level</replaceable></option></term>
+        <listitem><para>Keep intermediate results (0 = keep nothing).</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--format-check <replaceable>level</replaceable></option></term>
+        <listitem><para>Format check intermediate results (0 = basic checking).</para></listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-O <replaceable>level</replaceable></option></term>
+        <listitem><para>Set optimization level <replaceable>level</replaceable> (0 = no optimization).</para></listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--fusion</option></term>
+        <listitem><para>Toggle specialize applications of innermost. The default is on.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--choice-lib <filename><replaceable>file</replaceable></filename></option></term>
+        <listitem>
+          <para>
+            Link with choice point library in <filename><replaceable>file</replaceable></filename>.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-S</option></term>
+        <term><option>--silent</option></term>
+        <listitem><para>Silent execution (same as <option>--verbose</option> 0)</para></listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--verbose <replaceable>level</replaceable></option></term>
+        <listitem><para>Verbosity level <replaceable>level</replaceable>. The default is 1.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--man</option></term>
+        <listitem>
+          <para>Show man page.</para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-W <replaceable>category</replaceable></option></term>
+        <term><option>--warning <replaceable>category</replaceable></option></term>
+        <listitem>
+        <para>
+          Report warnings failling into category <replaceable>category</replaceable>,
+          which must be either of the following:
+        </para>
+        
+        <orderedlist>
+          <listitem>
+            <para><option>all</option> - all categories (this is default)</para>
+          </listitem>
+          <listitem>
+            <para><option>no-<replaceable>C</replaceable>C</option> - no warnings in category <replaceable>C</replaceable></para>
+          </listitem>
+          <listitem>
+            <para><option>debug-arguments</option> - missing build operator</para>
+          </listitem>
+          <listitem>
+            <para><option>obsolete-strategy-calls</option> - obsolete strategies</para>
+          </listitem>
+          <listitem>
+            <para><option>maybe-unbound-variables</option> - unbound variables</para>
+          </listitem>
+          <listitem>
+            <para><option>lower-case-constructors</option> - warn when finding lower case constructors</para>
+          </listitem>
+        </orderedlist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--asfix</option></term>
+        <listitem><para>Concrete syntax parts are not imploded</para></listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>--help</option></term>
+        <term><option>-h</option></term>
+        <term><option>-?</option></term>
+        <listitem>
+          <para>Display usage version</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--about</option></term>
+        <listitem>
+          <para>Display information about this program.</para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term><option>-v</option></term>
+        <term><option>--version</option></term>
+        <listitem>
+          <para>Same as <option>--about</option></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+  
   <refsection>
     <title>Examples</title>
 
@@ -46,191 +343,30 @@
       an executable <filename><replaceable>M</replaceable></filename>
     </para>
 
-    <cmdsynopsis>
-      <command>strc</command>
-      <arg choice="plain">-i <replaceable>M</replaceable></arg>
-    </cmdsynopsis>
+    <screen><prompt>$ </prompt>strc -i M</screen>
 
     <para>
       Use the strategy <replaceable>foo</replaceable> as main strategy instead of
       <function>main</function>.
     </para>
 
-    <cmdsynopsis>
-      <command>strc</command>
-      <arg choice="plain">-i <replaceable>M</replaceable></arg>
-      <arg choice="plain">--main <replaceable>foo</replaceable></arg>
-    </cmdsynopsis>
+    <screen><prompt>$ </prompt>strc -i M --main foo</screen>
 
     <para>
       Compile module <filename><replaceable>M</replaceable>.str</filename> to
       C code in file <filename><replaceable>M</replaceable>.c</filename>
     </para>
 
-    <cmdsynopsis>
-      <command>strc</command>
-      <arg choice="plain">-i <replaceable>M</replaceable></arg>
-      <arg choice="plain">-c</arg>
-    </cmdsynopsis>
+    <screen><prompt>$ </prompt>strc -i M -c</screen>
 
     <para>
       Include modules from directory <filename class="directory">../sig</filename>
     </para>
 
-    <cmdsynopsis>
-      <command>strc</command>
-      <arg choice="plain">-i <replaceable>M</replaceable></arg>
-      <arg choice="plain">-I ../sig</arg>
-    </cmdsynopsis>
+    <screen><prompt>$ </prompt>strc -i M -I ../sig</screen>
+
   </refsection>
 
-  <refsection>
-    <title>Options</title>
-
-    <variablelist>
-      <title>Common Options</title>
-
-      <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
-        <listitem>
-          <para>Main module to compile (required)</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-o       <filename><replaceable>file</replaceable></filename></option></term>
-        <term><option>--output <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>Write output to <filename><replaceable>file</replaceable></filename></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-I        <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
-        <term><option>--Include <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
-        <listitem>
-	  <para>Include modules from directory <filename
-	  class="directory"><replaceable>dir</replaceable></filename></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-m     <function><replaceable>s</replaceable></function></option></term>
-	<term><option>--main <function><replaceable>s</replaceable></function></option></term>
-        <listitem>
-	  <para>
-	    Use the strategy <function><replaceable>s</replaceable></function>
-	    as main strategy instead of <function>main</function>.
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--C-Include <filename class="headerfile"><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-	  <para>
-	    Include C header 
-	    <filename class="headerfile"><replaceable>file</replaceable></filename>
-	    (<filename class="headerfile">"foo.h"</filename> or
-	    <filename class="headerfile">&lt;foo.h&gt;</filename>)
-	  </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-CI <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
-        <listitem>
-	  <para>Include C header files from directory <filename
-	  class="directory"><replaceable>dir</replaceable></filename></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-CL <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
-        <listitem>
-	  <para>Include binary libraries from directory <filename
-	  class="directory"><replaceable>dir</replaceable></filename></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-c</option></term>
-	<listitem><para>Produce C code only (don't compile to executable)</para></listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>--ast</option></term>
-	<listitem><para>Produce Stratego abstract syntax tree</para></listitem>
-      </varlistentry>
-      
-      <varlistentry>
-	<term><option>-F</option></term>
-	<listitem><para>Produce normalized specification</para></listitem>
-      </varlistentry>
-	
-      <varlistentry>
-	<term><option>--asfix</option></term>
-	<listitem><para>Concrete syntax parts are not imploded</para></listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>--keep <replaceable>n</replaceable></option></term>
-	<listitem><para>Keep intermediate results (0 = keep nothing)</para></listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-O <replaceable>n</replaceable></option></term>
-	<listitem><para>Optimization level (0 = no optimization)</para></listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>--fusion</option></term>
-	<listitem><para>Toggle specialize applications of innermost (default: on)</para></listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>--verbose <replaceable>i</replaceable></option></term>
-	<listitem><para>Verbosity level i (default 1)</para></listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-S</option></term>
-	<term><option>--silent</option></term>
-	<listitem><para>Silent execution (same as --verbose 0)</para></listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-W</option></term>
-	<term><option>--warning</option></term>
-	<term><option>--maybe-unbound-warnings</option></term>
-	<term><option>--no-maybe-unbound-warnings</option></term>
-	<listitem><para>Set warning level (-W all to switch all warnings on)</para></listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>-v</option></term>
-	<term><option>--version</option></term>
-	<listitem>
-	  <para>Display program's version</para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><option>--help</option></term>
-	<term><option>-h</option></term>
-	<term><option>-?</option></term>
-	<listitem>
-	  <para>Display usage version</para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </refsection>
-
-  <refsection>
-    <title>See Also</title>
-
-    <para><ulink url="http://www.stratego-language.org">Stratego website</ulink></para>
-  </refsection>
 
   <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
