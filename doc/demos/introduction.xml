@@ -268,7 +268,7 @@
 
   <section>
     <title>Instructions</title>
-  
+
     <para>
       First of all download the required packages (.tar.gz, RPMs or
       Source RPMs). You need aterm and sdf2-bundle. The URLs are
@@ -389,7 +389,7 @@ rpm -U *
 </section>
 
 <section>
-  <title>Code Examples</title>
+  <title>Tutorial Code</title>
       
   <para>
 
@@ -407,35 +407,33 @@ rpm -U *
 </section>
 
 <section>
-  <title>To Do</title>
+  <title>Overview</title>
 
   <para>
 
-     This tutorial is not complete. There are countless other examples
-     of transformations with Stratego. Here are some possible
-     examples.     
+     This tutorial gives an introduction to transformation with
+     Stratego/XT.
 
   </para>
  
-  <para>
+  <section>
+    <title>To Do</title>
 
-    Analysis: check that variables are defined before use
+    <para>
+      This tutorial is not complete. There are countless other
+      examples of transformations with Stratego. Here are some
+      possible examples.
+    </para>
+ 
+    <para>
+      Analysis: check that variables are defined before use;
+      Typechecking: check that variables are used consistently;
+      Partial Evaluation ; Custom Pretty-Printing; Configuration and
+      Deployment; Domain-Specific Language; Code Generation; Language
+      Embedding
+    </para>
 
-    Typechecking: check that variables are used consistently
-
-    Partial Evaluation 
-
-    Custom Pretty-Printing
-
-    Configuration and Deployment
-
-    Domain-Specific Language
-
-    Code Generation
-
-    Language Embedding
-
-  </para>
+  </section>
 
 </section>
 
