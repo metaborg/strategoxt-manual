@@ -4,6 +4,11 @@
          "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
 >
 
+<set>
+
+  <include href="demos/demos.xml" 
+    xmlns="http://www.w3.org/2003/XInclude"/>
+
 <book>
   <title>Stratego/XT Manual</title>
 
@@ -17,11 +22,11 @@
 	</affiliation>
       </author>
       <author>
-    <firstname>Karl Trygve</firstname>
-    <surname>Kalleberg</surname>
-    <affiliation>
-       <orgname>Universitetet i Bergen</orgname>
-    </affiliation>
+        <firstname>Karl Trygve</firstname>
+        <surname>Kalleberg</surname>
+        <affiliation>
+           <orgname>Universitetet i Bergen</orgname>
+        </affiliation>
       </author>
       <author>
 	<firstname>Rob</firstname>
@@ -47,9 +52,8 @@
     </copyright>
   </bookinfo>
 
-  
   <part>
-    <title>Getting started</title>
+    <title>Introduction</title>
     
     <include href="gettingstarted/gettingstarted.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
@@ -59,17 +63,14 @@
 
     <include href="gettingstarted/architecture.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
-    
+
   </part>
-  
-  <include href="demos/demos.xml" 
-    xmlns="http://www.w3.org/2003/XInclude"/>
 
   <include href="aterms/aterms.xml" 
     xmlns="http://www.w3.org/2003/XInclude"/>
   
   <part>
-    <title>Stratego</title>
+    <title>The Stratego Language</title>
 
     <include href="stratego-language/stratego-language.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
@@ -83,7 +84,7 @@
   </part>
 
   <part>
-    <title>Syntax Definition Formalism (SDF)</title>
+    <title>The Syntax Definition Formalism SDF</title>
 
     <include href="sdf-language/sdf-language.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
@@ -93,10 +94,11 @@
 
     <include href="asfix/asfix.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
+
   </part>
 
   <part>
-    <title>Transformation Tools (XT)</title>
+    <title>The XT Transformation Tools</title>
 
     <include href="gpp/gpp.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
@@ -107,21 +109,13 @@
     <include href="format/format.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
 
-  </part>
-
-  <part>
-    <title>Extensions</title>
-
-    <include href="java/java.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
     <include href="xdoc/xdoc.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
 
   </part>
 
   <part>
-    <title>Developers</title>
+    <title>Stratego/XT Development</title>
 
     <include href="developers/latestsources.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
@@ -132,12 +126,64 @@
   </part>
 
   <part>
-    <title>Reference</title>
+    <title>Reference Manual</title>
 
     <include href="stratego-language/reference.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
 
     <include href="toolref/reference.xml" 
       xmlns="http://www.w3.org/2003/XInclude"/>
+
   </part>
+
 </book>
+
+<book>
+  <title>Java in Stratego</title>
+
+  <bookinfo>
+    <authorgroup>
+      <author>
+	<firstname>Martin</firstname>
+	<surname>Bravenboer</surname>
+	<affiliation>
+	  <orgname>Universiteit Utrecht</orgname>
+	</affiliation>
+      </author>
+      <author>
+        <firstname>Karl Trygve</firstname>
+        <surname>Kalleberg</surname>
+        <affiliation>
+          <orgname>Universitetet i Bergen</orgname>
+        </affiliation>
+      </author>
+      <author>
+	<firstname>Rob</firstname>
+	<surname>Vermaas</surname>
+	<affiliation>
+	  <orgname>Universiteit Utrecht</orgname>
+	</affiliation>
+      </author>
+      <author>
+	<firstname>Eelco</firstname>
+	<surname>Visser</surname>
+	<affiliation>
+	  <orgname>Universiteit Utrecht</orgname>
+	</affiliation>
+      </author>
+    </authorgroup>
+
+    <copyright>
+      <year>2003</year>
+      <year>2004</year>
+      <year>2005</year>
+      <holder>Eelco Visser</holder>
+    </copyright>
+  </bookinfo>
+
+  <include href="java/java.xml" 
+    xmlns="http://www.w3.org/2003/XInclude"/>
+
+</book>
+
+</set>

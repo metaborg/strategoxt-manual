@@ -1,70 +1,65 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-<part>
-  <title>Tutorial (*)</title>
+<book>
 
-  <include href="introduction.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <title>Stratego/XT Tutorial</title>
 
-  <include href="sdf.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <bookinfo>
+    <authorgroup>
+      <author>
+	<firstname>Eelco</firstname>
+	<surname>Visser</surname>
+	<affiliation>
+	  <orgname>Universiteit Utrecht</orgname>
+	</affiliation>
+      </author>
+    </authorgroup>
 
-  <include href="simplify.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <copyright>
+      <year>2005</year>
+      <holder>Eelco Visser</holder>
+    </copyright>
+  </bookinfo>
 
-  <include href="renaming.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="introduction.xml" 
+    xmlns="http://www.w3.org/2003/XInclude"/>
 
-  <include href="run.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <part>
+     <title>A Tiny Imperative Language</title>
 
-  <include href="data-flow.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+     <include href="sdf.xml" 
+       xmlns="http://www.w3.org/2003/XInclude"/>
 
-  <include href="compilation.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+     <include href="simplify.xml" 
+       xmlns="http://www.w3.org/2003/XInclude"/>
 
-  <include href="eblocks.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+     <include href="renaming.xml" 
+       xmlns="http://www.w3.org/2003/XInclude"/>
 
-  <chapter>
-    <title>Analysis (*)</title>
-    <para>check that variables are defined before use</para>
-    <para></para>
-    <para></para>
-  </chapter>
+     <include href="run.xml" 
+       xmlns="http://www.w3.org/2003/XInclude"/>
+
+     <include href="data-flow.xml" 
+       xmlns="http://www.w3.org/2003/XInclude"/>
+
+     <include href="compilation.xml" 
+       xmlns="http://www.w3.org/2003/XInclude"/>
+
+     <include href="eblocks.xml" 
+       xmlns="http://www.w3.org/2003/XInclude"/>
+
+  </part>
   
-  <chapter>
-    <title>Typechecking (*)</title>
-    <para>check that variables are used consistently</para>
-  </chapter>
+  <part>
+     <title>Transforming BibTeX Files</title>
+ 
+     <chapter>
+        <title>Foo</title>
+        <para>foo</para>
+     </chapter>
 
-  <chapter>
-    <title>Partial Evaluation (*)</title>
-    <para></para>
-    <para></para>
-    <para>Topic: dynamic rules</para>
-    <para>power program</para>
-  </chapter>
-
-  <chapter>
-    <title>Custom Pretty-Printing (*)</title>
-       <para></para>
-  </chapter>
-  
-  <chapter>
-    <title>Configuration and Deployment (*)</title>
-    <para></para>
-  </chapter>
-  
+  </part>
 
 
-  <chapter>
-    <title>Domain-Specific Language (*)</title>
-    <para></para>
-  </chapter>
-  
-  <chapter>
-       <title>Code Generation (*)</title>
-    <para></para>
-  </chapter>
-  
-  <chapter>
-    <title>Language Embedding (*)</title>
-    <para></para>
-  </chapter>
-  
-</part>
+</book>

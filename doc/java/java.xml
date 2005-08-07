@@ -5,8 +5,11 @@
 <chapter id="java">
   <title>Java Transformations</title>
 
-  <include href="getting-started.xml" xmlns="http://www.w3.org/2003/XInclude"/> 
-  <include href="demo-java2c.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <include href="getting-started.xml" 
+    xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <include href="demo-java2c.xml" 
+    xmlns="http://www.w3.org/2003/XInclude"/>
 
 </chapter>
   
