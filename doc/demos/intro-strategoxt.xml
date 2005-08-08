@@ -1,0 +1,234 @@
+<section>
+  <title>Transformation with Stratego/XT</title>
+
+  <para>
+
+    Program source code is the raw material produced by the software
+    industry. Rather than being an end product, this material requires
+    further processing to turn it into useful products. Compilation,
+    the translation of a program to machine code in order to make it
+    executable, is the standard processing technique applied. But much
+    more can be done. There are many other kinds of processes that can
+    be applied to programs. For example, programs can be synthesized
+    from high-level specifications; programs can be optimized using
+    knowledge of the application domain; documentation for
+    understanding a program can be automatically derived from its
+    sources; programs can be specialized to known inputs; application
+    programs can be generated from domain-specific languages;
+    low-level programs can be reverse engineered into high-level
+    programs.
+
+  </para>
+
+  <para>
+
+    All these processes require the manipulation of program source
+    code.  In fact, all such manipulations can be viewed as
+    transformations of a program to a derived program, where `program'
+    is interpreted broadly. Hence, program transformation is the
+    unifying notion underlying automatic program processing.
+
+  </para>
+
+  <para>
+
+    To reach a higher level of automation in software engineering, the
+    use of automatic program transformation is indispensable.
+    However, the realization of program transformation systems is
+    hard.  Parts of the process, such as parsing, are supported by
+    generative techniques, but most aspects require hard work.  The
+    effective implementation of program transformation systems is a
+    barrier for the wide adoption of program transformation in
+    software engineering.  Most transformation techniques used in
+    practice are based on textual generation and manipulation, which
+    poses limitations on what can be done and is error-prone.
+
+  </para>
+
+  <para>
+
+    This book provides a tutorial introduction to program
+    transformation with Stratego/XT, a language and toolset that aims
+    at providing tool support for all aspects of the transformation
+    process.
+
+  </para>
+
+  <para>
+
+    Stratego is a modular language for the specification of fully
+    automatic program transformation systems based on the paradigm of
+    rewriting strategies. The construction of transformation systems
+    with Stratego is supported by the XT collection of transformation
+    tools. The Stratego/XT distribution integrates Stratego and XT.
+    
+  </para>
+
+  <section>
+     <title>Program Representation</title>
+
+    <para>
+
+        Although some systems work directly on text, in general a
+        textual representation is not adequate for performing complex
+        transformations.  Therefore, a structured representation is
+        used by most systems.  Since programs are written as texts by
+        programmers, parsers are needed to convert from text to
+        structure and unparsers are needed to convert structure to
+        text.
+
+    </para>
+  
+    <para>
+
+        The basic assumptions in our approach are that programs can be
+        represented as terms and that term rewrite rules are an
+        excellent way to formalize transformations on
+        programs. 
+
+    </para>
+  
+    <para>
+
+        The representation of programs is guided by the idea of
+        \emph{grammars as contracts}. Syntax definitions determine all
+        aspects of program represention including the representation
+        programs as abstract trees, the conversion of program texts to
+        terms by parsers and from terms to texts by pretty-printers.
+ 
+    </para>
+  
+  </section>
+
+  <section>
+    <title>Transformation by Rewriting</title>
+
+    <para>
+
+        \emph{Term rewrite systems} are formalisations of systematic
+        modifications of terms or trees
+        (Chapter~\ref{Chap:TermRewriting}). A rewrite rule describes
+        how a program fragment matching a certain pattern is
+        transformed into another program fragment. Term rewriting is
+        the exhaustive application of a set of rules to a term.
+
+    </para>
+  
+    <para>
+
+        The specification of transformations using abstract syntax
+        does not scale up and becomes hard to understand. The use of
+        the \emph{concrete syntax} of the object language in the
+        specification of transformation rules decreases the mental
+        distance between transformations rules and the programs they
+        transform (Chapter~\ref{Chap:ConcreteSyntax}).
+
+    </para>
+  
+    <para>
+
+        A complex program transformation is achieved through a number
+        of consecutive modifications of a program.  At least at the
+        level of design it is useful to distinguish transformation
+        rules from transformation strategies.  A \emph{rule} defines a
+        basic step in the transformation of a program.  A
+        \emph{strategy} is a plan for achieving a complex
+        transformation using a set of rules.
+
+    </para>
+  
+<!--includefile 
+  id="demos-sample-rules-str"
+  root="demos"
+  file="sample-rules.str" /-->
+
+  
+    <para>
+
+        For example, consider the transformation rules above. The
+        \verb|Inline| rules define inlining of function and variable
+        definitions. The \verb|Dead| rule eliminates an unused
+        variable definition. The \verb|Extract| rule abstracts an
+        expression into a function. The \verb|Hoist| rule defines
+        lifting a function definition out of a variable definition if
+        the variable is not used in the function. Using this set of
+        rules different transformations can be achieved. For example,
+        a constant propagation strategy in an optimizer could use the
+        \verb|InlineV| and \verb|Dead| rules to eliminate constant
+        variable definitions:
+
+<screen>
+   let x = 3 in x + y  ->  let x = 3 in 3 + y  ->  3 + y
+</screen>
+        On the other hand, the \verb|ExtractFunction| strategy in a
+        refactoring browser could use the \verb|Extract| and
+        \verb|Hoist| rules to abstract addition with \verb|y| into a
+        new function and lift it to top-level.
+<screen>
+  let x = 3 in x + y
+  -> let x = 3 in let addy(z) = z + y in addy(x)
+  -> let addy(z) = z + y in let x = 3 in addy(x)
+</screen>
+
+        Rules can be applied interactively by a programmer via a
+        graphical user interface.  The problem with such manipulations
+        is that the transformation is not reproducible, since the
+        decisions have not been recorded.  By automating the
+        transformation process, a series of basic transformations can
+        be repeatedly applied to a program. By generalizing the
+        sequence of transformations the combined transformation can be
+        applied to many programs.  This requires a mechanism for
+        combining rules into more complex transformations.
+
+    </para>
+  
+  </section>
+
+  <section>
+     <title>Transformation Strategies</title>
+
+    <para>
+  
+        Part~\ref{Part:Strategies} shows that pure rewriting is not
+        adequate for the implementation of program transformation
+        systems, since most rewrite systems are non-confluent and/or
+        non-terminating. Hence, standard rewriting strategies are not
+        applicable.  The paradigm of programmable rewriting strategies
+        solves this problem by supporting the definition of strategies
+        adapted to a specific transformation system. This makes it
+        possible to select which rule to apply in which transformation
+        stage, and using which traversal order.
+
+    </para>
+  
+  </section>
+
+  <section>
+    <title>Composing Transformation Systems</title>
+
+    <para>
+
+        The archicture sketched in Section~\ref{Sec:Architecture}
+        presented transformation systems as pipelines for transforming
+        trees with parsers at the source and pretty-printers at the
+        sink. There are several ways of realizing such architectures,
+        i.e., implementing the various components and composing them
+        to form a complete transformation system.
+
+    </para>
+  
+    <para>
+
+        Components can be modules in a programming languages that are
+        linked together to form a single monolithic transformation
+        system. Components can be separate executables that are glued
+        together by means of an exchange format.
+
+        The XTC component composition model provides a framework for
+        gluing individual components together into complete systems.
+
+    </para>
+  
+  </section>
+
+</section>

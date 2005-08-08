@@ -1,0 +1,64 @@
+<section>
+  <title>Overview</title>
+
+  <para>
+
+     This tutorial gives an introduction to transformation with
+     Stratego/XT.
+
+  </para>
+ 
+<section>
+  <title>TIL: A Tiny Imperative Language</title>
+
+  <para>
+    a small imperative language with statements and blocks
+
+  </para>
+ 
+  <para>
+    syntax definition and parsing
+  </para>
+
+  <para>
+    a bunch of transformations
+  </para>
+
+</section>
+
+<section>
+  <title>BibTeX Transformations</title>
+
+  <para>
+    a small domain-specific language for bibliographic information
+  </para>
+ 
+  <para>
+    syntax definition and parsing
+  </para>
+
+  <para>
+    a bunch of transformations
+  </para>
+
+</section>
+
+  
+<section>
+  <title>To Do</title>
+
+  <para>
+    This tutorial is not complete. There are countless other examples
+    of transformations with Stratego. Here are some possible examples.
+  </para>
+ 
+  <para>
+    Analysis: check that variables are defined before use;
+    Typechecking: check that variables are used consistently; Partial
+    Evaluation ; Custom Pretty-Printing; Configuration and Deployment;
+    Domain-Specific Language; Code Generation; Language Embedding
+  </para>
+
+</section>
+
+</section>

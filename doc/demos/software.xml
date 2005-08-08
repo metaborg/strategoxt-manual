@@ -1,0 +1,131 @@
+<section>
+  <title>Software</title>
+  
+  <para>
+
+     overview of the software needed to implement transformation
+     systems with Stratego/XT
+
+  </para>
+
+<section>
+  <title>Deployment Methods</title>
+
+  <para>
+    Nix; binary packages; source
+  </para>
+
+  <para>
+    release pages
+
+    stable releases
+
+    unstable releases (the bleeding edge)
+  </para>
+
+  <section>
+    <title>Nix</title>
+
+    <para>
+      Nix
+    </para>
+
+  </section>
+
+  <section>
+    <title>RPM</title>
+
+    <para>
+      RPM
+    </para>
+
+  </section>
+
+  <section>
+    <title>Other Binary Distributions</title>
+
+    <para>
+      Windows/Cygwin, MacOS X
+    </para>
+
+  </section>
+
+  <section>
+    <title>Source Distributions</title>
+
+    <para>
+      Windows/Cygwin, MacOS X
+    </para>
+
+  </section>
+
+</section>
+
+  
+<section>
+    <title>What do I Need?</title>
+    
+    <para>
+      Description of the structure of our packages: Stratego/XT and
+      language specific extensions (such as JavaFront).
+    </para>
+    
+    <para>
+      Stratego Shell
+    </para>
+  
+</section>
+
+  
+<section>
+  <title>The ATerm Library</title>
+
+  <para>
+    internal representation
+  </para>
+
+</section>
+
+<section>
+  <title>The Syntax Definition Formalism SDF</title>
+
+  <para>
+     parsing
+  </para>
+
+</section>
+
+<section>
+  <title>Stratego/XT</title>
+
+  <para>
+    Stratego transformation language and additional tools
+  </para>
+
+</section>
+
+<section>
+  <title>The Stratego Shell</title>
+
+  <para>
+    interpreter for Stratego
+  </para>
+
+</section>
+
+<section>
+  <title>Tutorial Code</title>
+      
+  <para>
+     All the code examples in this tutorial are available for separate
+     download, such that you can experiment based on these.
+  </para>
+      
+  <para>
+     <ulink url="./examples.tar.gz">examples.tar.gz</ulink>
+  </para>
+
+</section>
+
+
+</section>
