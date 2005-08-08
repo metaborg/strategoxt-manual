@@ -9,6 +9,9 @@
     doctype-public="-//OASIS//DTD DocBook XML V4.3//EN" 
     doctype-system="http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" />
 
+  <xsl:template match="includexml">
+     <include href="{@file}" xmlns="http://www.w3.org/2003/XInclude"/>
+  </xsl:template>
 
   <xsl:template match="includefile">
     <figure id="{@id}">

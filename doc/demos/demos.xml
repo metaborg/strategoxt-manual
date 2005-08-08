@@ -1,7 +1,7 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-<book>
+<book id="tutorial">
 
   <title>Stratego/XT Tutorial</title>
 
@@ -22,32 +22,24 @@
     </copyright>
   </bookinfo>
 
-  <include href="introduction.xml" 
-    xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="introduction.xml"/>
 
   <part>
      <title>A Tiny Imperative Language</title>
 
-     <include href="sdf.xml" 
-       xmlns="http://www.w3.org/2003/XInclude"/>
+     <includexml file="sdf.xml"/>
 
-     <include href="simplify.xml" 
-       xmlns="http://www.w3.org/2003/XInclude"/>
+     <includexml file="simplify.xml"/>
 
-     <include href="renaming.xml" 
-       xmlns="http://www.w3.org/2003/XInclude"/>
+     <includexml file="renaming.xml"/>
 
-     <include href="run.xml" 
-       xmlns="http://www.w3.org/2003/XInclude"/>
+     <includexml file="run.xml"/>
 
-     <include href="data-flow.xml" 
-       xmlns="http://www.w3.org/2003/XInclude"/>
+     <includexml file="data-flow.xml"/>
 
-     <include href="compilation.xml" 
-       xmlns="http://www.w3.org/2003/XInclude"/>
+     <includexml file="compilation.xml"/>
 
-     <include href="eblocks.xml" 
-       xmlns="http://www.w3.org/2003/XInclude"/>
+     <includexml file="eblocks.xml"/>
 
   </part>
   
