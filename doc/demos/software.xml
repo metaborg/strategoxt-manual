@@ -1,4 +1,4 @@
-<section>
+<section id="tutorial-software">
   <title>Software</title>
   
   <para>
@@ -27,7 +27,7 @@
     <title>Nix</title>
 
     <para>
-      Nix
+      Nix on Linux and MacOS X
     </para>
 
   </section>
@@ -54,7 +54,7 @@
     <title>Source Distributions</title>
 
     <para>
-      Windows/Cygwin, MacOS X
+      do it yourself
     </para>
 
   </section>

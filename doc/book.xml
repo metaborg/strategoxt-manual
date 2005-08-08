@@ -6,8 +6,7 @@
 
 <set>
 
-  <include href="demos/demos.xml" 
-    xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="demos/demos.xml" />
 
 <book id="manual">
   <title>Stratego/XT Manual</title>

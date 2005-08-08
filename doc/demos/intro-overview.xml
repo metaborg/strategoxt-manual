@@ -1,10 +1,14 @@
-<section>
+<section id="tutorial-overview">
   <title>Overview</title>
 
   <para>
 
      This tutorial gives an introduction to transformation with
-     Stratego/XT.
+     Stratego/XT by means of a number of examples that show typical
+     ways of organizing transformation systems.
+
+     the Stratego/XT manual gives a systematic overview of the
+     language and tools involved.
 
   </para>
  
