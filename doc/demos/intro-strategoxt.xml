@@ -14,32 +14,30 @@
 
     <para>
 
-        Although some transformation systems work directly on text, in
-        general a textual representation is not adequate for
-        performing complex transformations.  Therefore, a structured
-        representation is used by most systems.  Since programs are
-        written as texts by programmers, parsers are needed to convert
-        from text to structure and unparsers are needed to convert
-        structure to text.
+      Although some transformation systems work directly on text, in
+      general a textual representation is not adequate for performing
+      complex transformations.  Therefore, a structured representation
+      is used by most systems.  Since programs are written as texts by
+      programmers, parsers are needed to convert from text to
+      structure and unparsers are needed to convert structure to text.
 
     </para>
   
     <para>
 
-        The basic assumptions in our approach are that programs can be
-        represented as terms and that term rewrite rules are an
-        excellent way to formalize transformations on programs.
+      The basic assumptions in our approach are that programs can be
+      represented as terms and that term rewrite rules are an
+      excellent way to formalize transformations on programs.
 
-        Stratego uses the Annotated Term Format, or ATerms for short,
-        as term representation.
+      Stratego uses the Annotated Term Format, or ATerms for short, as
+      term representation.
 
-        The Stratego run-time system is based on the ATerm Library
-        which provides support for internal term representation as
-        well as their persistent representation in files. 
+      The Stratego run-time system is based on the ATerm Library which
+      provides support for internal term representation as well as
+      their persistent representation in files.
 
-        This makes it easy to provide input and output for terms in
-        Stratego, and to exchange terms between transformation
-        tools. 
+      This makes it easy to provide input and output for terms in
+      Stratego, and to exchange terms between transformation tools.
 
     </para>
 
@@ -50,27 +48,26 @@
 
     <para>
 
-        Converting program texts to terms for transformations requires
-        parsers. Since Stratego programs operate on terms, they do not
-        particularly care about the implementation of parsers. Thus,
-        parsers can be implemented with any parsing technology, or
-        terms can be produced by an existing compiler
-        front-end. However, Stratego is mostly used together with the
-        syntax definition formalism SDF. The Stratego compiler itself
-        uses SDF to parse Stratego programs, and many Stratego
-        applications have been developed with SDF as well.
+      Converting program texts to terms for transformations requires
+      parsers. Since Stratego programs operate on terms, they do not
+      particularly care about the implementation of parsers. Thus,
+      parsers can be implemented with any parsing technology, or terms
+      can be produced by an existing compiler front-end. In practice,
+      Stratego is mostly used together with the syntax definition
+      formalism SDF. The Stratego compiler itself uses SDF to parse
+      Stratego programs, and many Stratego applications have been
+      developed with SDF as well.
  
     </para>
 
     <para>
 
-	The syntax definition formalism SDF supports high-level,
-	declarative, and modular definition of the syntax of
-	programming languages and data formats. The formalism
-	integrates the definition of lexical and context-free syntax.
-	The modularity of the formalism implies that it is possible to
-	easily combine two languages or to embed one language into
-	another.
+      The syntax definition formalism SDF supports high-level,
+      declarative, and modular definition of the syntax of programming
+      languages and data formats. The formalism integrates the
+      definition of lexical and context-free syntax.  The modularity
+      of the formalism implies that it is possible to easily combine
+      two languages or to embed one language into another.
 
     </para>
 
@@ -81,12 +78,12 @@
 	
     <para>
 
-	Stratego/XT uses the pretty-printing model provided by the
-	Generic Pretty-Printing package GPP. In this model a tree is
-	unparsed to a Box expression, which contains text with markup
-	for pretty-printing. A Box expression can be interpreted by
-	different back-ends to produce formatted output for different
-	displaying devices such as plain text, HTML, and LATEX.
+      Stratego/XT uses the pretty-printing model provided by the
+      Generic Pretty-Printing package GPP. In this model a tree is
+      unparsed to a Box expression, which contains text with markup
+      for pretty-printing. A Box expression can be interpreted by
+      different back-ends to produce formatted output for different
+      displaying devices such as plain text, HTML, and LATEX.
 
     </para>
 
@@ -97,51 +94,49 @@
 
     <para>
 
-	Stratego is a language for program transformation based on the
-	paradigm of rewriting strategies. Basic transformations are 
-	defined using conditional term rewrite rules. These are
-	combined into full fledged transformations by means of
-	strategies, which control the application of rules. 
+      Stratego is the core of Stratego/XT. It is a language for
+      program transformation based on the paradigm of rewriting
+      strategies. Basic transformations are defined using conditional
+      term rewrite rules. These are combined into full fledged
+      transformations by means of strategies, which control the
+      application of rules.
 
     </para>
 
     <para>
 
-        Term rewrite systems are formalisations of systematic
-        modifications of terms or trees. A rewrite rule describes how
-        a program fragment matching a certain pattern is transformed
-        into another program fragment. Term rewriting is the
-        exhaustive application of a set of rules to a term.
+      Term rewrite systems are formalisations of systematic
+      modifications of terms or trees. A rewrite rule describes how a
+      program fragment matching a certain pattern is transformed into
+      another program fragment. Term rewriting is the exhaustive
+      application of a set of rules to a term.
 
     </para>
 
     <para>
 
-        A complex program transformation is achieved through a number
-        of consecutive modifications of a program.  At least at the
-        level of design it is useful to distinguish transformation
-        rules from transformation strategies.  A rule defines a
-        basic step in the transformation of a program.  A
-        strategy is a plan for achieving a complex
-        transformation using a set of rules.
-
+      A complex program transformation is achieved through a number of
+      consecutive modifications of a program.  At least at the level
+      of design it is useful to distinguish transformation rules from
+      transformation strategies.  A rule defines a basic step in the
+      transformation of a program.  A strategy is a plan for achieving
+      a complex transformation using a set of rules.
 
     <includefile 
         id="demos-sample-rules-str"
         root="./"
         file="sample-rules.str" />
 
-        For example, consider the transformation rules above. The
-        Inline rules define inlining of function and variable
-        definitions. The Dead rule eliminates an unused
-        variable definition. The Extract rule abstracts an
-        expression into a function. The Hoist rule defines
-        lifting a function definition out of a variable definition if
-        the variable is not used in the function. Using this set of
-        rules different transformations can be achieved. For example,
-        a constant propagation strategy in an optimizer could use the
-        InlineV and Dead rules to eliminate constant
-        variable definitions:
+      For example, consider the transformation rules above. The Inline
+      rules define inlining of function and variable definitions. The
+      Dead rule eliminates an unused variable definition. The Extract
+      rule abstracts an expression into a function. The Hoist rule
+      defines lifting a function definition out of a variable
+      definition if the variable is not used in the function. Using
+      this set of rules, different transformations can be
+      achieved. For example, a constant propagation strategy in an
+      optimizer could use the InlineV and Dead rules to eliminate
+      constant variable definitions:
 
 <screen>
    let x = 3 in x + y  ->  let x = 3 in 3 + y  ->  3 + y
@@ -156,15 +151,15 @@
   -> let addy(z) = z + y in let x = 3 in addy(x)
 </screen>
 
-        Rules can be applied interactively by a programmer via a
-        graphical user interface.  The problem with such manipulations
-        is that the transformation is not reproducible, since the
-        decisions have not been recorded.  By automating the
-        transformation process, a series of basic transformations can
-        be repeatedly applied to a program. By generalizing the
-        sequence of transformations the combined transformation can be
-        applied to many programs.  This requires a mechanism for
-        combining rules into more complex transformations.
+      Rules can be applied interactively by a programmer via a
+      graphical user interface.  The problem with such manipulations
+      is that the transformation is not reproducible, since the
+      decisions have not been recorded.  By automating the
+      transformation process, a series of basic transformations can be
+      repeatedly applied to a program. By generalizing the sequence of
+      transformations the combined transformation can be applied to
+      many programs.  This requires a mechanism for combining rules
+      into more complex transformations.
 
     </para>
   
@@ -181,28 +176,6 @@
 
     </para>
   
-    <para>
-
-      dynamic rules
-
-    </para>
-  
-  </section>
-
-  <section>
-    <title>Concrete Syntax</title>
-
-    <para>
-
-        The specification of transformations using abstract syntax
-        does not scale up and becomes hard to understand. The use of
-        the concrete syntax of the object language in the
-        specification of transformation rules decreases the mental
-        distance between transformations rules and the programs they
-        transform.
-
-    </para>
-
   </section>
 
   <section>
@@ -210,11 +183,10 @@
 
     <para>
 
-	XT is a bundle of transformation tools providing support for
-	the construction of all aspects of program transformation
-	systems, including parsing, pretty-printing, and abstract
-	syntax tree transformation.  The approach is component-based
-	and includes a facilities component composition.
+	XT is a collection of transformation tools providing support
+	for the generation of many infrastructural aspects of program
+	transformation systems, including parsers, pretty-printers,
+	parenthesizers, and format checkers. 
 
     </para>
 
@@ -225,37 +197,15 @@
 
     <para>
 
-	Parsers, pretty-printers, and transformations can be encapsulated
-	in separate executable components, which can be reused in 
-	multiple transformation systems. Composition of such components
-	is facilitated by the XTC transformation tool composition library.\\
+      Parsers, pretty-printers, and transformations can be
+      encapsulated in separate executable components, which can be
+      reused in multiple transformation systems. Composition of such
+      components is facilitated by the XTC transformation tool
+      composition library.
 
-        The archicture sketched in Section~\ref{Sec:Architecture}
-        presented transformation systems as pipelines for transforming
-        trees with parsers at the source and pretty-printers at the
-        sink. There are several ways of realizing such architectures,
-        i.e., implementing the various components and composing them
-        to form a complete transformation system.
-
-    </para>
-  
-    <para>
-
-        Components can be modules in a programming languages that are
-        linked together to form a single monolithic transformation
-        system. Components can be separate executables that are glued
-        together by means of an exchange format.
-
-        The XTC component composition model provides a framework for
-        gluing individual components together into complete systems.
-
-    </para>
-  
-    <para>
-
-      initially this tutorial uses separate components that are glued
-      using shell scripts; to improve the understanding of the
-      separate components.
+      Initially this tutorial uses separate components that are glued
+      using shell scripts, in order to improve the understanding of
+      the separate components. The use of XTC is introduced later on.
 
     </para>
   
