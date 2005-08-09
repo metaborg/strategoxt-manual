@@ -3,16 +3,52 @@
   
   <para>
 
-     overview of the software needed to implement transformation
-     systems with Stratego/XT
+     To build transformation systems using Stratego/XT you need the
+     following software packages:
+
+     <itemizedlist>
+
+        <listitem>
+           <para>
+             ATerm Library: term representation
+           </para>
+        </listitem>
+
+        <listitem>
+           <para>
+             SDF2 Bundle: SDF2 parser generator and parser
+           </para>
+        </listitem>
+
+        <listitem>
+           <para>
+             Stratego/XT: Stratego compiler and XT tools
+           </para>
+        </listitem>
+
+        <listitem>
+           <para>
+             Stratego Shell: Stratego interpreter
+           </para>
+        </listitem>
+
+     </itemizedlist>
+
+     This section explains where to get these packages and how to
+     install them on your own machine using a variety of deployment
+     methods.
 
   </para>
+
 
 <section>
   <title>Deployment Methods</title>
 
   <para>
-    Nix; binary packages; source
+    The Stratego/XT distribution, its dependencies and applications
+    are deployed using a number of different methods, ranging from
+    distribution through Nix channels, binary packages for package
+    management systems such as RPM, and source distributions. 
   </para>
 
   <para>
@@ -27,6 +63,8 @@
     <title>Nix</title>
 
     <para>
+      The Nix software deployment system 
+
       Nix on Linux and MacOS X
     </para>
 
@@ -61,22 +99,6 @@
 
 </section>
 
-  
-<section>
-    <title>What do I Need?</title>
-    
-    <para>
-      Description of the structure of our packages: Stratego/XT and
-      language specific extensions (such as JavaFront).
-    </para>
-    
-    <para>
-      Stratego Shell
-    </para>
-  
-</section>
-
-  
 <section>
   <title>The ATerm Library</title>
 
