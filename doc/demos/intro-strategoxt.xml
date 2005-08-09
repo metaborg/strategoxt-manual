@@ -30,19 +30,16 @@
         represented as terms and that term rewrite rules are an
         excellent way to formalize transformations on programs.
 
-    </para>
-  
-    <para>
+        Stratego uses the Annotated Term Format, or ATerms for short,
+        as term representation.
 
-	Gluing of transformation components is achieved using the
-	ATerm format for exchange of structured data such as abstract
-	syntax trees. The Stratego run-time system is based on the
-	ATerm Library which provides support for internal term
-	representation as well as their persistent representation in
-	files, making it easy to provide input and output for terms in
-	Stratego, and to exchange terms between transformation
-	tools. Thus, transformation systems can be divided into small,
-	reusable components.
+        The Stratego run-time system is based on the ATerm Library
+        which provides support for internal term representation as
+        well as their persistent representation in files. 
+
+        This makes it easy to provide input and output for terms in
+        Stratego, and to exchange terms between transformation
+        tools. 
 
     </para>
 
@@ -53,11 +50,15 @@
 
     <para>
 
-        The representation of programs is guided by the idea of
-        grammars as contracts. Syntax definitions determine all
-        aspects of program represention including the representation
-        programs as abstract trees, the conversion of program texts to
-        terms by parsers and from terms to texts by pretty-printers.
+        Converting program texts to terms for transformations requires
+        parsers. Since Stratego programs operate on terms, they do not
+        particularly care about the implementation of parsers. Thus,
+        parsers can be implemented with any parsing technology, or
+        terms can be produced by an existing compiler
+        front-end. However, Stratego is mostly used together with the
+        syntax definition formalism SDF. The Stratego compiler itself
+        uses SDF to parse Stratego programs, and many Stratego
+        applications have been developed with SDF as well.
  
     </para>
 

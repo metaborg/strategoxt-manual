@@ -52,15 +52,17 @@
 
     Stratego/XT is a framework for the implementation of
     transformation systems based on structural representations of
-    programs. The framework aims at better productivity in the
-    development of transformation systems through the use of
-    high-level representations, domain-specific languages, and
-    generative programming for various aspects of transformation
-    systems; ATerms for program representation, SDF for syntax
-    definition and parsing, GPP for pretty-printing, Stratego for
-    transformation, XTC for transformation tool composition, and the
-    XT tools for the generation of intermediate products needed in the
-    construction of transformation systems.
+    programs. 
+
+    The framework aims at better productivity in the development of
+    transformation systems through the use of high-level
+    representations, domain-specific languages, and generative
+    programming for various aspects of transformation systems: ATerms
+    for program representation, SDF for syntax definition and parsing,
+    GPP for pretty-printing, Stratego for transformation, XTC for
+    transformation tool composition, and the XT tools for the
+    generation of intermediate products needed in the construction of
+    transformation systems.
 
   </para>
 
@@ -74,18 +76,21 @@
 
     This book is not a manual for Stratego/XT, and does not explain
     every single detail of the examples. Rather, it sketches with bold
-    strokes how language and tools can be used. For precise
+    strokes how the language and tools can be used. For precise
     information about language constructs and tool usage we refer to
-    the actual <link linkend="manual">Stratego/XT manual</link>.
+    the <link linkend="manual">Stratego/XT manual</link>, which
+    provides both a detailed tutorial for the language and a reference
+    manual. 
 
-    The manual and tutorial are complementary, since the manual does
-    not provide large examples.
+    Thus, the manual and tutorial are complementary, since the manual
+    does not provide large examples.
     
   </para>
 
   <para>
 
-    This chapter gives an introduction to the tutorial.
+    In this chapter we give an overview of the main concepts of
+    Stratego/XT and the structure of this tutorial.
 
     <link linkend="tutorial-components">The next section</link>
     gives an overview of the main concepts in the implementation of
