@@ -1,0 +1,32 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+
+<section>
+  <section id="identity">
+    <title>Identity</title>
+
+    <para>
+    </para>
+
+  </section>
+
+  <section id="identity-reference">
+    <title>Identity</title>
+
+    <section>
+      <title>Description</title>
+
+      <para>
+      </para>
+
+    </section>
+
+    <section>
+      <title>Syntax</title>
+      <screen>"id" -> Strategy</screen>
+    </section>
+
+  </section>
+
+</section>

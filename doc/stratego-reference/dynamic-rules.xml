@@ -1,0 +1,84 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+  <section>
+    <title>Dynamic rules</title>
+
+    <para>
+      This section shows how context-sensitive rewriting can be
+      achieved without the added complexity of local traversals and
+      without complex data-structures, by the extension of rewriting
+      strategies with scoped dynamic rewrite rules. Dynamic rules
+      are otherwise normal rewrite rules that are defined at run-time
+      and that inherit information from their definition context. As
+      an example, consider the following strategy definition as part
+      of an inlining transformation:
+    </para>
+
+    <programlisting></programlisting>
+
+    <para>
+      The concept of defining rules dynamically is enriched with a
+      number of additional concepts:
+    </para>
+
+    <para>
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Multiple rules with the same name can be defined at the
+	    same time (e.g. UnfoldCall rules for multiple functions).
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    Rules can be redefined (e.g. a new definition of
+	    UnfoldCall for a function after its definition has been
+	    transformed).
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    Rules can be undefined (e.g. UnfoldCall is undefined for
+	    recursive functions).
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    The scope in which a rule is applicable can be limited
+	    (e.g. a specific definition of UnfoldCall can only be used
+	    in that part of the abstract syntax tree in which the
+	    corresponding function definition is in scope).
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    Scope labels provide fine grained control over the scope
+	    in which a rule is defined (e.g. the specializations of
+	    a function should be added to the scope of that function).
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    Rules can be extended to rewrite to multiple right-hand
+	    sides (e.g. in partial evaluation a function definition
+	    can be rewritten to multiple specializations).
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    Rule sets can be forked and later joined again with
+	    intersection or union operations, which also have
+	    fixed-point variants. These operations can be used to
+	    model forking and joining in the data- flow of a program
+	    (e.g. after constant propagation in the branches of an
+	    if-then-else statement the continuation of the statement
+	    should use the intersection of the propagation facts from
+	    the branches).
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </para>
+
+  </section>
+

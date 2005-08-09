@@ -1,0 +1,23 @@
+<section>
+  <title>Composition of transformation strategies</title>
+
+      <para>
+	Rules define one-step transformations 
+
+	Program transformations require many one-step transformations
+	and selection of rules
+      </para>
+
+      <includexml file="leftchoice.xml" />
+
+      <includexml file="choice.xml" />
+
+      <includexml file="conditionalchoice.xml" />
+
+      <includexml file="identity.xml" />
+      
+      <includexml file="failure.xml" />
+
+      <includexml file="negation.xml" />
+
+</section>

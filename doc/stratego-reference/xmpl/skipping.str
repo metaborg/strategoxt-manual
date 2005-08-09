@@ -1,0 +1,12 @@
+  topdownS(s, stop: (a -> a) * b -> b) =
+    rec x(s; (stop(x) <+ all(x)))
+
+  bottomupS(s, stop: (a -> a) * b -> b) =
+    rec x((stop(x) <+ all(x)); s)
+
+  downupS(s, stop: (a -> a) * b -> b) =
+    rec x(s; (stop(x) <+ all(x)); s)
+    
+  downupS(s1, s2, stop: (a -> a) * b -> b) =
+    rec x(s1; (stop(x) <+ all(x)); s2)
+	

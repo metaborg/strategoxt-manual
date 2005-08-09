@@ -1,0 +1,44 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+
+<section>
+  <section id="strategy-def">
+    <title>Named strategy expressions</title>
+
+    <para>
+      Named strategy expressions
+    </para>
+  </section>
+
+
+  <section id="strategy-def-reference">
+    <title>Named strategy expressions</title>
+
+    <section>
+      <title>Description</title>
+
+      <para>
+      </para>
+
+    </section>
+
+    <section>
+      <title>Syntax</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Formatting</title>
+      
+      <para>
+      </para>
+
+      <screen>
+      </screen>
+
+    </section>
+
+  </section>
+</section>

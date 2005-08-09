@@ -1,0 +1,72 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<section>
+  <title>Match pattern</title>
+
+  <section id="match">
+    <title>Matching terms</title>
+
+    <para>
+      The match strategy <code>?<replaceable>x</replaceable></code>
+      compares the current term (<replaceable>t</replaceable>) to
+      variable <replaceable>x</replaceable>. It binds variable
+      <replaceable>x</replaceable> to term
+      <replaceable>t</replaceable> in the environment. A variable can
+      only be bound once, or to the same term.
+    </para>
+  
+    <screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?e
+<prompt>stratego></prompt> :binding e
+e is bound to Plus(Var("a"),Int("3")) 
+<prompt>stratego></prompt> !Int("17")
+<prompt>stratego></prompt> ?e
+command failed
+</screen>
+
+    <para>
+      The match strategy <code>?<replaceable>p</replaceable></code>
+      compares the current term to a pattern
+      <replaceable>p</replaceable>. It will bind the variables the
+      variables in pattern <replaceable>p</replaceable> in the
+      environment. The wildcard <code>_</code> in a match will match
+      any term.
+    </para>
+
+    <screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?Plus(e,_)
+<prompt>stratego></prompt> :binding e
+e is bound to Var("a")
+Plus(Var("a"),Int("3"))
+</screen>
+
+    <para>
+      If a variable in a term pattern is already bound to a term, then
+      the variable in the pattern will be replaced with this value. If
+      variables in term are not yet bound, then these variables will
+      be bound to the actual values in the current term to which the
+      pattern is applied.
+    </para>
+  
+    <para>
+      Patterns may be non-linear. Multiple occurences of the same
+      varaible can occur and each occurence matches the same term.
+    </para>
+    
+    <screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?Plus(e,e)
+command failed
+<prompt>stratego></prompt> !Plus(Var("a"),Var("a"))
+<prompt>stratego></prompt> ?Plus(e,e)
+<prompt>stratego></prompt> :binding e
+e is bound to Var("a")
+</screen>
+
+  </section>
+
+
+</section>

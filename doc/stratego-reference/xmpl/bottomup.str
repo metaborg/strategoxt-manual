@@ -1,0 +1,1 @@
+  bottomup(s) = all(bottomup(s)) ; s

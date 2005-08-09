@@ -1,0 +1,60 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+
+<section>
+  <section id="conditionalchoice">
+    <title>Conditional choice</title>
+
+    <para>
+      Conditional choice
+    </para>
+
+    <include href="ifthenelse.xml" 
+	     xpointer="xpointer(id('ifthenelse'))" 
+	     xmlns="http://www.w3.org/2003/XInclude"/>
+
+    <include href="ifthen.xml" 
+	     xpointer="xpointer(id('ifthen'))" 
+	     xmlns="http://www.w3.org/2003/XInclude"/>
+
+  </section>
+
+  <section id="conditionalchoice-reference">
+    <title>Conditional choice</title>
+
+    <section>
+      <title>Description</title>
+
+      <para>
+      </para>
+
+    </section>
+
+    <section>
+      <title>Syntax</title>
+      <screen>Strategy "&lt;" Strategy "+" Strategy -> Strategy</screen>
+    </section>
+
+    <section>
+      <title>Formatting</title>
+
+      <para>
+      </para>
+      
+      <screen>
+</screen>
+
+    </section>
+
+    <section>
+      <title>Implementation</title>
+
+      <para>
+      </para>
+
+    </section>
+
+  </section>
+
+</section>

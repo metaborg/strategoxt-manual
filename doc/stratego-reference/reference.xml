@@ -1,0 +1,33 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<chapter id="stratego-lang-ref">
+  <title>Stratego Language</title>
+
+<!--
+  <includexml file="choice.xml" />
+
+  <includexml file="conditionalchoice.xml"/>
+
+  <includexml file="leftchoice.xml"/>
+
+  <includexml file="ifthenelse.xml"/>
+
+  <includexml file="ifthen.xml"/>
+
+  <includexml file="identity.xml"/>
+
+  <includexml file="failure.xml" />
+
+  <includexml file="negation.xml"/>
+
+  <includexml file="rec.xml"/>
+
+  <includexml file="seq.xml"/>
+
+  <includexml file="applymatch.xml"/>
+
+  <includexml file="buildapply.xml"/>
+-->
+
+</chapter>

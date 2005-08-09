@@ -1,0 +1,1 @@
+  alltd(s) = s <+ all(alltd(s))

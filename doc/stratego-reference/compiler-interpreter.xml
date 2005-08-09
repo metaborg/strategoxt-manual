@@ -1,0 +1,74 @@
+<section>
+  <title>Running Stratego Programs</title>
+
+  <para>
+    how to run a Stratego program
+  </para>
+  
+  <section>
+    <title>Structure of a Stratego Program</title>
+    <para>
+       file extensions
+
+       libraries?
+    </para>
+  </section>
+
+  <section>
+    <title>Compiling Programs</title>
+    <para>
+       main definition
+       seperate compilation
+    </para>
+  </section>
+
+  <section>
+    <title>Running Programs Interactively</title>
+    <para>
+       interpreter: just for trying out language
+    </para>
+  </section>
+
+  <section>
+    <title>Strategies and the Current Term</title>
+
+    <para>
+      Strategies are the statements and functions of the Stratego
+      language. A strategy transforms a term into a new term, or
+      fails. The term to which a strategy is applied, is called the
+      <emphasis>current term</emphasis>. In the Stratego Shell you can
+      see the current term with <command>:show</command>.
+    </para>
+
+    <screen>
+<prompt>stratego></prompt> :show
+()
+<prompt>stratego></prompt></screen>
+
+    <para>
+      So, the current term is the empty tuple if you have just started
+      the Stratego Shell. At the prompt of the shell you can enter
+      strategies. If the strategy succeeds, then the shell will show
+      the transformed term, which is now the new current term.
+    </para>
+
+    <screen>
+<replaceable>current term</replaceable>
+<prompt>stratego></prompt> <replaceable>strategy expression</replaceable>
+<replaceable>transformed current</replaceable>
+<prompt>stratego></prompt></screen>
+
+    <para>
+      Strategies can also fail. In that case, the shell will print a
+      message and leave the current term untouched:
+    </para>
+
+    <screen>
+<replaceable>current term</replaceable>
+<prompt>stratego></prompt> <replaceable>strategy expression</replaceable>
+command failed
+<prompt>stratego></prompt> :show
+<replaceable>current term</replaceable></screen>
+  </section>
+
+</section>

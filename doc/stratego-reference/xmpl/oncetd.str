@@ -1,0 +1,1 @@
+  oncetd(s) = s <+ one(oncetd(s))
