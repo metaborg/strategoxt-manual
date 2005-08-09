@@ -1,0 +1,64 @@
+<section>
+      <title>Rewrite rules</title>
+
+      <para>
+	Basic transformations are combinations of match and build
+
+	Combination requires
+
+	Sequential composition of transformations
+
+	Restricting the scope of term variables
+
+	Syntactic abstractions (sugar) for typical combinations
+
+	Rewrite rules
+
+	Apply and match
+
+	Build and apply
+
+	Where
+
+	Conditional rewrite rules
+
+      </para>
+
+      <includexml file="seq.xml"/>
+
+      <includexml file="applymatch.xml"/>
+
+      <includexml file="buildapply.xml"/>
+
+      <section>
+	<title>Term variable scope</title>
+	
+	<para>
+	  Term variable scope
+	</para>
+      </section>
+
+      <section>
+	<title></title>
+	
+	<para>
+	  Anonymous rewrite rule
+	</para>
+      </section>
+      
+      <section>
+	<title>Where</title>
+	
+	<para>
+	  Where
+	</para>
+      </section>
+      
+      <section>
+	<title>Conditional rewrite rule</title>
+	
+	<para>
+	  Conditional rewrite rule
+	</para>
+      </section>
+    </section>

@@ -1,0 +1,14 @@
+  <section>
+    <title>Building and matching terms</title>
+    
+    <para>
+      The atomic actions of program transformation in Stratego are
+      building terms from patterns and matching terms against
+      patterns.
+    </para>
+
+    <includexml file="build.xml" />
+    <includexml file="match.xml" />
+
+  </section>
+    

@@ -1,0 +1,46 @@
+
+    <section>
+      <title>Stategy definitions</title>
+
+      <para>
+	Reuse of transformation requires definitions
+      </para>
+
+
+      <section>
+	<title>Named rewrite rules</title>
+
+	<para>
+	  Named rewrite rules
+	</para>
+      </section>
+
+      <section>
+	<title>Modules</title>
+
+	<para>
+	  Modules
+	</para>
+      </section>
+
+      <section>
+	<title>Parameterized and recursive definitions</title>
+
+	<para>
+	  Parameterized and Recursive Definitions
+	</para>
+
+	<para>
+	  Repeated application of a strategy can be achieved with
+	  recursion. There are two styles for doing this; with a
+	  recursive definition or using the fixpoint operator rec. A
+	  recursive definition is a normal strategy definition with a
+	  recursive call in its body.
+	</para>
+
+
+	<includexml file="rec.xml"/>
+
+      </section>
+
+    </section>
