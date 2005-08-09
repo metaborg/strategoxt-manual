@@ -22,7 +22,13 @@
 %.xml-inc4 : %.xml-exp4
 	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $< 
 
-%.docbook : %.xml-inc4
+%.xml-exp5 : %.xml-inc4
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ --catalogs $(top_srcdir)/xslt/macros.xsl $< 
+
+%.xml-inc5 : %.xml-exp5
+	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $< 
+
+%.docbook : %.xml-inc5
 	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --postvalid --output $@ --valid $<
 
 %.1 : $(BOOK).docbook

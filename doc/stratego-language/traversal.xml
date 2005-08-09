@@ -1,19 +1,62 @@
-    <section>
-      <title>Combinators for term traversal</title>
+<section>
+ <title>Combinators for term traversal</title>
 
-      <para>
+ <para>
 	Match, build, sequential composition, and choice only apply
 	transformations to the root of a term
 
 	Complete transformations require term traversal
-      </para>
+ </para>
 
-      <includexml file="congruence.xml" />
+ <section>
+   <title>Congruence operators</title>
 
-<section>
-  <title>Traversals</title>
-  <section>
-    <title>Generic traversal operators</title>
+    <para>
+      A congruence operator applies a strategy to each direct subterm
+      of a specific constructor. A congruence fails if the application
+      of one the argument strategies fails or if constructor of the
+      operator and that of the term do not match.
+    </para>
+
+    <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> Plus(!Var("a"), id)
+Plus(Var("a"),Int("3"))
+</screen>	
+
+    <para>
+      For each n-ary constructor c declared in a signature, there is a
+      corresponding <emphasis>congruence operator</emphasis>
+      <code>c(s1 , ..., sn )</code>, which applies to terms of the
+      form <code>c(t1 , ..., tn )</code> by applying the argument
+      strategies to the corresponding argument terms.
+    </para>
+
+    <para>
+      The congruence operator is used e.g. in conjunction with the
+      recursive traversal operator to define specific data structure
+      traversals.
+    </para>
+
+    <para>
+      Congruences can also be applied to tuples,
+      <code>(s1,s2,...,sn)</code>, and lists,
+      <code>[s1,s2,...,sn]</code>. A special list congruence is
+      <code>[]</code> which 'visits' the empty list.
+    </para>
+
+    <para>
+      A good example of the use of list congruences is the
+      <code>map(s)</code> strategy.
+    </para>
+
+    <screen><include href="xmpl/map.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+
+ </section>
+
+ <section>
+   <title>Generic Traversal Combinators</title>
 
     <para>
       Generic traversal operators
@@ -83,19 +126,20 @@ Plus(Var("a"),Var("a"))
 	to all of the subterms fails.
       </para>
 
-    </section>
-  </section>
+   </section>
 
-  <section>
-    <title>Term traversals</title>
+ </section>
 
-    <para>
+ <section>
+   <title>Full Term Traversals</title>
+
+   <para>
       The primitive term traversal operators of Stratego (all, some,
       one) can be combined with the other control operators in a wide
       variety of ways to define full term traversals.
-    </para>
+   </para>
 
-    <section>
+   <section>
       <title>One-Pass traversals</title>
 
       <para>
@@ -164,24 +208,22 @@ Plus(Var("a"),Var("a"))
       </para>
     </section>
 
-    <section>
-      <title>Type unifying strategies</title>
+ </section>
 
-      <para>
-      </para>
-    </section>
+ <section>
+   <title>Type Unifying Strategies</title>
 
-  </section>
+   <para>
+   </para>
+ </section>
 
+ <section>
+   <title>Generic Term Deconstruction</title>
 
+   <para>
+     Generic term deconstruction
+   </para>
+ </section>
+
+    
 </section>
-
-      <section>
-	<title>Generic term deconstruction</title>
-
-	<para>
-	  Generic term deconstruction
-	</para>
-      </section>
-
-    </section>

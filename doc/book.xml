@@ -23,7 +23,7 @@
   </part>
 
   <part>
-    <title>The Syntax Definition Formalism SDF</title>
+    <title>SDF</title>
     <includexml file="sdf-language/sdf-language.xml"/>
     <includexml file="parse-unit/parse-unit.xml" />
     <includexml file="asfix/asfix.xml" />
@@ -45,7 +45,6 @@
 
   <part>
     <title>Reference Manual</title>
-
     <includexml file="stratego-reference/reference.xml" />
     <includexml file="toolref/reference.xml" />
   </part>
@@ -54,10 +53,8 @@
 
 <book id="java-in-stratego">
   <title>Java in Stratego</title>
-
   <includexml file="manual-authors.xml"/>
   <includexml file="java/java.xml" />
-
 </book>
 
 </set>

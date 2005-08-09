@@ -7,6 +7,8 @@
     Terms in Stratego are ATerms
 
     Terms should be declared using signatures
+
+    Before doing anything a signature is needed
   </para>
 
 <section>
@@ -99,5 +101,6 @@ Plus(
      declared in a signature
    </para>
  </section>
+
 </section>
 

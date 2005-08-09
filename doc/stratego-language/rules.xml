@@ -1,7 +1,7 @@
 <section>
-      <title>Rewrite rules</title>
+ <title>Rewrite rules</title>
 
-      <para>
+ <para>
 	Basic transformations are combinations of match and build
 
 	Combination requires
@@ -22,43 +22,79 @@
 
 	Conditional rewrite rules
 
-      </para>
+ </para>
 
-      <includexml file="seq.xml"/>
+ <section id="seq">
+   <title>Sequential composition</title>
+    
+    <para>
+      The sequential composition <code>s1 ; s2</code> of the
+      strategies <code>s1</code> and <code>s2</code> first applies the
+      strategy <code>s1</code> to the subject term and then
+      <code>s2</code> to the result of that first application. 
+    </para>
 
-      <includexml file="applymatch.xml"/>
+    <screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?Plus(e1, e2); !Plus(e2, e1)
+Plus(Int("3"),Var("a"))
+</screen>
 
-      <includexml file="buildapply.xml"/>
+    <para>
+      The variable bindings are propagated. The strategy fails if
+      either <code>s1</code> or <code>s2</code> fails.
+    </para> 
 
-      <section>
+  </section>
+
+<section id="applymatch">
+    <title>Apply and match</title>
+
+    <para>
+    </para>
+
+ </section>
+
+
+ <section id="buildapply">
+    <title>Build and apply</title>
+
+    <para>
+    </para>
+
+ </section>
+
+
+ <section>
 	<title>Term variable scope</title>
 	
 	<para>
 	  Term variable scope
 	</para>
-      </section>
+ </section>
 
-      <section>
-	<title></title>
+ <section>
+	<title>Anonymous rewrite rule</title>
 	
 	<para>
 	  Anonymous rewrite rule
 	</para>
-      </section>
+ </section>
       
-      <section>
+ <section>
 	<title>Where</title>
 	
 	<para>
 	  Where
 	</para>
-      </section>
+ </section>
       
-      <section>
+ <section>
 	<title>Conditional rewrite rule</title>
 	
 	<para>
 	  Conditional rewrite rule
 	</para>
-      </section>
-    </section>
+ </section>
+    
+</section>

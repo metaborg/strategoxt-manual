@@ -1,23 +1,117 @@
 <section>
   <title>Composition of transformation strategies</title>
 
-      <para>
+  <para>
 	Rules define one-step transformations 
 
 	Program transformations require many one-step transformations
 	and selection of rules
+  </para>
+
+  <section id="leftchoice">
+    <title>Deterministic choice (left choice)</title>
+
+    <para>
+      The left choice or deterministic choice s1 &lt;+ s2 chooses one
+      of the trans- formations to apply. That is, s1 is first applied,
+      and s2 is only applied if s2 fails. Formally, the left choice
+      operator is defined as:
+    </para>
+
+    <para>
+      A typical application of the deterministic choice operator is to
+      declare the priority between rules with overlapping left-hand
+      sides.
+    </para>
+
+    <para>
+      A useful application of &lt;+ in combination with id is the
+      reflexive closure of a strategy s. The strategy try(s) tries to
+      apply the strategy s, but if that fails, just succeeds using id.
+    </para>
+
+    <screen><include href="xmpl/try.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+
+    <para>
+      Note that the choice is committed once the left-hand side
+      strategy has succeeded, even if the continuation strategy fails.
+    </para>
+    
+  </section>
+
+  <section id="choice">
+    <title>Choice</title>
+
+    <para>
+      The deterministic choice operator prescribes that the left
+      alternative should be tried before the right alternative, and
+      that the latter is only used if the first fails. There are
+      applications where it is not necessary to define the order of
+      the alternatives. In those cases non-deterministic choice can be
+      used.
+    </para>
+
+    <para>
+      The non-deterministic choice operator s1 + s2 chooses one of the
+      two strategies s1 or s2 to apply, such that the one it chooses
+      succeeds. If both strategies fail, then the choice fails as
+      well.
+    </para>
+
+    <para>
+      Operationally one can imagine the choice operator to first try
+      one strategy, and, if that fails, to try the other. The order in
+      which this is done is undefined, i.e., arbitrarily chosen by the
+      compiler.
+    </para>
+
+  </section>
+
+  <section id="conditionalchoice">
+    <title>Conditional choice</title>
+
+    <para>
+      Conditional choice
+    </para>
+
+    <section id="ifthenelse">
+      <title>If Then Else</title>
+
+      <para>
       </para>
 
-      <includexml file="leftchoice.xml" />
+    </section>
 
-      <includexml file="choice.xml" />
+  <section id="ifthen">
+    <title>If Then</title>
+    <para/>
+  </section>
 
-      <includexml file="conditionalchoice.xml" />
 
-      <includexml file="identity.xml" />
-      
-      <includexml file="failure.xml" />
+  </section>
 
-      <includexml file="negation.xml" />
+  <section id="identity">
+    <title>Identity</title>
+
+    <para>
+    </para>
+
+  </section>
+
+  <section id="failure">
+    <title>Failure</title>
+
+    <para>
+    </para>
+
+  </section>
+
+  <section id="negation">
+    <title>Negation</title>
+
+    <para>
+    </para>
+
+  </section>
 
 </section>
