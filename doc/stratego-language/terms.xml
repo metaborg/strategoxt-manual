@@ -1,8 +1,5 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
-
-  <section>
-    <title>Terms</title>
+<section>
+  <title>Terms</title>
 
     <para>
       ATerms (Annotated Terms) are the values of Stratego. The ATerm
@@ -81,4 +78,5 @@ Plus(
 	</listitem>
       </varlistentry>
     </variablelist>
-  </section>
+  
+</section>

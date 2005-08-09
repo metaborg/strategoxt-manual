@@ -1,5 +1,14 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+    <section>
+      <title>Combinators for term traversal</title>
+
+      <para>
+	Match, build, sequential composition, and choice only apply
+	transformations to the root of a term
+
+	Complete transformations require term traversal
+      </para>
+
+      <includexml file="congruence.xml" />
 
 <section>
   <title>Traversals</title>
@@ -166,3 +175,13 @@ Plus(Var("a"),Var("a"))
 
 
 </section>
+
+      <section>
+	<title>Generic term deconstruction</title>
+
+	<para>
+	  Generic term deconstruction
+	</para>
+      </section>
+
+    </section>

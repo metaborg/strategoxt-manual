@@ -4,53 +4,30 @@
 <chapter id="stratego-lang-ref">
   <title>Stratego Language</title>
 
+<!--
+  <includexml file="choice.xml" />
 
-  <include href="choice.xml" 
-	   xpointer="xpointer(id('choice-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="conditionalchoice.xml"/>
 
-  <include href="conditionalchoice.xml" 
-	   xpointer="xpointer(id('conditionalchoice-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="leftchoice.xml"/>
 
-  <include href="leftchoice.xml" 
-	   xpointer="xpointer(id('leftchoice-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="ifthenelse.xml"/>
 
-  <include href="ifthenelse.xml" 
-	   xpointer="xpointer(id('ifthenelse-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="ifthen.xml"/>
 
-  <include href="ifthen.xml" 
-	   xpointer="xpointer(id('ifthen-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="identity.xml"/>
 
-  <include href="identity.xml" 
-	   xpointer="xpointer(id('identity-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="failure.xml" />
 
-  <include href="failure.xml" 
-	   xpointer="xpointer(id('failure-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="negation.xml"/>
 
-  <include href="negation.xml" 
-	   xpointer="xpointer(id('negation-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="rec.xml"/>
 
-  <include href="rec.xml" 
-	   xpointer="xpointer(id('rec-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="seq.xml"/>
 
-  <include href="seq.xml" 
-	   xpointer="xpointer(id('seq-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="applymatch.xml"/>
 
-  <include href="applymatch.xml" 
-	   xpointer="xpointer(id('applymatch-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
-
-  <include href="buildapply.xml" 
-	   xpointer="xpointer(id('buildapply-reference'))" 
-	   xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="buildapply.xml"/>
+-->
 
 </chapter>

@@ -17,6 +17,7 @@
   <part>
     <title>Stratego</title>
     <includexml file="stratego-language/stratego-language.xml"/>
+    <includexml file="stratego-language/concrete-syntax.xml"/>
     <includexml file="stratego-library/stratego-library.xml"/>
     <includexml file="sunit/sunit.xml" />
   </part>

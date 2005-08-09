@@ -1,12 +1,9 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<chapter>
+  <title>Concrete Object Syntax</title>
 
-  <section>
-    <title>Concrete object syntax</title>
+  <para>
+    Concrete object syntax: using concrete syntax of source language
+    in term patterns.
+  </para>
 
-    <para>
-      Concrete object syntax
-    </para>
-
-    
-  </section>
+</chapter>
