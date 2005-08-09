@@ -1,8 +1,3 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
-
-
-<section>
   <section id="choice">
     <title>Choice</title>
 
@@ -30,42 +25,3 @@
     </para>
 
   </section>
-
-  <section id="choice-reference">
-    <title>Choice</title>
-
-    <section>
-      <title>Description</title>
-
-      <para>
-      </para>
-
-    </section>
-
-    <section>
-      <title>Syntax</title>
-      <screen>Strategy "+" Strategy -> Strategy</screen>
-    </section>
-
-    <section>
-      <title>Formatting</title>
-
-      <para>
-      </para>
-      
-      <screen>
-</screen>
-
-    </section>
-
-    <section>
-      <title>Implementation</title>
-
-      <para>
-      </para>
-
-    </section>
-
-  </section>
-
-</section>

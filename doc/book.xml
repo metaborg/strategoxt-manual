@@ -46,7 +46,7 @@
   <part>
     <title>Reference Manual</title>
 
-    <includexml file="stratego-language/reference.xml" />
+    <includexml file="stratego-reference/reference.xml" />
     <includexml file="toolref/reference.xml" />
   </part>
 

@@ -1,6 +1,3 @@
-<section>
-  <title>Build</title>
-  
   <section id="build">
     <title>Building terms</title>
     
@@ -34,26 +31,4 @@ Plus(Var("a"),Var("b"))
 Var("b")</screen>
 
   </section>
-  
-  <section id="build_reference">
-    <title></title>
-
-    <section>
-      <title>Description</title>
-
-      <para>
-      </para>
-
-    </section>
-
-    <section>
-      <title>Syntax</title>
-    
-      <screen>"!" Term -> Strategy </screen>
-
-    </section>
-
-
-  </section>
-</section>
 

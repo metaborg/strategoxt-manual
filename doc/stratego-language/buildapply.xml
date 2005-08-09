@@ -1,8 +1,3 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
-
-
-<section>
   <section id="buildapply">
     <title>Build and apply</title>
 
@@ -10,44 +5,3 @@
     </para>
 
   </section>
-
-  <section id="buildapply-reference">
-    <title>Build and apply</title>
-
-    <section>
-      <title>Description</title>
-
-      <para>
-      </para>
-
-    </section>
-
-    <section>
-      <title>Syntax</title>
-      <screen>"&lt;" Strategy ">" Term -> Strategy</screen>
-      <screen>"&lt;" Strategy ">" Term -> Term</screen>
-    </section>
-
-    <section>
-      <title>Implementation</title>
-
-      <para>
-	The strategy expression:
-      </para>
-
-      <screen>  &lt;s>p</screen>
-
-      <para>
-	is equivalent to:
-      </para>
-
-      <screen>  !p ; s</screen>
-
-    </section>
-
-
-  </section>
-
-
-
-</section>

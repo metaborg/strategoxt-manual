@@ -1,7 +1,3 @@
-<section>
-  <title>Sequential composition</title>
-
-
   <section id="seq">
     <title>Sequential composition</title>
     
@@ -23,24 +19,4 @@ Plus(Int("3"),Var("a"))
       either <code>s1</code> or <code>s2</code> fails.
     </para> 
 
-  </section> 
-
-  <section id="seq-reference">
-    <title>Sequential composition</title>
-
-    <section>
-      <title>Description</title>
-
-      <para>
-      </para>
-
-    </section>
-
-    <section>
-      <title>Syntax</title>
-      <screen>Strategy ";" Strategy -> Strategy</screen>
-    </section>
-
   </section>
-
-</section>

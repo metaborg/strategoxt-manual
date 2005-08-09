@@ -4,39 +4,4 @@
     <para>
     </para>
 
-  <section id="applymatch-reference">
-    <title>Apply and match</title>
-
-    <section>
-      <title>Description</title>
-
-      <para>
-      </para>
-
-    </section>
-
-    <section>
-      <title>Syntax</title>
-      <screen>Strategy "=>" Term -> Strategy</screen>
-    </section>
-
-    <section>
-      <title>Implementation</title>
-
-      <para>
-	The strategy expression:
-      </para>
-
-      <screen>  s => p</screen>
-
-      <para>
-	is equivalent to:
-      </para>
-
-      <screen>  s ; ?p</screen>
-
-    </section>
-
-  </section>
-
 </section>

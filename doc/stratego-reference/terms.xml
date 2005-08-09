@@ -1,5 +1,16 @@
 <section>
   <title>Terms</title>
+ 
+  <para>
+    Stratego programs transform terms.
+
+    Terms in Stratego are ATerms
+
+    Terms should be declared using signatures
+  </para>
+
+<section>
+   <title>Annotated Term Format</title>
 
     <para>
       ATerms (Annotated Terms) are the values of Stratego. The ATerm
@@ -78,5 +89,15 @@ Plus(
 	</listitem>
       </varlistentry>
     </variablelist>
-  
+
+ </section>  
+
+ <section>
+   <title>Signatures</title>
+   <para>
+     to use terms in Stratego programs, their constructors should be
+     declared in a signature
+   </para>
+ </section>
 </section>
+
