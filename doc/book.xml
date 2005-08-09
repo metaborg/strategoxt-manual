@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE book 
   PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" 
-         "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
->
+         "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
 <set>
 
@@ -11,128 +10,43 @@
 <book id="manual">
   <title>Stratego/XT Manual</title>
 
-  <bookinfo>
-    <authorgroup>
-      <author>
-	<firstname>Martin</firstname>
-	<surname>Bravenboer</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-      <author>
-        <firstname>Karl Trygve</firstname>
-        <surname>Kalleberg</surname>
-        <affiliation>
-           <orgname>Universitetet i Bergen</orgname>
-        </affiliation>
-      </author>
-      <author>
-	<firstname>Rob</firstname>
-	<surname>Vermaas</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-      <author>
-	<firstname>Eelco</firstname>
-	<surname>Visser</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-    </authorgroup>
-
-    <copyright>
-      <year>2003</year>
-      <year>2004</year>
-      <year>2005</year>
-      <holder>Eelco Visser</holder>
-    </copyright>
-  </bookinfo>
-
-  <part>
-    <title>Introduction</title>
-    
-    <include href="gettingstarted/gettingstarted.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-    
-    <include href="installation/installation.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="gettingstarted/architecture.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-  </part>
-
-  <include href="aterms/aterms.xml" 
-    xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="manual-authors.xml"/>
+  <includexml file="manual-intro.xml"/>
+  <includexml file="aterms/aterms.xml" />
   
   <part>
-    <title>The Stratego Language</title>
-
-    <include href="stratego-language/stratego-language.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="stratego-library/stratego-library.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="sunit/sunit.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
+    <title>Stratego</title>
+    <includexml file="stratego-language/stratego-language.xml" />
+    <includexml file="stratego-library/stratego-library.xml"/>
+    <includexml file="sunit/sunit.xml" />
   </part>
 
   <part>
     <title>The Syntax Definition Formalism SDF</title>
-
-    <include href="sdf-language/sdf-language.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="parse-unit/parse-unit.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="asfix/asfix.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
+    <includexml file="sdf-language/sdf-language.xml"/>
+    <includexml file="parse-unit/parse-unit.xml" />
+    <includexml file="asfix/asfix.xml" />
   </part>
 
   <part>
     <title>The XT Transformation Tools</title>
-
-    <include href="gpp/gpp.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="xtc/xtc.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="format/format.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="xdoc/xdoc.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
+    <includexml file="gpp/gpp.xml" />
+    <includexml file="xtc/xtc.xml" />
+    <includexml file="format/format.xml" />
+    <includexml file="xdoc/xdoc.xml" />
   </part>
 
   <part>
     <title>Stratego/XT Development</title>
-
-    <include href="developers/latestsources.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="developers/stratego-dev.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
+    <includexml file="developers/latestsources.xml" />
+    <includexml file="developers/stratego-dev.xml" />
   </part>
 
   <part>
     <title>Reference Manual</title>
 
-    <include href="stratego-language/reference.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="toolref/reference.xml" 
-      xmlns="http://www.w3.org/2003/XInclude"/>
-
+    <includexml file="stratego-language/reference.xml" />
+    <includexml file="toolref/reference.xml" />
   </part>
 
 </book>
@@ -140,48 +54,8 @@
 <book id="java-in-stratego">
   <title>Java in Stratego</title>
 
-  <bookinfo>
-    <authorgroup>
-      <author>
-	<firstname>Martin</firstname>
-	<surname>Bravenboer</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-      <author>
-        <firstname>Karl Trygve</firstname>
-        <surname>Kalleberg</surname>
-        <affiliation>
-          <orgname>Universitetet i Bergen</orgname>
-        </affiliation>
-      </author>
-      <author>
-	<firstname>Rob</firstname>
-	<surname>Vermaas</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-      <author>
-	<firstname>Eelco</firstname>
-	<surname>Visser</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-    </authorgroup>
-
-    <copyright>
-      <year>2003</year>
-      <year>2004</year>
-      <year>2005</year>
-      <holder>Eelco Visser</holder>
-    </copyright>
-  </bookinfo>
-
-  <include href="java/java.xml" 
-    xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="manual-authors.xml"/>
+  <includexml file="java/java.xml" />
 
 </book>
 

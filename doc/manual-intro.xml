@@ -1,5 +1,8 @@
+<chapter id="manual-intro">
+  <title>Introduction</title>
+
 <section>
-  <title>Software Transformations</title>
+  <title>Software Transformation</title>
 
   <para>
 
@@ -68,43 +71,32 @@
 
   <para>
 
-    This book provides a tutorial introduction to program
-    transformation with Stratego/XT by presenting a series of
-    examples. The complete code of the example is mostly included in
-    the tutorial, and all code is available for download such that
-    these can be used for learning and experimenting.
+    This book provides a manual to program transformation with
+    Stratego/XT 
 
-    This book is not a manual for Stratego/XT, and does not explain
-    every single detail of the examples. Rather, it sketches with bold
-    strokes how the language and tools can be used. For precise
-    information about language constructs and tool usage we refer to
-    the <link linkend="manual">Stratego/XT manual</link>, which
-    provides both a detailed tutorial for the language and a reference
-    manual. 
 
-    Thus, the manual and tutorial are complementary, since the manual
-    does not provide large examples.
-    
+    This book is complementary to the Stratego/XT tutorial, a book
+    that presents several large examples of Stratego/XT programs.
+
   </para>
 
   <para>
 
-    In this chapter we give an overview of the main concepts of
-    Stratego/XT and the structure of this tutorial.
-
-    <link linkend="tutorial-components">The next section</link>
-    gives an overview of the main concepts in the implementation of
-    transformation systems and the components of Stratego/XT that
-    support these concepts.
-
-    <xref linkend="tutorial-software"/> gives an overview of the
-    software that is needed for the use of Stratego/XT and for
-    reproducing the examples in this tutorial.
-
-    <xref linkend="tutorial-overview"/> gives an overview of the rest
-    of the tutorial.
+    This chapter gives an overview of the manual. 
 
   </para>
 
 </section>
 
+<section>
+  <title>Outline</title>
+
+  <para>
+    ATerms, The Stratego Language, The Syntax Definition Formalism
+    SDF, The XT Transformation Tools, Stratego/XT Development,
+    Reference Manual
+  </para>
+
+</section>
+
+</chapter>

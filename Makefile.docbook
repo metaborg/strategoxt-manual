@@ -1,4 +1,4 @@
-%.xml-exp1 : %.xml
+%.xml-exp1 : %.xml $(ALL_XML_FILES)
 	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ --catalogs $(top_srcdir)/xslt/macros.xsl $< 
 
 %.xml-inc1 : %.xml-exp1
