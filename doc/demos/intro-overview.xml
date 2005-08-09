@@ -3,21 +3,21 @@
 
   <para>
 
-     This tutorial gives an introduction to transformation with
-     Stratego/XT by means of a number of examples that show typical
-     ways of organizing transformation systems.
+    This tutorial gives an introduction to transformation with
+    Stratego/XT by means of a number of examples that show typical
+    ways of organizing transformation systems.
 
-     The tutorial is divided into a number of parts, each part
-     dedicated to a particular source language. For each language we
-     show how to define its syntax, create a pretty-printer, and
-     implement a number of transformations. In addition, we show which
-     tools to use to generate parsers from syntax definitions, derive
-     pretty-printers from syntax definitions, and compile
-     transformation programs.
+    The tutorial is divided into a number of parts, each part
+    dedicated to a particular source language. For each language we
+    show how to define its syntax, create a pretty-printer, and
+    implement a number of transformations. In addition, we show which
+    tools to use to generate parsers from syntax definitions, derive
+    pretty-printers from syntax definitions, and compile
+    transformation programs.
 
-     The source code of the examples can be downloaded as well, such
-     that you can repeat the experiments from the tutorial and add
-     your own experiments.
+    The source code of the examples can be downloaded as well, such
+    that you can repeat the experiments from the tutorial and add your
+    own experiments.
 
   </para>
  
@@ -25,16 +25,23 @@
   <title>TIL: A Tiny Imperative Language</title>
 
   <para>
-    a small imperative language with statements and blocks
-
+    The <link linkend="tutorial-til">first example</link> in the
+    tutorial is a tiny imperative language (TIL), which has assignment
+    statements, sequences of statements, and structured control-flow.
   </para>
  
   <para>
-    syntax definition and parsing
+    For this simple language we define a complete syntax definition,
+    and show how to generate from it a parser, signature, format
+    checker, and pretty-print table. Based on these ingredients we
+    explain how to create a typical transformation pipeline (without
+    any transformations yet).
   </para>
 
   <para>
-    a bunch of transformations
+    Next we show how to define a number of typical transformations
+    such as desugaring, bound variable renaming, interpretation, and
+    data-flow transformations.
   </para>
 
 </section>
@@ -43,15 +50,10 @@
   <title>BibTeX Transformations</title>
 
   <para>
-    a small domain-specific language for bibliographic information
-  </para>
- 
-  <para>
-    syntax definition and parsing
-  </para>
-
-  <para>
-    a bunch of transformations
+    BibTeX is a small domain-specific data language for bibliographic
+    information. In the <link linkend="tutorial-bibtex">second
+    part</link> of this tutorial we show its syntax definition and a
+    number of transformations.
   </para>
 
 </section>
@@ -62,14 +64,63 @@
 
   <para>
     This tutorial is not complete. There are countless other examples
-    of transformations with Stratego. Here are some possible examples.
-  </para>
+    of applications of Stratego that are not (yet) covered by this
+    tutorial. Here are some possible examples:
+
+    <itemizedlist>
+      <listitem>
+        <para>
+          Analysis: check that variables are defined before use
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>
+           Typechecking: check that variables are used consistently
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>
+          Partial evaluation
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>
+          Custom pretty-printing
+        </para>
+      </listitem> 
+
+      <listitem>
+        <para>
+          Configuration and deployment
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>
+          Domain-specific language
+        </para>
+      </listitem> 
+
+      <listitem>
+        <para>
+          Code generation
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>
+          Language embedding and assimilation
+        </para>
+      </listitem>
  
-  <para>
-    Analysis: check that variables are defined before use;
-    Typechecking: check that variables are used consistently; Partial
-    Evaluation ; Custom Pretty-Printing; Configuration and Deployment;
-    Domain-Specific Language; Code Generation; Language Embedding
+    </itemizedlist>
+
+    You are welcome to contribute examples are requests for examples
+    of certain types of applications.
+
   </para>
 
 </section>

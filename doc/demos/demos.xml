@@ -24,7 +24,7 @@
 
   <includexml file="introduction.xml"/>
 
-  <part>
+  <part id="tutorial-til">
      <title>A Tiny Imperative Language</title>
 
      <includexml file="sdf.xml"/>
@@ -43,7 +43,7 @@
 
   </part>
   
-  <part>
+  <part id="tutorial-bibtex">
      <title>Transforming BibTeX Files</title>
  
      <chapter>
