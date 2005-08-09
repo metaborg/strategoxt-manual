@@ -7,8 +7,17 @@
      Stratego/XT by means of a number of examples that show typical
      ways of organizing transformation systems.
 
-     the Stratego/XT manual gives a systematic overview of the
-     language and tools involved.
+     The tutorial is divided into a number of parts, each part
+     dedicated to a particular source language. For each language we
+     show how to define its syntax, create a pretty-printer, and
+     implement a number of transformations. In addition, we show which
+     tools to use to generate parsers from syntax definitions, derive
+     pretty-printers from syntax definitions, and compile
+     transformation programs.
+
+     The source code of the examples can be downloaded as well, such
+     that you can repeat the experiments from the tutorial and add
+     your own experiments.
 
   </para>
  
