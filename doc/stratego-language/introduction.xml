@@ -1,0 +1,65 @@
+
+  <section>
+     <title>Introduction</title>
+     <para>
+
+        Stratego is a language for program transformation based on
+        term rewriting with programmable rewriting strategies.
+
+     </para>
+
+     <para>
+
+        Conventional Term Rewriting
+
+        - Rewrite system = set of rewrite rules
+
+        - Redex = reducible expression
+
+        - Normalization = exhaustive application of rules to term
+
+        - (Stop when no more redices found)
+
+        - Strategy = algorithm used to search for redices
+
+        - Strategy given by engine
+
+     </para>
+
+     <para>
+
+        Strategic Term Rewriting
+
+        - Select rules to use in a specific transformation
+
+        - Select strategy to apply
+
+        - Define your own strategy if necessary
+
+        - Combine strategies
+
+     </para>
+
+     <para>
+
+        Outline
+
+        - Basic Transformation Strategies
+
+        - Creating rewrite rules from first principles
+
+        - Composition of Transformation Strategies
+
+        - Combining rewrite rules into complex transformations
+
+        - Combinators for Term Traversal
+
+        - Data-type specific and generic combinators for traversal
+
+        - Transformation Components
+
+        - Creating executable transformation components
+
+     </para>
+
+  </section>

@@ -5,5 +5,5 @@ noinst_DATA = book.docbook
 ALL_XML_FILES = $(wildcard */*.xml)
 
 EXTRA_DIST = $(wildcard *.xml) book.docbook
-CLEANFILES = book.docbook book.xml-included book.xml-expanded book.xml-included1
+CLEANFILES = book.docbook book.xml-inc? book.xml-exp?
 

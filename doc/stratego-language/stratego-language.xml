@@ -1,39 +1,10 @@
 <chapter id="stratego-language">
-  
   <title>The Stratego Language</title>
 
-  <section>
-     <title>Compiler and Interpreter</title>
-
-     <para>
-
-       usage of compiler and interpreter
-
-       interpreter: just for trying out language
-
-       file extensions
-
-       libraries?
-
-       seperate compilation
-
-     </para>
-  </section>
-
-  <section>
-     <title>Structure of a Stratego Program</title>
-
-     <para>
-        
-        module
-
-     </para>
-
-  </section>
-
+  <includexml file="introduction.xml" />
+  <includexml file="compiler-interpreter.xml" />
   <includexml file="terms.xml" />
   <includexml file="currentterm.xml" />
-
 
   <section>
     <title>Building and matching terms</title>
@@ -44,17 +15,18 @@
       patterns.
     </para>
 
-    <include href="build.xml" 
-	     xpointer="xpointer(id('build'))" 
-	     xmlns="http://www.w3.org/2003/XInclude"/>
-
-    <include href="match.xml" 
-	     xpointer="xpointer(id('match'))" 
-	     xmlns="http://www.w3.org/2003/XInclude"/>
+    <includexml file="build.xml" />
+    <includexml file="match.xml" />
 
   </section>
     
-    <section>
+  <section>
+     <title></title>
+     <para>
+     </para>
+  </section>
+
+  <section>
       <title>Rewrite rules</title>
 
       <para>
@@ -80,17 +52,11 @@
 
       </para>
 
-      <include href="seq.xml" 
-	       xpointer="xpointer(id('seq'))" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="seq.xml"/>
 
-      <include href="applymatch.xml" 
-	       xpointer="xpointer(id('applymatch'))" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="applymatch.xml"/>
 
-      <include href="buildapply.xml" 
-	       xpointer="xpointer(id('buildapply'))" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="buildapply.xml"/>
 
       <section>
 	<title>Term variable scope</title>
@@ -165,9 +131,7 @@
 	</para>
 
 
-	<include href="rec.xml" 
-		 xpointer="xpointer(id('rec'))" 
-		 xmlns="http://www.w3.org/2003/XInclude"/>
+	<includexml file="rec.xml"/>
 
       </section>
 
@@ -183,29 +147,18 @@
 	and selection of rules
       </para>
 
-      <include href="leftchoice.xml" 
-               xpointer="xpointer(id('leftchoice'))" 
-               xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="leftchoice.xml" />
 
-      <include href="choice.xml" 
-               xpointer="xpointer(id('choice'))" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="choice.xml" 
+               xpointer="xpointer(id('choice'))" />
 
-      <include href="conditionalchoice.xml" 
-               xpointer="xpointer(id('conditionalchoice'))" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="conditionalchoice.xml" />
 
-      <include href="identity.xml" 
-               xpointer="xpointer(id('identity'))" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="identity.xml" />
       
-      <include href="failure.xml" 
-               xpointer="xpointer(id('failure'))" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="failure.xml" />
 
-      <include href="negation.xml" 
-               xpointer="xpointer(id('negation'))" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="negation.xml" />
 
     </section>
 
@@ -219,11 +172,9 @@
 	Complete transformations require term traversal
       </para>
 
-      <include href="congruence.xml" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="congruence.xml" />
 
-      <include href="traversal.xml" 
-	       xmlns="http://www.w3.org/2003/XInclude"/>
+      <includexml file="traversal.xml" />
 
       <section>
 	<title>Generic term deconstruction</title>
@@ -235,10 +186,8 @@
 
     </section>
 
-    <include href="dynamic-rules.xml" 
-	     xmlns="http://www.w3.org/2003/XInclude"/>
-    <include href="concrete-syntax.xml" 
-	     xmlns="http://www.w3.org/2003/XInclude"/>
+    <includexml file="dynamic-rules.xml"/>
+    <includexml file="concrete-syntax.xml" />
 
 
   </chapter>
