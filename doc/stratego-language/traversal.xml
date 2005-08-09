@@ -202,19 +202,13 @@ Plus(Var("a"),Var("a"))
     </section>
 
     <section>
-      <title>Fixpoint traversals</title>
+      <title>Fixpoint Traversals</title>
 
       <para>
+        innermost
       </para>
     </section>
 
- </section>
-
- <section>
-   <title>Type Unifying Strategies</title>
-
-   <para>
-   </para>
  </section>
 
  <section>
@@ -225,5 +219,11 @@ Plus(Var("a"),Var("a"))
    </para>
  </section>
 
-    
+ <section>
+   <title>Type Unifying Strategies</title>
+
+   <para>
+   </para>
+ </section>
+
 </section>
