@@ -89,7 +89,13 @@
 </section>
 
 <section>
-  <title>Applications</title>
+  <title>Applications (*)</title>
+
+  <para>
+
+    sketch application area
+
+  </para>
 
   <screen>
 Compilers 
@@ -125,7 +131,17 @@ Document generation/transformation
 </section>
 
 <section>
-  <title>Outline</title>
+  <title>Architecture of Transformation Systems (*)</title>
+
+  <para>
+    sketch how transformation systems are composed and how the various
+    languages and tools fit in this architecture
+  </para>
+
+</section>
+
+<section>
+  <title>Outline (*)</title>
 
   <para>
     ATerms, The Stratego Language, The Syntax Definition Formalism

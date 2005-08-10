@@ -1,5 +1,5 @@
 <section>
-  <title>Dynamic rules (*)</title>
+  <title>Dynamic Rules (*)</title>
 
   <para>
 
@@ -295,6 +295,35 @@ rules( PropConst :- |[ x ]| )
 
 </section>
 
+<section>
+  <title>Definining and Undefining Dynamic Rules (*)</title>
+  <para>
+  </para>
+</section>
   
+<section>
+  <title>Dynamic Rule Scope (*)</title>
+  <para>
+  </para>
+</section>
+  
+<section>
+  <title>Extending Dynamic Rules (*)</title>
+  <para>
+  </para>
+</section>
+  
+<section>
+  <title>Intersection and Union of Dynamic Rules (*)</title>
+  <para>
+  </para>
+</section>
+  
+<section>
+  <title>Dependent Dynamic Rules (*)</title>
+  <para>
+  </para>
+</section>
+
 </section>
 
