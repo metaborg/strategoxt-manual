@@ -1,5 +1,5 @@
 <section>
- <title>Combinators for term traversal</title>
+ <title>Combinators for Term Traversal</title>
 
  <para>
 	Match, build, sequential composition, and choice only apply
@@ -8,7 +8,7 @@
 	Complete transformations require term traversal
  </para>
 
- <section>
+<section>
    <title>Congruence operators</title>
 
     <para>
@@ -53,9 +53,9 @@ Plus(Var("a"),Int("3"))
     <screen><include href="xmpl/map.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
 
 
- </section>
+</section>
 
- <section>
+<section>
    <title>Generic Traversal Combinators</title>
 
     <para>
@@ -128,9 +128,9 @@ Plus(Var("a"),Var("a"))
 
    </section>
 
- </section>
+</section>
 
- <section>
+<section>
    <title>Full Term Traversals</title>
 
    <para>
@@ -201,29 +201,74 @@ Plus(Var("a"),Var("a"))
 
     </section>
 
-    <section>
-      <title>Fixpoint Traversals</title>
+</section>
 
-      <para>
+<section>
+  <title>Fixed-point Traversals</title>
+
+  <para>
         innermost
-      </para>
-    </section>
+  </para>
+</section>
 
- </section>
+<section>
+   <title>Idioms</title>
 
- <section>
+   <para>
+     Control over strategy admits wide variety of transformation idioms 
+
+     Cascading transformations (rewriting, exhaustive application) 
+
+<screen>
+simplify =
+  innermost(R1 &lt;+ ... &lt;+ Rn)
+
+innermost(s) = 
+  bottomup(try(s; innermost(s))) 
+</screen>
+
+Staged transformations (sequence of normal forms) 
+
+<screen>
+simplify =
+  innermost(A1 &lt;+ ... &lt;+ Ak)
+  ; innermost(B1 &lt;+ ... &lt;+ Bl)
+  ; ...
+  ; innermost(C1 &lt;+ ... &lt;+ Cm)
+</screen>
+
+ Local  transformations 
+
+<screen>
+transformation =
+  alltd( trigger-transformation
+  ; innermost(A1 &lt;+ ... &lt;+ An) )
+
+alltd(s) = s &lt;+ all(alltd(s))
+</screen>
+
+Application-specific transformations 
+
+Recursive patterns 
+
+Dynamic programming 
+
+   </para>
+</section>
+
+<section>
    <title>Generic Term Deconstruction</title>
 
    <para>
      Generic term deconstruction
    </para>
- </section>
+</section>
 
- <section>
+<section>
    <title>Type Unifying Strategies</title>
 
    <para>
    </para>
- </section>
+</section>
 
 </section>

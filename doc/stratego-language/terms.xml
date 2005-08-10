@@ -9,6 +9,17 @@
     Terms should be declared using signatures
 
     Before doing anything a signature is needed
+
+    The Annotated Term (ATerm) Format is a language independent format
+    for exchange of structured data between tools
+
+    Stratego terms are equivalent to ATerms
+
+    Term under transformation can easily be exchanged with other
+    transformation tools
+
+    Transformation systems can be divided into smaller, reusable tools
+
   </para>
 
 <section>
@@ -99,6 +110,29 @@ Plus(
    <para>
      to use terms in Stratego programs, their constructors should be
      declared in a signature
+   </para>
+ </section>  
+
+ <section>
+   <title>Term Patterns</title>
+   <para>
+     to use terms in Stratego programs, their constructors should be
+     declared in a signature
+ 
+     variables
+
+     list cons
+
+     list variables
+
+     generic deconstruction
+   </para>
+ </section>  
+
+ <section>
+   <title>Abstract Syntax Trees</title>
+   <para>
+     representing programs with terms
    </para>
  </section>
 

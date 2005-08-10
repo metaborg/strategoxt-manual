@@ -2,14 +2,16 @@
   <title>Composition of transformation strategies</title>
 
   <para>
-	Rules define one-step transformations 
+    Rules define one-step transformations 
 
-	Program transformations require many one-step transformations
+    Program transformations require many one-step transformations
 	and selection of rules
+
+    Choice; identity, Failure, and Negation
   </para>
 
-  <section id="leftchoice">
-    <title>Deterministic choice (left choice)</title>
+<section id="leftchoice">
+    <title>Deterministic Choice (left choice)</title>
 
     <para>
       The left choice or deterministic choice s1 &lt;+ s2 chooses one
@@ -24,22 +26,39 @@
       sides.
     </para>
 
+<screen>
+PlusAssoc :
+  Plus(Plus(e1, e2), e3) -> Plus(e1, Plus(e2, e3))
+
+EvalPlus :
+  Plus(Int(i),Int(j)) -> Int(k) where &lt;addS>(i,j) => k
+</screen>
+
+<screen>
+Plus(Int("14"),Int("3"))
+stratego> PlusAssoc
+command failed
+stratego> PlusAssoc &lt;+ EvalPlus
+Int("17")
+
+</screen>
+
     <para>
       A useful application of &lt;+ in combination with id is the
       reflexive closure of a strategy s. The strategy try(s) tries to
       apply the strategy s, but if that fails, just succeeds using id.
     </para>
 
-    <screen><include href="xmpl/try.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+    <screen>try(s) = s &lt;+ id</screen>
 
     <para>
       Note that the choice is committed once the left-hand side
       strategy has succeeded, even if the continuation strategy fails.
     </para>
     
-  </section>
+</section>
 
-  <section id="choice">
+<section id="choice">
     <title>Choice</title>
 
     <para>
@@ -65,53 +84,116 @@
       compiler.
     </para>
 
-  </section>
+</section>
 
-  <section id="conditionalchoice">
-    <title>Conditional choice</title>
+<section id="conditionalchoice">
+  <title>Conditional choice</title>
 
-    <para>
+  <para>
       Conditional choice
+
+      Syntax: s1 &lt; s2 + s3 
+
+      First apply s1 if that succeeds apply s2 to the result else
+      apply s3 to the original term
+
+      Do not backtrack to s3 if s2 fails!
+  </para>
+
+  <screen>
+  ?Call( , )    &lt; complex-transformation-for-call
++ ?BinOp( , , ) &lt; transformation-for-binop
++ other-cases</screen>
+
+  <para>
+      If Then Else
+
+      Syntax: if s1 then s2 else s3 end 
+
+      Equivalent to: where(s1) &lt; s2 + s3
+  </para>
+
+  <screen>
+foo
+  </screen>
+
+  <para>
+      If-Then
+
+      Syntax: if s1 then s2 end 
+
+      Equivalent to if s1 then s2 else id end
+  </para>
+
+  <screen>
+foo
+  </screen>
+
+</section>
+
+<section id="identity">
+  <title>Identity</title>
+
+  <para>
+Syntax: id 
+
+Always succeed 
+
+Some laws 
     </para>
 
-    <section id="ifthenelse">
-      <title>If Then Else</title>
+    <screen>
+id ; s = s
 
-      <para>
-      </para>
+s ; id = s
 
-    </section>
+id &lt;+ s  = id
 
-  <section id="ifthen">
-    <title>If Then</title>
-    <para/>
-  </section>
+s &lt;+ id /=  s
 
+s1 &lt; id + s2 = s1 &lt;+ s2
+    </screen>
 
-  </section>
+</section>
 
-  <section id="identity">
-    <title>Identity</title>
-
-    <para>
-    </para>
-
-  </section>
-
-  <section id="failure">
+<section id="failure">
     <title>Failure</title>
 
     <para>
+Syntax: fail 
+
+Always fail 
+
+Some laws 
     </para>
 
-  </section>
+    <screen>
+fail &lt;+ s = s
 
-  <section id="negation">
+s &lt;+ fail =  s
+
+fail ; s = fail
+
+s ; fail /= fail
+    </screen>
+
+</section>
+
+<section id="negation">
     <title>Negation</title>
 
     <para>
+Syntax: not(s) 
+
+Fail if s succeeds, succeed if s fails 
+
+Equivalent to: s &lt; fail + id
+
     </para>
 
-  </section>
+    <screen>
+    </screen>
+
+</section>
 
 </section>

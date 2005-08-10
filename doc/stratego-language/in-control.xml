@@ -1,0 +1,33 @@
+<section>
+  <title>In Control of Rewriting</title>
+
+  <para>
+
+    Term Rewriting for Program Transformation
+
+apply set of rewrite rules exhaustively 
+
+Advantages 
+
+First-order terms describe abstract syntax 
+
+Rewrite rules express basic transformation rules (operationalizations
+of the algebraic laws of the language.)
+
+Rules specified separately from strategy 
+
+Limitations 
+
+Rewrite systems for programming languages often non-terminating and/or
+non-confluent
+
+In general: do not apply all rules at the same time or apply all rules
+under all circumstances
+
+  </para>
+
+
+
+
+</section>
+

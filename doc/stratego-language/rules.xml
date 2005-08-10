@@ -1,5 +1,5 @@
 <section>
- <title>Rewrite rules</title>
+ <title>Combining Match and Build</title>
 
  <para>
 	Basic transformations are combinations of match and build
@@ -24,7 +24,7 @@
 
  </para>
 
- <section id="seq">
+<section id="seq">
    <title>Sequential composition</title>
     
     <para>
@@ -37,64 +37,214 @@
     <screen>
 Plus(Var("a"),Int("3"))
 <prompt>stratego></prompt> ?Plus(e1, e2); !Plus(e2, e1)
-Plus(Int("3"),Var("a"))
-</screen>
+Plus(Int("3"),Var("a"))</screen>
 
     <para>
       The variable bindings are propagated. The strategy fails if
       either <code>s1</code> or <code>s2</code> fails.
     </para> 
 
-  </section>
+</section>
+
+<section>
+    <title>Anonymous Rewrite Rule</title>
+
+    <para>
+      Syntax: (p1 -> p2) 
+
+      Match p1, then build p2 
+
+      Equivalent to: ?p1; !p2 
+    </para>
+
+    <screen>
+Plus(Var("a"),Int("3")) 
+<prompt>stratego></prompt> (Plus(e1, e2) -> Plus(e2, e1)) 
+Plus(Int("3"),Var("a"))</screen>
+
+</section>
 
 <section id="applymatch">
     <title>Apply and match</title>
 
     <para>
+Syntax: 
+   <screen>s => p</screen>
+
+Apply s, then match p 
+
+Equivalent to: s; ?p 
     </para>
 
- </section>
+</section>
 
-
- <section id="buildapply">
+<section id="buildapply">
     <title>Build and apply</title>
 
     <para>
+Build and Apply (Sugar) 
+
+Syntax: &lt;s&gt; p 
+
+Build p, then apply s 
+
+Equivalent to: !p; s 
+
+   <screen>
+<prompt>stratego></prompt> &lt;addS&gt;("1","2") =&gt; x "3"
+<prompt>stratego></prompt> :binding x 
+x is bound to "3"</screen>
     </para>
 
- </section>
+</section>
 
 
- <section>
+<section>
 	<title>Term variable scope</title>
 	
 	<para>
 	  Term variable scope
-	</para>
- </section>
 
- <section>
-	<title>Anonymous rewrite rule</title>
-	
-	<para>
-	  Anonymous rewrite rule
+Syntax: {x1,...,xn:s} 
+
+Restrict scope of variables x1,...,xn to s 
+
+   <screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> (Plus(e1,e2) -&gt; Plus(e2,e1))
+Plus(Int("3"),Var("a"))
+<prompt>stratego></prompt> :binding e1
+e1 is bound to Var("a")
+<prompt>stratego></prompt> {e3,e4 :(Plus(e3,e4) -&gt; Plus(e4,e3))}
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> :binding e3 
+e3 is not bound to a term</screen>
+
 	</para>
- </section>
-      
- <section>
+</section>
+
+<section>
 	<title>Where</title>
 	
 	<para>
-	  Where
+Syntax: where(s) 
+
+Test and compute variable bindings 
+
+Equivalent to: {x: ?x; s; !x} for some fresh variable x 
+
+   <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> where(?Plus(Int(i),Int(j)); &lt;addS&gt;(i,j) =&gt; k)
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> :binding i i is bound to "14"
+<prompt>stratego></prompt> :binding k k is bound to "17"</screen>
 	</para>
- </section>
+</section>
       
- <section>
+<section>
 	<title>Conditional rewrite rule</title>
 	
 	<para>
 	  Conditional rewrite rule
+
+Syntax: (p1 -> p2 where s) 
+
+Rewrite rule with condition s 
+
+Equivalent to: (?p1; where(s); !p2) 
+
+   <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> (Plus(Int(i),Int(j)) -&gt; Int(k) where &lt;addS&gt;(i,j) =&gt; k)
+Int("17")</screen>
+
 	</para>
- </section>
+</section>
     
+<section>
+   <title>Lambda Rules</title>
+   <para>
+Syntax: \ p1 -> p2 where s \ 
+
+Rewrite rule with condition s 
+
+Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables in p1
+   </para>
+
+   <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> \ Plus(Int(i),Int(j)) -&gt; Int(k) where &lt;addS&gt;(i,j) =&gt; k \
+Int("17")
+<prompt>stratego></prompt> :binding i
+i is not bound to a term
+<prompt>stratego></prompt> :binding k
+k is bound to "17"</screen>
+
+</section>
+   
+<section>
+   <title>Apply</title>
+   <para>   
+Syntax: !p[&lt;s&gt;p0] 
+
+Strategy application in pattern 
+
+Equivalent to: {x:where(&lt;s&gt;p0 => x); !p[x]}
+   </para>
+
+   <screen>
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> \ Plus(Int(i),Int(j)) -&gt; Int(&lt;addS&gt;(i,j)) \
+Int("17")</screen>
+
+</section>
+   
+<section>
+   <title>Term Wrap</title>
+   <para>   
+Syntax: !p[&lt;s&gt;] 
+
+Strategy application in pattern to current subterm 
+
+Equivalent to: {x: where(s => x); !p[x]} for some fresh variable x
+</para>
+
+   <screen>
+3
+<prompt>stratego></prompt> !(&lt;id&gt;,&lt;id&gt;)
+(3,3)
+<prompt>stratego></prompt> !(&lt;Fst; inc&gt;,&lt;Snd&gt;)
+(4,3)</screen>
+
+
+   <screen>
+"foobar"
+<prompt>stratego></prompt> !Call(&lt;id&gt;, [])
+Call("foobar", [])</screen>
+
+</section>
+   
+<section>
+   <title>Term Project</title>
+   <para>   
+Syntax: ?p[&lt;s&gt;] 
+
+Strategy application in pattern match 
+
+Equivalent to: {x: ?p[x]; &lt;s&gt;x} for some fresh variable x
+</para>
+
+   <screen>
+[1,2,3]
+<prompt>stratego></prompt> ?[ |&lt;id&gt;]
+[2,3]</screen>
+
+   <screen>
+Call("foobar", [])
+<prompt>stratego></prompt> ?Call(&lt;id&gt;, [])
+"foobar"</screen>
+
+</section>
+
 </section>

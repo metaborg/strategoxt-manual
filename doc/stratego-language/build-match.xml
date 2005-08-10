@@ -1,5 +1,5 @@
 <section>
-  <title>Building and matching terms</title>
+  <title>Building and Matching Terms</title>
     
   <para>
     The atomic actions of program transformation in Stratego are
@@ -43,6 +43,23 @@ Var("b")</screen>
 
   <section id="match">
     <title>Matching terms</title>
+
+    <para>
+Syntax: ?t 
+
+Match current term against term t 
+
+Succeed if equal, fail if unequal 
+
+    </para>
+
+    <screen>
+Plus(Var("a"),Int("3")) 
+stratego> ?Plus(Var("a"),Int("3")) 
+stratego> ?Plus(Int("3"),Var("b")) 
+command failed
+    </screen>
+
 
     <para>
       The match strategy <code>?<replaceable>x</replaceable></code>

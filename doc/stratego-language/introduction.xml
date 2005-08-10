@@ -62,4 +62,25 @@
 
      </para>
 
+     <para>
+
+High-level specification of transformations 
+
+Applicable to many kinds of transformation   
+compilation, generation, analysis, migration, ... 
+
+Separation of rules and strategy   
+
+specify rules separately from strategy that applies them 
+
+Reuse of transformations at di erent levels of granularity   
+
+rule, strategy, tool, system 
+
+No strict separation between abstractions   
+
+mix rules, strategies, tools
+
+     </para>
+
   </section>

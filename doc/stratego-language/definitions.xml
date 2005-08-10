@@ -1,33 +1,102 @@
-
-    <section>
-      <title>Stategy definitions</title>
+<section>
+  <title>Stategy definitions</title>
 
       <para>
 	Reuse of transformation requires definitions
+
+1 Naming strategy expressions 
+
+2 Named rewrite rules 
+
+3 Reusing rewrite rules through modules
+
       </para>
 
+<section>
+  <title>Simple Strategy Definition and Call</title>
 
-      <section>
-	<title>Named rewrite rules</title>
+  <para>
+I Syntax: f = s 
 
-	<para>
-	  Named rewrite rules
-	</para>
-      </section>
+Name strategy expression s 
 
-      <section>
-	<title>Modules</title>
+Syntax: f 
 
-	<para>
-	  Modules
-	</para>
-      </section>
+Invoke (call) named strategy f
+  </para>
 
-      <section>
-	<title>Parameterized and recursive definitions</title>
+  <screen>
+Plus(Var("a"),Int("3"))
+stratego> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))} 
+stratego> SwapArgs 
+Plus(Int("3"),Var("a"))</screen>
+
+</section>
+
+<section>
+  <title>Named rewrite rules</title>
+
+  <para>
+
+Syntax: f : p1 -> p2 where s 
+
+Name rewrite rule p1 -> p2 where s 
+
+Equivalent to: f = {x1,...,xn: (p1 -> p2 where s)} (with x1,...,xn the variables in p1, p2, and s)
+
+  </para>
+
+  <screen>
+Plus(Var("a"),Int("3")) 
+stratego> SwapArgs : Plus(e1,e2) -> Plus(e2,e1) 
+stratego> SwapArgs 
+Plus(Int("3"),Var("a"))</screen>
+
+</section>
+
+
+<section>
+  <title>Modules with Reusable Transformation Rules</title>
+
+  <para>
+  </para>
+
+  <screen>
+module Simplification-Rules
+rules
+  EvalPlus :
+    Plus(Int(i),Int(j)) -> Int(k) where &lt;addS>(i,j) => k
+
+  PlusAssoc :
+    Plus(Plus(e1, e2), e3) -> Plus(e1, Plus(e2, e3))
+
+  EvalIf :
+    If(Int("0"), e1, e2) -> e2
+
+  EvalIf :
+    If(Int(i), e1, e2) -> e1 where &lt;not(eq)> (i, "0")</screen>
+
+  <screen>
+stratego> import Simplification-Rules</screen>
+
+
+</section>
+
+
+
+<section>
+   <title>Parameterized and recursive definitions</title>
 
 	<para>
 	  Parameterized and Recursive Definitions
+
+Syntax: f (x1,...,xn|y1,...,ym) = s 
+
+Strategy definition parameterized with strategies (x1,...,xn) and terms (y1,...,ym)
+
+Note: definitions may be recursive
+
+
 	</para>
 
 	<para>
@@ -38,9 +107,33 @@
 	  recursive call in its body.
 	</para>
 
+  <screen>
+try(s) = s &lt;+ id
 
-  <section id="rec">
-    <title>Fixpoint operator (rec)</title>
+repeat(s) = try(s; repeat(s))
+
+while(c, s) = if c then s; while(c,s) end
+
+do-while(s, c) = s; if c then do-while(s, c) end
+  </screen>
+
+  <para>
+  </para>
+
+  <screen>
+map(s) =
+  ?[] &lt;+ \ [x | xs] -> [&lt;s> x | &lt;map(s)> xs] \
+
+foldr(s1, s2, f) =
+  []; s1 &lt;+ \ [x|xs] -> &lt;s2>(&lt;f> x, &lt;foldr(s1, s2, f)> xs) \
+
+length = foldr(!0, add, !1)
+  </screen>
+
+</section>
+
+<section id="rec">
+   <title>Fixpoint operator (rec)</title>
     <para>
       Another way to define recursion is using the fixpoint operator
       <code>rec x(s)</code>, which recurses on applications of
@@ -56,13 +149,32 @@
       with <code>rec</code>:
     </para>
 
-    <screen><include href="xmpl/repeat_rec.str" 
-                     parse="text" 
-		     xmlns="http://www.w3.org/2003/XInclude"/></screen>
-  </section>
+    <screen>repeat(s) = try(s; repeat(s))</screen>
+
+</section>
+
+<section>
+  <title></title>
+
+  <para>
+  </para>
+
+  <screen>
+  </screen>
+
+</section>
 
 
+<section>
+  <title></title>
 
-      </section>
+  <para>
+  </para>
 
-    </section>
+  <screen>
+  </screen>
+
+</section>
+
+
+</section>
