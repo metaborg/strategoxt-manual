@@ -11,9 +11,14 @@
   <title>Stratego/XT Manual</title>
 
   <includexml file="manual-authors.xml"/>
-  <includexml file="manual-intro.xml"/>
-  <includexml file="aterms/aterms.xml" />
-  
+
+  <part>
+    <title>Introduction</title>
+    <includexml file="manual-intro.xml"/>
+    <includexml file="representation/chapter.xml"/>
+  </part>
+
+  <includexml file="aterms/aterms.xml" /> 
   <includexml file="stratego/part.xml"/>
   <includexml file="sdf/part.xml"/>
 
@@ -33,7 +38,7 @@
 
   <part>
     <title>Reference Manual</title>
-    <includexml file="stratego-reference/reference.xml" />
+    <includexml file="stratego/reference/reference.xml" />
     <includexml file="toolref/reference.xml" />
   </part>
 
