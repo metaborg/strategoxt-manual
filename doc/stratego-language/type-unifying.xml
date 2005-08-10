@@ -1,16 +1,373 @@
 <section>
    <title>Type Unifying Strategies</title>
 
-   <para>
-   </para>
+   <screen>
 
+Type preserving 
+
+Structural transformation 
+
+Types stay the same 
+
+Application: transformation 
+
+Examples: simplification, optimization, ...
+
+   </screen>
+
+   <screen>
+
+Type Unifying 
+
+Terms of different types mapped onto one type 
+
+Application: analysis 
+
+Examples: free variables, call-graph
+
+   </screen>
+
+   <screen>
+
+Example Problems 
+
+term-size 
+
+Count the number of nodes in a term 
+
+occurrences 
+
+Count number of occurrences of a subterm in a term 
+
+collect-vars 
+
+Collect all variables in expression 
+
+free-vars 
+
+Collect all free variables in expression
+
+   </screen>
+
+<section>
+   <title>Type Unifying List Transformations</title>
+
+   <screen>
+     
+   </screen>
+
+   <screen>
+     
+Size (Number of Nodes) Replacing Nil by s1 and Cons by s2 
+
+foldr(s1, s2) = 
+  []; s1 &lt;+ \ [y|ys] -> &lt;s2>(y, &lt;foldr(s1, s2)> ys) \ 
+
+Add the elements of a list of integers 
+
+sum = foldr(!0, add) 
+
+Fold and apply f to the elements of the list 
+
+foldr(s1, s2, f) = 
+  []; s1 &lt;+ \ [y|ys] -> &lt;s2>(&lt;f>y,&lt;foldr(s1,s2,f)>ys) \ 
+
+Length of a list 
+
+length = foldr(!0, add, !1)
+</screen>
+
+<screen>
+Number of occurrences in a list 
+
+list-occurrences(s) = foldr(!0, add, s &lt; !1 + !0) 
+
+Number of variables in a list 
+
+list-occurrences(?Var(id))
+   </screen>
+
+   <screen>
+     
+Collect Terms 
+
+Filter elements in a list for which s succeeds 
+
+filter(s) = [] + [s | filter(s)] &lt;+ ?[ |&lt;filter(s)>] 
+
+Collect variables in a list 
+
+filter(Var(id)) 
+
+Collect variables in first list, exclude elements in second list 
+
+(filter(Var(id)),id); diff
+   </screen>
+
+</section>
+
+<section>
+   <title>Extending Fold to Expressions</title>
+
+   <screen>
+     Generalize folding of lists to arbitrary terms 
+
+Example: Tiger expressions 
+
+fold-exp(binop, assign, if, ...) = 
+  rec f( 
+    \ BinOp(op, e1, e2) -> &lt;binop>(op,&lt;f>e1, &lt;f>e2) \ 
+  + \ Assign(e1, e2) -> &lt;assign>(&lt;f>e1, &lt;f>e2) \ 
+  + \ If(e1, e2, e3) -> &lt;if>(&lt;f>e1, &lt;f>e2, &lt;f>e3) \ 
+  + ... 
+  )
+   </screen>
+
+   <screen>
+     Term-Size with Fold 
+
+term-size = 
+  fold-exp(BinOpSize, AssignSize, IfSize, ...)
+
+BinOpSize : 
+  BinOp(op, e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
+
+AssignSize : 
+  Assign(e1, e2) -> &lt;add>(e1, e2)) 
+
+// etc.
+   </screen>
+
+   <screen>
+     Limitations of Fold 
+
+Definition of fold 
+
+One parameter for each constructor 
+
+Define traversal for each constructor 
+
+Instantiation of fold 
+
+One rule for each constructor 
+
+Default behaviour not generically specified
+   </screen>
+
+   <screen>
+Defining Fold with Generic Traversal 
+
+Fold is bottomup traversal: 
+
+fold-exp(s)= 
+  bottomup(s) 
+
+term-size = 
+  fold-exp(BinOpSize &lt;+ AssignSize &lt;+ IfSize &lt;+ ...) 
+
+Definition of fold 
+
+Recursive application to subterms defined generically 
+
+One parameter: 
+rules combined with choice 
+
+Instantiation: default behaviour not generically specified
+   </screen>
+
+   <screen>
+     
+   </screen>
+
+</section>
 
 <section>
    <title>Generic Term Deconstruction</title>
 
-   <para>
-     Generic term deconstruction
-   </para>
+   <screen>
+Generic Term Deconstruction 
+
+(1) Specific definitions 
+
+BinOpSize : 
+  BinOp(op, e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
+
+AssignSize : 
+  Assign(e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
+
+Generic definition 
+
+CSize : 
+  c(e1, e2, ...) -> &lt;add>(e1, &lt;add>(e2, ...)) 
+
+Requires generic decomposition of constructor application
+   </screen>
+
+   <screen>
+Generic Term Deconstruction Syntax: ?p1#(p2) 
+
+Semantics: when applied to a term c(t1,...,tn) matches 
+
+"c" against p1 
+
+[t1,...,tn] against p2 
+
+Decompose constructor application into its constructor name and list
+of direct subterms
+   </screen>
+
+   <screen>
+Plus(Int("1"), Var("2")) 
+stratego> ?c#(xs)
+stratego> :binding c
+variable c bound to "Plus" 
+stratego> :binding xs 
+variable xs bound to [Int("1"), Var("2")]
+   </screen>
+
+   <screen>
+Definition of Crush 
+
+crush(nul, sum, s) : 
+  #(xs) -> &lt;foldr(nul, sum, s)> xs
+   </screen>
+
+   <screen>
+Applications of Crush 
+
+node-size = 
+  crush(!0, add, !1) 
+
+term-size = 
+  crush(!1, add, term-size) 
+
+om-occurrences(s) = 
+  s &lt; !1 + crush(!0, add, om-occurrences(s))
+
+occurrences(s) = 
+  &lt;add>(&lt;s &lt; !1 + !0>, &lt;crush(!0, add, occurrences(s))>)
+   </screen>
+
+   <screen>
+Collect Collect all (outermost) sub-terms for which s succeeds 
+
+collect(s) = 
+  ![&lt;s>] &lt;+ crush(![], union, collect(s)) 
+
+Collect all sub-terms for whichs succeeds 
+
+collect-all(s) = 
+  ![&lt;s> | &lt;crush(![], union, collect(s))>] 
+  &lt;+ crush(![], union, collect(s))
+
+Application 
+
+Collect all variables in an expression 
+
+get-vars = 
+  collect(Var(id))
+   </screen>
+
+   <screen>
+ Free Variables 
+
+Collect all free variables 
+
+Collect variables 
+
+Remove bound variables 
+
+Example 
+
+x + let var y := x + 1 in f(y, a + x + b) end 
+
+free variables: {x, a, b}
+
+function f(x : int) = let var y := h(x) in x + g(z) * y end 
+
+free variables: {z}
+   </screen>
+
+   <screen>
+Collect all free variables from a Tiger expression 
+
+free-vars = 
+  ExpVars 
+  &lt;+FreeVars(free-vars) 
+  &lt;+ crush(![], union, free-vars) 
+
+ExpVars : 
+  Var(x) -> []
+
+FreeVars(fv) : 
+  Let([VarDec(x, t, e1)], e2) -> 
+  &lt;union>(&lt;fv> e1, &lt;diff>(&lt;fv> e2, [x])) 
+
+FreeVars(fv) : 
+  Let([FunctionDec(fdecs)], e2) -> 
+  &lt;diff>(&lt;union>(&lt;fv> fdecs, &lt;fv>e2), fs) 
+  where &lt;map( FunDec(f, , , )-> f )> fdecs => fs 
+
+FreeVars(fv) : 
+  FunDec(f, xs, t, e) -> &lt;diff>(&lt;fv>e, xs) 
+  where &lt;map(Fst)> xs => xs
+   </screen>
+
+   <screen>
+A generic collection algorithm 
+
+collect-exc(base, special : a * (a -> b) -> b) = 
+  rec coll( 
+    base 
+    &lt;+ special(coll) 
+    &lt;+ crush(![], union, coll) 
+  ) 
+
+Instantiation 
+
+free-vars = collect-exc(ExpVars, FreeVars)
+   </screen>
+
+</section>
+
+<section>
+   <title>Generic Term Construction</title>
+
+   <screen>
+Generic Term Construction 
+
+Syntax: !p1#(p2) 
+
+Semantics: p1 evaluates to "c" p2 evaluates to [t1,...,tn] and replace
+current term with c(t1,...,tn)
+
+   </screen>
+
+   <screen>
+Imploding Parse Trees 
+
+Parse tree format 
+
+appl(prod(sorts, sort, attrs([cons("C")])),[t1,...,tn]) 
+
+Abstract syntax tree format C(t1,...,tn) 
+
+Implosion strategy 
+
+implode = 
+  appl(id, map(implode)); Implode 
+
+Implode : 
+  appl(prod(sorts, sort, attrs([cons(c)])), ts) -> c#(ts) 
+
+See implode-asfix for full strategy  
+   </screen>
+
+   <screen>
+     Generic term construction and deconstruction support the
+     definition of generic analysis and generic translation problems
+   </screen>
+
 </section>
 
 
