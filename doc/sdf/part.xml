@@ -1,0 +1,18 @@
+<part>
+  <title>SDF</title>
+
+  <partintro>
+
+    <para>
+
+      syntax definition
+
+    </para>
+
+  </partintro>
+
+  <includexml file="language/sdf-language.xml"/>
+  <includexml file="parse-unit/parse-unit.xml"/>
+  <includexml file="asfix/asfix.xml" />
+  
+</part>
