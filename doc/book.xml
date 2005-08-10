@@ -5,7 +5,7 @@
 
 <set>
 
-  <includexml file="demos/demos.xml" />
+  <includexml file="tutorial/demos.xml" />
 
 <book id="manual">
   <title>Stratego/XT Manual</title>
