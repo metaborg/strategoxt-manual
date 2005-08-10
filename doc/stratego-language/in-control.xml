@@ -26,8 +26,244 @@ under all circumstances
 
   </para>
 
+<screen>
+signature
+  sorts Prop
+  constructors
+    False : Prop
+    True  : Prop
+    Atom  : String -> Prop
+    Not   : Prop -> Prop
+    And   : Prop * Prop -> Prop
+    Or    : Prop * Prop -> Prop
+rules
+  DAOL  : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
+  DAOR  : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
+  DOAL  : Or(And(x, y), z) -> And(Or(x, z), Or(y, z))
+  DOAR  : Or(z, And(x, y)) -> And(Or(z, x), Or(z, y))
+  DN    : Not(Not(x))      -> x
+  DMA   : Not(And(x, y))   -> Or(Not(x), Not(y))
+  DMO   : Not(Or(x, y))    -> And(Not(x), Not(y))
+</screen>
+
+  <para>
+
+Common solution 
+
+Introduce additional constructors that achieve normalization under a restricted set of rules 
+
+Replace a  pure  rewrite rule p1 -> p2 with a functionalized rewrite rule: f : p1 -> p2' applying f recursively in the right-hand side 
+
+Normalize terms f(t) with respect to these rules 
+
+The function now controls where rules are applied
+
+  </para>
+
+<screen>
+map(s) : [] -> []
+map(s) : [x | xs] -> [&lt;s> | &lt;map(s)> xs]
+</screen>
 
 
+  <para>
+
+Constant folding entire tree 
+  </para>
+
+<screen>
+Eval : Plus(Int(i), Int(j)) -> Int(&lt;addS>(i,j))
+Eval : Times(Int(i), Int(j)) -> Int(&lt;mulS>(i,j))
+</screen>
+
+  <para>
+
+Constant folding entire tree 
+
+  </para>
+
+<screen>
+fold : Int(i) -> Int(i)
+fold : Var(x) -> Var(x)
+fold : Plus(e1, e2) -> &lt;try(Eval)>Plus(&lt;fold>e1, &lt;fold>e2)
+fold : Times(e1, e2) -> &lt;try(Eval)>Times(&lt;fold>e1, &lt;fold>e2)
+</screen>
+
+  <para>
+
+Traversal and application of rules are tangled
+
+  </para>
+
+<screen>
+  dnf  : True       -> True
+  dnf  : False      -> False
+  dnf  : Atom(x)    -> Atom(x)
+  dnf  : Not(x)     -> &lt;not>(&lt;dnf>x)
+  dnf  : And(x,y)   -> &lt;and>(&lt;dnf>x,&lt;dnf>y)
+  dnf  : Or(x,y)    -> Or(&lt;dnf>x,&lt;dnf>y)
+
+  and1 : (Or(x,y),z) -> Or(&lt;and>(x,z),&lt;and>(y,z))
+  and2 : (z,Or(x,y)) -> Or(&lt;and>(z,x),&lt;and>(z,y))
+  and3 : (x,y)       -> And(x,y)
+  and  = and1 &lt;+ and2 &lt;+ and3
+
+  not1 : Not(x)     -> x
+  not2 : And(x,y)   -> Or(&lt;not>(x),&lt;not>(y))
+  not3 : Or(x,y)    -> &lt;and>(&lt;not>(x),&lt;not>(y))
+  not4 : x          -> Not(x)
+  not  = not1 &lt;+ not2 &lt;+ not3 &lt;+ not4
+</screen>
+
+  <para>
+
+Functional encoding has two main problems: 
+
+Overhead due to explicit specification of traversal 
+
+A traversal rule needs to be defined for each constructor in the signature and for each transformation. 
+
+Separation of rules and strategy is lost 
+
+Rules and strategy are completely intertwined 
+
+Intertwining makes it more difficult to understand the transformation 
+
+Intertwining makes it impossible to reuse the rules in a different transformation.
+
+  </para>
+
+  <para>
+Language Complexity
+
+Traversal overhead and reuse of rules is important, considering the complexity of real programming languages: 
+
+language # constructors 
+
+Tiger 65 
+
+C 140 
+
+Java 140 
+
+COBOL 300 1200
+
+  </para>
+
+  <para>
+Requirements
+
+Control over application of rules 
+
+No traversal overhead 
+
+Separation of rules and strategies
+
+  </para>
+
+<screen>
+
+</screen>
+
+  <para>
+
+Cascading Transformations
+
+Apply small, independent transformations in combination 
+
+Accumulative e ect of small rewrites 
+
+Example: compilation-by-transformation in the Glasgow Haskell Compiler 
+
+Realization in Stratego
+
+simplify = innermost(R1 &lt;+ ... &lt;+ Rn)
+
+Example: disjunctive normal form
+
+dnf = innermost(DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO)
+
+and conjunctive normal form
+
+cnf = innermost(DOAL &lt;+ DOAR &lt;+ DN &lt;+ DMA &lt;+ DMO)
+  </para>
+
+  <para>
+
+One-pass Traversals 
+
+Apply rules in a single traversal over a program tree 
+
+Realization in Stratego
+
+simplify = downup(repeat(R1 &lt;+ ... &lt;+ Rn))
+
+simplify = bottomup(repeat(R1 &lt;+ ... &lt;+ Rn))
+
+Example
+
+eval = bottomup( repeat( T1 &lt;+ T2 &lt;+ T3 &lt;+ T4 &lt;+ T5 &lt;+ T6 &lt;+ T7 &lt;+ T8 &lt;+ T9 &lt;+ T10 &lt;+ T11 &lt;+ T12 &lt;+ T13 &lt;+ T14 &lt;+ T15 &lt;+ T16 &lt;+ T17 ) )
+
+  </para>
+
+<screen>
+DefN  : Not(x)     -> Impl(x, False)
+DefI  : Impl(x, y) -> Or(Not(x), y)
+DefE  : Eq(x, y)   -> And(Impl(x, y), Impl(y, x))
+DefO1 : Or(x, y)   -> Impl(Not(x), y)
+DefO2 : Or(x, y)   -> Not(And(Not(x), Not(y)))
+DefA1 : And(x, y)  -> Not(Or(Not(x), Not(y)))
+DefA2 : And(x, y)  -> Not(Impl(x, Not(y)))
+IDefI : Or(Not(x), y) -> Impl(x, y)
+IDefE : And(Impl(x, y), Impl(y, x)) -> Eq(x, y)
+
+desugar = topdown(try(DefI &lt;+ DefE))
+
+impl-nf  = topdown(repeat(DefN &lt;+ DefA2 &lt;+ DefO1 &lt;+ DefE))
+</screen>
+
+  <para>
+Staged Transformations 
+
+Transformations are not applied to a subject term all at once, but rather in stages 
+
+In each stage, only rules from some particular subset of the entire
+set of available rules are applied.
+
+Realization in Stratego
+
+  </para>
+
+<screen>
+  simplify =
+    innermost(A1 &lt;+ ... &lt;+ Ak)
+    ; innermost(B1 &lt;+ ... &lt;+ Bl)
+    ; ...
+    ; innermost(C1 &lt;+ ... &lt;+ Cm)
+</screen>
+
+  <para>
+ Local  Transformations
+
+Apply rules only to selected parts of the subject program 
+
+Realization in Stratego
+
+  </para>
+
+<screen>
+  transformation =
+    alltd(
+      trigger-transformation
+      ; innermost(A1 &lt;+ ... &lt;+ An)
+    )
+</screen>
+
+<screen>
+</screen>
+
+<screen>
+</screen>
 
 </section>
 
