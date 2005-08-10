@@ -1,8 +1,5 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
-
 <chapter id="sdf-language">
-  <title>The Syntax Definition Formalism SDF</title>
+  <title>The Syntax Definition Formalism SDF (*)</title>
 
   <para>
     TODO
