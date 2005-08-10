@@ -1,16 +1,130 @@
-  <section>
-    <title>Dynamic rules</title>
+<section>
+  <title>Dynamic rules</title>
 
-    <para>
-      This section shows how context-sensitive rewriting can be
-      achieved without the added complexity of local traversals and
-      without complex data-structures, by the extension of rewriting
-      strategies with scoped dynamic rewrite rules. Dynamic rules
-      are otherwise normal rewrite rules that are defined at run-time
-      and that inherit information from their definition context. As
-      an example, consider the following strategy definition as part
-      of an inlining transformation:
-    </para>
+  <para>
+
+    The second problem of rewriting is the context-free nature of
+    rewrite rules. A rule has access only to the term it is
+    transforming. However, transformation problems are often
+    context-sensitive. For example, when inlining a function at a call
+    site, the call is replaced by the body of the function in which
+    the actual parameters have been substituted for the formal
+    parameters. This requires that the formal parameters and the body
+    of the function are known at the call site, but these are only
+    available higher-up in the syntax tree. There are many similar
+    problems in program transformation, including bound variable
+    renaming, typechecking, data flow transformations such as constant
+    propagation, common-subexpression elimination, and dead code
+    elimination. Although the basic transformations in all these
+    applications can be expressed by means of rewrite rules, these
+    require contextual information.
+
+  </para>
+
+  <para>
+
+    One solution to this problem is the use of contextual rules. A
+    contextual rule solves the context problem by applying the
+    transformation at the context level instead of at the location
+    where the actual transformation takes place. A context expression
+    e[e'] matches or replaces an expression e occurring within e. For
+    instance, the following contextual rule defines the inlining of a
+    (unary) function definition at a function call site:
+
+<screen>
+UnfoldCall : 
+  |[ let function f (x ) = e1 in e2 [f (e3 )] end ]| ->
+  |[ let function f (x ) = e1 in e2 [let var x := e3 in e1 end] end ]| 
+</screen>
+
+    The rule is applied to an abstract syntax tree that contains both
+    the function definition and its uses. Since function calls can be
+    nested deeply in the body of the let expression, a local traversal
+    is needed to find them. When such a rule is applied as part of a
+    complete traversal over a program, e.g., to perform inlining for
+    all function definitions, the extra local traversal leads to
+    quadratic complexity. 
+
+  </para>
+
+  <para>
+
+    To avoid this complexity, the more common solution to this problem
+    is to extend the traversal over the tree (be it hand-written or
+    generic) such that it distributes the data needed by
+    transformation rules. For example, traversal functions in ASF+SDF
+    can be declared to have an accumulation parameter in which data
+    can be collected. Language independent definitions of operations
+    such as bound variable renaming in Stratego capture a generic tree
+    traversal schema that takes care of distributing an environment
+    through a tree. 
+
+  </para>
+
+  <para>
+
+    The disadvantage of such solutions is that the rewriting nature of
+    the solution is lost. Instead of a rewrite rule performing a
+    transformation, the traversal carries along a data structure that
+    stores the context information. The traversal code manages this
+    data structure in order to add information at the appropriate
+    places and retrieve it in other places. For instance, an inlining
+    algorithm needs to maintain a table, mapping function names to
+    their definitions. These data structures and operations are often
+    complicated by the fact that the context information is governed
+    by the scope and the data flow of the object program. Further
+    complications arise when multiple kinds of context information
+    need to be carried along. Many variations of such data structures
+    are used in transformation systems, e.g. symbol tables in type
+    checking, and hash tables in value numbering [24]. Representation
+    of such data structures as terms within term rewriting has the
+    disadvantage of the suboptimal complexity of list manipulation and
+    inspection.
+
+  </para>
+
+  <para>
+
+    In Stratego context-sensitive rewriting can be achieved without
+    the added complexity of local traversals and without complex data
+    structures, by the extension of rewriting strategies with scoped
+    dynamic rewrite rules. Dynamic rules are otherwise normal rewrite
+    rules that are defined at run-time and that inherit information
+    from their definition context. As an example, consider the
+    following strategy definition as part of an inlining
+    transformation:
+
+<screen>
+DefineUnfoldCall = 
+  ?|[ function f (x ) = e1 ]| 
+  ; rules( 
+      UnfoldCall : |[ f (e2 ) ]| -> |[ let var x := e2 in e1 end ]| 
+    )
+</screen>
+
+    The strategy DefineUnfoldCall matches a function definition and
+    defines the rewrite rule UnfoldCall, which rewrites a call to the
+    specific function f , as encountered in the definition, to a let
+    expression binding the formal parameter x to the actual parameter
+    e2 in the body of the function e1 . Note that the variables f , x
+    , and e1 are bound in the definition context of UnfoldCall. The
+    UnfoldCall rule thus defined at the function definition site, can
+    be used at all function call sites. The storage and retrieval of
+    the context information is handled transparently by the underlying
+    language implementation and is of no concern to the programmer.
+
+  </para>
+
+  <para>
+    This section shows how context-sensitive rewriting can be achieved
+    without the added complexity of local traversals and without
+    complex data-structures, by the extension of rewriting strategies
+    with scoped dynamic rewrite rules. Dynamic rules are otherwise
+    normal rewrite rules that are defined at run-time and that inherit
+    information from their definition context. As an example, consider
+    the following strategy definition as part of an inlining
+    transformation:
+  </para>
 
     <programlisting></programlisting>
 
@@ -77,5 +191,110 @@
       </itemizedlist>
     </para>
 
-  </section>
+<section>
+  <title>Constant Propagation</title>
+
+<para>
+  Constant propagation replaces uses of variables that can be
+  determined to have constant values with those values. Constant
+  propagation in basic blocks, achieves transformations such as the
+  following:
+</para>
+
+<screen>
+(b := 1; c := b + 3; b := b + 1; b := z + b; a := b + c) 
+
+==>
+
+(b := 1; c := 4;     b := 2;     b := z + 2; a := b + 4)
+</screen>
+
+<para>
+  Here the variable b in the second statement is replaced by its value
+  in the first and the resulting constant expression is folded. The
+  assignment in the third statement redefines the value of b to be
+  propagated. The assignment in the fourth statement blocks the
+  further propagation of the constant value of b, but c does have a
+  constant value in the fifth statement and should be replaced.
+</para>
+
+<para>
+  Constant folding can clearly be expressed by means of rewrite rules
+  using the EvalBinOp rules. The replacement of a variable by a value,
+  e.g. b by 1, can also be expressed by rewriting, i.e. by a rewrite
+  rule such as |[ b ]| -> |[ 1 ]|. However, such a rewrite rule cannot
+  be applied everywhere; not to the variable in the left-hand side of
+  an assignment, and not after a different expression has been
+  assigned to the variable. Thus, such a rewrite rule is specific to a
+  part of a particular program, rather than being a universally valid
+  transformation rule. Thus, the idea of dynamic rules is to define
+  such rules at run-time and only apply them to the parts of the
+  program where they are valid.
+</para>
+
+<screen>
+prop-const = 
+  PropConst 
+  &lt;+ prop-const-assign 
+  &lt;+ (all(prop-const); try(EvalBinOp &lt;+ EvalRelOp)) 
+
+prop-const-assign = 
+  |[ x := &lt;prop-const => e > ]| 
+  ; if &lt;is-value> e then 
+      rules( PropConst : |[ x ]| -> |[ e ]| ) 
+    else 
+      rules( PropConst :- |[ x ]| ) 
+    end
+</screen>
+
+<para>
+  The prop-const strategy above implements constant propagation for
+  basic blocks using dynamic rules. The strategy has three cases. The
+  first is the application of the PropConst rule, which replaces a
+  variable with a constant value, if it has one. In the second case an
+  assignment statement is encountered and used to define a dynamic
+  rule, as will be discussed below. In the final case, a generic
+  traversal is performed and the sub-expressions are transformed with
+  the prop-const transformation. After that an attempt is made to
+  perform constant folding using some appropriate Eval rule. 
+
+</para>
+
+<para>
+
+  Now the crucial part of the transformation is the prop-const-assign
+  strategy, which defines a PropConst rule for each particular
+  assignment it encounters. First, the congruence strategy <code>|[x
+  := &lt;prop-const => e >]|</code> (equivalent to
+  <code>Assign(?x,prop-const => e))</code> is used to transform the
+  righthand side expression by a recursive invocation of the
+  prop-const strategy, leaving the left-value untouched (to prevent
+  the replacement of the variable in the left-value). If the
+  right-hand side expression of the assignment is a constant, as
+  determined by the is-value strategy, then a PropConst rule is
+  defined that replaces an occurrence of the variable x from the
+  left-hand side of the assignment by the expression e from the
+  right-hand side. This is expressed by the strategy expression 
+
+<screen>
+rules( PropConst : |[ x ]| -> |[ e ]| )
+</screen>
+
+  The rules construct introduces several rules which inherit variable
+  bindings for all variables occurring in the context. If the
+  expression e is not a constant, then the PropConst rule is undefined
+  for x with the strategy expression 
+
+<screen>
+rules( PropConst :- |[ x ]| )
+</screen>
+
+  which disables any PropConst rules with x as left-hand side.
+
+</para>
+
+</section>
+
+  
+</section>
 
