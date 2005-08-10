@@ -2,14 +2,62 @@
  <title>Combinators for Term Traversal</title>
 
  <para>
+
+Requirements
+
+Control over application of rules 
+
+No traversal overhead 
+
+Separation of rules and strategies
+
+Many ways to traverse a tree 
+
+Bottom-up 
+
+Top-down 
+
+Innermost ... 
+
+What are the primitives of traversal?
+
 	Match, build, sequential composition, and choice only apply
 	transformations to the root of a term
 
 	Complete transformations require term traversal
+
+ </para>
+    
+ <para> 
+
+Traversal Primitives 
+
+One-Level Traversal Operators 
+
+Apply a strategy to one or more direct subterms 
+
+Congruence: 
+
+Data-Type Specific Traversal 
+
+Apply a different strategy to each argument of a specific constructor 
+
+Generic Traversal 
+
+All Apply to all direct subterms 
+
+One Apply to one direct subterm 
+
+Some Apply to as many direct subterms as possible, and at least one
+
+ </para>
+
+ <para> 
+
  </para>
 
 <section>
-   <title>Congruence operators</title>
+   <title>Congruence Operators</title>
 
     <para>
       A congruence operator applies a strategy to each direct subterm
@@ -50,21 +98,93 @@ Plus(Var("a"),Int("3"))
       <code>map(s)</code> strategy.
     </para>
 
-    <screen><include href="xmpl/map.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+    <screen>  
+map(s) = Nil() + Cons(s, map(s))
+
+fetch(s) = Cons(s, id) &lt;+ Cons(id, fetch(s))
+
+filter(s) = Nil + (Cons(s, filter(s)) &lt;+ ?Cons( , &lt;id>); filter(s))
+</screen>
+
+    <screen>  
+map(s) = [] + [s | map(s)])
+
+fetch(s) = [s | id] &lt;+ [id | fetch(s)]
+
+filter(s) = [] + ([s | filter(s)] &lt;+ ?[ |&lt;id>]; filter(s))
+</screen>
 
 
+    <para>
+      Example: constant folding
+    </para>
+
+    <screen>
+BinOp(PLUS(), Int("14"), Int("3")) 
+stratego> EvalBinOp 
+Int("17") 
+    </screen>   
+
+    <screen> 
+const-fold =
+  BinOp(id, const-fold, const-fold); try(EvalBinOp)
+  &lt;+ Call(id, map(const-fold)); try(EvalCall)
+  &lt;+ If(const-fold, const-fold, const-fold); try(EvalIf)
+    </screen>   
+
+    <screen> 
+BinOp(TIMES(), 
+  If(BinOp(PLUS(),Int("14"),Int("3")),Int("2"),Int("23")),
+  Int("4") 
+)
+stratego> const-fold 
+Int("8")
+    </screen>   
+
+    <para>
+      Example: format checking
+
+Format checking 
+
+Describe a subset of a term language using a recursive pattern 
+
+Applications 
+
+Verify output (testing) 
+
+Verify input (pre-condition) 
+
+Documentation
+
+Describe format of terms in normal form 
+    </para>
+
+    <screen>
+conj(s) = rec x(And(x, x) &lt;+ s)
+disj(s) = rec x(Or(x, x) &lt;+ s)
+
+// Conjunctive normal form
+conj-nf = conj(disj(Not(Var(x)) + Var(x)))
+
+// Disjunctive normal form
+disj-nf = disj(conj(Not(Var(x)) + Var(x)))
+    </screen>   
+ 
 </section>
 
 <section>
-   <title>Generic Traversal Combinators</title>
-
+  <title>Generic Traversal: Visiting All Subterms</title>
+      
     <para>
       Generic traversal operators
+Data-type specific traversal requires tedious enumeration of cases 
+
+Even if traversal behaviour is uniform 
+
+Generic traversal allows concise specification of default traversals
     </para>
 
-    <section>
-      <title>All</title>
-      
+
       <para>
 	The <code>all(s)</code> strategy transforms a constructor
 	application by applying the parameter strategy <code>s</code>
@@ -84,12 +204,59 @@ Plus(Var("a"),Var("a"))
 	<code>bottomup</code>.
       </para>
 
-      <screen><include href="xmpl/topdown.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/><include href="xmpl/bottomup.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen>
+bottomup(s) = all(bottomup(s)); s
+topdown(s)  = s; all(topdown(s))
+downup(s)   = s; all(downup(s)); s
+alltd(s)    = s &lt;+ all(alltd(s))
+</screen>
 
-    </section>
+<screen>
+const-fold = bottomup(try(EvalBinOp &lt;+ EvalCall &lt;+ EvalIf))
+</screen>
 
-    <section>
-      <title>One</title>
+<para>
+Example: Desugaring Expressions
+</para>
+
+<screen>
+DefAnd : And(e1, e2) -> If(e1, e2, Int("0")) 
+
+DefPlus : Plus(e1, e2) -> BinOp(PLUS(), e1, e2) 
+
+DesugarExp = DefAnd &lt;+ DefPlus &lt;+ ... 
+
+desugar = topdown(try(DesugarExp)
+</screen>
+
+<screen>
+IfThen(And(Var("a"),Var("b")), Plus(Var("c"),Int("3")))
+stratego> desugar 
+IfThen(If(Var("a"),Var("b"),Int("0")), BinOp(PLUS,Var("c"),Int("3")))
+</screen>
+
+<para>
+
+</para>
+
+<screen>
+
+</screen>
+
+
+<para>
+
+</para>
+
+<screen>
+
+</screen>
+
+</section>
+
+
+<section>
+      <title>Generic Traversal: Visiting One Subterm</title>
 
       <para>
 	The <code>one(s)</code> strategy transforms a constructor
@@ -111,12 +278,30 @@ Plus(Var("a"),Var("a"))
 	term contains a given term.
       </para>
 
-      <screen><include href="xmpl/oncetd.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/><include href="xmpl/contains.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen>
+oncetd(s)  = s &lt;+ one(oncetd(s)) 
+oncebu(s)  = one(oncebu(s)) &lt;+ s 
+spinetd(s) = s; try(one(spinetd(s))) 
+spinebu(s) = try(one(spinebu(s))); s
+</screen>
+    
+      <screen>
+contains(|t) = oncetd(?t)
+</screen>
 
-    </section>
+      <screen>
+reduce(s)     = repeat(rec x(one(x) + s)) 
+outermost(s)  = repeat(oncetd(s)) 
+innermostI(s) = repeat(oncebu(s))
+</screen>
 
-    <section>
-      <title>Some</title>
+      <screen>
+</screen>
+
+</section>
+
+<section>
+      <title>Generic Traversal: Visiting Some Subterms</title>
 
       <para>
 	The <code>some(s)</code> strategy transforms a constructor
@@ -126,7 +311,14 @@ Plus(Var("a"),Var("a"))
 	to all of the subterms fails.
       </para>
 
-   </section>
+      <screen>
+sometd(s) = s &lt;+ some(sometd(s)) 
+somebu(s) = some(somebu(s)) &lt;+ s
+</screen>
+
+      <screen>
+reduce-par(s) = repeat(rec x(some(x) + s))
+</screen>
 
 </section>
 
@@ -209,6 +401,21 @@ Plus(Var("a"),Var("a"))
   <para>
         innermost
   </para>
+
+<screen>
+innermost(s) = bottomup(try(s; innermost(s))) 
+</screen>
+
+  <para>
+Normalization 
+  </para>
+
+<screen>
+dnf = innermost(DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO)
+
+cnf = innermost(DOAL &lt;+ DOAR &lt;+ DN &lt;+ DMA &lt;+ DMO)
+</screen>
+
 </section>
 
 <section>
@@ -256,19 +463,6 @@ Dynamic programming
    </para>
 </section>
 
-<section>
-   <title>Generic Term Deconstruction</title>
 
-   <para>
-     Generic term deconstruction
-   </para>
-</section>
-
-<section>
-   <title>Type Unifying Strategies</title>
-
-   <para>
-   </para>
-</section>
 
 </section>

@@ -7,9 +7,10 @@
   <includexml file="build-match.xml"/>
   <includexml file="rules.xml"/>
   <includexml file="definitions.xml"/>
-  <includexml file="in-control.xml"/>
   <includexml file="combinators.xml"/>
+  <includexml file="in-control.xml"/>
   <includexml file="traversal.xml"/>
+  <includexml file="type-unifying.xml"/>
   <includexml file="dynamic-rules.xml"/>
 
 </chapter>
