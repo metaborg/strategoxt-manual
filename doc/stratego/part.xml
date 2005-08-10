@@ -1,0 +1,45 @@
+<part>
+  <title>Stratego</title>
+  <partintro>
+       
+    <para>
+
+      Stratego language
+
+    </para>
+
+    <para>
+
+      Concrete syntax
+
+      The representation of programs and program fragments as terms
+      entails an abstraction from the representation used by
+      programmers. This distance between concrete program notation and
+      abstract term representation can make it difficult to understand
+      and produce specifications of program transformations. Chapter
+      XXX shows how concrete syntax can be used for the specification
+      of transformation rules, while still using the underlying
+      abstract syntax for performing the transformations.
+
+    </para>
+
+    <para>
+
+      Stratego library
+
+    </para>
+
+    <para>
+
+      Unit testing
+
+    </para>
+
+  </partintro>
+
+  <includexml file="language/stratego-language.xml"/>
+  <includexml file="language/concrete-syntax.xml"/>
+  <includexml file="library/stratego-library.xml"/>
+  <includexml file="sunit/sunit.xml"/>
+  
+</part>

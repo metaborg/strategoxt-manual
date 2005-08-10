@@ -14,7 +14,7 @@
   <includexml file="manual-intro.xml"/>
   <includexml file="aterms/aterms.xml" />
   
-  <includexml file="stratego-language/part.xml"/>
+  <includexml file="stratego/part.xml"/>
 
   <part>
     <title>SDF</title>
