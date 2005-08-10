@@ -53,9 +53,24 @@
 
   <para>
 
+    Many systems for program transformation exist that are often
+    specialized for a specific object language and/or kind of
+    transformation.  All these systems share many ideas about program
+    transformation and use similar techniques, but are often ad-hoc in
+    many respects.  The ultimate goal is to achieve a specification
+    language or family of specification languages for the high-level,
+    declarative specification of program transformation systems in
+    which generic, language independent schemas of transformation can
+    be captured, and which admits efficient implementation of those
+    transformations that can scale up to large programs.
+
+  </para>
+
+  <para>
+
     Stratego/XT is a framework for the implementation of
     transformation systems based on structural representations of
-    programs. 
+    programs.
 
     The framework aims at better productivity in the development of
     transformation systems through the use of high-level
@@ -138,6 +153,22 @@ Document generation/transformation
     languages and tools fit in this architecture
   </para>
 
+  <para>
+
+    A program transformation system is usually organized as a simple
+    pipeline of transformation steps. At the source of the pipeline, a
+    parser reads the text of the input program and turns it into a
+    parse tree or abstract syntax tree. Subsequently, one or several
+    transformations components modify the tree. At the sink of the
+    pipeline, a pretty-printer turns the output tree into program
+    text.
+
+  </para>
+
+  <para>
+
+  </para>
+
 </section>
 
 <section>
@@ -147,6 +178,42 @@ Document generation/transformation
     ATerms, The Stratego Language, The Syntax Definition Formalism
     SDF, The XT Transformation Tools, Stratego/XT Development,
     Reference Manual
+  </para>
+
+  <para>
+        
+    Programmers write programs as texts, which is a suitable
+    representation for people. It is not, however, a useful
+    representation for direct manipulation by an automatic program
+    transformation system.  
+
+    Part I treats the representation of programs as terms using the
+    ATerm annotated term format.  
+
+    Part II covers the syntax definition formalism SDF and the
+    conversion from textual program representations to term
+    representations.
+
+    by means of parsing and pretty-printing.
+
+    The construction of parsers and pretty-printers can be done
+    automatically if a declarative definition of the syntax of the
+    programming language is available. 
+
+    The syntax definition formalism SDF is used to define the syntax
+    of languages.
+
+    The Box language is used to specify
+    pretty-printers independently from the output format.
+
+  </para>
+
+  <para>
+
+  </para>
+
+  <para>
+
   </para>
 
 </section>

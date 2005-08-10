@@ -14,13 +14,7 @@
   <includexml file="manual-intro.xml"/>
   <includexml file="aterms/aterms.xml" />
   
-  <part>
-    <title>Stratego</title>
-    <includexml file="stratego-language/stratego-language.xml"/>
-    <includexml file="stratego-language/concrete-syntax.xml"/>
-    <includexml file="stratego-library/stratego-library.xml"/>
-    <includexml file="sunit/sunit.xml" />
-  </part>
+  <includexml file="stratego-language/part.xml"/>
 
   <part>
     <title>SDF</title>
