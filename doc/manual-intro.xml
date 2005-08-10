@@ -1,5 +1,5 @@
 <chapter id="manual-intro">
-  <title>Introduction</title>
+  <title>Introduction (*)</title>
 
 <section>
   <title>Software Transformation</title>
@@ -91,12 +91,36 @@
 <section>
   <title>Applications</title>
 
-  <para>
-Compilers   translation   desugaring   instruction selection   maximal munch, burg-style dynamic programming   optimization   data-flow optimizations, vectorization   ghc-style simplification   deforestation   domain-specific optimization (codeboost)   partial evaluation   typechecking   specialization of dynamic typing
+  <screen>
+Compilers 
+- translation   
+- desugaring  
+- instruction selection 
+  - maximal munch
+  - burg-style dynamic programming
+- optimization 
+  - data-flow optimizations
+  - vectorization
+  - ghc-style simplification
+  - deforestation
+  - domain-specific optimization (codeboost)
+  - partial evaluation   
+- typechecking   
+- specialization of dynamic typing
 
-Program generators   pretty-printer and signature generation from syntax definitions   application generation from DSL (Java, C++) " Program migration   grammar conversion (yacc to sdf, ...) " Program understanding   documentation generation " Document generation/transformation   Web/XML programming (server-side  scripts )
+Program generators
+- pretty-printer and signature generation from syntax definitions
+- application generation from DSL (Java, C++) 
 
-  </para>
+Program migration
+- grammar conversion (yacc to sdf, ...)
+
+Program understanding
+- documentation generation 
+
+Document generation/transformation 
+- Web/XML programming (server-side  scripts )
+  </screen>
 
 </section>
 

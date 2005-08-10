@@ -1,14 +1,159 @@
+<section>
+  <title>Introduction (*)</title>
 
-  <section>
-     <title>Introduction</title>
-     <para>
+  <para>
+
+    Program transformation is the mechanical manipulation of a program
+    in order to improve it relative to some cost function C such that
+    C(P) > C(tr(P)), i.e. the cost decreases as a result of applying
+    the transformation. The cost of a program can be measured in
+    different dimensions such as performance, memory usage,
+    understandability, flexibility, maintainability, portability,
+    correctness, or satisfaction of requirements. Related to these
+    goals, program transformations are applied in different settings;
+    e.g. compiler optimizations improve performance and refactoring
+    tools aim at improving understandability. While transformations
+    can be achieved by manual manipulation of programs, in general,
+    the aim of program transformation is to increase programmer
+    productivity by automating programming tasks, thus enabling
+    programming at a higher-level of abstraction, and increasing
+    maintainability and re-usability of programs. Automatic
+    application of program transformations requires their
+    implementation in a programming language. In order to make the
+    implementation of transformations productive such a programming
+    language should support abstractions for the domain of program
+    transformation.
+
+  </para>
+
+<section>
+  <title>Transformation by Term Rewriting</title>
+
+  <para>
+
+    Term rewriting is an attractive formalism for expressing basic
+    program transformations. A rewrite rule <code>p1 -> p2</code>
+    expresses that a program fragment matching the left-hand side
+    pattern p1 can be replaced by the instantiation of the right-hand
+    side pattern p2. For instance, the rewrite rule
+
+<screen>
+|[ i + j ]| -> |[ k ]| where &lt;add>(i ,j ) => k 
+</screen>
+
+    expresses constant folding for addition, i.e. replacing an
+    addition of two constants by their sum. Similarly, the rule
+
+<screen>
+|[ if 0 then e1 else e2 ]| -> |[ e2 ]| 
+</screen>
+
+    defines unreachable code elimination by reducing a conditional
+    statement to its right branch since the left branch can never be
+    executed. Thus, rewrite rules can directly express laws derived
+    from the semantics of the programming language, making the
+    verification of their correctness straightforward. A correct rule
+    can be safely applied anywhere in a program. A set of rewrite
+    rules can be directly operationalized by rewriting to normal form,
+    i.e. exhaustive application of the rules to a term representing a
+    program. If the rules are confluent and terminating, the order in
+    which they are applied is irrelevant.
+
+  </para>
+
+  <para>
+
+    However, there are two problems associated with the application of
+    standard term rewriting techniques to program transformation: the
+    need to intertwine rules and strategies in order to control the
+    application of rewrite rules and the context-free nature of
+    rewrite rules.
+
+  </para>
+
+</section>
+
+<section>
+  <title>Transformation Strategies</title>
+
+  <para>
+
+    Exhaustive application of all rules to the entire abstract syntax
+    tree of a program is not adequate for most transformation
+    problems. The system of rewrite rules expressing basic
+    transformations is often non-confluent and/or non-terminating. An
+    ad hoc solution that is often used is to encode control over the
+    application of rules into the rules themselves by introducing
+    additional function symbols. This intertwining of rules and
+    strategies obscures the underlying program equalities, incurs a
+    programming penalty in the form of rules that define a traversal
+    through the abstract syntax tree, and disables the reuse of rules
+    in different transformations.
+
+  </para>
+
+  <para>
+
+    Stratego solves the problem of control over the application of
+    rules while maintaining the separation of rules and strategies. A
+    strategy is a little program that makes a selection from the
+    available rules and defines the order and position in the tree for
+    applying the rules. Thus rules remain pure, are not intertwined
+    with the strategy, and can be reused in multiple
+    transformations. 
+    schemas.
+
+  </para>
+
+</section>
+
+<section>
+  <title>Context-Senstive Transformation</title>
+
+  <para>
+
+    The second problem of rewriting is the context-free nature of
+    rewrite rules. A rule has access only to the term it is
+    transforming. However, transformation problems are often
+    context-sensitive. For example, when inlining a function at a call
+    site, the call is replaced by the body of the function in which
+    the actual parameters have been substituted for the formal
+    parameters. This requires that the formal parameters and the body
+    of the function are known at the call site, but these are only
+    available higher-up in the syntax tree. There are many similar
+    problems in program transformation, including bound variable
+    renaming, typechecking, data flow transformations such as constant
+    propagation, common-subexpression elimination, and dead code
+    elimination. Although the basic transformations in all these
+    applications can be expressed by means of rewrite rules, these
+    require contextual information.
+
+  </para>
+
+  <para>
+
+    Stratego achieves context-sensitive rewriting by the extension of
+    rewriting strategies with scoped dynamic rewrite rules. Dynamic
+    rules are otherwise normal rewrite rules that are defined at
+    run-time and that inherit information from their definition
+    context.
+
+  </para>
+
+</section>
+
+
+<section>
+  <title>Outline</title>
+
+  <para>
 
         Stratego is a language for program transformation based on
         term rewriting with programmable rewriting strategies.
 
-     </para>
+  </para>
 
-     <para>
+  <para>
 
         Conventional Term Rewriting
 
@@ -24,9 +169,9 @@
 
         - Strategy given by engine
 
-     </para>
+  </para>
 
-     <para>
+  <para>
 
         Strategic Term Rewriting
 
@@ -38,11 +183,9 @@
 
         - Combine strategies
 
-     </para>
+  </para>
 
-     <para>
-
-        Outline
+  <para>
 
         - Basic Transformation Strategies
 
@@ -60,9 +203,10 @@
 
         - Creating executable transformation components
 
-     </para>
+  </para>
 
-     <para>
+
+  <para>
 
 High-level specification of transformations 
 
@@ -81,6 +225,8 @@ No strict separation between abstractions
 
 mix rules, strategies, tools
 
-     </para>
+  </para>
 
-  </section>
+</section>
+
+</section>

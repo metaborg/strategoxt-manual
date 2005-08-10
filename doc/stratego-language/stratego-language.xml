@@ -1,5 +1,5 @@
 <chapter id="stratego-language">
-  <title>The Stratego Language</title>
+  <title>The Stratego Language (*)</title>
 
   <includexml file="introduction.xml" />
   <includexml file="terms.xml" />
