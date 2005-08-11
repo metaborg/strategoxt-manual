@@ -1,0 +1,15 @@
+Module Expressions
+imports Lexical
+exports
+  sorts Var Exp
+  context-free syntax
+    Id		-> Var 
+    Var         -> Exp 
+    IntConst    -> Exp
+    "-" Exp 	-> Exp
+    Exp "*" Exp -> Exp
+    Exp "+" Exp -> Exp
+    Exp "-" Exp -> Exp
+    Exp "=" Exp -> Exp
+    Exp ">" Exp -> Exp
+    "(" Exp ")" -> Exp

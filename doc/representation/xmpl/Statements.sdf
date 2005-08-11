@@ -1,0 +1,26 @@
+module Statements
+imports Expressions 
+exports
+  sorts Dec FunDec
+  context-free syntax
+    Var ":=" Exp            	     -> Exp {cons("Assign")}
+    "(" {Exp ";"}* ")" 		     -> Exp {cons("Seq")}
+    "if" Exp "then" Exp "else" Exp   -> Exp {cons("If")}
+    "while" Exp "do" Exp      	     -> Exp {cons("While")}
+    "let" Dec* "in" {Exp ";"}* "end" -> Exp {cons("Let")}
+    "var" Id ":=" Exp                -> Dec {cons("VarDec")}
+    FunDec+ 			     -> Dec {cons("FunDecs")}
+    "function" Id "(" {Id ","}* ")"  
+      "=" Exp 	    	             -> FunDec {cons("FunDec")}
+    Var "(" {Exp ","}* ")" 	     -> Exp {cons("Call")}
+  context-free priorities
+    {non-assoc:
+     Exp "=" Exp 		     -> Exp {cons("Eq"),non-assoc}
+     Exp ">" Exp 		     -> Exp {cons("Gt"),non-assoc}}
+  >  Var ":=" Exp                    -> Exp {cons("Assign")}
+  > {right:
+     "if" Exp "then" Exp "else" Exp  -> Exp {cons("If")}
+     "while" Exp "do" Exp      	     -> Exp {cons("While")}}
+  >  {Exp ";"}+ ";" {Exp ";"}+       -> {Exp ";"}+
+
+context-free start-symbols Exp

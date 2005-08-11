@@ -1,0 +1,23 @@
+digraph Term {
+  a_0 [ label = "H" ] ;
+  a_0 -> c_0 ;
+  a_0 -> d_0 ;
+  a_0 -> f_0 ;
+  c_0 [ label = "\"H hs=0\"" ] ;
+  c_0 -> g_0 ;
+  c_0 -> i_0 ;
+  c_0 -> j_0 ;
+  c_0 -> l_0 ;
+  g_0 [ label = "\"f\"" ] ;
+  i_0 [ label = "\"(\"" ] ;
+  j_0 [ label = "H" ] ;
+  j_0 -> n_0 ;
+  j_0 -> o_0 ;
+  j_0 -> p_0 ;
+  n_0 [ label = "\"a\"" ] ;
+  o_0 [ label = "\"+\"" ] ;
+  p_0 [ label = "\"10\"" ] ;
+  l_0 [ label = "\")\"" ] ;
+  d_0 [ label = "\"-\"" ] ;
+  f_0 [ label = "\"3\"" ] ;
+}

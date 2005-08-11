@@ -1,0 +1,12 @@
+module Priorities
+imports Expressions
+exports
+  context-free priorities
+     "-" Exp 	 -> Exp {cons("Uminus")}
+  >  Exp "*" Exp -> Exp {cons("Times"),left}
+  > {left:
+     Exp "+" Exp -> Exp {cons("Plus"),left}
+     Exp "-" Exp -> Exp {cons("Minus"),left}}
+  > {non-assoc:
+     Exp "=" Exp -> Exp {cons("Eq"),non-assoc}
+     Exp ">" Exp -> Exp {cons("Gt"),non-assoc}}

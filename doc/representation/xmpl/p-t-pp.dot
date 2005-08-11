@@ -1,0 +1,108 @@
+digraph ptpp {
+
+   edge [arrowhead=normal]
+   graph [ranksep=0.6]
+
+#  A B C D 
+#  E F G H
+#  I J K L
+#  M N O P
+#  Q R S T
+
+subgraph I {
+  A -> B -> C -> D  [constraint=false]
+}
+
+subgraph II {
+  E -> F [constraint=false]
+  F -> G -> H [constraint=false] 
+  E [label="pgen",shape=ellipse]
+}
+
+subgraph III {
+  I -> J -> K -> L [constraint=false]
+}
+
+subgraph IV{
+  M -> N -> O -> P [constraint=false]
+}
+
+subgraph V {
+  Q -> R -> S -> T [constraint=false]
+}
+
+A -> E -> I -> M -> Q
+
+B -> F -> J -> N -> R
+
+C -> G -> K -> O -> S
+
+D -> H -> L -> P -> T
+
+#I -> F  [label="pgen", constraint=false]
+#I -> J  [label="sdf-to-sig", constraint=false]
+#I -> N  [label="ppgen", constraint=false]
+
+I [label = "L.def"]
+F [label = "L.tbl"]
+J [label = "L.r"]
+N [label = "L.pp"]
+
+G [label = "parse",shape=ellipse]
+K [label = "transform",shape=ellipse]
+O [label = "pp",shape=ellipse]
+
+
+}
+#
+##  rankdir=LR
+#   edge [arrowhead=normal]
+#   graph [ranksep=0.4]
+#
+#  E -> F -> G -> "L.sdf" [style=invis]
+#
+#
+#subgraph GEN {
+#  H -> "pgen" -> I  -> "sdf-to-sig"     -> J          -> "ppgen"
+#}
+## [style=invis]
+#subgraph PROCESS {
+#  A -> "L.tbl" -> B  -> "L.r"     -> C          -> "L.pp" 
+#}
+#
+#subgraph PROCESS {
+#  "prog1.l" -> "parse" -> "prog1.al" -> transform -> "prog2.al" -> "pp" -> "prog2.l"
+#}
+#
+#
+#  A [style=invis]
+#  B [style=invis]
+#  C [style=invis]
+#  E [style=invis]
+#  F [style=invis]
+#  G [style=invis]
+#  H [style=invis]
+#  I [style=invis]
+#  J [style=invis]
+#
+#
+#subgraph SGLR {
+##  "L.sdf" -> "pgen" -> "L.tbl" -> "parse"  [constraint=false]
+#}
+#
+#subgraph GPP {
+#  "L.sdf"  -> "ppgen" [constraint=false]
+##  "ppgen" -> "L.pp" [constraint=false]
+#   "L.pp" -> "pp"  [constraint=false]
+#}
+#
+#subgraph SIG {
+#  "L.sdf" -> "sdf-to-sig" -> "L.r" -> "transform" [constraint=false]
+#}
+#
+#  parse [shape=ellipse]
+#  transform [shape=ellipse]
+#  pp [shape=ellipse]
+#
+#}
+#

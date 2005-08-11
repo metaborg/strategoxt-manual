@@ -1,7 +1,6 @@
 <chapter>
   <title>Program Representation (*)</title>
 
-
   <para>
 
     Program transformation systems need some kind of representation
@@ -36,23 +35,16 @@
 
   </para>
 
-
 <section>
   <title>Grammars as Contracts</title>
 
-  <para>
-
-
-        \begin{figure}[t]
-        \begin{center}
-        \inputeps{xmpl/transf-cycle}
-        \end{center}
-        \caption{Syntax definitions define the interfaces between
-        transformation components.}
-        \label{Fig:GrammarsAsContracts}
-        \end{figure}
-
-  </para>
+  <figure id="Fig:GrammarsAsContracts">
+    <title>
+      Syntax definitions define the interfaces between transformation
+      components.
+    </title>
+    <graphic fileref="representation/xmpl/transf-cycle.png" align="center"/>
+  </figure>
 
   <para>
         
@@ -72,14 +64,14 @@
 
   <para>
         
-     Figure~\ref{Fig:GrammarsAsContracts} illustrates these ideas.  To
-     transform a program, it is first parsed and represented as a tree
-     (triangle). The tree is transformed by a tree transformation
-     component which results in a transformed tree. This tree is then
-     rendered as text by a pretty-printer.  The contract between
-     parser, transformer, and pretty-printer is embedded in the parse
-     table, signature, and pretty-print table, which are all generated
-     from the same syntax definition.
+     <xref linkend="Fig:GrammarsAsContracts"/> illustrates these
+     ideas.  To transform a program, it is first parsed and
+     represented as a tree (triangle). The tree is transformed by a
+     tree transformation component which results in a transformed
+     tree. This tree is then rendered as text by a pretty-printer.
+     The contract between parser, transformer, and pretty-printer is
+     embedded in the parse table, signature, and pretty-print table,
+     which are all generated from the same syntax definition.
 
   </para>
 
@@ -103,16 +95,15 @@
 
   <para>
 
-        \begin{figure}[t]
-        \hspace*{\fill}
-        \inputsourceSize{5cm}{xmpl/Expressions-NoCons.sdf}
-        \hspace*{\fill}
-        \inputsourceSize{5.5cm}{xmpl/Expressions-NoCons.red}
-        \hspace*{\fill}
-        \caption{Context-free productions and a reduction sequence
-        according to the productions.}
-        \label{Fig:Expressions-NoCons.sdf}
-        \end{figure}
+  <figure id="Fig:Expressions-NoCons.sdf">
+    <title>
+      Context-free productions and a reduction sequence
+      according to the productions.
+    </title>
+    <showfile root="." file="xmpl/Expressions-NoCons.sdf"/>
+    <showfile root="." file="xmpl/Expressions-NoCons.red"/>
+  </figure>
+
 
   </para>
 
@@ -179,15 +170,14 @@
 
   <para>
 
-        \begin{center}
-                \inputepsunboxed{xmpl/Plus}
-        \end{center}
+
+    <graphic fileref="representation/xmpl/Plus.png" align="center"/>
 
   </para>
 
   <para>
 
-        \inputepsunboxed{xmpl/PlusTimes}
+    <graphic fileref="representation/xmpl/PlusTimes.png" align="center"/>
 
   </para>
 
@@ -210,8 +200,13 @@
   </para>
 
   <para>
-        \begin{figwindow}[3,r,{\inputepsSize[c]{5cm}{xmpl/test1-ntt}},{Parse
-        tree\label{Fig:ParseTree}}]
+
+  <figure id="Fig:ParseTree">
+    <title>
+      Parse tree
+    </title>
+    <graphic fileref="representation/xmpl/test1-ntt.png" align="center"/>
+  </figure>
 
   </para>
 
@@ -252,13 +247,6 @@
 
   <para>
 
-        \begin{figwindow}[3,r,{\inputepsSize[c]{5cm}{xmpl/test1-ntt}},{Parse
-        tree\label{Fig:ParseTree}}]
-
-  </para>
-
-  <para>
-
         Parse trees contain all the details of a program including
         literals, whitespace, and comments.  This is usually not
         necessary for performing transformations.  A parse tree is
@@ -281,16 +269,14 @@
 
   <para>
 
-        \begin{figure}[t]
-        \hspace*{\fill}
-        \inputsourceSize[c]{8cm}{xmpl/Expressions-Cons.sdf}
-        \hspace*{\fill}
-        \inputepsSize[c]{3.5cm}{xmpl/test1-acub}
-        \hspace*{\fill}
-        \caption{Context-free productions with constructor annotations and
-        an abstract syntax tree.}
-        \label{Fig:test1-acub}
-        \end{figure}
+  <figure id="Fig:test1-acub">
+    <title>
+      Context-free productions with constructor annotations and an
+      abstract syntax tree.
+    </title>
+    <showfile root="." file="xmpl/Expressions-Cons.sdf"/>
+    <graphic fileref="representation/xmpl/test1-acub.png" align="center"/>
+  </figure>
 
   </para>
 

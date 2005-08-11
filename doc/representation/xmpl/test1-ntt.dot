@@ -1,0 +1,37 @@
+digraph Term {
+  a_0 [ label = "Exp" ] ;
+  a_0 -> c_0 ;
+  a_0 -> d_0 ;
+  a_0 -> f_0 ;
+  c_0 [ label = "Exp" ] ;
+  c_0 -> g_0 ;
+  c_0 -> i_0 ;
+  c_0 -> j_0 ;
+  g_0 [ label = "\"(\"" ] ;
+  i_0 [ label = "Exp" ] ;
+  i_0 -> l_0 ;
+  i_0 -> n_0 ;
+  i_0 -> o_0 ;
+  l_0 [ label = "Exp" ] ;
+  l_0 -> p_0 ;
+  p_0 [ label = "Var" ] ;
+  p_0 -> q_0 ;
+  q_0 [ label = "Id" ] ;
+  q_0 -> r_0 ;
+  r_0 [ label = "\"a\"" ] ;
+  n_0 [ label = "\"+\"" ] ;
+  o_0 [ label = "Exp" ] ;
+  o_0 -> s_0 ;
+  s_0 [ label = "Var" ] ;
+  s_0 -> t_0 ;
+  t_0 [ label = "Id" ] ;
+  t_0 -> u_0 ;
+  u_0 [ label = "\"n\"" ] ;
+  j_0 [ label = "\")\"" ] ;
+  d_0 [ label = "\"*\"" ] ;
+  f_0 [ label = "Exp" ] ;
+  f_0 -> v_0 ;
+  v_0 [ label = "IntConst" ] ;
+  v_0 -> w_0 ;
+  w_0 [ label = "\"1\"" ] ;
+}

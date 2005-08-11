@@ -1,0 +1,62 @@
+digraph Cycle {
+
+edge[arrowhead=normal, dir=forward]
+
+subgraph transform {
+	rank=same
+	Parse \
+	-> TreeIn \
+	-> Transform \
+	-> TreeOut \
+	-> "Pretty-Print"
+}
+subgraph generate {
+	"Parser\nGenerator"
+	"Signature\nGenerator"	
+	"Pretty-Printer\nGenerator"
+}
+	
+subgraph generated {
+	"Parse Table"
+	Signature
+	"Pretty-Print\nTable"
+}
+	
+subgraph InToOut {
+	rank=same
+	ProgramIn 
+	ProgramOut
+}
+
+	"Syntax\nDefinition" \
+	-> "Parser\nGenerator" \
+	-> "Parse Table" \
+	-> Parse ;
+
+	"Syntax\nDefinition" \
+	-> "Pretty-Printer\nGenerator" \
+	-> "Pretty-Print\nTable" \
+	-> "Pretty-Print"
+
+	"Syntax\nDefinition" \
+	-> "Signature\nGenerator" \
+	-> Signature \
+	-> Transform
+
+	Parse -> ProgramIn [dir=back,arrowhead=none]
+	ProgramOut -> "Pretty-Print" [dir=back,arrowhead=none]
+
+	ProgramIn 			[label=program ]
+	ProgramOut 			[label=program]
+	Parse 				[shape=ellipse]
+	Transform 			[shape=ellipse]
+	"Pretty-Print" 			[shape=ellipse]
+	"Parser\nGenerator"		[shape=ellipse]
+	"Signature\nGenerator"		[shape=ellipse]
+	"Pretty-Printer\nGenerator"	[shape=ellipse]
+	"Parse Table"
+	Signature
+	"Pretty-Print\nTable"
+	TreeIn				[shape=triangle,width=0.4,label=""]
+	TreeOut				[shape=triangle,width=0.4,label=""]
+}
