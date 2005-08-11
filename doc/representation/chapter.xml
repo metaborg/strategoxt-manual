@@ -944,13 +944,19 @@ function fact(n, x) =
 
   </formalpara>
 
-  <para>
-sglri -p m.tbl -i file.m -o file.asfix]
+  <formalpara>
+    <title><link linkend="ref-asfix-yield"><code>
+       sglri -p m.tbl -i file.m -o file.asfix
+    </code></link></title>
 
-        <code>Sglri</code> is a convenience composition of
-        <code>sglr</code> and <code>implode-asfix</code>.
+    <para>
 
-  </para>
+      <code>Sglri</code> is a convenience composition of
+      <code>sglr</code> and <code>implode-asfix</code>.
+
+    </para>
+
+  </formalpara>
 
  </section>
 
