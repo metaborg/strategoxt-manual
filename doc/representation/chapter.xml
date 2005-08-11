@@ -457,27 +457,34 @@ function fact(n, x) =
  </section>
 
  <section>
-   <title>Modules</title>
+  <title>Modules</title>
 
   <para>
-        To enable reuse of parts of a syntax definition, SDF is
-        a <emphasis>modular</emphasis> formalism. Modules can import other modules.
 
-        (** TODO: discuss renaming imports **)
+    To enable reuse of parts of a syntax definition, SDF is a
+    <emphasis>modular</emphasis> formalism. Modules can import other
+    modules.
+
+  </para>
+
+  <para>
+
+    (** TODO: discuss renaming imports **)
 
   </para>
 
  </section>
 
-
 </section>
 
 <section>
-  <title>Trees are Terms</title>
+ <title>Trees are Terms</title>
 
-    <graphic fileref="representation/xmpl/test1-acub.png" align="center"/>
- 
  <para>
+
+   <informalfigure pgwide="0">
+     <graphic fileref="representation/xmpl/test1-acub.png" align="right"/>
+   </informalfigure>
 
    So far we have presented parse trees and abstract syntax trees as
    graphical structures.  This representation corresponds closely to
@@ -488,46 +495,72 @@ function fact(n, x) =
    a one-to-one correspondence between trees and first-order prefix
    terms.  A term is a constructor, i.e., an identifier, applied to
    zero or more terms, where strings and integer constants are
-   considered as special cases of constructors. Thus, the term %
-   \texttt{\input{xmpl/test1.acub}} \texttt{Times(Plus(Var("a"),
-   Var("n")), Int("1"))} corresponds to the abstract syntax tree
-   above.
-
+   considered as special cases of constructors. Thus, the term
+   <code>Times(Plus(Var("a"), Var("n")), Int("1"))</code> corresponds
+   to the abstract syntax tree on the right.
 
  </para>
 
-  <para>
+ <para>
 
-    The Annotated Term Format~\cite{BJKO00}, or <emphasis>ATerm Format</emphasis>
-    for short is a standard format for the representation of
-    structured data for exchange between programs. It is essentially
-    the prefix term format sketched above with a few additional
-    features. An ATerm is one of:
+   The Annotated Term Format [BJKO00], or <emphasis>ATerms</emphasis>
+   for short is a standard format for the representation of structured
+   data for exchange between programs. It is essentially the prefix
+   term format sketched above with a few additional features. An ATerm
+   is one of:
 
-\begin{itemize}
+   <itemizedlist>
 
-        \item Constant constructor: <code>Nil</code> or <code>Nil()</code>
+     <listitem>
+       <para>
+         Constant constructor: <code>Nil</code> or <code>Nil()</code>
+       </para>
+     </listitem>
 
-        \item Integer constant, e.g., <code>1</code>
+     <listitem>
+       <para>
+         Integer constant, e.g., <code>1</code>
+       </para>
+     </listitem>
 
-        \item Real constant, e.g., <code>0.1</code>
+     <listitem>
+       <para>
+        Real constant, e.g., <code>0.1</code>
+       </para>
+     </listitem>
 
-        \item String constant, e.g., <code>"foo"</code>
+     <listitem>
+       <para>
+        String constant, e.g., <code>"foo"</code>
+       </para>
+     </listitem>
 
-        \item Constructor application to $n$ terms, e.g.,
-                <code>Plus(Var("a"),Int(1))</code>
+     <listitem>
+       <para>
+        Constructor application to $n$ terms, e.g.,
+        <code>Plus(Var("a"),Int(1))</code>
+       </para>
+     </listitem>
 
-        \item A list of terms, e.g., <code>[A,B,C]</code>
+     <listitem>
+       <para>
+        A list of terms, e.g., <code>[A,B,C]</code>
+       </para>
+     </listitem>
 
-        \item A tuple of terms, e.g., <code>(A,B,C)</code>
+     <listitem>
+       <para>
+        A tuple of terms, e.g., <code>(A,B,C)</code>
+       </para>
+     </listitem>
 
-\end{itemize}
-        In addition, any ATerm can be annotated with a list of terms
-        using the notation
-        $t\texttt{\{}a_1\texttt{,}...\texttt{,}a_n\texttt{\}}$.  The
-        purpose of annotations is to attach semantic information to
-        terms without changing its basic structure.  The full syntax
-        of ATerms can be found in Chapter~\ref{Chap:ATerm}
+   </itemizedlist>
+
+   In addition, any ATerm can be annotated with a list of terms using
+   the notation <code>t{a1,...,an}</code>. The purpose of annotations
+   is to attach semantic information to terms without changing its
+   basic structure.  The full syntax of ATerms can be found in
+   Chapter~\ref{Chap:ATerm}
 
         (** TODO: give more precise definition of ATerm format **)
 
@@ -897,7 +930,7 @@ pack-sdf -i m.sdf -o m.adef -I dir]
 
         \ \\ An SDF syntax definition consists of a set of
         modules. \texttt{Pack-sdf} collects all modules imported by
-        module \texttt{m} in file \texttt{m.sdf} and creates a
+        module <code>m</code> in file \texttt{m.sdf} and creates a
         combined syntax definition in file \texttt{m.adef}. Modules
         are looked for in the current directory and any of the include
         directories indicated with the \texttt{-I dir} arguments.  The
