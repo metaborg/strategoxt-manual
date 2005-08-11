@@ -1,0 +1,12 @@
+module Expressions
+imports Lexical
+signature
+  constructors
+    Var    : Id -> Var
+    Int    : IntConst -> Exp
+    Uminus : Exp -> Exp
+    Times  : Exp * Exp -> Exp
+    Plus   : Exp * Exp -> Exp
+    Minus  : Exp * Exp -> Exp
+    Eq     : Exp * Exp -> Exp
+    Gt     : Exp * Exp -> Exp

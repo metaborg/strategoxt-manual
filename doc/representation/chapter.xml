@@ -296,27 +296,25 @@
 
   <para>
 
-        \begin{figure}[t]
-        \begin{boxedminipage}{\hsize}
-        \hspace*{\fill}
-        \inputepsunboxed{xmpl/test5-acub}
-        \hspace*{\fill}
-        \inputepsunboxed{xmpl/test4-acub}
-        \hspace*{\fill}
-        \end{boxedminipage}
-        \caption{Parses for the string \texttt{a+b*c}.}
-        \label{Fig:ambiguities}
-        \end{figure}
+
+  <figure id="Fig:ambiguities">
+    <title>
+      Parses for the string <code>a+b*c</code>
+    </title>
+    <graphic fileref="representation/xmpl/test5-acub.png" align="center"/>
+    <graphic fileref="representation/xmpl/test4-acub.png" align="center"/>
+  </figure>
 
   </para>
 
   <para>
 
-        \begin{figure}[bt]
-        \inputsource{xmpl/Expressions.sdf}
-        \caption{Syntax definition with associativity and priority declarations}
-        \label{Fig:Expressions.sdf}
-        \end{figure}
+  <figure id="Fig:Expressions.sdf">
+    <title>
+      Syntax definition with associativity and priority declarations.
+    </title>
+    <showfile root="." file="xmpl/Expressions.sdf"/>
+  </figure>
 
   </para>
 
@@ -368,37 +366,31 @@
         and the formal and actual arguments of a function
         (\verb|FunDec| and \verb|Call|). An example function
         definition in this language is:
-\begin{verbatim}
+<screen>
    function fact(n, x)
               = if n > 0 then fact(n - 1, n * x) else x
-\end{verbatim}
+</screen>
 
   </para>
 
-  <para>
-        \begin{figure}[b]
-        \inputsource{xmpl/Statements.sdf}
-        \caption{Syntax definition with regular expressions.}
-        \label{Fig:RegularExpressions}
-        \end{figure}
-
-  </para>
+  <figure id="Fig:RegularExpressions">
+    <title>
+      Syntax definition with regular expressions.
+    </title>
+    <showfile root="." file="xmpl/Statements.sdf"/>
+  </figure>
 
  </section>
 
  <section>
    <title>Lexical Syntax</title>
 
-  <para>
-
-        \begin{figure}[b]
-        \inputsource{xmpl/Lexical.sdf}
-        \caption{Definition of lexical syntax}
-        \label{Fig:LexicalSyntax}
-        \end{figure}
-
-
-  </para>
+  <figure id="Fig:LexicalSyntax">
+    <title>
+      Definition of lexical syntax.
+    </title>
+    <showfile root="." file="xmpl/Lexical.sdf"/>
+  </figure>
 
   <para>
 
@@ -499,12 +491,8 @@
 <section>
   <title>Trees are Terms</title>
 
- <para>
-
-       \begin{window}[2,l,{\inputepsunboxed{xmpl/test1-acub}},]
+    <graphic fileref="representation/xmpl/test1-acub.png" align="center"/>
  
- </para>
-
  <para>
 
    So far we have presented parse trees and abstract syntax trees as
@@ -566,20 +554,13 @@
  <section>
    <title>ATerm Library</title>
 
-  <para>
-        \begin{figure}[b]
-                \hspace*{\fill}
-                \inputepsSize{5.5cm}{xmpl/sharing-acub}
-                \hspace*{\fill}
-                \inputepsSize{3.5cm}{xmpl/sharing-scub}
-                \hspace*{\fill}
-        \caption{Tree and dag for the string \texttt{(a + b) * c + (a + b)}}
-        %\texttt{\input{xmpl/sharing.cub}}
-        \label{Fig:Sharing}
-        \end{figure}
-
-
-  </para>
+  <figure id="Fig:Sharing">
+    <title>
+      Tree and dag for the string <code>(a + b) * c + (a + b)</code>
+    </title>
+    <graphic fileref="representation/xmpl/sharing-acub.png" align="center"/>
+    <graphic fileref="representation/xmpl/sharing-scub.png" align="center"/>
+  </figure>
 
   <para>
         The ATerm Format is an external representation for terms that
@@ -634,7 +615,7 @@
   </para>
 
   <para>
-        (** TODO: elaborate on these formats **)
+        See Chapter XXX for more information on ATerms
 
   </para>
 
@@ -643,13 +624,15 @@
  <section>
    <title>Signatures</title>
 
-  <para>        The abstract syntax of a programming language or data format
-        can be described by means of an \emph{algebraic signature}.  A
-        signature declares for each constructor its arity $m$, the
-        sorts of its arguments $S_1\verb|*|...\verb|*|S_m$, and the
-        sort of the resulting term $S_0$ by means of a constructor
-        declaration $c:S_1\verb|*|...\verb|*|S_m\to{}S_0$.  A term can
-        be validated against a signature by a \emph{format checker}.
+  <para>
+
+     The abstract syntax of a programming language or data format can
+     be described by means of an \emph{algebraic signature}.  A
+     signature declares for each constructor its arity $m$, the sorts
+     of its arguments $S_1\verb|*|...\verb|*|S_m$, and the sort of the
+     resulting term $S_0$ by means of a constructor declaration
+     $c:S_1\verb|*|...\verb|*|S_m\to{}S_0$.  A term can be validated
+     against a signature by a \emph{format checker}.
 
   </para>
 
@@ -669,21 +652,13 @@
 
   </para>
 
-  <para>
-        (** TODO: well-formed term according to signature **)
-
-  </para>
-
-  <para>
-       \begin{figure}[t]
-        \inputsource{xmpl/Statements.str}
-        \inputsource{xmpl/Expressions.str}
-        \caption{Signature for statement and expression constructors,
-        automatically derived from a syntax definition.}
-        \label{Fig:Signatures}
-        \end{figure}
-
-  </para>
+  <figure id="Fig:Signatures">
+    <title>
+      Signature for statement and expression constructors,
+      automatically derived from a syntax definition.
+    </title>
+    <showfile root="." file="xmpl/Statements.str"/>
+  </figure>
 
  </section>
 
@@ -750,6 +725,24 @@
   </para>
 
   <para>
+
+  <figure id="Fig:Unparsing">
+    <title>
+      Unparsing an abstract syntax tree.
+    </title>
+    <graphic fileref="representation/xmpl/test6-acub.png" align="center"/>
+    <graphic fileref="representation/xmpl/test6-unparse.png" align="center"/>
+    <screen>f(a + 10) - 3</screen>
+  </figure>
+
+  <figure id="Fig:UnparsingTable">
+    <title>
+      Unparsing table
+    </title>
+    <showfile root="." file="xmpl/Statements-condensed.pp"/>
+  </figure>
+
+<!--
         \begin{figure}[t]
         \begin{boxedminipage}{\hsize}
         \begin{center}
@@ -767,6 +760,7 @@
         \caption{Unparsing table}
         \label{Fig:UnparsingTable}
         \end{figure}
+-->
 
   </para>
 
@@ -800,6 +794,26 @@
   </para>
 
   <para>
+
+
+  <figure id="Fig:PrettyPrinting">
+    <title>
+      Pretty-printing with Box markup
+    </title>
+    <graphic fileref="representation/xmpl/test6-acub.png" align="center"/>
+    <graphic fileref="representation/xmpl/test6-abox-tree.png" align="center"/>
+    <screen>f(a + 10) - 3</screen>
+  </figure>
+
+  <figure id="Fig:PrettyPrintTable">
+    <title>
+      Pretty-print table with Box markup
+    </title>
+    <showfile root="." file="xmpl/Statements-pretty-condensed.pp"/>
+  </figure>
+
+<!--
+
        \begin{figure}[t]
         \begin{boxedminipage}{\hsize}
         \begin{center}
@@ -817,10 +831,24 @@
         \caption{Pretty-print table with Box markup}
         \label{Fig:PrettyPrintTable}
         \end{figure}
+-->
 
   </para>
 
   <para>
+
+  <figure>
+    <title>
+      Pretty-printing of if-then-else statement
+    </title>
+    <showfile root="." file="xmpl/test7.acub.edited"/>
+    <graphic fileref="representation/xmpl/test7-acub.png" align="center"/>
+    <graphic fileref="representation/xmpl/test7-abox-tree.png" align="center"/>
+    <showfile root="." file="xmpl/test7.acub.txt"/>
+  </figure>
+
+
+<!--
         \begin{figure}[p]
         \begin{center}
         \inputsourceSize{10.1cm}{xmpl/test7.acub.edited}
@@ -837,6 +865,7 @@
         \end{center}
         \caption{Pretty-printing of if-then-else statement}
         \end{figure}
+-->
 
   </para>
 

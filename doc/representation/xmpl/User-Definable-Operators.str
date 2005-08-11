@@ -1,0 +1,9 @@
+module User-Definable-Operators
+imports Lexical
+signature
+  constructors
+    Program : List(Decl) * Exp -> Program
+    Decl    : Op * IntConst -> Decl
+    Var     : Id -> BrExp
+    Bracket : Exp -> BrExp
+    BinOp   : BrExp * Op * Exp -> Exp

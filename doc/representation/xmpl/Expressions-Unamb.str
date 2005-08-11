@@ -1,0 +1,11 @@
+module Expressions-Unamb
+imports Lexical
+signature
+  constructors
+    Var     : Id -> Var
+    Int     : IntConst -> BrExp
+    Bracket : Exp -> BrExp
+    Uminus  : Exp -> Exp
+    Times   : BrExp * Exp -> Exp
+    Plus    : BrExp * Exp -> Exp
+    Minus   : BrExp * Exp -> Exp

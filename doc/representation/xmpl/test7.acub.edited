@@ -1,0 +1,4 @@
+If(Eq(Var("n"),Int("1")),
+   Int("0"),
+   Times(Var("n"),
+         Call(Var("fac"),[Minus(Var("n"),Int("1"))])))

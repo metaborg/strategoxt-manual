@@ -1,0 +1,12 @@
+module implode-lit
+imports lib
+signature
+  constructors
+    lit : String -> Tree
+    amb : List(Tree) -> Tree
+
+strategies
+
+  implode-lit =
+    io-wrap(topdown(try(\ amb(xs) -> "amb"#(xs) \ + ?lit(<id>))))
+
