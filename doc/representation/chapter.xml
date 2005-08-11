@@ -562,110 +562,115 @@ function fact(n, x) =
    basic structure.  The full syntax of ATerms can be found in
    Chapter~\ref{Chap:ATerm}
 
-        (** TODO: give more precise definition of ATerm format **)
+  </para>
+
+ <section>
+  <title>ATerm Library</title>
+
+  <para>
+        
+    The ATerm Format is an external representation for terms that can
+    be used to exchange structured data between programs.  In order to
+    use a term, a program needs to parse ATerms and transform them
+    into some internal representation. To export a term after
+    processing it, a program should transform the internal
+    representation into the standard format.  There are libraries
+    supporting these operation for a number of languages, including C,
+    Java, and Haskell.
 
   </para>
 
- 
+  <para>
+       
+    The implementation of the Stratego transformation language, which
+    will be used in the rest of this book, is based on the C
+    implementation of the library. The library provides term input and
+    output, and an API for constructing and inspecting terms. Garbage
+    collection is based on B\"ohms conservative garbage collection
+    algorithm.
 
- <section>
-   <title>ATerm Library</title>
+  </para>
+
+  <para>
+        
+    An important feature of the implementation is that terms are
+    represented using maximal sharing. This means that any term in use
+    in a program is represented only once. In other words, two
+    occurrences of the same term will be represented by pointers to
+    the same location. <xref linkend="Fig:Sharing"/> illustrates the
+    difference between a pure tree representation and a tree, or more
+    accurately, a <emphasis>directed acyclic graph</emphasis>, with
+    maximal sharing. That is, any sub-term is represented exactly once
+    in memory, with each occurrence pointing to the same memory
+    location. This representation entails that term equality is a
+    constant operation, since it consists of comparing pointers. It
+    should be noted that annotations create different terms, that is,
+    two terms, one with and the other without annotations that are
+    otherwise, module annotations, the same, are not equal.
+
+  </para>
 
   <figure id="Fig:Sharing">
     <title>
       Tree and dag for the string <code>(a + b) * c + (a + b)</code>
     </title>
-    <graphic fileref="representation/xmpl/sharing-acub.png" align="center"/>
-    <graphic fileref="representation/xmpl/sharing-scub.png" align="center"/>
+    <nexttoeachother>
+      <entry>
+        <graphic fileref="representation/xmpl/sharing-acub.png" align="center"/>
+      </entry>
+      <entry>
+        <graphic fileref="representation/xmpl/sharing-scub.png" align="center"/>
+      </entry>
+    </nexttoeachother>
   </figure>
 
   <para>
-        The ATerm Format is an external representation for terms that
-        can be used to exchange structured data between programs.  In
-        order to use a term, a program needs to parse ATerms and
-        transform them into some internal representation. To export a
-        term after processing it, a program should transform the
-        internal representation into the standard format.  There are
-        libraries supporting these operation for a number of
-        languages, including C, Java, and Haskell.
+
+    Maximal sharing can make a big difference [BJKO00] in the amount
+    of memory needed for representing programs.  When exporting a term
+    using the textual exchange format, this compression is
+    lost. Therefore, the ATerm Library also provides a binary exchange
+    format that preserves maximal sharing.
 
   </para>
 
   <para>
-       The implementation of the Stratego transformation language,
-        which will be used in the rest of this book, is based on the C
-        implementation of the library. The library provides term input
-        and output, and an API for constructing and inspecting
-        terms. Garbage collection is based on B\"ohms conservative
-        garbage collection algorithm.
-
-  </para>
-
-  <para>
-        An important feature of the implementation is that terms are
-        represented using maximal sharing. This means that any term in
-        use in a program is represented only once. In other words, two
-        occurrences of the same term will be represented by pointers
-        to the same location. <xref linkend="Fig:Sharing"/> illustrates the
-        difference between a pure tree representation and a tree, or
-        more accurately, a <emphasis>directed acyclic graph</emphasis>, with maximal
-        sharing. That is, any sub-term is represented exactly once in
-        memory, with each occurrence pointing to the same memory
-        location. This representation entails that term equality is a
-        constant operation, since it consists of comparing
-        pointers. It should be noted that annotations create different
-        terms, that is, two terms, one with and the other without
-        annotations that are otherwise, module annotations, the same,
-        are not equal.
-
-  </para>
-
-  <para>
-
-        Maximal sharing can make a big difference~\cite{BJKO00} in
-        the amount of memory needed for representing programs.  When
-        exporting a term using the textual exchange format, this
-        compression is lost. Therefore, the ATerm Library also
-        provides a binary exchange format that preserves maximal
-        sharing.
-
-  </para>
-
-  <para>
-        See Chapter XXX for more information on ATerms
+        
+    See <xref linkend="ref-aterms"/> for more information on ATerms.
 
   </para>
 
  </section>
 
  <section>
-   <title>Signatures</title>
+  <title>Signatures</title>
 
   <para>
 
-     The abstract syntax of a programming language or data format can
-     be described by means of an <emphasis>algebraic signature</emphasis>.  A
-     signature declares for each constructor its arity $m$, the sorts
-     of its arguments $S_1<code>*</code>...<code>*</code>S_m$, and the sort of the
-     resulting term $S_0$ by means of a constructor declaration
-     $c:S_1<code>*</code>...<code>*</code>S_m\to{}S_0$.  A term can be validated
-     against a signature by a <emphasis>format checker</emphasis>.
+    The abstract syntax of a programming language or data format can
+    be described by means of an <emphasis>algebraic
+    signature</emphasis>.  A signature declares for each constructor
+    its arity <code>m</code>, the sorts of its arguments <code>S1 *
+    ... * Sm</code>, and the sort of the resulting term
+    <code>S0</code> by means of a constructor declaration <code>c:S1 *
+    ... * Sm -> S0</code>.  A term can be validated against a
+    signature by a <emphasis>format checker</emphasis>.
 
   </para>
 
   <para>
 
     Signatures can be derived automatically from syntax definitions.
-    For each production $A_1...A_n\to{}A_0\{<code>cons</code>(c)\}$ in
-    a syntax definition, the corresponding constructor declaration is
-    $c:S_1<code>*</code>...<code>*</code>S_m\to{}S_0$, where the $S_i$
-    are the sorts corresponding to the symbols $A_j$ after leaving out
-    literals and layout sorts.  <xref linkend="Fig:Signatures"/> shows
-    the signatures of statement and expression constructors for the
-    example language from this chapter.  The modules have been derived
-    automatically from the syntax definitions in
-    Figures~\ref{Fig:Expressions.sdf}
-    and~\ref{Fig:RegularExpressions}.
+    For each production <code>A1...An -> A0 {cons(c)}</code> in a
+    syntax definition, the corresponding constructor declaration is
+    <code>c:S1 * ... * Sm -> S0</code>, where the <code>Si</code> are
+    the sorts corresponding to the symbols <code>Aj</code> after
+    leaving out literals and layout sorts.  <xref
+    linkend="Fig:Signatures"/> shows the signatures of statement and
+    expression constructors for the example language from this
+    chapter.  The modules have been derived automatically from the
+    syntax definitions in <xref linkend="Fig:Expressions.sdf"/> and
+    <xref linkend="Fig:RegularExpressions"/>.
 
   </para>
 
@@ -686,69 +691,71 @@ function fact(n, x) =
 
   <para>
 
-        After transformation, an abstract syntax tree should be turned
-        into text again to be useful as a program. Mapping a tree into
-        text can be seen as the inverse as parsing, and is thus called
-        <emphasis>unparsing</emphasis>. When an unparser makes an attempt at
-        producing human readable, instead of just compiler parsable,
-        program text, an unparser is called a
-        <emphasis>pretty-printer</emphasis>. We use the pretty-printing model as
-        provided by the Generic Pretty-Printing package
-        GPP~\cite{GPP}. In this model a tree is unparsed to a Box
-        expression, which contains text with markup for
-        pretty-printing. A Box expression can be interpreted by
-        different back-ends to produce text for different displaying
-        devices, such as plain ASCII text, HTML, and LaTeX.
+    After transformation, an abstract syntax tree should be turned
+    into text again to be useful as a program. Mapping a tree into
+    text can be seen as the inverse as parsing, and is thus called
+    <emphasis>unparsing</emphasis>. When an unparser makes an attempt
+    at producing human readable, instead of just compiler parsable,
+    program text, an unparser is called a
+    <emphasis>pretty-printer</emphasis>. We use the pretty-printing
+    model as provided by the <link
+    linkend="generic-pretty-printing">Generic Pretty-Printing package
+    GPP</link>. In this model a tree is unparsed to a Box expression,
+    which contains text with markup for pretty-printing. A Box
+    expression can be interpreted by different back-ends to produce
+    text for different displaying devices, such as plain ASCII text,
+    HTML, and LaTeX.
 
   </para>
 
  <section>
-   <title>Unparsing</title>
+  <title>Unparsing</title>
 
   <para>
-        Unparsing is the inverse of parsing composed with abstract
-        syntax tree composition. That is, an unparser turns an
-        abstract syntax tree into a string, such that if the resulting
-        string is parsed again, it produces the same abstract syntax
-        tree.
+        
+    Unparsing is the inverse of parsing composed with abstract syntax
+    tree composition. That is, an unparser turns an abstract syntax
+    tree into a string, such that if the resulting string is parsed
+    again, it produces the same abstract syntax tree.
 
   </para>
 
   <para>
 
-        An unparser can be organized in two phases. In the first
-        phase, each node in an abstract syntax tree is replaced with
-        the concrete syntax tree of the corresponding grammar
-        production.  In the second phase, the strings at the leaves of
-        the tree are concatenated into a string.
-        <xref linkend="Fig:Unparsing"/> illustrates this process. The
-        replacement of abstract syntax tree nodes by concrete syntax
-        patterns should be done according to the productions of the
-        syntax definition. An unparsing table is an abstraction of a
-        syntax definition definining the inverse mapping from
-        constructors to concrete syntax patterns. An entry
-%
-        $c<code> -- </code>s_1...s_n$
-%
-        defines a mapping for constructor $c$ to the sequence
-        $s_1...s_n$, where each $s_i$ is either a literal string or a
-        parameter $<code>_</code>i$ referring to the $i$th argument of the
-        constructor. <xref linkend="Fig:UnparsingTable"/> shows an
-        unparsing table for some expression and statement
-        constructors. Applying an unparsing mapping to an abstract
-        syntax tree results in a tree structure with strings at the
-        leafs, as illustrated in <xref linkend="Fig:Unparsing"/>.
+    An unparser can be organized in two phases. In the first phase,
+    each node in an abstract syntax tree is replaced with the concrete
+    syntax tree of the corresponding grammar production.  In the
+    second phase, the strings at the leaves of the tree are
+    concatenated into a string.  <xref linkend="Fig:Unparsing"/>
+    illustrates this process. The replacement of abstract syntax tree
+    nodes by concrete syntax patterns should be done according to the
+    productions of the syntax definition. An unparsing table is an
+    abstraction of a syntax definition definining the inverse mapping
+    from constructors to concrete syntax patterns. An entry <code>c --
+    s1 ... sn</code> defines a mapping for constructor <code>c</code>
+    to the sequence <code>s1 ... sn</code>, where each
+    <code>s_i</code> is either a literal string or a parameter
+    <code><code>_</code>i</code> referring to the <code>i</code>th
+    argument of the constructor. <xref linkend="Fig:UnparsingTable"/>
+    shows an unparsing table for some expression and statement
+    constructors. Applying an unparsing mapping to an abstract syntax
+    tree results in a tree structure with strings at the leafs, as
+    illustrated in <xref linkend="Fig:Unparsing"/>.
 
   </para>
-
-  <para>
 
   <figure id="Fig:Unparsing">
     <title>
       Unparsing an abstract syntax tree.
     </title>
-    <graphic fileref="representation/xmpl/test6-acub.png" align="center"/>
-    <graphic fileref="representation/xmpl/test6-unparse.png" align="center"/>
+    <nexttoeachother>
+      <entry>
+         <graphic fileref="representation/xmpl/test6-acub.png" align="center"/>
+      </entry>
+      <entry>
+        <graphic fileref="representation/xmpl/test6-unparse.png" align="center"/>
+      </entry>
+    </nexttoeachother>
     <screen>f(a + 10) - 3</screen>
   </figure>
 
@@ -758,28 +765,6 @@ function fact(n, x) =
     </title>
     <showfile root="." file="xmpl/Statements-condensed.pp"/>
   </figure>
-
-<!--
-        \begin{figure}[t]
-        \begin{boxedminipage}{\hsize}
-        \begin{center}
-        \inputepsUnboxedSize[c]{2.7cm}{xmpl/test6-acub}
-        $\Rightarrow$
-        \inputepsUnboxedSize[c]{3.5cm}{xmpl/test6-unparse}
-        $\Rightarrow$
-        {\small<code> f(a + 10) - 3</code>}
-        \end{center}
-        \end{boxedminipage}
-        \caption{Unparsing an abstract syntax tree}
-        \label{Fig:Unparsing}
-        \ \\
-        \inputsource{xmpl/Statements-condensed.pp}
-        \caption{Unparsing table}
-        \label{Fig:UnparsingTable}
-        \end{figure}
--->
-
-  </para>
 
  </section>
 
@@ -794,33 +779,38 @@ function fact(n, x) =
     <emphasis>pretty-printer</emphasis> is an unparser attempting to
     produce readable program text.  A pretty-printer can be obtained
     by annotating the entries in an unparsing table with markup
-    instructing a typesetting process. <xref linkend="Fig:PrettyPrinting"/>
-    illustrates this process.
+    instructing a typesetting process. <xref
+    linkend="Fig:PrettyPrinting"/> illustrates this process.
 
   </para>
 
   <para>
-        Box is a target independent formatting language, providing
-        combinators for declaring the two-dimensional positioning of
-        boxes of text. Typical combinators are
-        $<code>H[</code>b_1...b_n<code>]</code>$, which combines the $b_i$ boxes
-        horizontally, and $<code>V[</code>b_1...b_n<code>]</code>$, which combines
-        the $b_i$ boxes vertically.  <xref linkend="Fig:PrettyPrintTable"/>
-        shows a pretty-print table with Box markup. A more complete
-        overview of the Box language and the GPP tools can be found in
-        Chapter~\ref{Chap:Box}.
+        
+    Box is a target independent formatting language, providing
+    combinators for declaring the two-dimensional positioning of boxes
+    of text. Typical combinators are <code>H[b_1...b_n]</code>, which
+    combines the <code>b_i</code> boxes horizontally, and
+    <code>V[b_1...b_n]</code>, which combines the
+    <code>b_i</code> boxes vertically.  <xref
+    linkend="Fig:PrettyPrintTable"/> shows a pretty-print table with
+    Box markup. A more complete overview of the Box language and the
+    GPP tools can be found in <xref
+    linkend="generic-pretty-printing"/>.
 
   </para>
-
-  <para>
-
 
   <figure id="Fig:PrettyPrinting">
     <title>
       Pretty-printing with Box markup
     </title>
-    <graphic fileref="representation/xmpl/test6-acub.png" align="center"/>
-    <graphic fileref="representation/xmpl/test6-abox-tree.png" align="center"/>
+    <nexttoeachother>
+      <entry>
+        <graphic fileref="representation/xmpl/test6-acub.png" align="center"/>
+      </entry>
+      <entry>
+        <graphic fileref="representation/xmpl/test6-abox-tree.png" align="center"/>
+      </entry>
+    </nexttoeachother>
     <screen>f(a + 10) - 3</screen>
   </figure>
 
@@ -830,31 +820,6 @@ function fact(n, x) =
     </title>
     <showfile root="." file="xmpl/Statements-pretty-condensed.pp"/>
   </figure>
-
-<!--
-
-       \begin{figure}[t]
-        \begin{boxedminipage}{\hsize}
-        \begin{center}
-        \inputepsUnboxedSize[c]{2.7cm}{xmpl/test6-acub}
-        $\Rightarrow$
-        \inputepsUnboxedSize[c]{4cm}{xmpl/test6-abox-tree}
-        $\Rightarrow$
-        {\small<code> f(a + 10) - 3</code>}
-        \end{center}
-        \end{boxedminipage}
-        \caption{Pretty-printing with Box markup}
-        \label{Fig:PrettyPrinting}
-        \ \\
-        \inputsource{xmpl/Statements-pretty-condensed.pp}
-        \caption{Pretty-print table with Box markup}
-        \label{Fig:PrettyPrintTable}
-        \end{figure}
--->
-
-  </para>
-
-  <para>
 
   <figure>
     <title>
@@ -866,39 +831,20 @@ function fact(n, x) =
     <showfile root="." file="xmpl/test7.acub.txt"/>
   </figure>
 
-
-<!--
-        \begin{figure}[p]
-        \begin{center}
-        \inputsourceSize{10.1cm}{xmpl/test7.acub.edited}
-        \\
-        \inputepsSize{10.1cm}{xmpl/test7-acub}
-        \\
-        $\Downarrow$
-        \\
-        \inputepsSize{10.1cm}{xmpl/test7-abox-tree}
-        \\
-        $\Downarrow$
-        \\
-        \inputsourceSize{3.2cm}{xmpl/test7.acub.txt}
-        \end{center}
-        \caption{Pretty-printing of if-then-else statement}
-        \end{figure}
--->
-
-  </para>
-
  </section>
 
  <section>
    <title>Disambiguation</title>
 
   <para>
-        Note: correct pretty-printing of an abstract syntax tree
-        requires that it contains nodes representing parentheses in
-        the right places. Otherwise, reparsing a pretty-printed string
-        might get a different interpretation.
-
+       
+    Note: correct pretty-printing of an abstract syntax tree requires
+    that it contains nodes representing parentheses in the right
+    places. Otherwise, reparsing a pretty-printed string might get a
+    different interpretation. The <link
+    linkend="ref-sdf2parenthesize"><code>sdf2parenthesize</code></link>
+    tool generates from an SDF definition a Stratego program that
+    places parentheses at the necessary places in the tree.
 
   </para>
 
@@ -911,77 +857,98 @@ function fact(n, x) =
 
   <para>
 
-       The Stratego/XT bundle\footnote{In fact the various tools
-        originate from different sub-packages, which does not
-        correspond to the aggregation presented here.} provides
-        various tools for parsing and pretty-printing programs based
-        on the syntax definition formalism SDF2. In this section an
-        overview of the main tools is given with their typical
-        command-line arguments. More specific information can be
-        obtained from the online documentation of the tools.
+    The Stratego/XT collection provides various tools for parsing and
+    pretty-printing programs based on the syntax definition formalism
+    SDF2. (In fact the various tools originate from different
+    sub-packages, which does not correspond to the aggregation
+    presented here.) In this section an overview of the main tools is
+    given with their typical command-line arguments and a reference to
+    the tool documentation.
 
   </para>
 
  <section>
-   <title>Syntax Definition and Parsing</title>
+  <title>Syntax Definition and Parsing</title>
 
-  <para>
-pack-sdf -i m.sdf -o m.adef -I dir]
+  <formalpara>
+    <title><link linkend="ref-pack-sdf"><code>
+       pack-sdf -i m.sdf -o m.def -I dir
+    </code></link></title>
 
-        \ \\ An SDF syntax definition consists of a set of
-        modules. \texttt{Pack-sdf} collects all modules imported by
-        module <code>m</code> in file \texttt{m.sdf} and creates a
-        combined syntax definition in file \texttt{m.adef}. Modules
-        are looked for in the current directory and any of the include
-        directories indicated with the \texttt{-I dir} arguments.  The
-        output of \texttt{pack-sdf} is in AsFix format (see below).
-        To get a textual representation use \texttt{asfix-yield}.
+    <para>
+
+      An SDF syntax definition consists of a set of
+      modules. <code>pack-sdf</code> collects all modules imported by
+      module <code>m</code> in file <code>m.sdf</code> and creates a
+      combined syntax definition in file <code>m.def</code>. Modules
+      are looked for in the current directory and any of the include
+      directories indicated with the <code>-I dir</code> arguments.
+
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-sdf2table"><code>
+      sdf2table -i m.def -o m.tbl -m M
+    </code></link></title>
+
+    <para>
+      
+      <code>Sdf2table</code> is the parser generator for SDF. It takes
+      a complete syntax definition <code>m.def</code> (as produced by
+      <code>pack-sdf</code>), and produces a parse table
+      <code>m.tbl</code> in ATerm format. By default a parse table is
+      generated for module <code>Main</code>; this can be overridden
+      using the <code>-m</code> option.
+
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-sglr"><code>
+      sglr -p m.tbl -i file.m -o file.asfix -2
+    </code></link></title>
+
+    <para>
+    
+      <code>sglr</code> is the parser for SDF. It takes as arguments a
+      parse table <code>m.tbl</code> and an input file
+      <code>file.m</code>, presumably in the language described by
+      <code>m.def</code>. The parser produces a parse tree in the
+      AsFix format. If option <code>-2</code> is produced, the tree is
+      in the specific AsFix2 format, which is what Stratego/XT tools
+      use.  The AsFix2 format is a complete and faithful
+      representation of the derivation constructed by the parser. It
+      includes all details of the input file, including whitespace,
+      comments, and is self documenting as it uses the complete
+      productions of the syntax definition to encode node labels.
 
   </para>
 
-  <para>
+  </formalpara>
 
-sdf2table -i m.def -o m.tbl -m M]
+  <formalpara>
+    <title><link linkend="ref-asfix-yield"><code>
+       asfix-yield -i file.asfix -o file.txt
+    </code></link></title>
 
-        \ \\ \texttt{Sdf2table} is the parser generator for SDF. It
-        takes a complete syntax definition \texttt{m.def} (as produced
-        by \texttt{pack-sdf}), and produces a parse table
-        \texttt{m.tbl} in ATerm format. By default a parse table is
-        generated for module \texttt{Main}; this can be overridden
-        using the \texttt{-m} option.
+    <para>
 
-  </para>
+      <code>Asfix-yield</code> is an unparser for AsFix files, i.e.,
+      it produces the exact text from which the parse tree was
+      derived.
 
-  <para>
-sglr -p m.tbl -i file.m -o file.asfix -2]
+    </para>
 
-        \ \\ \texttt{Sglr} is the parser for SDF. It takes as
-        arguments a parse table \texttt{m.tbl} and an input file
-        \texttt{file.m}, presumably in the language described by
-        \texttt{m.def}. The parser produces a parse tree in the AsFix
-        format. If option \texttt{-2} is produced, the tree is in the
-        specific AsFix2 format, which is what Stratego/XT tools use.
-        The AsFix2 format is a complete and faithful representation of
-        the derivation constructed by the parser. It includes all
-        details of the input file, including whitespace, comments, and
-        is self documenting as it uses the complete productions of the
-        syntax definition to encode node labels.
-  </para>
-
-  <para>
-sfix-yield -i file.asfix -o file.txt]
-
-        \ \\ \texttt{Asfix-yield} is an unparser for AsFix files, i.e.,
-        it produces the exact text from which the parse tree was derived.
-
-
-  </para>
+  </formalpara>
 
   <para>
 sglri -p m.tbl -i file.m -o file.asfix]
 
-        \ \\ \texttt{Sglri} is a convenience composition of
-        \texttt{sglr} and \texttt{implode-asfix}.
+        <code>Sglri</code> is a convenience composition of
+        <code>sglr</code> and <code>implode-asfix</code>.
 
   </para>
 
@@ -994,8 +961,8 @@ sglri -p m.tbl -i file.m -o file.asfix]
 
 sdf-to-sig -i m.def
 
-        \ \\ \texttt{Sdf-to-sig} derives from an SDF syntax definition
-        \texttt{m.def} a set of Stratego modules, one for each SDF
+        <code>Sdf-to-sig</code> derives from an SDF syntax definition
+        <code>m.def</code> a set of Stratego modules, one for each SDF
         module, with the signatures of the constructors declared in
         the SDF modules.
 
@@ -1009,7 +976,7 @@ sdf-to-sig -i m.def
   <para>
 ppgen -i m.def -o m.pp]
 
-        \ \\ \texttt{Ppgen} generates from an SDF syntax definition a
+        <code>Ppgen</code> generates from an SDF syntax definition a
         pretty-print table with an entry for each context-free syntax
         production with a constructor annotation. Typically it is
         necessary to edit the pretty-print table to add appropriate
@@ -1021,22 +988,22 @@ ppgen -i m.def -o m.pp]
   <para>
 ast2abox -p m.pp -i file.ast -o file.abox]
 
-        \ \\ \texttt{Ast2abox} maps an abstract syntax tree \texttt{file.ast} to
-        an abstract syntax representation \texttt{file.abox} of a Box term based
-        on a pretty-print table \texttt{m.pp}.
+        <code>Ast2abox</code> maps an abstract syntax tree <code>file.ast</code> to
+        an abstract syntax representation <code>file.abox</code> of a Box term based
+        on a pretty-print table <code>m.pp</code>.
 
   </para>
 
   <para>
 abox2text -i file.abox -o file.txt]
 
-        \ \\ \texttt{Abox2text} formats a Box term as ASCII text.
+        <code>Abox2text</code> formats a Box term as ASCII text.
   </para>
 
   <para>
 abox2latex -i file.abox -o file.txt]
 
-        \ \\ \texttt{Abox2latex} formats a Box term as a LaTeX document.
+        <code>Abox2latex</code> formats a Box term as a LaTeX document.
 
 
   </para>
@@ -1044,13 +1011,13 @@ abox2latex -i file.abox -o file.txt]
   <para>
 abox2html -i file.abox -o file.txt]
 
-        \ \\ \texttt{Abox2html} formats a Box term as an HTML document.
+        <code>Abox2html</code> formats a Box term as an HTML document.
   </para>
 
   <para>
 pp-aterm]
 
-        \ \\ \texttt{Pp-aterm} formats an ATerm as an ATerm in text
+        <code>Pp-aterm</code> formats an ATerm as an ATerm in text
         format, adding newlines and indentation to make the structure
         of the term understandable. This is a useful tool to inspect
         terms while debugging transformations.
@@ -1060,12 +1027,12 @@ pp-aterm]
   <para>
 term-to-dot -i file.trm -o file.dot (--tree | --graph)]
 
-        \ \\ \texttt{Term-to-dot} is another visualization tool for
-        terms that creates a \texttt{dot} graph representation, which
-        can be visualized using the \texttt{dot} tool from the
-        graphviz graph layout package. \texttt{Term-to-dot} can
-        produce an expanded tree view (\texttt{--tree}), or a directed
-        acyclic graph view (\texttt{--graph}) preserving the maximal
+        <code>Term-to-dot</code> is another visualization tool for
+        terms that creates a <code>dot</code> graph representation, which
+        can be visualized using the <code>dot</code> tool from the
+        graphviz graph layout package. <code>Term-to-dot</code> can
+        produce an expanded tree view (<code>--tree</code>), or a directed
+        acyclic graph view (<code>--graph</code>) preserving the maximal
         sharing in the term. This tool was used to produce the tree
         visualizations in this chapter.
 
