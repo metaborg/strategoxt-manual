@@ -51,6 +51,18 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="nexttoeachother">
+    <informaltable frame='none'>
+      <tgroup cols='2' align='center' colsep='1' rowsep='1'>
+        <tbody>
+          <row>
+            <xsl:apply-templates/>
+          </row>
+        </tbody>
+      </tgroup>
+    </informaltable>
+  </xsl:template>
+
 
   <xsl:template match="showfile">
       <screen><include parse="text"

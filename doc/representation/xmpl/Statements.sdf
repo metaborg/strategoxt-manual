@@ -15,12 +15,12 @@ exports
     Var "(" {Exp ","}* ")" 	     -> Exp {cons("Call")}
   context-free priorities
     {non-assoc:
-     Exp "=" Exp 		     -> Exp {cons("Eq"),non-assoc}
-     Exp ">" Exp 		     -> Exp {cons("Gt"),non-assoc}}
-  >  Var ":=" Exp                    -> Exp {cons("Assign")}
+     Exp "=" Exp 		     -> Exp
+     Exp ">" Exp 		     -> Exp}
+  >  Var ":=" Exp                    -> Exp
   > {right:
-     "if" Exp "then" Exp "else" Exp  -> Exp {cons("If")}
-     "while" Exp "do" Exp      	     -> Exp {cons("While")}}
+     "if" Exp "then" Exp "else" Exp  -> Exp
+     "while" Exp "do" Exp      	     -> Exp}
   >  {Exp ";"}+ ";" {Exp ";"}+       -> {Exp ";"}+
 
 context-free start-symbols Exp

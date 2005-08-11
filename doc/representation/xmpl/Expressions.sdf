@@ -15,11 +15,11 @@ exports
     "(" Exp ")" -> Exp {bracket}
 exports
   context-free priorities
-     "-" Exp 	 -> Exp {cons("Uminus")}
-  >  Exp "*" Exp -> Exp {cons("Times"),left}
+     "-" Exp 	 -> Exp 
+  >  Exp "*" Exp -> Exp
   > {left:
-     Exp "+" Exp -> Exp {cons("Plus"),left}
-     Exp "-" Exp -> Exp {cons("Minus"),left}}
+     Exp "+" Exp -> Exp
+     Exp "-" Exp -> Exp}
   > {non-assoc:
-     Exp "=" Exp -> Exp {cons("Eq"),non-assoc}
-     Exp ">" Exp -> Exp {cons("Gt"),non-assoc}}
+     Exp "=" Exp -> Exp
+     Exp ">" Exp -> Exp}
