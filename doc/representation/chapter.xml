@@ -49,8 +49,8 @@
     derive the implementation of parsers, signatures, and
     pretty-printers.  If multiple transformation components are in
     play, syntax definitions can also define the interface between
-    these components. In other words, grammars form the grammars as
-    contracts for transformation components [JV00.gcse].
+    these components. In other words, grammars form the contracts for
+    transformation components [JV00.gcse].
 
   </para>
 
@@ -83,7 +83,7 @@
  <para>
 
    A syntax definition is a formal description of the syntax of a
-   programming language. In this book we will use the syntax
+   programming language. In Stratego/XT we mostly use the syntax
    definition formalism SDF [HHKR89,Vis97.thesis] to describe
    syntax. The syntax of SDF itself and information about the SDF
    programming environment can be found in Chapter [SDF].
@@ -385,7 +385,7 @@ function fact(n, x) =
     integrated in the same formalism, and are specified using the same
     means, i.e., context-free productions, regular expressions,
     etc. Productions for lexical items are introduced using the
-    keywords \texttt{lexical syntax}. The only difference between
+    keywords <code>lexical syntax</code>. The only difference between
     lexical and context-free syntax is that layout (whitespace,
     comments) can occur between the strings corresponding to sorts in
     the left-hand of a context-free production, or, conversely,
@@ -537,7 +537,7 @@ function fact(n, x) =
 
      <listitem>
        <para>
-        Constructor application to $n$ terms, e.g.,
+        Constructor application to n terms, e.g.,
         <code>Plus(Var("a"),Int(1))</code>
        </para>
      </listitem>
@@ -559,8 +559,8 @@ function fact(n, x) =
    In addition, any ATerm can be annotated with a list of terms using
    the notation <code>t{a1,...,an}</code>. The purpose of annotations
    is to attach semantic information to terms without changing its
-   basic structure.  The full syntax of ATerms can be found in
-   Chapter~\ref{Chap:ATerm}
+   basic structure.  A precise syntax definition of ATerms can be
+   found in <xref linkend="ref-aterms"/>
 
   </para>
 
@@ -582,12 +582,11 @@ function fact(n, x) =
 
   <para>
        
-    The implementation of the Stratego transformation language, which
-    will be used in the rest of this book, is based on the C
-    implementation of the library. The library provides term input and
-    output, and an API for constructing and inspecting terms. Garbage
-    collection is based on B\"ohms conservative garbage collection
-    algorithm.
+    The implementation of the Stratego transformation language is
+    based on the C implementation of the library. The library provides
+    term input and output, and an API for constructing and inspecting
+    terms. Garbage collection is based on B\"ohms conservative garbage
+    collection algorithm.
 
   </para>
 
@@ -606,7 +605,7 @@ function fact(n, x) =
     constant operation, since it consists of comparing pointers. It
     should be noted that annotations create different terms, that is,
     two terms, one with and the other without annotations that are
-    otherwise, module annotations, the same, are not equal.
+    otherwise, modulo annotations, the same, are not equal.
 
   </para>
 
@@ -936,9 +935,23 @@ function fact(n, x) =
 
     <para>
 
-      <code>Asfix-yield</code> is an unparser for AsFix files, i.e.,
+      <code>asfix-yield</code> is an unparser for AsFix files, i.e.,
       it produces the exact text from which the parse tree was
       derived.
+
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-implode-asfix"><code>
+       implode-asfix -i file.asfix -o file.trm
+    </code></link></title>
+
+    <para>
+
+      <code>implode-asfix</code> transforms an AsFix parse tree to an
+      abstract syntax tree.
 
     </para>
 
