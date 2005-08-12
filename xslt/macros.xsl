@@ -75,6 +75,13 @@
     <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink>
   </xsl:template>
 
+  <xsl:template match="pngobject">
+    <mediaobject>
+      <imageobject role="html">
+        <imagedata format="PNG" fileref="{@fileref}" align="{@align}"/>
+      </imageobject>
+    </mediaobject>
+  </xsl:template>
 
   <xsl:template match="@*|node()">
     <xsl:copy>

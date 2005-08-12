@@ -1,4 +1,4 @@
-<chapter>
+<chapter id="program-representation">
   <title>Program Representation</title>
 
   <para>
@@ -72,7 +72,7 @@
       Syntax definitions define the interfaces between transformation
       components.
     </title>
-    <graphic fileref="representation/xmpl/transf-cycle.png" align="center"/>
+    <pngobject fileref="representation/xmpl/transf-cycle.png" align="center"/>
   </figure>
 
 </section>
@@ -170,11 +170,11 @@
     definition in <xref linkend="Fig:Expressions-NoCons.sdf"/>:
 
     <informalfigure pgwide="1">
-       <graphic fileref="representation/xmpl/Plus.png" align="center"/>
+       <pngobject fileref="representation/xmpl/Plus.png" align="center"/>
     </informalfigure>
 
     <informalfigure pgwide="0">
-       <graphic fileref="representation/xmpl/PlusTimes.png" align="right"/>
+       <pngobject fileref="representation/xmpl/PlusTimes.png" align="right"/>
     </informalfigure>
 
     Such one-level trees can be composed into larger trees by fusing
@@ -195,7 +195,7 @@
     <title>
       Parse tree
     </title>
-    <graphic fileref="representation/xmpl/test1-ntt.png" align="center"/>
+    <pngobject fileref="representation/xmpl/test1-ntt.png" align="center"/>
   </figure>
 
   <para>
@@ -259,7 +259,7 @@
     </title>
     <nexttoeachother>
       <entry><showfile root="." file="xmpl/Expressions-Cons.sdf"/></entry>
-      <entry><graphic fileref="representation/xmpl/test1-acub.png" align="center"/></entry>
+      <entry><pngobject fileref="representation/xmpl/test1-acub.png" align="center"/></entry>
     </nexttoeachother>
   </figure>
 
@@ -284,10 +284,10 @@
     </title>
     <nexttoeachother>
       <entry>
-        <graphic fileref="representation/xmpl/test5-acub.png" align="center"/>
+        <pngobject fileref="representation/xmpl/test5-acub.png" align="center"/>
       </entry>
       <entry>
-        <graphic fileref="representation/xmpl/test4-acub.png" align="center"/>
+        <pngobject fileref="representation/xmpl/test4-acub.png" align="center"/>
       </entry>
     </nexttoeachother>
   </figure>
@@ -483,7 +483,7 @@ function fact(n, x) =
  <para>
 
    <informalfigure pgwide="0">
-     <graphic fileref="representation/xmpl/test1-acub.png" align="right"/>
+     <pngobject fileref="representation/xmpl/test1-acub.png" align="right"/>
    </informalfigure>
 
    So far we have presented parse trees and abstract syntax trees as
@@ -615,10 +615,10 @@ function fact(n, x) =
     </title>
     <nexttoeachother>
       <entry>
-        <graphic fileref="representation/xmpl/sharing-acub.png" align="center"/>
+        <pngobject fileref="representation/xmpl/sharing-acub.png" align="center"/>
       </entry>
       <entry>
-        <graphic fileref="representation/xmpl/sharing-scub.png" align="center"/>
+        <pngobject fileref="representation/xmpl/sharing-scub.png" align="center"/>
       </entry>
     </nexttoeachother>
   </figure>
@@ -749,10 +749,10 @@ function fact(n, x) =
     </title>
     <nexttoeachother>
       <entry>
-         <graphic fileref="representation/xmpl/test6-acub.png" align="center"/>
+         <pngobject fileref="representation/xmpl/test6-acub.png" align="center"/>
       </entry>
       <entry>
-        <graphic fileref="representation/xmpl/test6-unparse.png" align="center"/>
+        <pngobject fileref="representation/xmpl/test6-unparse.png" align="center"/>
       </entry>
     </nexttoeachother>
     <screen>f(a + 10) - 3</screen>
@@ -804,10 +804,10 @@ function fact(n, x) =
     </title>
     <nexttoeachother>
       <entry>
-        <graphic fileref="representation/xmpl/test6-acub.png" align="center"/>
+        <pngobject fileref="representation/xmpl/test6-acub.png" align="center"/>
       </entry>
       <entry>
-        <graphic fileref="representation/xmpl/test6-abox-tree.png" align="center"/>
+        <pngobject fileref="representation/xmpl/test6-abox-tree.png" align="center"/>
       </entry>
     </nexttoeachother>
     <screen>f(a + 10) - 3</screen>
@@ -825,8 +825,8 @@ function fact(n, x) =
       Pretty-printing of if-then-else statement
     </title>
     <showfile root="." file="xmpl/test7.acub.edited"/>
-    <graphic fileref="representation/xmpl/test7-acub.png" align="center"/>
-    <graphic fileref="representation/xmpl/test7-abox-tree.png" align="center"/>
+    <pngobject fileref="representation/xmpl/test7-acub.png" align="center"/>
+    <pngobject fileref="representation/xmpl/test7-abox-tree.png" align="center"/>
     <showfile root="." file="xmpl/test7.acub.txt"/>
   </figure>
 
