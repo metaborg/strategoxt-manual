@@ -945,7 +945,7 @@ function fact(n, x) =
   </formalpara>
 
   <formalpara>
-    <title><link linkend="ref-asfix-yield"><code>
+    <title><link linkend="ref-sglri"><code>
        sglri -p m.tbl -i file.m -o file.asfix
     </code></link></title>
 
@@ -963,86 +963,121 @@ function fact(n, x) =
  <section>
    <title>Signatures</title>
 
-  <para>
+  <formalpara>
+    <title><link linkend="ref-sdf2rtg"><code>
+       sdf2rtg -i m.def -o m.rtg -m M
+    </code></link></title>
 
-sdf-to-sig -i m.def
+    <para>
 
-        <code>Sdf-to-sig</code> derives from an SDF syntax definition
-        <code>m.def</code> a set of Stratego modules, one for each SDF
-        module, with the signatures of the constructors declared in
-        the SDF modules.
+      <code>sdf2rtg</code> derives from an SDF syntax definition
+      <code>m.def</code> a regular tree grammar for the module
+      <code>M</code> and all modules it imports.
 
-  </para>
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-rtg2sig"><code>
+       rtg2sig -i m.def -o m.rtg
+    </code></link></title>
+
+    <para>
+
+      <code>rtg2sig</code> generates from a regular tree grammar a
+      Stratego signature.
+
+    </para>
+
+  </formalpara>
 
  </section>
 
  <section>
    <title>Pretty-Printing and Term Visualization</title>
 
-  <para>
-ppgen -i m.def -o m.pp]
+  <formalpara>
+    <title><link linkend="ref-ppgen"><code>
+      ppgen -i m.def -o m.pp
+    </code></link></title>
 
-        <code>Ppgen</code> generates from an SDF syntax definition a
-        pretty-print table with an entry for each context-free syntax
-        production with a constructor annotation. Typically it is
-        necessary to edit the pretty-print table to add appropriate
-        Box markup to the entries. The result should be saved under
-        a different name to avoid overwriting it.
+    <para>
 
-  </para>
+      <code>Ppgen</code> generates from an SDF syntax definition a
+      pretty-print table with an entry for each context-free syntax
+      production with a constructor annotation. Typically it is
+      necessary to edit the pretty-print table to add appropriate Box
+      markup to the entries. The result should be saved under a
+      different name to avoid overwriting it.
 
-  <para>
-ast2abox -p m.pp -i file.ast -o file.abox]
+    </para>
 
-        <code>Ast2abox</code> maps an abstract syntax tree <code>file.ast</code> to
-        an abstract syntax representation <code>file.abox</code> of a Box term based
-        on a pretty-print table <code>m.pp</code>.
+  </formalpara>
 
-  </para>
+  <formalpara>
+    <title><link linkend="ref-ast2abox"><code>
+      ast2abox -p m.pp -i file.ast -o file.abox
+    </code></link></title>
 
-  <para>
-abox2text -i file.abox -o file.txt]
+    <para>
 
-        <code>Abox2text</code> formats a Box term as ASCII text.
-  </para>
+      <code>ast2abox</code> maps an abstract syntax tree
+      <code>file.ast</code> to an abstract syntax representation
+      <code>file.abox</code> of a Box term based on a pretty-print
+      table <code>m.pp</code>.
 
-  <para>
-abox2latex -i file.abox -o file.txt]
+    </para>
 
-        <code>Abox2latex</code> formats a Box term as a LaTeX document.
+  </formalpara>
 
+  <formalpara>
+    <title><link linkend="ref-abox2text"><code>
+      abox2text -i file.abox -o file.txt
+    </code></link></title>
 
-  </para>
+    <para>
+      <code>abox2text</code> formats a Box term as ASCII text.
+    </para>
 
-  <para>
-abox2html -i file.abox -o file.txt]
+  </formalpara>
 
-        <code>Abox2html</code> formats a Box term as an HTML document.
-  </para>
+  <formalpara>
+    <title><link linkend="ref-pp-aterm"><code>
+      pp-aterm -i file1.trm -o file2.trm
+    </code></link></title>
 
-  <para>
-pp-aterm]
+    <para>
+      <code>pp-aterm</code> formats an ATerm as an ATerm in text
+      format, adding newlines and indentation to make the structure of
+      the term understandable. This is a useful tool to inspect terms
+      while debugging transformations.
+    </para>
 
-        <code>Pp-aterm</code> formats an ATerm as an ATerm in text
-        format, adding newlines and indentation to make the structure
-        of the term understandable. This is a useful tool to inspect
-        terms while debugging transformations.
+  </formalpara>
 
-  </para>
+  <formalpara>
+    <title><code>
+      term-to-dot -i file.trm -o file.dot (--tree | --graph)
+    </code></title>
 
-  <para>
-term-to-dot -i file.trm -o file.dot (--tree | --graph)]
+    <para>
 
-        <code>Term-to-dot</code> is another visualization tool for
-        terms that creates a <code>dot</code> graph representation, which
-        can be visualized using the <code>dot</code> tool from the
-        graphviz graph layout package. <code>Term-to-dot</code> can
-        produce an expanded tree view (<code>--tree</code>), or a directed
-        acyclic graph view (<code>--graph</code>) preserving the maximal
-        sharing in the term. This tool was used to produce the tree
-        visualizations in this chapter.
+      <code>Term-to-dot</code> is another visualization tool for terms
+      that creates a <code>dot</code> graph representation, which can
+      be visualized using the <code>dot</code> tool from the graphviz
+      graph layout package. <code>Term-to-dot</code> can produce an
+      expanded tree view (<code>--tree</code>), or a directed acyclic
+      graph view (<code>--graph</code>) preserving the maximal sharing
+      in the term. This tool was used to produce the tree
+      visualizations in this chapter.
 
-  </para>
+      This tool is not part of the Stratego/XT distribution, but
+      included in the Stratego/XT Utilities package.
+    </para>
+
+  </formalpara>
+
  </section>
 
 </section>
