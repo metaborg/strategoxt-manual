@@ -5,10 +5,8 @@
 
 <set>
 
-  <includexml file="tutorial/book.xml" />
-
 <book id="manual">
-  <title>Stratego/XT Manual</title>
+  <title>Stratego/XT Tutorial</title>
 
   <includexml file="manual-authors.xml"/>
 
@@ -20,7 +18,7 @@
 
   <includexml file="stratego/part.xml"/>
 
-  <part>
+  <part id="manual-xt">
     <title>The XT Transformation Tools</title>
     <includexml file="gpp/gpp.xml" />
     <includexml file="xtc/xtc.xml" />
@@ -28,13 +26,15 @@
     <includexml file="xdoc/xdoc.xml" />
   </part>
 
-  <part>
+  <part id="manual-development">
     <title>Stratego/XT Development</title>
     <includexml file="developers/latestsources.xml" />
     <includexml file="developers/stratego-dev.xml" />
   </part>
 
 </book>
+
+<includexml file="tutorial/book.xml" />
 
 <book id="reference-manual">
   <title>Stratego/XT Reference Manual</title>

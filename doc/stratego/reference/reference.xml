@@ -1,19 +1,19 @@
-<chapter id="stratego-lang-ref">
+<part id="stratego-lang-ref">
   <title>Stratego Language (*)</title>
 
-<section>
+<chapter>
   <title>Stratego Core</title>
   <para></para>
-</section>
+</chapter>
 
-<section>
+<chapter>
   <title>Syntactic Abstractions</title>
   <para></para>
-</section>
+</chapter>
 
-<section>
+<chapter>
   <title>Dynamic Rules</title>
   <para></para>
-</section>
-
 </chapter>
+
+</part>
