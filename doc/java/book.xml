@@ -1,0 +1,6 @@
+<book id="java-in-stratego">
+  <title>Transforming Java with Stratego</title>
+  <includexml file="authors.xml"/>
+  <includexml file="getting-started.xml"/>
+  <includexml file="demo-java2c.xml"/>
+</book>

@@ -1,5 +1,8 @@
-<section>
+<chapter id="stratego-dynamic-rules">
   <title>Dynamic Rules (*)</title>
+
+<section>
+  <title>Context-Sensitive Transformation</title>
 
   <para>
 
@@ -191,6 +194,8 @@ DefineUnfoldCall =
       </itemizedlist>
     </para>
 
+</section>
+
 <section>
   <title>Constant Propagation</title>
 
@@ -325,5 +330,5 @@ rules( PropConst :- |[ x ]| )
   </para>
 </section>
 
-</section>
+</chapter>
 

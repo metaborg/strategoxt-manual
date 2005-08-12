@@ -1,45 +1,35 @@
-<part>
-  <title>Stratego</title>
-  <partintro>
-       
-    <para>
+<part id="stratego-language">
+  <title>The Stratego Language</title>
+  
+<includexml file="intro.xml" />
 
-      Stratego language
+<chapter id="stratego-programs">
+  <title>Stratego Programs(*)</title>
+  <includexml file="language/introduction.xml" />
+  <includexml file="language/terms.xml" />
+  <includexml file="language/compiler-interpreter.xml"/>
+</chapter>
 
-    </para>
+<chapter id="stratego-basic-strategies">
+  <title>Basic Strategies (*)</title>
+  <includexml file="language/build-match.xml"/>
+  <includexml file="language/rules.xml"/>
+  <includexml file="language/definitions.xml"/>
+  <includexml file="language/combinators.xml"/>
 
-    <para>
+</chapter>
 
-      Concrete syntax
+<chapter id="stratego-traversal-strategies">
+  <title>Traversal Strategies (*)</title>
+  <includexml file="language/in-control.xml"/>
+  <includexml file="language/traversal.xml"/>
+  <includexml file="language/type-unifying.xml"/>
+</chapter>
 
-      The representation of programs and program fragments as terms
-      entails an abstraction from the representation used by
-      programmers. This distance between concrete program notation and
-      abstract term representation can make it difficult to understand
-      and produce specifications of program transformations. Chapter
-      XXX shows how concrete syntax can be used for the specification
-      of transformation rules, while still using the underlying
-      abstract syntax for performing the transformations.
+<includexml file="language/concrete-syntax.xml"/>
+<includexml file="language/dynamic-rules.xml"/>
 
-    </para>
-
-    <para>
-
-      Stratego library
-
-    </para>
-
-    <para>
-
-      Unit testing
-
-    </para>
-
-  </partintro>
-
-  <includexml file="language/stratego-language.xml"/>
-  <includexml file="language/concrete-syntax.xml"/>
-  <includexml file="library/stratego-library.xml"/>
-  <includexml file="sunit/sunit.xml"/>
+<includexml file="library/stratego-library.xml"/>
+<includexml file="sunit/sunit.xml"/>
   
 </part>
