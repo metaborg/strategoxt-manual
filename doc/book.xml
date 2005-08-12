@@ -45,10 +45,6 @@
   <includexml file="toolref/reference.xml" />
 </book>
 
-<book id="java-in-stratego">
-  <title>Java in Stratego</title>
-  <includexml file="manual-authors.xml"/>
-  <includexml file="java/java.xml" />
-</book>
+<includexml file="java/book.xml"/>
 
 </set>

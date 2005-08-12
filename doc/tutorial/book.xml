@@ -44,14 +44,18 @@
   </part>
   
   <part id="tutorial-bibtex">
-     <title>Transforming BibTeX Files</title>
+     <title>Transforming BibTeX Files (*)</title>
  
      <chapter>
-        <title>Foo</title>
-        <para>foo</para>
+        <title>BibTeX Syntax (*)</title>
+        <para></para>
+     </chapter>
+
+     <chapter>
+        <title>BibTeX Transformations(*)</title>
+        <para></para>
      </chapter>
 
   </part>
-
 
 </book>
