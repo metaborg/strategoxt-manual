@@ -10,6 +10,6 @@
     syntax definitions.
   </para>
 
-  <include href="box.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-table.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <includexml file="box.xml"/>
+  <includexml file="pp-table.xml"/>
 </chapter>
