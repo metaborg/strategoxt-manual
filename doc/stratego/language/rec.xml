@@ -1,4 +1,7 @@
-  <section id="rec">
+<section id="rec"
+  xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2003/XInclude">
+
     <title>Fixpoint operator (rec)</title>
     <para>
       Another way to define recursion is using the fixpoint operator

@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-template">
+<refentry xml:lang="en" xml:id="ref-template"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>template</refname>
     <refpurpose>pretty-prints an abstract syntax tree</refpurpose>
@@ -48,11 +51,10 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-o <replaceable>file</replaceable></option></term>
         <listitem>
 	  <para>
-	    Write the resulting template term to
-	    <filename><replaceable>file</replaceable></filename>.
+	    Write the resulting template term to <replaceable>file</replaceable>.
 	  </para>
 
 	  <para>
@@ -66,7 +68,7 @@
       <title>Common Options</title>
 
       <varlistentry>
-        <term><option>-X <filename><replaceable>YYY</replaceable></filename></option></term>
+        <term><option>-X <replaceable>YYY</replaceable></option></term>
         <listitem>
 	  <para>
 	    Use YYY to ...
@@ -80,6 +82,6 @@
     </variablelist>
   </refsection>
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

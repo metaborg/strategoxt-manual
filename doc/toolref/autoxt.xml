@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-autoxt">
+<refentry xml:lang="en" xml:id="ref-autoxt"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>autoxt</refname>
     <refpurpose>installs autoconf/make resources for Stratego/XT packages</refpurpose>
@@ -59,6 +62,6 @@ include Makefile.xt
 
   </refsection>
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

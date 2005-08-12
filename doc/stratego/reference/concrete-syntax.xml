@@ -1,9 +1,11 @@
-<chapter>
-  <title>Concrete Object Syntax</title>
+<chapter
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
+  <title>Concrete Object Syntax</title>
+  
   <para>
     Concrete object syntax: using concrete syntax of source language
     in term patterns.
   </para>
-
 </chapter>

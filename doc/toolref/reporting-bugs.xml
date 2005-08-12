@@ -1,4 +1,7 @@
-<refsection>
+<refsection
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <title>Reporting Bugs</title>
   <para>Please report bugs to <email>stratego-bugs@cs.uu.nl</email></para>
 </refsection>

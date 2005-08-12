@@ -1,8 +1,7 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-
-<section>
   <section id="leftchoice">
     <title>Deterministic choice (left choice)</title>
 
@@ -25,7 +24,7 @@
       apply the strategy s, but if that fails, just succeeds using id.
     </para>
 
-    <screen><include href="xmpl/try.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+    <screen><xi:include href="xmpl/try.str" parse="text"/></screen>
 
     <para>
       Note that the choice is committed once the left-hand side

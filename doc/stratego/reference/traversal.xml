@@ -1,14 +1,17 @@
-    <section>
-      <title>Combinators for term traversal</title>
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-      <para>
-	Match, build, sequential composition, and choice only apply
-	transformations to the root of a term
-
-	Complete transformations require term traversal
-      </para>
-
-      <includexml file="congruence.xml" />
+  <title>Combinators for term traversal</title>
+  
+  <para>
+    Match, build, sequential composition, and choice only apply
+    transformations to the root of a term
+    
+    Complete transformations require term traversal
+  </para>
+  
+  <xi:include href="congruence.xml" />
 
 <section>
   <title>Traversals</title>
@@ -41,7 +44,7 @@ Plus(Var("a"),Var("a"))
 	<code>bottomup</code>.
       </para>
 
-      <screen><include href="xmpl/topdown.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/><include href="xmpl/bottomup.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="xmpl/topdown.str" parse="text"/><xi:include href="xmpl/bottomup.str" parse="text"/></screen>
 
     </section>
 
@@ -68,7 +71,7 @@ Plus(Var("a"),Var("a"))
 	term contains a given term.
       </para>
 
-      <screen><include href="xmpl/oncetd.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/><include href="xmpl/contains.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="xmpl/oncetd.str" parse="text"/><xi:include href="xmpl/contains.str" parse="text"/></screen>
 
     </section>
 
@@ -105,7 +108,7 @@ Plus(Var("a"),Var("a"))
 	<code>s</code> to all nodes of a term.
       </para>
 
-      <screen><include href="xmpl/everywhere.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="xmpl/everywhere.str" parse="text"/></screen>
 
       <para>
 	The strategy <code>topdown(s)</code> first visits a node
@@ -127,7 +130,7 @@ Plus(Var("a"),Var("a"))
 	irrelevant subtrees.
       </para>
 
-      <screen><include href="xmpl/skipping.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="xmpl/skipping.str" parse="text"/></screen>
 
       <para>
 	While full traversals visit every node of a tree, partial
@@ -137,7 +140,7 @@ Plus(Var("a"),Var("a"))
 	applied.
       </para>
 
-      <screen><include href="xmpl/alltd.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="xmpl/alltd.str" parse="text"/></screen>
 
       <para>
 	If s does not succeed, the strategy is applied recursively at

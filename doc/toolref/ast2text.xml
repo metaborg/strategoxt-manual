@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-ast2text">
+<refentry xml:lang="en" xml:id="ref-ast2text"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>ast2text</refname>
     <refpurpose>pretty-prints an abstract syntax tree to plain text</refpurpose>
@@ -54,7 +57,7 @@
       <title>Parsing and Formatting Options</title>
 
       <varlistentry>
-        <term><option>-p <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-p <replaceable>file</replaceable></option></term>
         <listitem>
 	  <para>
 	    Use pretty-print rules defined in
@@ -87,12 +90,12 @@
       </varlistentry>
     </variablelist>
     
-    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="common-io-options.xml"/>
     
-    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="common-debugging-options.xml"/>
     
   </refsection>
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

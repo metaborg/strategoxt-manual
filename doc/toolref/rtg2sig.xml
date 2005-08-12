@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-rtg2sig">
+<refentry xml:lang="en" xml:id="ref-rtg2sig"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>rtg2sig</refname>
     <refpurpose>generates a Stratego signature from a regular tree grammar (RTG)</refpurpose>

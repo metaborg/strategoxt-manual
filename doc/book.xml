@@ -1,50 +1,49 @@
-<?xml version="1.0"?>
-<!DOCTYPE book 
-  PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" 
-         "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<set
+  xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2003/XInclude">
 
-<set>
+  <info>
+    <title>Stratego/XT Manual</title>
+  </info>
 
-<book id="manual">
-  <title>Stratego/XT Tutorial</title>
+  <book id="manual">
+    <title>Stratego/XT Tutorial</title>
 
-  <includexml file="manual-authors.xml"/>
-
-  <part>
-    <title>Introduction</title>
-    <includexml file="manual-intro.xml"/>
-    <includexml file="representation/chapter.xml"/>
-  </part>
-
-  <includexml file="stratego/part.xml"/>
-
-  <part id="manual-xt">
-    <title>The XT Transformation Tools</title>
-    <includexml file="gpp/gpp.xml" />
-    <includexml file="xtc/xtc.xml" />
-    <includexml file="format/format.xml" />
-    <includexml file="xdoc/xdoc.xml" />
-  </part>
-
-  <part id="manual-development">
-    <title>Stratego/XT Development (*)</title>
-    <includexml file="developers/latestsources.xml" />
-    <includexml file="developers/stratego-dev.xml" />
-  </part>
-
-</book>
-
-<includexml file="tutorial/book.xml" />
-
-<book id="reference-manual">
-  <title>Stratego/XT Reference Manual</title>
-  <includexml file="manual-authors.xml"/>
-  <includexml file="stratego/reference/reference.xml"/>
-  <includexml file="aterms/aterms.xml" /> 
-  <includexml file="sdf/part.xml"/>
-  <includexml file="toolref/reference.xml" />
-</book>
-
-<includexml file="java/book.xml"/>
-
+    <xi:include href="manual-authors.xml"/>
+    
+    <part>
+      <title>Introduction</title>
+      <xi:include href="manual-intro.xml"/>
+      <xi:include href="representation/chapter.xml"/>
+    </part>
+    
+    <xi:include href="stratego/part.xml"/>
+    
+    <part id="manual-xt">
+      <title>The XT Transformation Tools</title>
+      <xi:include href="gpp/gpp.xml" />
+      <xi:include href="xtc/xtc.xml" />
+      <xi:include href="format/format.xml" />
+      <xi:include href="xdoc/xdoc.xml" />
+    </part>
+    
+    <part id="manual-development">
+      <title>Stratego/XT Development (*)</title>
+      <xi:include href="developers/latestsources.xml" />
+      <xi:include href="developers/stratego-dev.xml" />
+    </part>
+  </book>
+  
+  <xi:include href="tutorial/book.xml" />
+  
+  <book id="reference-manual">
+    <title>Stratego/XT Reference Manual</title>
+    <xi:include href="manual-authors.xml"/>
+    <xi:include href="stratego/reference/reference.xml"/>
+    <xi:include href="aterms/aterms.xml" /> 
+    <xi:include href="sdf/part.xml"/>
+    <xi:include href="toolref/reference.xml" />
+  </book>
+  
+  <xi:include href="java/book.xml"/>
 </set>

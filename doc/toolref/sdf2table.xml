@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-sdf2table">
+<refentry xml:lang="en" xml:id="ref-sdf2table"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>sdf2table</refname>
     <refpurpose>generates a parse table from an SDF syntax definition.</refpurpose>
@@ -133,6 +136,6 @@
     
   </refsection>
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

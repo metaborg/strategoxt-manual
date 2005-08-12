@@ -1,12 +1,14 @@
-  <section id="conditionalchoice">
-    <title>Conditional choice</title>
+<section id="conditionalchoice"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-    <para>
-      Conditional choice
-    </para>
-
-    <includexml file="ifthenelse.xml" />
-
-    <includexml file="ifthen.xml"/>
-
-  </section>
+  <title>Conditional choice</title>
+  
+  <para>
+    Conditional choice
+  </para>
+  
+  <xi:include href="ifthenelse.xml" />
+  
+  <xi:include href="ifthen.xml"/>
+</section>

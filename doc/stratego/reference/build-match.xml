@@ -1,14 +1,16 @@
-  <section>
-    <title>Building and matching terms</title>
-    
-    <para>
-      The atomic actions of program transformation in Stratego are
-      building terms from patterns and matching terms against
-      patterns.
-    </para>
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-    <includexml file="build.xml" />
-    <includexml file="match.xml" />
-
-  </section>
+  <title>Building and matching terms</title>
+  
+  <para>
+    The atomic actions of program transformation in Stratego are
+    building terms from patterns and matching terms against
+    patterns.
+  </para>
+  
+  <xi:include href="build.xml" />
+  <xi:include href="match.xml" />
+</section>
     

@@ -1,4 +1,7 @@
-<section>
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <title>Composition of transformation strategies</title>
 
       <para>
@@ -8,16 +11,16 @@
 	and selection of rules
       </para>
 
-      <includexml file="leftchoice.xml" />
+      <xi:include href="leftchoice.xml" />
 
-      <includexml file="choice.xml" />
+      <xi:include href="choice.xml" />
 
-      <includexml file="conditionalchoice.xml" />
+      <xi:include href="conditionalchoice.xml" />
 
-      <includexml file="identity.xml" />
+      <xi:include href="identity.xml" />
       
-      <includexml file="failure.xml" />
+      <xi:include href="failure.xml" />
 
-      <includexml file="negation.xml" />
+      <xi:include href="negation.xml" />
 
 </section>

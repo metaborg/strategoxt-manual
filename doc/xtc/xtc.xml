@@ -1,20 +1,18 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
-
-  <chapter id="xtc">
-
-    <title>Transformation Tool Composition with XTC (*)</title>
-
+<chapter id="xtc"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+  
+  <title>Transformation Tool Composition with XTC (*)</title>
+  
+  <para>
+  </para>
+  
+  <section>
+    <title>Composing tools</title>
+    
     <para>
     </para>
-
-    <section>
-      <title>Composing tools</title>
-
-      <para>
-      </para>
-
-    </section>
-
-  </chapter>
+    
+  </section>
+</chapter>
 

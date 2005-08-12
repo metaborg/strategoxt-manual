@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-xtc">
+<refentry xml:lang="en" xml:id="ref-xtc"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>xtc</refname>
     <refpurpose>registers, unregisters and queries XTC components in a repository</refpurpose>
@@ -169,9 +172,9 @@
       
     </variablelist>
     
-    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="common-io-options.xml"/>
     
-    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="common-debugging-options.xml"/>
     <!-- FIXME: Actually, this tool does not support keep -->
     
   </refsection>
@@ -216,6 +219,6 @@ sglr (3.8) : /bin/sglr</screen>
   </refsection>
 
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

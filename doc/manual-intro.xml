@@ -1,4 +1,7 @@
-<chapter id="manual-intro">
+<chapter id="manual-intro"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <title>Constructing Transformation Systems (*)</title>
 
 <section>

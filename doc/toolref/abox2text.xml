@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-abox2text">
+<refentry xml:lang="en" xml:id="ref-abox2text"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>abox2text</refname>
     <refpurpose>formats a Box term to plain text</refpurpose>

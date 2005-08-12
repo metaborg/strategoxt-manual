@@ -1,47 +1,32 @@
-%.xml-exp1 : %.xml $(ALL_XML_FILES)
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ --catalogs $(top_srcdir)/xslt/macros.xsl $< 
+# Inclusion rules
 
-%.xml-inc1 : %.xml-exp1
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $< 
+%.xml-inc1 : %.xml $(ALL_XML_FILES)
+	$(XMLLINT) --xinclude --output $@ $< 
 
-%.xml-exp2 : %.xml-inc1
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ --catalogs $(top_srcdir)/xslt/macros.xsl $< 
+%.xml-exp : %.xml-inc1
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(top_srcdir)/xslt/macros.xsl $< 
 
-%.xml-inc2 : %.xml-exp2
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $< 
+%.xml-inc2 : %.xml-exp
+	$(XMLLINT) --xinclude --output $@ $< 
 
-%.xml-exp3 : %.xml-inc2
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ --catalogs $(top_srcdir)/xslt/macros.xsl $< 
+%.docbook : %.xml-inc2
+	cp $< $@
 
-%.xml-inc3 : %.xml-exp3
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $< 
+#	$(XMLLINT) --relaxng $(DOCBOOK_RNG) --output $@ $< 
 
-%.xml-exp4 : %.xml-inc3
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ --catalogs $(top_srcdir)/xslt/macros.xsl $< 
-
-%.xml-inc4 : %.xml-exp4
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $< 
-
-%.xml-exp5 : %.xml-inc4
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ --catalogs $(top_srcdir)/xslt/macros.xsl $< 
-
-%.xml-inc5 : %.xml-exp5
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --xinclude --output $@ $< 
-
-%.docbook : %.xml-inc5
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XMLLINT) --catalogs --postvalid --output $@ --valid $<
+# DocBook XSL rules
 
 %.1 : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2MAN_XSL) $<
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2MAN_XSL) $<
 
 %.html : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2HTML_XSL) $<
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_XSL) $<
 
 %.xhtml : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2XHTML_XSL) $<
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2XHTML_XSL) $<
 
 index.html : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $<
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $<
 
 index.xhtml : $(BOOK).docbook
-	SGML_CATALOG_FILES=$(DOCBOOK_CAT) $(XSLTPROC) $(XSLTPROC_FLAGS) --catalogs --output $@ $(DOCBOOK2XHTML_CHUNK_XSL) $<
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2XHTML_CHUNK_XSL) $<

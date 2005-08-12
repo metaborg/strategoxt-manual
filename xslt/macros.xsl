@@ -1,28 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:exsl="http://exslt.org/common"
-                version="1.0"
-                exclude-result-prefixes="exsl">
+<?xml version="1.0"?>
 
-  <xsl:output 
-    method="xml" 
-    doctype-public="-//OASIS//DTD DocBook XML V4.3//EN" 
-    doctype-system="http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" />
+<xsl:stylesheet
+  version="1.0"
+  xmlns="http://docbook.org/ns/docbook"
+  xmlns:db="http://docbook.org/ns/docbook"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <xsl:template match="includexml">
-     <include href="{@file}" xmlns="http://www.w3.org/2003/XInclude"/>
-  </xsl:template>
-
-  <xsl:template match="includefile">
+  <xsl:output method="xml"/>
+  
+  <xsl:template match="db:includefile">
     <figure id="{@id}">
       <title>file: <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink></title>
-      <screen><include parse="text"
-        href="{@root}/{@file}"
-        xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include parse="text" href="{@root}/{@file}"/></screen>
     </figure>
   </xsl:template>
 
-  <xsl:template match="beforeafter">
+  <xsl:template match="db:beforeafter">
     <table frame='none'>
       <title>files: <ulink url="examples-full/{@file1}"><xsl:value-of
          select="@file1" /></ulink>, <ulink
@@ -39,19 +33,15 @@
         </thead>
         <tbody>
           <row>
-            <entry align="left"><screen><include parse="text"
-            href="{@root}/{@file1}"
-            xmlns="http://www.w3.org/2003/XInclude"/></screen></entry>
-            <entry align="left"><screen><include parse="text"
-            href="{@root}/{@file2}"
-            xmlns="http://www.w3.org/2003/XInclude"/></screen></entry>
+            <entry align="left"><screen><xi:include parse="text" href="{@root}/{@file1}"/></screen></entry>
+            <entry align="left"><screen><xi:include parse="text" href="{@root}/{@file2}"/></screen></entry>
           </row>
         </tbody>
       </tgroup>
     </table>
   </xsl:template>
 
-  <xsl:template match="nexttoeachother">
+  <xsl:template match="db:nexttoeachother">
     <informaltable frame='none'>
       <tgroup cols='2' align='center' colsep='1' rowsep='1'>
         <tbody>
@@ -63,30 +53,41 @@
     </informaltable>
   </xsl:template>
 
-
-  <xsl:template match="showfile">
-      <screen><include parse="text"
-        href="{@root}/{@file}"
-        xmlns="http://www.w3.org/2003/XInclude"/></screen>
+  <xsl:template match="db:showfile">
+    <screen><xi:include parse="text" href="{@root}/{@file}"/></screen>
   </xsl:template>
-
-
-  <xsl:template match="linkfile">
+    
+  <xsl:template match="db:linkfile">
     <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink>
   </xsl:template>
-
-  <xsl:template match="pngobject">
+  
+  <xsl:template match="db:pngobject">
     <mediaobject>
       <imageobject role="html">
-        <imagedata format="PNG" fileref="{@fileref}" align="{@align}"/>
+	<imagedata format="PNG" fileref="{@fileref}" align="{@align}"/>
       </imageobject>
     </mediaobject>
   </xsl:template>
+  
 
+  <xsl:template match="*">
+    <xsl:element name="{name(.)}" namespace="{namespace-uri(.)}">
+      <xsl:copy-of select="namespace::*" />
+      <xsl:for-each select="@*">
+	<xsl:attribute name="{name(.)}" namespace="{namespace-uri(.)}">
+	  <xsl:value-of select="."/>
+	</xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+<!--
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
   </xsl:template>
+-->
 
 </xsl:stylesheet>

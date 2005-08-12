@@ -1,4 +1,7 @@
-  <section id="leftchoice">
+<section id="leftchoice"
+  xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2003/XInclude">
+
     <title>Deterministic choice (left choice)</title>
 
     <para>

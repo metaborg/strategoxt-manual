@@ -1,4 +1,7 @@
-<chapter id="tool-ref">
+<chapter xml:id="tool-ref"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <title>Programs and Tools</title>
 
   <para>
@@ -7,54 +10,54 @@
      sections and chapters in the Stratego manual is given. 
   </para>
 
-  <include href="abox2text.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="asfix-yield.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="ast2abox.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="ast2text.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="aterm2xml.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="autoxt.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="format-check.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="gen-renamed-sdf-module.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="implode-asfix.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pack-sdf.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="abox2text.xml"/>
+  <xi:include href="asfix-yield.xml"/>
+  <xi:include href="ast2abox.xml"/>
+  <xi:include href="ast2text.xml"/>
+  <xi:include href="aterm2xml.xml"/>
+  <xi:include href="autoxt.xml"/>
+  <xi:include href="format-check.xml"/>
+  <xi:include href="gen-renamed-sdf-module.xml"/>
+  <xi:include href="implode-asfix.xml"/>
+  <xi:include href="pack-sdf.xml"/>
 
-  <include href="parse-box.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-cs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-c.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-pp-table.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-rtg.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-sdf-definition.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-sdf-module.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-stratego.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-unit.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-xml-doc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="parse-xml-info.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="parse-box.xml"/>
+  <xi:include href="parse-cs.xml"/>
+  <xi:include href="parse-c.xml"/>
+  <xi:include href="parse-pp-table.xml"/>
+  <xi:include href="parse-rtg.xml"/>
+  <xi:include href="parse-sdf-definition.xml"/>
+  <xi:include href="parse-sdf-module.xml"/>
+  <xi:include href="parse-stratego.xml"/>
+  <xi:include href="parse-unit.xml"/>
+  <xi:include href="parse-xml-doc.xml"/>
+  <xi:include href="parse-xml-info.xml"/>
 
-  <include href="pp-aterm.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-box.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-c.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="ppgen.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-pp-table.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-rtg.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-sdf.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-stratego.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pptable-diff.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-xml-doc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="pp-xml-info.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="pp-aterm.xml"/>
+  <xi:include href="pp-box.xml"/>
+  <xi:include href="pp-c.xml"/>
+  <xi:include href="ppgen.xml"/>
+  <xi:include href="pp-pp-table.xml"/>
+  <xi:include href="pp-rtg.xml"/>
+  <xi:include href="pp-sdf.xml"/>
+  <xi:include href="pp-stratego.xml"/>
+  <xi:include href="pptable-diff.xml"/>
+  <xi:include href="pp-xml-doc.xml"/>
+  <xi:include href="pp-xml-info.xml"/>
 
-  <include href="pretty-stratego.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="rtg2sig.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="rtg2typematch.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="rtg-script.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="sdf2parenthesize.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="sdf2rtg.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="sdf2table.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="sglri.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="sglr.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="strc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="unpack-sdf.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="visamb.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="xtc.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="xml2aterm.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="pretty-stratego.xml"/>
+  <xi:include href="rtg2sig.xml"/>
+  <xi:include href="rtg2typematch.xml"/>
+  <xi:include href="rtg-script.xml"/>
+  <xi:include href="sdf2parenthesize.xml"/>
+  <xi:include href="sdf2rtg.xml"/>
+  <xi:include href="sdf2table.xml"/>
+  <xi:include href="sglri.xml"/>
+  <xi:include href="sglr.xml"/>
+  <xi:include href="strc.xml"/>
+  <xi:include href="unpack-sdf.xml"/>
+  <xi:include href="visamb.xml"/>
+  <xi:include href="xtc.xml"/>
+  <xi:include href="xml2aterm.xml"/>
 
 </chapter>

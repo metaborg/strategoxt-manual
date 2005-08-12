@@ -1,4 +1,7 @@
-<section id="tutorial-components">
+<section id="tutorial-components"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <title>Components for Transformation Systems</title>
 
   <para>

@@ -1,5 +1,7 @@
+<variablelist
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-<variablelist>
   <title>Common Input/Output Options</title>
   
   <varlistentry>
@@ -17,7 +19,7 @@
   </varlistentry>
   
   <varlistentry>
-    <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+    <term><option>-o <replaceable>file</replaceable></option></term>
     
     <listitem>
       <para>

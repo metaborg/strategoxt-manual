@@ -1,11 +1,10 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
-
-<book id="examples">
+<book id="examples"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Stratego/XT Examples</title>
 
-  <bookinfo>
+  <info>
     <authorgroup>
       <author>
 	<firstname>Eelco</firstname>
@@ -20,42 +19,33 @@
       <year>2005</year>
       <holder>Eelco Visser</holder>
     </copyright>
-  </bookinfo>
+  </info>
 
-  <includexml file="introduction.xml"/>
+  <xi:include href="introduction.xml"/>
 
   <part id="tutorial-til">
      <title>A Tiny Imperative Language</title>
 
-     <includexml file="sdf.xml"/>
-
-     <includexml file="simplify.xml"/>
-
-     <includexml file="renaming.xml"/>
-
-     <includexml file="run.xml"/>
-
-     <includexml file="data-flow.xml"/>
-
-     <includexml file="compilation.xml"/>
-
-     <includexml file="eblocks.xml"/>
-
+     <xi:include href="sdf.xml"/>
+     <xi:include href="simplify.xml"/>
+     <xi:include href="renaming.xml"/>
+     <xi:include href="run.xml"/>
+     <xi:include href="data-flow.xml"/>
+     <xi:include href="compilation.xml"/>
+     <xi:include href="eblocks.xml"/>
   </part>
   
   <part id="tutorial-bibtex">
-     <title>Transforming BibTeX Files (*)</title>
- 
-     <chapter>
-        <title>BibTeX Syntax (*)</title>
-        <para></para>
-     </chapter>
-
-     <chapter>
-        <title>BibTeX Transformations(*)</title>
-        <para></para>
-     </chapter>
-
+    <title>Transforming BibTeX Files (*)</title>
+    
+    <chapter>
+      <title>BibTeX Syntax (*)</title>
+      <para></para>
+    </chapter>
+    
+    <chapter>
+      <title>BibTeX Transformations(*)</title>
+      <para></para>
+    </chapter>
   </part>
-
 </book>

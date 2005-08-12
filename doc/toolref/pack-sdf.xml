@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-pack-sdf">
+<refentry xml:lang="en" xml:id="ref-pack-sdf"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>pack-sdf</refname>
     <refpurpose>packs a set of SDF modules into a single definition</refpurpose>
@@ -98,7 +101,7 @@
       <title>File Options</title>
 
       <varlistentry>
-        <term><option>--dep <filename><replaceable>file</replaceable>.dep</filename></option></term>
+        <term><option>--dep <replaceable>file</replaceable>.dep</option></term>
         <listitem>
         <para>
           Write make dependencies to <filename><replaceable>file</replaceable>.dep</filename>
@@ -117,7 +120,7 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-Idef <filename><replaceable>file</replaceable>.def</filename></option></term>
+        <term><option>-Idef <replaceable>file</replaceable>.def</option></term>
         <listitem>
           <para>
             Include modules from SDF definition in file <filename><replaceable>file</replaceable>.def</filename>.
@@ -138,9 +141,8 @@
       </varlistentry>
     </variablelist>
     
-    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    
-    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="common-io-options.xml"/>
+    <xi:include href="common-debugging-options.xml"/>
     
   </refsection>
 
@@ -157,6 +159,6 @@
     
     <screen><prompt>$ </prompt>pack-sdf -I lang --dep lang.dep -i lang.sdf -o lang.def</screen>
   </refsection>
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

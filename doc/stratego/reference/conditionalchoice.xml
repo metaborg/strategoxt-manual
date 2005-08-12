@@ -1,8 +1,7 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-
-<section>
   <section id="conditionalchoice">
     <title>Conditional choice</title>
 
@@ -10,13 +9,9 @@
       Conditional choice
     </para>
 
-    <include href="ifthenelse.xml" 
-	     xpointer="xpointer(id('ifthenelse'))" 
-	     xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="ifthenelse.xml" xpointer="xpointer(id('ifthenelse'))"/>
 
-    <include href="ifthen.xml" 
-	     xpointer="xpointer(id('ifthen'))" 
-	     xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="ifthen.xml" xpointer="xpointer(id('ifthen'))"/>
 
   </section>
 

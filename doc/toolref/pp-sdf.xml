@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-pp-sdf">
+<refentry xml:lang="en" xml:id="ref-pp-sdf"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>pp-sdf</refname>
     <refpurpose>pretty-prints an abstract syntax tree containing an SDF definition</refpurpose>

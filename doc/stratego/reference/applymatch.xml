@@ -1,4 +1,7 @@
-<section id="applymatch">
+<section id="applymatch"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
     <title>Apply and match</title>
 
     <para>

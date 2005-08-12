@@ -1,14 +1,17 @@
-<chapter id="stratego-language">
+<chapter id="stratego-language"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <title>The Stratego Language</title>
 
-  <includexml file="introduction.xml" />
-  <includexml file="terms.xml" />
-  <includexml file="compiler-interpreter.xml" />
-  <includexml file="build-match.xml"/>
-  <includexml file="rules.xml"/>
-  <includexml file="definitions.xml"/>
-  <includexml file="combinators.xml"/>
-  <includexml file="traversal.xml"/>
-  <includexml file="dynamic-rules.xml"/>
+  <xi:include href="introduction.xml" />
+  <xi:include href="terms.xml" />
+  <xi:include href="compiler-interpreter.xml" />
+  <xi:include href="build-match.xml"/>
+  <xi:include href="rules.xml"/>
+  <xi:include href="definitions.xml"/>
+  <xi:include href="combinators.xml"/>
+  <xi:include href="traversal.xml"/>
+  <xi:include href="dynamic-rules.xml"/>
 
 </chapter>

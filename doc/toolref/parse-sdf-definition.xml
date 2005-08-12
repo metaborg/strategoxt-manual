@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-parse-sdf-definition">
+<refentry xml:lang="en" xml:id="ref-parse-sdf-definition"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>parse-sdf-definition</refname>
     <refpurpose>parsers and desugars a SDF definition file.</refpurpose>
@@ -32,10 +35,10 @@
   <refsection>
     <title>Options</title>
 
-    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="common-io-options.xml"/>
+    <xi:include href="common-debugging-options.xml"/>
   </refsection>
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

@@ -1,39 +1,42 @@
-<bookinfo>
-    <authorgroup>
-      <author>
-	<firstname>Martin</firstname>
-	<surname>Bravenboer</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-      <author>
-        <firstname>Karl Trygve</firstname>
-        <surname>Kalleberg</surname>
-        <affiliation>
-           <orgname>Universitetet i Bergen</orgname>
-        </affiliation>
-      </author>
-      <author>
-	<firstname>Rob</firstname>
-	<surname>Vermaas</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-      <author>
-	<firstname>Eelco</firstname>
-	<surname>Visser</surname>
-	<affiliation>
-	  <orgname>Universiteit Utrecht</orgname>
-	</affiliation>
-      </author>
-    </authorgroup>
+<info
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-    <copyright>
-      <year>2003</year>
-      <year>2004</year>
-      <year>2005</year>
-      <holder>Eelco Visser</holder>
-    </copyright>
-</bookinfo>
+  <authorgroup>
+    <author>
+      <firstname>Martin</firstname>
+      <surname>Bravenboer</surname>
+      <affiliation>
+	<orgname>Universiteit Utrecht</orgname>
+      </affiliation>
+    </author>
+    <author>
+      <firstname>Karl Trygve</firstname>
+      <surname>Kalleberg</surname>
+      <affiliation>
+	<orgname>Universitetet i Bergen</orgname>
+      </affiliation>
+    </author>
+    <author>
+      <firstname>Rob</firstname>
+      <surname>Vermaas</surname>
+      <affiliation>
+	<orgname>Universiteit Utrecht</orgname>
+      </affiliation>
+    </author>
+    <author>
+      <firstname>Eelco</firstname>
+      <surname>Visser</surname>
+      <affiliation>
+	<orgname>Universiteit Utrecht</orgname>
+      </affiliation>
+    </author>
+  </authorgroup>
+  
+  <copyright>
+    <year>2003</year>
+    <year>2004</year>
+    <year>2005</year>
+    <holder>Eelco Visser</holder>
+  </copyright>
+</info>

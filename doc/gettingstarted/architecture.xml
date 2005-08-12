@@ -1,27 +1,25 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<chapter id="architecture"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-    <chapter id="architecture">
-      <title>The Big Picture (*)</title>
-
-      <para>
-
-	big picture of languages and tools
-
-      </para>
-      
-      <para>
-      transformation pipeline
-
-      terms and abstract syntax
-
-      syntax and parsing
-
-      pretty-printing
-
-      transformation
-
-      tool composition
-      </para>
-    </chapter>
+  <title>The Big Picture (*)</title>
+  
+  <para>
+    big picture of languages and tools
+  </para>
+  
+  <para>
+    transformation pipeline
+    
+    terms and abstract syntax
+    
+    syntax and parsing
+    
+    pretty-printing
+    
+    transformation
+    
+    tool composition
+  </para>
+</chapter>
 

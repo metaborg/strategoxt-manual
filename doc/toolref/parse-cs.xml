@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-parse-cs">
+<refentry xml:lang="en" xml:id="ref-parse-cs"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>parse-cs</refname>
     <refpurpose>parses meta-programs with concrete syntax</refpurpose>
@@ -111,8 +114,8 @@ Meta([
       
     </variablelist>    
 
-    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="common-io-options.xml"/>
+    <xi:include href="common-debugging-options.xml"/>
     
   </refsection>
   
@@ -129,6 +132,6 @@ Meta([
   </refsection>
 
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

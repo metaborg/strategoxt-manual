@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-pp-pp-table">
+<refentry xml:lang="en" xml:id="ref-pp-pp-table"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>pp-pp-table</refname>
     <refpurpose>pretty-prints an abstract syntax tree containing a pretty-print table</refpurpose>

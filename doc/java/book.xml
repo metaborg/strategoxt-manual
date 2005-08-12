@@ -1,6 +1,9 @@
-<book id="java-in-stratego">
+<book id="java-in-stratego"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <title>Transforming Java with Stratego</title>
-  <includexml file="authors.xml"/>
-  <includexml file="getting-started.xml"/>
-  <includexml file="demo-java2c.xml"/>
+  <xi:include href="authors.xml"/>
+  <xi:include href="getting-started.xml"/>
+  <xi:include href="demo-java2c.xml"/>
 </book>

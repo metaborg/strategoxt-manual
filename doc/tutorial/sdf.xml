@@ -1,7 +1,7 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<chapter id="demo-sdf"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-<chapter id="demo-sdf">
   <title>Syntax Definition and Pretty-Printing</title>
 
 <sect1>

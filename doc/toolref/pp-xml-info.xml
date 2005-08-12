@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-pp-xml-info">
+<refentry xml:lang="en" xml:id="ref-pp-xml-info"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>pp-xml-info</refname>
     <refpurpose>pretty-prints an xml-info term into an XML document</refpurpose>
@@ -69,6 +72,6 @@ Document(
 </programlisting> 
   </refsection>
   
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

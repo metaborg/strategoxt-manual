@@ -1,4 +1,7 @@
-<section id="box">
+<section id="box"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <title>Box Text Formatting Language</title>
   
   <para>

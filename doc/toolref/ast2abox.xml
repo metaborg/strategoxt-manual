@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-ast2abox">
+<refentry xml:lang="en" xml:id="ref-ast2abox"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>ast2abox</refname>
     <refpurpose>pretty prints an abstract syntax tree to the Box layout formalism</refpurpose>

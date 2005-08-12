@@ -1,4 +1,7 @@
-<refentry lang="en" id="ref-sglr">
+<refentry xml:lang="en" xml:id="ref-sglr"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
   <refnamediv>
     <refname>sglr</refname>
     <refpurpose>parses a text file and produces an parse forest conforming to a given grammar.</refpurpose>
@@ -304,6 +307,6 @@
   </refsection>
 
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>
