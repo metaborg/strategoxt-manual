@@ -18,9 +18,7 @@
     <includexml file="representation/chapter.xml"/>
   </part>
 
-  <includexml file="aterms/aterms.xml" /> 
   <includexml file="stratego/part.xml"/>
-  <includexml file="sdf/part.xml"/>
 
   <part>
     <title>The XT Transformation Tools</title>
@@ -36,12 +34,15 @@
     <includexml file="developers/stratego-dev.xml" />
   </part>
 
-  <part>
-    <title>Reference Manual</title>
-    <includexml file="stratego/reference/reference.xml" />
-    <includexml file="toolref/reference.xml" />
-  </part>
+</book>
 
+<book id="reference-manual">
+  <title>Stratego/XT Reference Manual</title>
+  <includexml file="manual-authors.xml"/>
+  <includexml file="stratego/reference/reference.xml"/>
+  <includexml file="aterms/aterms.xml" /> 
+  <includexml file="sdf/part.xml"/>
+  <includexml file="toolref/reference.xml" />
 </book>
 
 <book id="java-in-stratego">
