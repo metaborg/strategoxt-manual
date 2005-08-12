@@ -27,7 +27,7 @@
   </part>
 
   <part id="manual-development">
-    <title>Stratego/XT Development</title>
+    <title>Stratego/XT Development (*)</title>
     <includexml file="developers/latestsources.xml" />
     <includexml file="developers/stratego-dev.xml" />
   </part>
