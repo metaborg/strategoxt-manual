@@ -16,12 +16,17 @@ FIX_XSL=$(top_srcdir)/xslt/docbook-ng-fix.xsl
 	jing $(DOCBOOK_RNG) $<
 	cp $< $@
 
-# DocBook XSL rules
+# Fox DocBook so that the XSL stylesheets accept it
 
 %.docbookxsl : %.docbook
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(FIX_XSL) $<
 
-%.1 : $(BOOK).docbookxsl
+%.docbookxslstripns : %.docbookxsl
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOKSTRIPNS_XSL) $<
+
+# DocBook XSL rules
+
+%.1 : $(BOOK).docbookxslstripns
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2MAN_XSL) $<
 
 %.html : $(BOOK).docbookxsl
@@ -32,6 +37,7 @@ FIX_XSL=$(top_srcdir)/xslt/docbook-ng-fix.xsl
 
 index.html : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $<
+
 
 index.xhtml : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2XHTML_CHUNK_XSL) $<
