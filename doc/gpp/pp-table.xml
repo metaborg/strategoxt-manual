@@ -1,4 +1,4 @@
-<section id="pp-table"
+<section xml:id="pp-table"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -64,7 +64,7 @@
       production, two pretty-print entries can be used:
     </para>
 
-    <programlisting><include href="selector-opt.pp" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+    <programlisting><xi:include href="selector-opt.pp" parse="text"/></programlisting>
 
     <para>
       A selector consists of a constructor name followed by a list of
@@ -174,14 +174,14 @@
       all above rule selectors.
     </para>
     
-    <programlisting><include href="selectors.sdf" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+    <programlisting><xi:include href="selectors.sdf" parse="text"/></programlisting>
     
     <para>
       The following pretty-print table shows which pretty-print rules
       can be defined for this syntax:
     </para>
     
-    <programlisting><include href="selectors.pp" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+    <programlisting><xi:include href="selectors.pp" parse="text"/></programlisting>
     
     <para>
       The pretty-print rule <code>ex6.1:alt</code> is a special
