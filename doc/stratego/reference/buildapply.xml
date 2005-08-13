@@ -2,7 +2,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <section id="buildapply">
+  <section xml:id="buildapply">
     <title>Build and apply</title>
 
     <para>
@@ -10,7 +10,7 @@
 
   </section>
 
-  <section id="buildapply-reference">
+  <section xml:id="buildapply-reference">
     <title>Build and apply</title>
 
     <section>

@@ -4,7 +4,7 @@
 
   <title>Match pattern</title>
 
-  <section id="match">
+  <section xml:id="match">
     <title>Matching terms</title>
 
     <para>

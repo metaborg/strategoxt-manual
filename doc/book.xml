@@ -6,7 +6,7 @@
     <title>Stratego/XT Manual</title>
   </info>
 
-  <book id="manual">
+  <book xml:id="tutorial">
     <title>Stratego/XT Tutorial</title>
 
     <xi:include href="manual-authors.xml"/>
@@ -19,7 +19,7 @@
     
     <xi:include href="stratego/part.xml"/>
     
-    <part id="manual-xt">
+    <part xml:id="manual-xt">
       <title>The XT Transformation Tools</title>
       <xi:include href="gpp/gpp.xml" />
       <xi:include href="xtc/xtc.xml" />
@@ -27,7 +27,7 @@
       <xi:include href="xdoc/xdoc.xml" />
     </part>
     
-    <part id="manual-development">
+    <part xml:id="manual-development">
       <title>Stratego/XT Development (*)</title>
       <xi:include href="developers/latestsources.xml" />
       <xi:include href="developers/stratego-dev.xml" />
@@ -36,7 +36,7 @@
   
   <xi:include href="tutorial/book.xml" />
   
-  <book id="reference-manual">
+  <book xml:id="reference-manual">
     <title>Stratego/XT Reference Manual</title>
     <xi:include href="manual-authors.xml"/>
     <xi:include href="stratego/reference/reference.xml"/>

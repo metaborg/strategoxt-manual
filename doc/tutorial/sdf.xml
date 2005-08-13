@@ -1,4 +1,4 @@
-<chapter id="demo-sdf"
+<chapter xml:id="demo-sdf"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -236,7 +236,7 @@
 
 </sect2>
 
-<sect2 id="sdf-parsing-programs">
+<sect2 xml:id="sdf-parsing-programs">
   <title>Parsing Programs</title>
 
   <para>

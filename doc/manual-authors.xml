@@ -4,29 +4,37 @@
 
   <authorgroup>
     <author>
-      <firstname>Martin</firstname>
-      <surname>Bravenboer</surname>
+      <personname>
+	<firstname>Martin</firstname>
+	<surname>Bravenboer</surname>
+      </personname>
       <affiliation>
 	<orgname>Universiteit Utrecht</orgname>
       </affiliation>
     </author>
     <author>
-      <firstname>Karl Trygve</firstname>
-      <surname>Kalleberg</surname>
+      <personname>
+	<firstname>Karl Trygve</firstname>
+	<surname>Kalleberg</surname>
+      </personname>
       <affiliation>
 	<orgname>Universitetet i Bergen</orgname>
       </affiliation>
     </author>
     <author>
-      <firstname>Rob</firstname>
-      <surname>Vermaas</surname>
+      <personname>
+	<firstname>Rob</firstname>
+	<surname>Vermaas</surname>
+      </personname>
       <affiliation>
 	<orgname>Universiteit Utrecht</orgname>
       </affiliation>
     </author>
     <author>
-      <firstname>Eelco</firstname>
-      <surname>Visser</surname>
+      <personname>
+	<firstname>Eelco</firstname>
+	<surname>Visser</surname>
+      </personname>
       <affiliation>
 	<orgname>Universiteit Utrecht</orgname>
       </affiliation>

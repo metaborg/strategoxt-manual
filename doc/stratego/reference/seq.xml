@@ -5,7 +5,7 @@
   <title>Sequential composition</title>
 
 
-  <section id="seq">
+  <section xml:id="seq">
     <title>Sequential composition</title>
     
     <para>

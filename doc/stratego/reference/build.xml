@@ -4,7 +4,7 @@
 
   <title>Build</title>
   
-  <section id="build">
+  <section xml:id="build">
     <title>Building terms</title>
     
     <para>

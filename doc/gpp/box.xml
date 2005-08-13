@@ -1,5 +1,6 @@
-<section id="box"
+<section xml:id="box"
    xmlns="http://docbook.org/ns/docbook"
+   xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Box Text Formatting Language</title>
@@ -37,8 +38,8 @@
 
   <para>
     For a detailed description of Box (including a description of all
-    available Box operators) we refer to <ulink
-    url="http://www.cs.uu.nl/groups/ST/twiki/bin/view/Merijn/PaperToReuseOrToBeReused">To
-    Reuse Or To Be Reused (Chapter 4)</ulink>
+    available Box operators) we refer to <link
+    xl:href="http://www.cs.uu.nl/wiki/Merijn/PaperToReuseOrToBeReused">To
+    Reuse Or To Be Reused (Chapter 4)</link>
   </para>
 </section>

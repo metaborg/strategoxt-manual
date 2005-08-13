@@ -1,4 +1,4 @@
-<book id="examples"
+<book xml:id="examples"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -7,8 +7,10 @@
   <info>
     <authorgroup>
       <author>
-	<firstname>Eelco</firstname>
-	<surname>Visser</surname>
+	<personname>
+	  <firstname>Eelco</firstname>
+	  <surname>Visser</surname>
+	</personname>
 	<affiliation>
 	  <orgname>Universiteit Utrecht</orgname>
 	</affiliation>
@@ -23,7 +25,7 @@
 
   <xi:include href="introduction.xml"/>
 
-  <part id="tutorial-til">
+  <part xml:id="tutorial-til">
      <title>A Tiny Imperative Language</title>
 
      <xi:include href="sdf.xml"/>
@@ -35,7 +37,7 @@
      <xi:include href="eblocks.xml"/>
   </part>
   
-  <part id="tutorial-bibtex">
+  <part xml:id="tutorial-bibtex">
     <title>Transforming BibTeX Files (*)</title>
     
     <chapter>

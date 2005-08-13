@@ -4,8 +4,10 @@
 
     <authorgroup>
       <author>
-	<firstname>Martin</firstname>
-	<surname>Bravenboer</surname>
+	<personname>
+	  <firstname>Martin</firstname>
+	  <surname>Bravenboer</surname>
+	</personname>
 	<affiliation>
 	  <orgname>Universiteit Utrecht</orgname>
 	</affiliation>

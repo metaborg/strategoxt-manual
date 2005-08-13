@@ -5,6 +5,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:db="http://docbook.org/ns/docbook"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xl="http://www.w3.org/1999/xlink"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <xsl:output method="xml"/>
@@ -14,17 +15,17 @@
       <xsl:attribute name="id" namespace="http://www.w3.org/XML/1998/namespace">
 	<xsl:value-of select="@id"/>
       </xsl:attribute>
-      <title>file: <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink></title>
+      <title>file: <link xl:href="examples-full/{@file}"><xsl:value-of select="@file" /></link></title>
       <screen><xi:include parse="text" href="{@root}/{@file}"/></screen>
     </figure>
   </xsl:template>
 
   <xsl:template match="db:beforeafter">
     <table frame='none'>
-      <title>files: <ulink url="examples-full/{@file1}"><xsl:value-of
-         select="@file1" /></ulink>, <ulink
-         url="examples-full/{@file2}"><xsl:value-of select="@file2"
-         /></ulink></title>
+      <title>files: <link xl:href="examples-full/{@file1}"><xsl:value-of
+         select="@file1" /></link>, <link
+         xl:href="examples-full/{@file2}"><xsl:value-of select="@file2"
+         /></link></title>
       <tgroup cols='2' align='center' colsep='1' rowsep='1'>
         <colspec colname='before'/>
         <colspec colname='after'/>
@@ -61,7 +62,7 @@
   </xsl:template>
     
   <xsl:template match="db:linkfile">
-    <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink>
+    <link xl:href="examples-full/{@file}"><xsl:value-of select="@file" /></link>
   </xsl:template>
   
   <xsl:template match="db:pngobject">
