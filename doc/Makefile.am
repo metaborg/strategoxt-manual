@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.docbook
 
-noinst_DATA = book.docbook
+noinst_DATA = book.docbook 
 
 ALL_XML_FILES = $(wildcard */*.xml) $(wildcard */*/*.xml)
 

@@ -1,10 +1,13 @@
 # Inclusion rules
 
+MACRO_XSL=$(top_srcdir)/xslt/macros.xsl
+FIX_XSL=$(top_srcdir)/xslt/docbook-ng-fix.xsl
+
 %.xml-inc1 : %.xml $(ALL_XML_FILES)
 	$(XMLLINT) --xinclude --output $@ $< 
 
 %.xml-exp : %.xml-inc1
-	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(top_srcdir)/xslt/macros.xsl $< 
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(MACRO_XSL) $< 
 
 %.xml-inc2 : %.xml-exp
 	$(XMLLINT) --xinclude --output $@ $< 
@@ -15,17 +18,20 @@
 
 # DocBook XSL rules
 
-%.1 : $(BOOK).docbook
+%.docbookxsl : %.docbook
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(FIX_XSL) $<
+
+%.1 : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2MAN_XSL) $<
 
-%.html : $(BOOK).docbook
+%.html : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_XSL) $<
 
-%.xhtml : $(BOOK).docbook
+%.xhtml : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2XHTML_XSL) $<
 
-index.html : $(BOOK).docbook
+index.html : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $<
 
-index.xhtml : $(BOOK).docbook
+index.xhtml : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2XHTML_CHUNK_XSL) $<
