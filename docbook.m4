@@ -94,11 +94,32 @@ END
 
   AC_CHECK_PROG(XMLLINT,xmllint,xmllint,)
 
+# jing
+
+  AC_CHECK_PROG(JING,jing,jing,)
+
+  JING_WORKS=no
+  if test -n "$JING"; then
+    AC_MSG_CHECKING([whether jing works])
+
+    echo '<section xml:id="test" xmlns="http://docbook.org/ns/docbook"><title>foo</title><para/></section>' > jingtest.xml
+  
+    $JING $DOCBOOK_RNG jingtest.xml
+    if test "$?" = 0; then
+      JING_WORKS=yes
+    fi
+    rm -f jing-test.xml
+    AC_MSG_RESULT($JING_WORKS)
+  fi
+
 # conclusion
 
   AC_MSG_CHECKING([whether all docbook stuff is available])
   DOCBOOK_WORKS=no
-  if test "$DOCBOOK_RNG_WORKS $DOCBOOKXI_RNG_WORKS $DOCBOOK2XHTML_WORKS $DOCBOOK2XHTML_CHUNK_WORKS $DOCBOOK2HTML_WORKS $DOCBOOK2HTML_CHUNK_WORKS $DOCBOOK2MAN_WORKS $DOCBOOKSTRIPNS_WORKS $XSLTPROC_WORKS" = "yes yes yes yes yes yes yes yes yes"; then
+  if test "$DOCBOOK_RNG_WORKS $DOCBOOKXI_RNG_WORKS $DOCBOOK2XHTML_WORKS \
+$DOCBOOK2XHTML_CHUNK_WORKS $DOCBOOK2HTML_WORKS $DOCBOOK2HTML_CHUNK_WORKS \
+$DOCBOOK2MAN_WORKS $DOCBOOKSTRIPNS_WORKS $XSLTPROC_WORKS $JING_WORKS" \
+= "yes yes yes yes yes yes yes yes yes yes"; then
     DOCBOOK_WORKS=yes
   fi
 
