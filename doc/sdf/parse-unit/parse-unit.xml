@@ -1,4 +1,4 @@
-<chapter id="sdf-unit-testing"
+<chapter xml:id="sdf-unit-testing"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -31,7 +31,7 @@
 	Assuming the following grammar for a simple arithmetic
 	expressions:
       </para>
-      <programlisting><include href="Exp.sdf" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+      <programlisting><xi:include href="Exp.sdf" parse="text"/></programlisting>
       
     </section>
     
@@ -43,7 +43,7 @@
 	<filename>expression.testsuite</filename> :
       </para>
       
-      <programlisting><include href="expression.testsuite" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
+      <programlisting><xi:include href="expression.testsuite" parse="text"/></programlisting>
     </section>
 
     <section>
@@ -53,13 +53,13 @@
 	Running this parse testsuite with:
       </para>
 
-      <screen><include href="run" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="run" parse="text"/></screen>
       
       <para>
 	will output:
       </para>
       
-      <screen><include href="output" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="output" parse="text"/></screen>
     </section>
   </section>
 

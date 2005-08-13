@@ -1,4 +1,4 @@
-<chapter id="stratego-dev"
+<chapter xml:id="stratego-dev"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -10,7 +10,7 @@
     can be made to the Stratego implementation. Anyone who is
     interested in doing some work on Stratego/XT.
   </para>
-
+  
   <para>
     This page lists guidelines and tips for contributing to the
     sources of Stratego/XT. This page is not about contributing to

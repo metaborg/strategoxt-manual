@@ -1,4 +1,4 @@
-<chapter id="sdf-language"
+<chapter xml:id="sdf-language"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -26,7 +26,7 @@
 	TODO
   </para>
 
-<sect2 id="ref-sdf-sorts">
+<sect2 xml:id="ref-sdf-sorts">
   <title>Sorts</title>
 
   <para>
@@ -35,7 +35,7 @@
 
 </sect2>
 
-<sect2 id="ref-sdf-productions">
+<sect2 xml:id="ref-sdf-productions">
   <title>Productions</title>
 
   <para>
@@ -44,7 +44,7 @@
 
 </sect2>
 
-<sect2 id="ref-sdf-literals">
+<sect2 xml:id="ref-sdf-literals">
   <title>Literals</title>
 
   <para>
@@ -53,7 +53,7 @@
 
 </sect2>
 
-<sect2 id="ref-sdf-character-classes">
+<sect2 xml:id="ref-sdf-character-classes">
   <title>Character Classes</title>
 
   <para>
@@ -62,7 +62,7 @@
 
 </sect2>
 
-<sect2 id="ref-sdf-regular-expressions">
+<sect2 xml:id="ref-sdf-regular-expressions">
   <title>Regular Expressions</title>
 
   <para>
@@ -76,10 +76,10 @@
 
 
 
-<sect1 id="ref-sdf-disambiguation">
+<sect1 xml:id="ref-sdf-disambiguation">
   <title>Disambiguation</title>
 
-<sect2 id="ref-sdf-associativity">
+<sect2 xml:id="ref-sdf-associativity">
   <title>Associativity</title>
 
   <para>
@@ -88,7 +88,7 @@
 
 </sect2>
 
-<sect2 id="ref-sdf-priority">
+<sect2 xml:id="ref-sdf-priority">
   <title>Priority</title>
 
   <para>
@@ -97,7 +97,7 @@
 
 </sect2>
 
-<sect2 id="ref-sdf-follow-restriction">
+<sect2 xml:id="ref-sdf-follow-restriction">
   <title>Follow Restrictions</title>
 
   <para>
@@ -106,7 +106,7 @@
 
 </sect2>
 
-<sect2 id="ref-sdf-reject-productions">
+<sect2 xml:id="ref-sdf-reject-productions">
   <title>Reject Productions</title>
 
   <para>
@@ -119,7 +119,7 @@
   
 
 
-<sect1 id="ref-sdf-lexical-and-context-free">
+<sect1 xml:id="ref-sdf-lexical-and-context-free">
   <title>Lexical and Context-free Syntax</title>
 
   <para>
@@ -130,7 +130,7 @@
 
 
 
-<sect1 id="ref-sdf-modules">
+<sect1 xml:id="ref-sdf-modules">
   <title>Modules</title>
 
   <para>

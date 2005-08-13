@@ -1,4 +1,4 @@
-<chapter id="format-checking"
+<chapter xml:id="format-checking"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -77,20 +77,20 @@
 	Consider the RTG generated in the example of <link linkend="ref-sdf2rtg">sdf2rtg</link>:
       </para>
 
-      <screen><include href="Exp.rtg" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="Exp.rtg" parse="text"/></screen>
 
       <para>
 	The ATerm
       </para>
 
-      <screen><include href="term1" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="term1" parse="text"/></screen>
 
       <para>
 	is part of the language defined by this RTG. Therefore,
 	format-check succeeds:
       </para>
 
-      <screen><include href="format_succeed" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="format_succeed" parse="text"/></screen>
 
       <para>
 	Note that format-check outputs the input term in this case. In
@@ -98,7 +98,7 @@
 	the other hand, the ATerm
       </para>
 
-      <screen><include href="term2" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="term2" parse="text"/></screen>
 
       <para>
 	is not part of the language defined by this RTG. Therefore,
@@ -106,7 +106,7 @@
 	reports which term caused the failure:
       </para>
 
-      <screen><include href="format_failed" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="format_failed" parse="text"/></screen>
 
       <para>
 	In large ATerms it might be difficult to find the incorrect
@@ -121,7 +121,7 @@
 	For example, consider this term:
       </para>
 
-      <screen><include href="term3" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="term3" parse="text"/></screen>
 
       <para>
 	format-check will visualize the errors in this ATerm:
@@ -139,7 +139,7 @@
 	inferred types of the term.
       </para>
 
-      <screen><include href="format_xhtml" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="format_xhtml" parse="text"/></screen>
 
       <para>
 	You can now view the resulting file in your browser. You need
@@ -148,7 +148,7 @@
 
     </section>
 
-    <section id="ref-rtg">
+    <section xml:id="ref-rtg">
        <title>Regular Tree Grammars</title>
   
        <para>
