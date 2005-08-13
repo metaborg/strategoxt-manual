@@ -10,7 +10,10 @@
   <xsl:output method="xml"/>
   
   <xsl:template match="db:includefile">
-    <figure id="{@id}">
+    <figure>
+      <xsl:attribute name="id" namespace="http://www.w3.org/XML/1998/namespace">
+	<xsl:value-of select="@id"/>
+      </xsl:attribute>
       <title>file: <ulink url="examples-full/{@file}"><xsl:value-of select="@file" /></ulink></title>
       <screen><xi:include parse="text" href="{@root}/{@file}"/></screen>
     </figure>
@@ -68,7 +71,6 @@
       </imageobject>
     </mediaobject>
   </xsl:template>
-  
 
   <xsl:template match="*">
     <xsl:element name="{name(.)}" namespace="{namespace-uri(.)}">
@@ -81,13 +83,5 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
-
-<!--
-  <xsl:template match="@*|node()">
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:copy>
-  </xsl:template>
--->
 
 </xsl:stylesheet>

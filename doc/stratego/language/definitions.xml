@@ -135,7 +135,7 @@ length = foldr(!0, add, !1)
 
 </section>
 
-<section id="rec">
+<section xml:id="rec">
    <title>Fixpoint operator (rec)</title>
     <para>
       Another way to define recursion is using the fixpoint operator

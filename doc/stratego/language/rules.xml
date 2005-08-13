@@ -27,7 +27,7 @@
 
  </para>
 
-<section id="seq">
+<section xml:id="seq">
    <title>Sequential composition</title>
     
     <para>
@@ -67,7 +67,7 @@ Plus(Int("3"),Var("a"))</screen>
 
 </section>
 
-<section id="applymatch">
+<section xml:id="applymatch">
     <title>Apply and match</title>
 
     <para>
@@ -81,7 +81,7 @@ Equivalent to: s; ?p
 
 </section>
 
-<section id="buildapply">
+<section xml:id="buildapply">
     <title>Build and apply</title>
 
     <para>

@@ -1,4 +1,4 @@
-<chapter id="program-representation"
+<chapter xml:id="program-representation"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -59,7 +59,7 @@
 
   <para>
         
-    <xref linkend="Fig:GrammarsAsContracts"/> illustrates these ideas.
+    <xref linkend="Fig-GrammarsAsContracts"/> illustrates these ideas.
     To transform a program, it is first parsed and represented as a
     tree (triangle). The tree is transformed by a tree transformation
     component which results in a transformed tree. This tree is then
@@ -70,7 +70,7 @@
 
   </para>
 
-  <figure id="Fig:GrammarsAsContracts">
+  <figure xml:id="Fig-GrammarsAsContracts">
     <title>
       Syntax definitions define the interfaces between transformation
       components.
@@ -131,18 +131,18 @@
 
     As an example, consider the syntax definition for a small language
     of arithmetic expressions in <xref
-    linkend="Fig:Expressions-NoCons.sdf"/>.  Using this definition,
+    linkend="Fig-Expressions-NoCons.sdf"/>.  Using this definition,
     and provided that <code>a</code> and <code>n</code> are
     identifiers (<code>Id</code>) and <code>1</code> is an
     <code>IntConst</code>, a string such as <code>(a+n)*1</code> can
     be recognized as an expression by reducing it to <code>Exp</code>,
     as shown by the reduction sequence in the <link
-    linkend="Fig:Expressions-NoCons.sdf">right-hand side of the
+    linkend="Fig-Expressions-NoCons.sdf">right-hand side of the
     figure</link>.
 
   </para>
 
-  <figure id="Fig:Expressions-NoCons.sdf">
+  <figure xml:id="Fig-Expressions-NoCons.sdf">
     <title>
       Context-free productions and a reduction sequence
       according to the productions.
@@ -170,7 +170,7 @@
     structure to strings.  A context-free grammar can be considered as
     a declaration of a set of trees of one level deep. For example,
     the following trees correspond to productions from the syntax
-    definition in <xref linkend="Fig:Expressions-NoCons.sdf"/>:
+    definition in <xref linkend="Fig-Expressions-NoCons.sdf"/>:
 
     <informalfigure pgwide="1">
        <pngobject fileref="xmpl/Plus.png" align="center"/>
@@ -186,7 +186,7 @@
     plus and times productions on the right.  The fusion process can
     continue as long as the tree has non-terminal leaves. A tree
     composed in this fashion is a parse tree if all leaves are
-    terminal symbols. <xref linkend="Fig:ParseTree"/> shows a parse
+    terminal symbols. <xref linkend="Fig-ParseTree"/> shows a parse
     tree for the expression <code>(a+n)*1</code>. This illustrates the
     direct correspondence between a string and its grammatical
     structure. The string underlying a parse tree can be obtained by
@@ -194,7 +194,7 @@
 
   </para>
 
-  <figure id="Fig:ParseTree">
+  <figure xml:id="Fig-ParseTree">
     <title>
       Parse tree
     </title>
@@ -211,8 +211,8 @@
     trees representing the symbols being reduced. Thus, each node of a
     parse tree corresponds to a rewrite step in the reduction of its
     underlying string. This is illustrated by comparing the reduction
-    sequence in <xref linkend="Fig:Expressions-NoCons.sdf"/> with the
-    tree in <xref linkend="Fig:ParseTree"/>
+    sequence in <xref linkend="Fig-Expressions-NoCons.sdf"/> with the
+    tree in <xref linkend="Fig-ParseTree"/>
 
   </para>
 
@@ -244,9 +244,9 @@
     <emphasis>constructors</emphasis> encode the production from which
     a node is derived. For this purpose, the productions in a syntax
     definition are extended with <emphasis>constructor
-    annotations</emphasis>.  <xref linkend="Fig:test1-acub"/> shows
+    annotations</emphasis>.  <xref linkend="Fig-test1-acub"/> shows
     the extension of the syntax definition from <xref
-    linkend="Fig:Expressions-NoCons.sdf"/> with constructor
+    linkend="Fig-Expressions-NoCons.sdf"/> with constructor
     annotations and the abstract syntax tree for the string
     <code>(a+n)*1</code>. Note that some identifiers are used as sort
     names <emphasis>and</emphasis> and as constructors. This does not
@@ -255,7 +255,7 @@
 
   </para>
 
-  <figure id="Fig:test1-acub">
+  <figure xml:id="Fig-test1-acub">
     <title>
       Context-free productions with constructor annotations and an
       abstract syntax tree.
@@ -274,14 +274,14 @@
   <para>
 
     Syntax definitions in the style of <xref
-    linkend="Fig:test1-acub"/> are <emphasis>ambiguous</emphasis>,
+    linkend="Fig-test1-acub"/> are <emphasis>ambiguous</emphasis>,
     i.e., there is more than one way to map strings to trees. For
     example, the string <code>a+b*c</code> has two possible
-    derivations, as shown in <xref linkend="Fig:ambiguities"/>.
+    derivations, as shown in <xref linkend="Fig-ambiguities"/>.
 
   </para>
 
-  <figure id="Fig:ambiguities">
+  <figure xml:id="Fig-ambiguities">
     <title>
       Parses for the string <code>a+b*c</code>
     </title>
@@ -317,7 +317,7 @@
 
   </para>
 
-  <figure id="Fig:Expressions.sdf">
+  <figure xml:id="Fig-Expressions.sdf">
     <title>
       Syntax definition with associativity and priority declarations.
     </title>
@@ -345,7 +345,7 @@
 
   <para>
         
-     <xref linkend="Fig:RegularExpressions"/> illustrates the use of
+     <xref linkend="Fig-RegularExpressions"/> illustrates the use of
      these operators in the extension of the expression language with
      statements and function declarations. Lists are used in numerous
      places, such as for the sequential composition of statements
@@ -360,7 +360,7 @@ function fact(n, x) =
 
   </para>
 
-  <figure id="Fig:RegularExpressions">
+  <figure xml:id="Fig-RegularExpressions">
     <title>
       Syntax definition with regular expressions.
     </title>
@@ -436,7 +436,7 @@ function fact(n, x) =
   <para>
         
     These concepts are illustrated in <xref
-    linkend="Fig:LexicalSyntax"/>, which defines the lexical syntax of
+    linkend="Fig-LexicalSyntax"/>, which defines the lexical syntax of
     identifiers, integer constants, and C-style comments. Note how
     follow restrictions are used for longest match disambiguation of
     identifiers, integer constants, and layout. Since an identifier
@@ -450,7 +450,7 @@ function fact(n, x) =
 
   </para>
 
-  <figure id="Fig:LexicalSyntax">
+  <figure xml:id="Fig-LexicalSyntax">
     <title>
       Definition of lexical syntax.
     </title>
@@ -599,7 +599,7 @@ function fact(n, x) =
     represented using maximal sharing. This means that any term in use
     in a program is represented only once. In other words, two
     occurrences of the same term will be represented by pointers to
-    the same location. <xref linkend="Fig:Sharing"/> illustrates the
+    the same location. <xref linkend="Fig-Sharing"/> illustrates the
     difference between a pure tree representation and a tree, or more
     accurately, a <emphasis>directed acyclic graph</emphasis>, with
     maximal sharing. That is, any sub-term is represented exactly once
@@ -612,7 +612,7 @@ function fact(n, x) =
 
   </para>
 
-  <figure id="Fig:Sharing">
+  <figure xml:id="Fig-Sharing">
     <title>
       Tree and dag for the string <code>(a + b) * c + (a + b)</code>
     </title>
@@ -668,15 +668,15 @@ function fact(n, x) =
     <code>c:S1 * ... * Sm -> S0</code>, where the <code>Si</code> are
     the sorts corresponding to the symbols <code>Aj</code> after
     leaving out literals and layout sorts.  <xref
-    linkend="Fig:Signatures"/> shows the signatures of statement and
+    linkend="Fig-Signatures"/> shows the signatures of statement and
     expression constructors for the example language from this
     chapter.  The modules have been derived automatically from the
-    syntax definitions in <xref linkend="Fig:Expressions.sdf"/> and
-    <xref linkend="Fig:RegularExpressions"/>.
+    syntax definitions in <xref linkend="Fig-Expressions.sdf"/> and
+    <xref linkend="Fig-RegularExpressions"/>.
 
   </para>
 
-  <figure id="Fig:Signatures">
+  <figure xml:id="Fig-Signatures">
     <title>
       Signature for statement and expression constructors,
       automatically derived from a syntax definition.
@@ -728,7 +728,7 @@ function fact(n, x) =
     each node in an abstract syntax tree is replaced with the concrete
     syntax tree of the corresponding grammar production.  In the
     second phase, the strings at the leaves of the tree are
-    concatenated into a string.  <xref linkend="Fig:Unparsing"/>
+    concatenated into a string.  <xref linkend="Fig-Unparsing"/>
     illustrates this process. The replacement of abstract syntax tree
     nodes by concrete syntax patterns should be done according to the
     productions of the syntax definition. An unparsing table is an
@@ -738,15 +738,15 @@ function fact(n, x) =
     to the sequence <code>s1 ... sn</code>, where each
     <code>s_i</code> is either a literal string or a parameter
     <code><code>_</code>i</code> referring to the <code>i</code>th
-    argument of the constructor. <xref linkend="Fig:UnparsingTable"/>
+    argument of the constructor. <xref linkend="Fig-UnparsingTable"/>
     shows an unparsing table for some expression and statement
     constructors. Applying an unparsing mapping to an abstract syntax
     tree results in a tree structure with strings at the leafs, as
-    illustrated in <xref linkend="Fig:Unparsing"/>.
+    illustrated in <xref linkend="Fig-Unparsing"/>.
 
   </para>
 
-  <figure id="Fig:Unparsing">
+  <figure xml:id="Fig-Unparsing">
     <title>
       Unparsing an abstract syntax tree.
     </title>
@@ -761,7 +761,7 @@ function fact(n, x) =
     <screen>f(a + 10) - 3</screen>
   </figure>
 
-  <figure id="Fig:UnparsingTable">
+  <figure xml:id="Fig-UnparsingTable">
     <title>
       Unparsing table
     </title>
@@ -782,7 +782,7 @@ function fact(n, x) =
     produce readable program text.  A pretty-printer can be obtained
     by annotating the entries in an unparsing table with markup
     instructing a typesetting process. <xref
-    linkend="Fig:PrettyPrinting"/> illustrates this process.
+    linkend="Fig-PrettyPrinting"/> illustrates this process.
 
   </para>
 
@@ -794,14 +794,14 @@ function fact(n, x) =
     combines the <code>b_i</code> boxes horizontally, and
     <code>V[b_1...b_n]</code>, which combines the
     <code>b_i</code> boxes vertically.  <xref
-    linkend="Fig:PrettyPrintTable"/> shows a pretty-print table with
+    linkend="Fig-PrettyPrintTable"/> shows a pretty-print table with
     Box markup. A more complete overview of the Box language and the
     GPP tools can be found in <xref
     linkend="generic-pretty-printing"/>.
 
   </para>
 
-  <figure id="Fig:PrettyPrinting">
+  <figure xml:id="Fig-PrettyPrinting">
     <title>
       Pretty-printing with Box markup
     </title>
@@ -816,7 +816,7 @@ function fact(n, x) =
     <screen>f(a + 10) - 3</screen>
   </figure>
 
-  <figure id="Fig:PrettyPrintTable">
+  <figure xml:id="Fig-PrettyPrintTable">
     <title>
       Pretty-print table with Box markup
     </title>

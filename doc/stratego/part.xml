@@ -1,4 +1,4 @@
-<part id="stratego-language"
+<part xml:id="stratego-language"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -6,14 +6,14 @@
   
   <xi:include href="intro.xml" />
   
-  <chapter id="stratego-programs">
+  <chapter xml:id="stratego-programs">
     <title>Stratego Programs(*)</title>
     <xi:include href="language/introduction.xml" />
     <xi:include href="language/terms.xml" />
     <xi:include href="language/compiler-interpreter.xml"/>
   </chapter>
   
-  <chapter id="stratego-basic-strategies">
+  <chapter xml:id="stratego-basic-strategies">
     <title>Basic Strategies (*)</title>
     <xi:include href="language/build-match.xml"/>
     <xi:include href="language/rules.xml"/>
@@ -21,7 +21,7 @@
     <xi:include href="language/combinators.xml"/>
   </chapter>
   
-  <chapter id="stratego-traversal-strategies">
+  <chapter xml:id="stratego-traversal-strategies">
     <title>Traversal Strategies (*)</title>
     <xi:include href="language/in-control.xml"/>
     <xi:include href="language/traversal.xml"/>

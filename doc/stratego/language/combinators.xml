@@ -13,7 +13,7 @@
     Choice; identity, Failure, and Negation
   </para>
 
-<section id="leftchoice">
+<section xml:id="leftchoice">
     <title>Deterministic Choice (left choice)</title>
 
     <para>
@@ -61,7 +61,7 @@ Int("17")
     
 </section>
 
-<section id="choice">
+<section xml:id="choice">
     <title>Choice</title>
 
     <para>
@@ -89,7 +89,7 @@ Int("17")
 
 </section>
 
-<section id="conditionalchoice">
+<section xml:id="conditionalchoice">
   <title>Conditional choice</title>
 
   <para>
@@ -134,7 +134,7 @@ foo
 
 </section>
 
-<section id="identity">
+<section xml:id="identity">
   <title>Identity</title>
 
   <para>
@@ -159,7 +159,7 @@ s1 &lt; id + s2 = s1 &lt;+ s2
 
 </section>
 
-<section id="failure">
+<section xml:id="failure">
     <title>Failure</title>
 
     <para>
@@ -182,7 +182,7 @@ s ; fail /= fail
 
 </section>
 
-<section id="negation">
+<section xml:id="negation">
     <title>Negation</title>
 
     <para>

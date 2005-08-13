@@ -10,7 +10,7 @@
     patterns.
   </para>
 
-  <section id="build">
+  <section xml:id="build">
     <title>Building terms</title>
     
     <para>
@@ -44,7 +44,7 @@ Var("b")</screen>
 
   </section>
 
-  <section id="match">
+  <section xml:id="match">
     <title>Matching terms</title>
 
     <para>

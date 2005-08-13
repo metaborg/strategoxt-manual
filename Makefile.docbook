@@ -10,9 +10,8 @@
 	$(XMLLINT) --xinclude --output $@ $< 
 
 %.docbook : %.xml-inc2
+	jing -i $(DOCBOOK_RNG) $<
 	cp $< $@
-
-#	$(XMLLINT) --relaxng $(DOCBOOK_RNG) --output $@ $< 
 
 # DocBook XSL rules
 

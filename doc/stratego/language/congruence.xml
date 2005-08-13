@@ -43,7 +43,7 @@ Plus(Var("a"),Int("3"))
       <code>map(s)</code> strategy.
     </para>
 
-      <screen><include href="xmpl/map.str" parse="text" xmlns="http://www.w3.org/2003/XInclude"/></screen>
+      <screen><xi:include href="xmpl/map.str" parse="text"/></screen>
 
 
   </section>
