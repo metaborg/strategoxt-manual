@@ -79,7 +79,7 @@
       </varlistentry>
       
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-o <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
             The output will be written to the file given by the file name 

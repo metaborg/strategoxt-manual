@@ -54,7 +54,7 @@
       <title>Parsing Options</title>
 
       <varlistentry>
-        <term><option>-p <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-p <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
             Use parse table from the file <filename>file</filename>. Refer to the 

@@ -50,7 +50,7 @@
       <title>Directory Options</title>
 
       <varlistentry>
-        <term><option>-d <filename><replaceable>dir</replaceable></filename></option></term>
+        <term><option>-d <replaceable>dir</replaceable></option></term>
         <listitem>
           <para>
 	        The base directory to unpack into. By default, the current directory is used. 

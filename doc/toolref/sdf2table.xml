@@ -54,7 +54,7 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-i <filename><replaceable>file</replaceable>.def</filename></option></term>
+        <term><option>-i <replaceable>file</replaceable>.def</option></term>
         <listitem>
           <para>
             Read input from <filename><replaceable>file</replaceable>.def</filename>. Multiple
@@ -64,7 +64,7 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-o <filename><replaceable>file</replaceable>.tbl</filename></option></term>
+        <term><option>-o <replaceable>file</replaceable>.tbl</option></term>
         <listitem>
           <para>
             Write output to <filename><replaceable>file</replaceable>.tbl</filename>. If not

@@ -1,5 +1,6 @@
 <refentry xml:lang="en" xml:id="ref-strc"
    xmlns="http://docbook.org/ns/docbook"
+   xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <refnamediv>
@@ -76,7 +77,7 @@
       The Stratego language definition is provided in the 
       <link linkend="stratego-language">Stratego Language</link> chapter.
       For up to date information, refer to the 
-      <ulink url="http://www.stratego-language.org">stratego-language.org</ulink>
+      <link xl:href="http://www.stratego-language.org">stratego-language.org</link>
       website.
     </para>
   </refsection>
@@ -96,16 +97,16 @@
       </varlistentry>
       
       <varlistentry>
-        <term><option>-o       <filename><replaceable>file</replaceable></filename></option></term>
-        <term><option>--output <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-o       <replaceable>file</replaceable></option></term>
+        <term><option>--output <replaceable>file</replaceable></option></term>
         <listitem>
           <para>Write output to <filename><replaceable>file</replaceable></filename></para>
         </listitem>
       </varlistentry>
       
       <varlistentry>
-        <term><option>-I        <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
-        <term><option>--Include <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
+        <term><option>-I        <replaceable>dir</replaceable></option></term>
+        <term><option>--Include <replaceable>dir</replaceable></option></term>
         <listitem>
           <para>Include modules from directory <filename
             class="directory"><replaceable>dir</replaceable></filename></para>
@@ -113,8 +114,8 @@
       </varlistentry>
       
       <varlistentry>
-        <term><option>-m     <function><replaceable>s</replaceable></function></option></term>
-        <term><option>--main <function><replaceable>s</replaceable></function></option></term>
+        <term><option>-m     <replaceable>s</replaceable></option></term>
+        <term><option>--main <replaceable>s</replaceable></option></term>
         <listitem>
           <para>
             Use the strategy <function><replaceable>s</replaceable></function>
@@ -134,7 +135,7 @@
       </varlistentry>
       
       <varlistentry>
-        <term><option>--C-Include <filename class="headerfile"><replaceable>file</replaceable></filename></option></term>
+        <term><option>--C-Include <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
             Include C header 
@@ -146,7 +147,7 @@
       </varlistentry>
       
       <varlistentry>
-        <term><option>-CI <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
+        <term><option>-CI <replaceable>dir</replaceable></option></term>
         <listitem>
           <para>Include C header files from directory <filename
             class="directory"><replaceable>dir</replaceable></filename></para>
@@ -163,7 +164,7 @@
       </varlistentry>
       
       <varlistentry>
-        <term><option>-CL <filename class="directory"><replaceable>dir</replaceable></filename></option></term>
+        <term><option>-CL <replaceable>dir</replaceable></option></term>
         <listitem>
           <para>Include binary libraries from directory <filename
             class="directory"><replaceable>dir</replaceable></filename></para>
@@ -171,7 +172,7 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-Cl <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>-Cl <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
             Search the library named <filename><replaceable>file</replaceable></filename> when linking.
@@ -180,7 +181,7 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-la <filename><replaceable>name</replaceable></filename></option></term>
+        <term><option>-la <replaceable>name</replaceable></option></term>
         <listitem>
           <para>
             Search the libtool library <filename>lib<replaceable>name</replaceable>.la</filename> when linking.
@@ -198,7 +199,7 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>--xtc-repo <filename><replaceable>file</replaceable></filename></option></term>
+        <term><option>--xtc-repo <replaceable>file</replaceable></option></term>
         <listitem>
           <para>
             Set the default XTC repository in the compiled output program to
@@ -249,15 +250,6 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>--choice-lib <filename><replaceable>file</replaceable></filename></option></term>
-        <listitem>
-          <para>
-            Link with choice point library in <filename><replaceable>file</replaceable></filename>.
-          </para>
-        </listitem>
-      </varlistentry>
-      
-      <varlistentry>
         <term><option>-S</option></term>
         <term><option>--silent</option></term>
         <listitem><para>Silent execution (same as <option>--verbose</option> 0)</para></listitem>
@@ -268,13 +260,6 @@
         <listitem><para>Verbosity level <replaceable>level</replaceable>. The default is 1.</para></listitem>
       </varlistentry>
 
-      <varlistentry>
-        <term><option>--man</option></term>
-        <listitem>
-          <para>Show man page.</para>
-        </listitem>
-      </varlistentry>
-      
       <varlistentry>
         <term><option>-W <replaceable>category</replaceable></option></term>
         <term><option>--warning <replaceable>category</replaceable></option></term>
@@ -371,6 +356,6 @@
   </refsection>
 
 
-  <include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-  <include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="reporting-bugs.xml"/>
+  <xi:include href="lgpl-copyright.xml"/>
 </refentry>

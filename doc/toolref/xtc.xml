@@ -62,8 +62,8 @@
       </varlistentry>
       
       <varlistentry>
-        <term><option>i <filename><replaceable>rep</replaceable></filename></option></term>
-        <term><option>import <filename><replaceable>rep</replaceable></filename></option></term>
+        <term><option>i <replaceable>rep</replaceable></option></term>
+        <term><option>import <replaceable>rep</replaceable></option></term>
         
         <listitem>
           <para>
@@ -90,8 +90,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-t <filename><replaceable>name</replaceable></filename></option></term>
-        <term><option>--tool <filename><replaceable>name</replaceable></filename></option></term>
+        <term><option>-t <replaceable>name</replaceable></option></term>
+        <term><option>--tool <replaceable>name</replaceable></option></term>
         
         <listitem>
           <para>
@@ -101,8 +101,8 @@
       </varlistentry>
 
       <varlistentry>
-        <term><option>-l <filename><replaceable>loc</replaceable></filename></option></term>
-        <term><option>--location <filename><replaceable>name</replaceable></filename></option></term>
+        <term><option>-l <replaceable>loc</replaceable></option></term>
+        <term><option>--location <replaceable>name</replaceable></option></term>
         
         <listitem>
           <para>

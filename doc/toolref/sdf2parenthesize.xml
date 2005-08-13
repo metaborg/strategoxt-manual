@@ -92,8 +92,8 @@ prod1 assoc prod2
       <title>Generator Options</title>
       
       <varlistentry>
-        <term><option>-m     <filename><replaceable>mod</replaceable></filename></option></term>
-        <term><option>--main <filename><replaceable>mod</replaceable></filename></option></term>
+        <term><option>-m     <replaceable>mod</replaceable></option></term>
+        <term><option>--main <replaceable>mod</replaceable></option></term>
         <listitem>
           <para>
             Set the main module in the SDF syntax definition to
@@ -104,7 +104,7 @@ prod1 assoc prod2
       </varlistentry>
 
       <varlistentry>
-        <term><option>--omod <filename><replaceable>mod</replaceable></filename></option></term>
+        <term><option>--omod <replaceable>mod</replaceable></option></term>
         <listitem>
           <para>
             Set the name of the resulting Stratego module. The default is to
