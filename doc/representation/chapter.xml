@@ -737,9 +737,9 @@ function fact(n, x) =
     s1 ... sn</code> defines a mapping for constructor <code>c</code>
     to the sequence <code>s1 ... sn</code>, where each
     <code>s_i</code> is either a literal string or a parameter
-    <code><code>_</code>i</code> referring to the <code>i</code>th
-    argument of the constructor. <xref linkend="Fig-UnparsingTable"/>
-    shows an unparsing table for some expression and statement
+    <code>_i</code> referring to the <code>i</code>th argument of the
+    constructor. <xref linkend="Fig-UnparsingTable"/> shows an
+    unparsing table for some expression and statement
     constructors. Applying an unparsing mapping to an abstract syntax
     tree results in a tree structure with strings at the leafs, as
     illustrated in <xref linkend="Fig-Unparsing"/>.
