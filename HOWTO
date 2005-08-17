@@ -9,6 +9,9 @@ Documentation
     Introductory text and reference manual
     http://www.docbook.org/tdg/en/html/docbook.html
 
+    DocBook 5.0 edition:
+    http://www.docbook.org/tdg5/en/html/docbook.html
+
   Online book: DocBook XSL, The Complete Guide
 
     Explains how to use the XSL transformations for DocBook
@@ -30,10 +33,11 @@ Software
 
   Requirements:
 
-  - docbook-xml-4.3
+  - docbook-ng (PTO release: 5.0pre20050724-pto in Nix)
   - docbook-xsl
   - recent libxml2
   - libxslt/xsltproc
+  - jing-tools (executable wrapper around jing)
  
   Configure the manual with:
   --with-docbook-xsl=$docbookxsl
@@ -41,10 +45,16 @@ Software
 
   where:
   export NIXPKGS=$HOME/.nix-profile
-  export docbookxml=${NIXPKGS}/xml/dtd/docbook
-  export docbookxsl=${NIXPKGS}/xml/xsl/docbook
+  export docbookxml=${NIXPKGS}
+  export docbookxsl=${NIXPKGS}
 
   nxml-mode is adviced for writing DocBook in emacs.
+
+  schemas.xml for docbook-ng:
+  <locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+    <namespace ns="http://docbook.org/ns/docbook" uri="file:///home/martin/.nix-profile/xml/rng/docbook/docbookxi.rnc"/>
+    <documentElement localName="html" uri="file:///home/martin/.nix-profile/emacs/site-lisp/schema/xhtml.rnc"/>
+  </locatingRules>
 
   Debian:
   export docbookxml=/usr/share/sgml/docbook/dtd/4.3/
@@ -54,7 +64,7 @@ Buildfarm
 
   After committing, the manual will automatically be rebuilt by the Nix
   buildfarm and made available at:
-  http://catamaran.labs.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/index.html
+  http://nix.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/index.html
 
   The single page version is available at:
-  http://catamaran.labs.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/manual.html
+  http://nix.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/manual.html
