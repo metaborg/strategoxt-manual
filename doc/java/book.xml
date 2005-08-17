@@ -4,5 +4,6 @@
 
   <title>Transforming Java with Stratego</title>
   <xi:include href="authors.xml"/>
-  <xi:include href="getting-started.xml"/>
+  <xi:include href="java-front.xml"/>
+  <xi:include href="dryad.xml"/>
 </book>

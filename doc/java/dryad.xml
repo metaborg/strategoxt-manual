@@ -1,0 +1,11 @@
+<chapter xml:id="dryad"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Getting started with Dryad</title>
+  
+  <para>
+    Dryad is a collection of tools for developing transformation
+    systems for Java source and bytecode.
+  </para>
+</chapter>
