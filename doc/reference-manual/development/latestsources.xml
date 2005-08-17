@@ -1,12 +1,13 @@
 <chapter xml:id="svn-install"
    xmlns="http://docbook.org/ns/docbook"
+   xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns:xi="http://www.w3.org/2003/XInclude">
   
   <title>Installation from Subversion</title>
   
   <para>
     Distribution (stable and continuous) are available from the
-    [[StrategoDownload][download]] section. It is also possible to
+    download page at the Stratego/XT website. It is also possible to
     obtain the sources directly from Subversion. This is only useful
     if you want to modify the sources of Stratego/XT and might want to
     commit your changes.
@@ -40,22 +41,21 @@
       Unfortunately, many Linux distributions contain old versions of
       these packages, so please check te versions that are installed
       on your system. Also, check that libtool is installed at the
-      same location (prefix) as Automake, otherwise =aclocal= will not
-      be able to find the Autoconf macros of Libtool (=libtool.m4=)
+      same location (prefix) as Automake, otherwise
+      <command>aclocal</command> will not be able to find the Autoconf
+      macros of Libtool (<filename>libtool.m4</filename>)
     </para>
 
     <para>
-      You now need a baseline to install Stratego/XT from
-      Subversion. The latest baseline is available at:
-      ftp://ftp.stratego-language.org/pub/stratego/StrategoXT/baseline/latest/strategoxt.tar.gz
-      See below for an explanation of the baseline.
+      You now need a baseline installation of Stratego/XT to install
+      Stratego/XT from Subversion. The latest baseline is always
+      available at the <link
+      xl:href="ftp://ftp.stratego-language.org/pub/stratego/StrategoXT/baseline/latest/strategoxt.tar.gz">ftp
+      server</link> of Stratego. The need for a baseline is explained
+      in <xref linkend="baseline"/>. For the installation of the
+      baseline, you can follow the ordinary installation instructions
+      for end-users (<xref linkend="installation"/>).
     </para>
-
-    <para>
-      Follow the [[installation instructions]] for end-users for this
-      tarball.
-    </para>
-
   </section>
 
   <section>
@@ -69,14 +69,13 @@
     </para>
 
 <screen>
-  $ svn checkout %SVNSTRATEGOXT%/trunk/StrategoXT
+  $ svn checkout https://svn.cs.uu.nl:12443/repos/StrategoXT/trunk/StrategoXT/
 </screen>
 
     <para>
       Note that your Subversion client has to support SSL
-      support. Install Subversion =--with-ssl=.
+      support. Install Subversion <option>--with-ssl</option>.
     </para>
-
   </section>
 
   <section>

@@ -47,4 +47,9 @@
       <xi:include href="../format/format.xml" />
       <xi:include href="../xdoc/xdoc.xml" />
     </part>
+
+    <part xml:id="getting-started">
+      <title>Getting Started</title>
+      <xi:include href="../installation/installation.xml" />
+    </part>
 </book>

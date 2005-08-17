@@ -11,7 +11,7 @@
     whatever.
   </para>
 
-  <section>
+  <section xml:id="baseline">
     <title>Baseline development</title>
 
     <section>
