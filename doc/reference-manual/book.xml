@@ -8,4 +8,6 @@
   <xi:include href="../aterms/aterms.xml" /> 
   <xi:include href="../sdf/part.xml"/>
   <xi:include href="../toolref/reference.xml" />
+
+  <xi:include href="development/part.xml" />
 </book>

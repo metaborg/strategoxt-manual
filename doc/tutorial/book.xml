@@ -47,11 +47,4 @@
       <xi:include href="../format/format.xml" />
       <xi:include href="../xdoc/xdoc.xml" />
     </part>
-    
-    <part xml:id="manual-development">
-      <title>Stratego/XT Development (*)</title>
-      <xi:include href="../developers/latestsources.xml" />
-      <xi:include href="../developers/stratego-dev.xml" />
-    </part>
-
 </book>
