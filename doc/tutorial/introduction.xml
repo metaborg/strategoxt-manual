@@ -2,119 +2,53 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Constructing Transformation Systems (*)</title>
+  <title>Software Transformation Systems</title>
 
 <section>
-  <title>Software Transformation</title>
+  <title>What is Software Transformation?</title>
 
   <para>
-
-	We like source.
-	
-    Program source code is the raw material produced by the software
-    industry. Rather than being an end product, this material requires
-    further processing to turn it into useful products. Compilation,
-    the translation of a program to machine code in order to make it
-    executable, is the standard processing technique applied. But much
-    more can be done. There are many other kinds of processes that can
-    be applied to programs. For example, programs can be synthesized
-    from high-level specifications; programs can be optimized using
-    knowledge of the application domain; documentation for
-    understanding a program can be automatically derived from its
-    sources; programs can be specialized to known inputs; application
-    programs can be generated from domain-specific languages;
-    low-level programs can be reverse engineered into high-level
-    programs.
-
+	Imagine finding yourself in the a situation where you have a
+	collection of files containing source code. If this is an unreasonable
+	prospect for you, stop reading and pick another tutorial. If you
+	are still with us, consider these files the blueprints for your
+	software. They are still not the award-winning, executable program
+	you are aiming for, but by applying a compiler to them, you can
+	generate one (with some minor provisions about syntactial and
+	semantical correctness). If so inclined, you may also run a
+	documentation generator like Javadoc on the source, to 
+	generate structured	documentation. Or, while colleagues are not
+	looking, you can secretly invoke tools like <command>lint</command>
+	(C/C++) or FindBugs (Java) to weed out common programming errors. 
+  </para>
+  
+  <para>
+    The compilation, documentation generation and source-code
+    analysis are all examples of <emphasis>software transformations
+	</emphasis>, but they are certainly not the only ones. Software
+	transformation has been used by the mathematically inclined for
+	generating programs from high-level specifications, by forgetful
+	people to recover lost design and architecture from legacy code
+	and by reverse-engineers to obtain high-level, readable code
+	from binary	files after somebody accidentally misplaced a stack
+	of backup tapes. Specialization of a program to known inputs
+	in order to improve performance, optimization using domain
+	knowledge from the application domain and improving program
+	understanding by analysing sources are also favoured topics
+	among software transformers.
   </para>
 
   <para>
-
-    All these processes require the manipulation of program source
-    code.  In fact, all such manipulations can be viewed as
-    transformations of a program to a derived program. (Here the
-    notion of `program' is interpreted broadly, and includes all kinds
-    of artifacts used in the composition of software systems,
-    including configuration and data files, as long as there contents
-    conform to some formal language.) Hence, program transformation is
-    the unifying notion underlying automatic program processing.
-
-  </para>
-
-  <para>
-
-    To reach a higher level of automation in software engineering, the
-    use of automatic program transformation is indispensable.
-    However, the realization of program transformation systems is
-    hard.  Parts of the process, such as parsing, are supported by
-    generative techniques, but most aspects require hard work.  The
-    effective implementation of program transformation systems is a
-    barrier for the wide adoption of program transformation in
-    software engineering.  Most transformation techniques used in
-    practice are based on textual generation and manipulation, which
-    poses limitations on what can be done and is error-prone.
-
-  </para>
-
-  <para>
-
-    Many systems for program transformation exist that are often
-    specialized for a specific object language and/or kind of
-    transformation.  All these systems share many ideas about program
-    transformation and use similar techniques, but are often ad-hoc in
-    many respects.  The ultimate goal is to achieve a specification
-    language or family of specification languages for the high-level,
-    declarative specification of program transformation systems in
-    which generic, language independent schemas of transformation can
-    be captured, and which admits efficient implementation of those
-    transformations that can scale up to large programs.
-
-  </para>
-
-  <para>
-
-    Stratego/XT is a framework for the implementation of
-    transformation systems based on structural representations of
-    programs.
-
-    The framework aims at better productivity in the development of
-    transformation systems through the use of high-level
-    representations, domain-specific languages, and generative
-    programming for various aspects of transformation systems: ATerms
-    for program representation, SDF for syntax definition and parsing,
-    GPP for pretty-printing, Stratego for transformation, XTC for
-    transformation tool composition, and the XT tools for the
-    generation of intermediate products needed in the construction of
-    transformation systems.
-
-  </para>
-
-  <para>
-
-    This book provides a manual to program transformation with
-    Stratego/XT 
-
-
-    This book is complementary to the Stratego/XT tutorial, a book
-    that presents several large examples of Stratego/XT programs.
-
-  </para>
-
-  <para>
-
-    This chapter gives an overview of the manual. 
-
-  </para>
-
-</section>
-
-<section>
-  <title>Applications (*)</title>
-
-  <para>
-
-    sketch application area
-
+    But who uses software transformation, anyway? People with a
+    problem resembling any in Figure 1 are. All too often, Real
+    Programmers with such a problem have the opinion that software
+    transformation is overly complicated dark magic, and that simple
+    regular expression hacks solve the problem just fine. Almost equally
+    often, their ad-hoc, text-based solutions turn out to be brittle,
+    overly complicated and acquire a status of dark magic, with the
+    result that no other team member dears touch the stuff. Most of
+    the time, the problem would be easily solved in a maintainable
+    and robust way if only the right tool could be found.
   </para>
 
   <screen>
@@ -147,80 +81,85 @@ Program understanding
 Document generation/transformation 
 - Web/XML programming (server-side  scripts )
   </screen>
+  
+  <para>
+    So what do should you do if you have a mountain of source code
+    that you have to do some transformation on? Obviously, using the
+    the right tool for the job is a good start. We don't recommend
+    using toothpicks to move software mountains. Instead, we think
+    using Stratego for this is a good idea. In this tutorial, we
+    will use small, understandable and cute examples that you can
+    try out in the leisure of your own desktop. We hope these will
+    convince you exactly how good an idea using Stratego for
+    software transformation really is.
+  </para>
 
 </section>
 
 <section>
-  <title>Architecture of Transformation Systems (*)</title>
-
+  <title>What is Stratego?</title>
+  
   <para>
-    sketch how transformation systems are composed and how the various
-    languages and tools fit in this architecture
+    The label on the tin says: <emphasis>Stratego/XT is a framework
+    for the implementation of transformation systems based on
+    structural representations of programs.</emphasis>
+  </para>
+  
+  <para>
+    It goes on to boast that: <emphasis>The framework aims at better
+    productivity in the development of transformation systems
+    through the use of high-level representations, domain-specific
+    languages, and generative programming for various aspects of
+    transformation systems: <emphasis>ATerms</emphasis> for program
+    representation, <emphasis>SDF</emphasis> for syntax definition
+    and parsing, <emphasis>GPP</emphasis> for pretty-printing,
+    <emphasis>Stratego</emphasis> for transformation, 
+    <emphasis>XTC</emphasis> for transformation tool composition,
+    and the XT tools for the generation of intermediate products
+    needed in the construction of transformation systems.</emphasis>
+  </para>
+  
+  <para>
+    Exactly what all this means will become clear to you as we
+    move along in this tutorial, but at least we can start by plotting
+    them in on the map of a Transformation System, given in Figure 2.
   </para>
 
-  <para>
+<screen>
+Map of a Transformation System:
 
+parser -> transformation -> pretty-printer
+</screen>
+
+  <para>
     A program transformation system is usually organized as a simple
-    pipeline of transformation steps. At the source of the pipeline, a
-    parser reads the text of the input program and turns it into a
-    parse tree or abstract syntax tree. Subsequently, one or several
-    transformations components modify the tree. At the sink of the
-    pipeline, a pretty-printer turns the output tree into program
-    text.
-
+    pipeline of transformation steps. At the source of the pipeline
+    (far left), a parser reads the text of the input program and turns it
+    into a parse tree or abstract syntax tree. Subsequently, one or
+    several transformations components modify the tree. At the sink
+    of the pipeline (far right), a pretty-printer turns the output tree
+    into program text.
   </para>
-
+  
   <para>
-
+    Of course, the output need not be in the same language as the
+    input. It need not even be a programming language.
   </para>
-
 </section>
-
+  
 <section>
-  <title>Outline (*)</title>
+  <title>Outline</title>
 
   <para>
-    ATerms, The Stratego Language, The Syntax Definition Formalism
-    SDF, The XT Transformation Tools, Stratego/XT Development,
-    Reference Manual
+    The rest of this tutorial is organized as follows. First, we
+    will discuss how we represent programs in Stratego/XT. Afterwards,
+    we will discuss the Stratego language itself, which our primary
+    tool for manipulating the programs. We will then cover how to
+    construct parsers using the syntax definition formalism SDF.
+    We round off with a brief guide to the most important tools in the
+    XT toolkit.
   </para>
-
-  <para>
-        
-    Programmers write programs as texts, which is a suitable
-    representation for people. It is not, however, a useful
-    representation for direct manipulation by an automatic program
-    transformation system.  
-
-    Part I treats the representation of programs as terms using the
-    ATerm annotated term format.  
-
-    Part II covers the syntax definition formalism SDF and the
-    conversion from textual program representations to term
-    representations.
-
-    by means of parsing and pretty-printing.
-
-    The construction of parsers and pretty-printers can be done
-    automatically if a declarative definition of the syntax of the
-    programming language is available. 
-
-    The syntax definition formalism SDF is used to define the syntax
-    of languages.
-
-    The Box language is used to specify
-    pretty-printers independently from the output format.
-
-  </para>
-
-  <para>
-
-  </para>
-
-  <para>
-
-  </para>
-
+  
 </section>
 
 </chapter>
