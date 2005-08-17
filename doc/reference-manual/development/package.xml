@@ -1,0 +1,160 @@
+<chapter 
+    xmlns="http://docbook.org/ns/docbook"
+    xml:id="package"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2003/XInclude">
+  
+  <title>Deployment of Stratego Applications</title>
+
+  <section>
+    <title>AutoXT</title>
+
+    <section>
+      <title>Autoconf Macros (autoxt.m4)</title>
+      <para/>
+    </section>
+
+    <section>
+      <title>Make rules (Makefile.xt)</title>
+      <para/>
+    </section>
+
+    <section>
+      <title>XTC</title>
+      <para/>
+    </section>
+  </section>
+
+  <section>
+    <title>Separate Compilation: Autotools and Linking</title>
+      <para/>
+  </section>
+
+  <section xml:id="bootstrap">
+    <title>Bootstrap Script</title>
+
+    <para>
+      The bootstrap script in the Stratego/XT package (and other
+      packages like java-front and prolog-tools) brings a checkout
+      into a state where you can follow the usual end user
+      installation procedure. Applying the
+      <command>bootstrap</command> script is only necessary if you
+      checkout sources from Subversion. Distributions (releases and
+      daily distributions) are already in the 'end user state'.
+    </para>
+
+    <para>
+      A typical bootstrap script invokes the following tools:
+    </para>
+
+    <itemizedlist>
+      <listitem>
+	<para>
+	  <command>autoxt</command>, to install
+	  <filename>autoxt.m4</filename> and
+	  <filename>Makefile.xt</filename> in the current directory.
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  <command>autoreconf -ifv</command>, to run:
+	</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      <command>aclocal</command>, to generate the
+	      <filename>aclocal.m4</filename> file based on the
+	      contents of <filename>configure.ac</filename>.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      <command>libtoolize</command>, to prepare a package to
+	      use libtool.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      <command>autoconf</command>, to generate the
+	      <filename>configure</filename> script from a
+	      <filename>configure.ac</filename>.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      <command>automake</command>, to generate
+	      <filename>Makefile.in</filename> for configure from
+	      <filename>Makefile.am</filename>.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+      </listitem>
+    </itemizedlist>
+
+    <section>
+      <title>Why call it bootstrap?</title>
+
+      <para>
+	The name (<command>bootstrap</command>) of this script is
+	confusing a lot people because the term 'bootstrap' is also
+	widely used in the context of compilers. It has however
+	nothing to do with bootstrapping a compiler as will be clear
+	from the introduction. So why do we still call this script
+	<command>bootstrap</command>? Some packages use
+	<command>autgen.sh</command>, <command>reconf</command> or
+	simply require you to invoke
+	<command>autoreconf</command>. <link
+	xl:href="http://sources.redhat.com/autobook/">The Goat
+	Book</link> however recommends the name
+	<command>bootstrap</command> in the <link
+	xl:href="http://sources.redhat.com/autobook/autobook/autobook_43.html#SEC43">Bootstrapping
+	chapter</link>.
+      </para>
+    </section>
+
+    <section>
+      <title>Autoconf Macros: aclocal, libtool, and autoconf</title>
+
+      <para>
+	GNU Autoconf needs definitions of macros that are used in
+	<filename>configure.ac</filename> files. GNU Automake contains
+	the tool <command>aclocal</command>, which installs all
+	requires macros. <command>aclocal</command> gets these macros
+	from a directory with m4 files. <command>aclocal
+	--print-ac-dir</command> reports this directory. Your libtool
+	installation must install the <command>libtool.m4</command>
+	file in the <filename>ac-dir</filename>. If this is not the
+	case, you will see a non-fatal error like this:
+      </para>
+
+<screen>
+configure.in:9: error: possibly undefined macro: AC_PROG_LIBTOOL
+       If this token and others are legitimate, please use m4_pattern_allow.
+       See the Autoconf documentation.
+</screen>
+
+	<para>
+	  Later on in the build proces a missing =Makefile.in= will be
+	  reported, after which the build terminates.
+	</para>
+
+	<para>
+	  Usually the file =libtool.m4= is installed in the right
+	  directory if you install Libtool and Automake at the same
+	  prefix. However, when using recent, non-standard, ports of
+	  these packages on a FreeBSD systems (and probably also some
+	  RPM based systems), this does not happen. If
+	  <filename>libtool.m4</filename> is not in the right
+	  directory for some reason, then you must copy the
+	  <filename>libtool.m4</filename> file by hand into the
+	  <filename>ac-dir</filename>.
+	</para>
+    </section>
+  </section>
+</chapter>

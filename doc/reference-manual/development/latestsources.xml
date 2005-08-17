@@ -83,38 +83,34 @@
 
     <para>
       To bring the source tree into a state where you can follow the
-      [[installation instructions]] you must run the =bootstrap=
-      script (see also [[WhyBootstrap][why bootstrap]]).
-	</para>
-
-    <para>
-      Note that on many distributions, the older versions of =automake=
-      and =autoconf= are invoked by default.  You can check which version
-      is invoked by issuing =automake --version= and =autoconf --version=.
-      Unfortunately, the mechanism for switching to a newer version is 
-      distribution-specific. We automatically figure this out for some 
-      distributions. Look inside the boostrap for details, adjust and
-      provide us with a patch, if your distribution is not supported. 
+      end-user installation instructions you must run the
+      <command>bootstrap</command> script. (see <xref
+      linkend="bootstrap"/>).
     </para>
-          	
+        	
 <screen>
   $ ./bootstrap
 </screen>
 
     <para>
-      Now you can proceed with the [[installation instructions]] for a
-      Stratego/XT distribution, with one exception: you must configure
-      Stratego/XT with your baseline installation:
-      =--with-strategoxt=$baselineprefix=
+      Note that on many distributions, the older versions of automake
+      and autoconf are invoked by default.  You can check which
+      version is invoked by issuing <command>automake
+      --version</command> and <command>autoconf --version</command>.
+      Unfortunately, the mechanism for switching to a newer version is
+      distribution-specific. We automatically figure this out for some
+      distributions. Look inside the boostrap for details, adjust and
+      provide us with a patch, if your distribution is not supported.
     </para>
 
     <para>
-      Historical note: in the past, a separate =make= and =make
-      install= was not possible if you were installing for
-      Subversion. This is no longer the case: you can use a separate
-      and =make= and =make install= now we are using a baseline.
+      Now you can proceed with the installation instructions for a
+      Stratego/XT distribution, with one exception: you must configure
+      Stratego/XT with your baseline installation:
+      <option>--with-strategoxt=<replaceable>$baselineprefix</replaceable></option>.
+      <xref linkend="baseline"/> explains why and how we use a
+      baseline.
     </para>
-
   </section>
 
   <section>
@@ -126,6 +122,43 @@
     </para>
 
     <screen>https://svn.cs.uu.nl:12443/repoman/info/StrategoXT</screen>
+  </section>
 
+  <section>
+    <title>Autoconf Macros: aclocal, libtool, and autoconf</title>
+    
+    <para>
+      GNU Autoconf needs definitions of macros that are used in
+      <filename>configure.ac</filename> files. GNU Automake contains
+      the tool <command>aclocal</command>, which installs all
+      requires macros. <command>aclocal</command> gets these macros
+      from a directory with m4 files. <command>aclocal
+      --print-ac-dir</command> reports this directory. Your libtool
+      installation must install the <command>libtool.m4</command>
+      file in the <filename>ac-dir</filename>. If this is not the
+      case, you will see a non-fatal error like this:
+    </para>
+    
+<screen>
+configure.in:9: error: possibly undefined macro: AC_PROG_LIBTOOL
+       If this token and others are legitimate, please use m4_pattern_allow.
+       See the Autoconf documentation.
+</screen>
+
+<para>
+  Later on in the build proces a missing =Makefile.in= will be
+  reported, after which the build terminates.
+</para>
+
+<para>
+  Usually the file <filename>libtool.m4</filename> is installed in the
+  right directory if you install Libtool and Automake at the same
+  prefix. However, when using recent, non-standard, ports of these
+  packages on a FreeBSD systems (and probably also some RPM based
+  systems), this does not happen. If <filename>libtool.m4</filename>
+  is not in the right directory for some reason, then you must copy
+  the <filename>libtool.m4</filename> file by hand into the
+  <filename>ac-dir</filename>.
+</para>
   </section>
 </chapter>
