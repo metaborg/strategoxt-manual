@@ -23,6 +23,9 @@ Documentation
     separating the DocBook sources in multiple XML files.
     http://www.xml.com/lpt/a/2002/07/31/xinclude.html
 
+    XInclude in DocBook:
+    http://www.sagehill.net/docbookxsl/ModularDoc.html
+
 Examples
 
   Nix Manual
