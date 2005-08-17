@@ -1,0 +1,9 @@
+<part xml:id="development"
+      xmlns="http://docbook.org/ns/docbook"
+      xmlns:xi="http://www.w3.org/2003/XInclude">
+  
+  <title>Stratego/XT Development Manual (*)</title>
+
+  <xi:include href="latestsources.xml" />
+  <xi:include href="stratego-dev.xml" />
+</part>

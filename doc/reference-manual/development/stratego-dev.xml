@@ -1,19 +1,12 @@
-<chapter xml:id="stratego-dev"
+<chapter xml:id="contribute"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  
-  <title>Stratego Developer Guide</title>
-  
-  <para>
-    There are many interesting and less interesting improvements that
-    can be made to the Stratego implementation. Anyone who is
-    interested in doing some work on Stratego/XT.
-  </para>
+  <title>Contributing to Stratego/XT</title>
   
   <para>
-    This page lists guidelines and tips for contributing to the
-    sources of Stratego/XT. This page is not about contributing to
+    This chapter explains how to contribute to the sources of
+    Stratego/XT itself. This page is not about contributing to
     documentation, external packages that use Stratego/XT, or
     whatever.
   </para>
@@ -46,12 +39,12 @@
       </para>
 	  
       <para>
-       Bootstrapping using the baseline is only necessary for developers of
-       Stratego/XT itself. Normal users of Stratego/XT receive tarballs which
-       do not need a baseline: they contain all generated and bootstrapped
-       sources. See [[LatestSources][installation from Subversion]]
-       for instructions on how to install Stratego/XT from
-       Subversion.
+       Bootstrapping using the baseline is only necessary for
+       developers of Stratego/XT itself. Normal users of Stratego/XT
+       receive tarballs which do not need a baseline: they contain all
+       generated and bootstrapped sources. See <xref
+       linkend="svn-install"/> for instructions on how to install
+       Stratego/XT from Subversion.
       </para>
 
       <para>
@@ -69,10 +62,11 @@
       <title>Baseline restrictions</title>
 
       <para>
-	Since we are using a baseline, you cannot *use* a new feature
-	you have added to Stratego/XT in Stratego/XT itself until this
-	feature has made it to the baseline. Remember that Stratego/XT must
-	be built by the baseline.
+	Since we are using a baseline, you cannot
+	<emphasis>use</emphasis> a new feature you have added to
+	Stratego/XT in Stratego/XT itself until this feature has made
+	it to the baseline. Remember that Stratego/XT must be built by
+	the baseline.
       </para>
 
       <para>
@@ -101,10 +95,12 @@
       </para>
 
       <para>
-	Picking a successful build from the buildfarm as a new baseline is done by
-	hand. If you have added a feature that would you like to have in the baseline
-	as soon as possible, then please request a baseline update at
-	=stratego-dev@cs.uu.nl= or the IRC channel <command>#stratego</command>.
+	Picking a successful build from the buildfarm as a new
+	baseline is done by hand. If you have added a feature that
+	would you like to have in the baseline as soon as possible,
+	then please request a baseline update at
+	<email>stratego-dev@cs.uu.nl</email> or the IRC channel
+	<command>#stratego</command>.
       </para>
 
     </section>
@@ -118,25 +114,27 @@
 
       <para>
 	Although it is time-consuming, it is strongly advised to run a
-	=make check= on the complete source tree before committing
-	anything.
+	<command>make check</command> on the complete source tree
+	before committing anything.
       </para>
 
       <para>
 	Before committing you should review the files that you have
-	modified. After a =make clean= and =make bootclean= the =svn
-	status= will show these files. We have configured the source
-	tree not to show files in this status overview that are not
-	important. Please use =svn diff= to verify that your changes are
-	as intended. Further, please try to keep the granularity of the
-	commits to one fix per commit. Specifically, do not commit many,
-	unrelated fixes in one go.
+	modified. After a <command>make clean</command> and
+	<command>make bootclean</command> the <command>svn
+	status</command> will show these files. We have configured the
+	source tree not to show files in this status overview that are
+	not important. Please use <command>svn diff</command> to
+	verify that your changes are as intended. Further, please try
+	to keep the granularity of the commits to one fix per
+	commit. Specifically, do not commit many, unrelated fixes in
+	one go.
       </para>
 
       <para>
-	Please explain your changes in the =ChangeLog= of the
-	subpackages. Also, use this changelog as your Subversion
-	commit message.
+	Please explain your changes in the
+	<filename>ChangeLog</filename> of the subpackages. Also, use
+	this changelog as your Subversion commit message.
       </para>
 
     </section>
@@ -152,8 +150,5 @@
       </para>
 
     </section>
-
   </section>
-
-
 </chapter>

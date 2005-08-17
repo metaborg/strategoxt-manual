@@ -1,7 +1,6 @@
-<chapter xml:id="latest-sources"
+<chapter xml:id="svn-install"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
-
   
   <title>Installation from Subversion</title>
   
