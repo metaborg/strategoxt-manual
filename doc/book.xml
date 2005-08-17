@@ -34,7 +34,7 @@
     </part>
   </book>
   
-  <xi:include href="tutorial/book.xml" />
+  <xi:include href="examples/book.xml" />
   
   <book xml:id="reference-manual">
     <title>Stratego/XT Reference Manual</title>
