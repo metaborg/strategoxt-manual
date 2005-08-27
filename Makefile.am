@@ -11,8 +11,12 @@ doc-only :
 	cd man; $(MAKE)
 
 mandist:
-	rm -rf manual
-	mkdir manual
-	cp html/*.css html/*.html manual
-	cd doc && find . -name *.png | xargs -i cp --parents {} ../manual
-	tar cvfj manual.tar.bz2 manual
+	rm -rf mandist
+	mkdir mandist
+	mkdir mandist/manual
+	cp html/*.css html/*.html mandist/manual
+	cd doc && find . -name *.png | xargs -i cp --parents {} ../mandist/manual
+	cd mandist && tar cvfj manual.tar.bz2 manual
+	cd mandist && tar cvfz manual.tar.gz manual
+	cd mandist && zip manual.zip manual
+	rm -rf mandist/manual
