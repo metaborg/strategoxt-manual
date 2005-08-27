@@ -19,6 +19,7 @@ mandist:
 	cp html/*.css html/*.html mandist/$(distdir)
 	cd doc && find . -name *.png | xargs -i cp --parents {} ../mandist/$(distdir)
 	cp src/examples.tar.gz mandist/$(distdir)
+	cd mandist/$(distdir) && tar zxvf ../../src/examples-full.tar.gz
 	cd mandist && tar cvfj $(distdir).tar.bz2 $(distdir)
 	cd mandist && tar cvfz $(distdir).tar.gz $(distdir)
 	cd mandist && zip -r $(distdir).zip $(distdir)
