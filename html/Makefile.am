@@ -26,15 +26,3 @@ examples.tar.gz : ../src/examples.tar.gz
 examples-full.tar.gz : ../src/examples-full.tar.gz
 	cp $< $@
 	tar zxf examples-full.tar.gz
-
-representation/xmpl : representation-xmpl-stamp
-	mkdir -p $@
-	cp ../doc/representation/xmpl/*.png $@
-	touch representation-xmpl-stamp
-
-representation-xmpl-stamp :
-	touch representation-xmpl-stamp
-
-install-data-local : representation/xmpl
-	mkdir -p $(pkgdatadir)/representation/xmpl
-	cp representation/xmpl/* $(pkgdatadir)/representation/xmpl

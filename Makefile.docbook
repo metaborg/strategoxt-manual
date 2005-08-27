@@ -32,6 +32,9 @@ FIX_XSL=$(top_srcdir)/xslt/docbook-ng-fix.xsl
 %.html : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_XSL) $<
 
+%.fo : $(BOOK).docbookxslstripns
+	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK_XSL)/xml/xsl/docbook/fo/docbook.xsl $<
+
 %.xhtml : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2XHTML_XSL) $<
 

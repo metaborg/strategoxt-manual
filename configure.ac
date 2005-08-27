@@ -14,6 +14,7 @@ AC_CONFIG_FILES([
   src/Makefile
   doc/Makefile
   html/Makefile
+  pdf/Makefile
   man/Makefile
 ])
 AC_OUTPUT
