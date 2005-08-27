@@ -23,7 +23,7 @@ mandist:
 	cd mandist && tar cvfz $(distdir).tar.gz $(distdir)
 	cd mandist && zip -r $(distdir).zip $(distdir)
 	cd mandist && mv $(distdir) manual && tar cvfj manual.tar.bz2 manual
-	cp mandist/manual.tar.bz2 .
+	mv mandist/manual.tar.bz2 .
 	rm -rf mandist/$(distdir)
 	rm -rf mandist/manual
 
