@@ -196,7 +196,7 @@
       expression language.
     </para>
 
-    <programlisting><include href="../sdf/parse-unit/Exp.sdf"
+    <programlisting><include href="Exp.sdf"
     parse="text"
     xmlns="http://www.w3.org/2003/XInclude"/></programlisting>
 
