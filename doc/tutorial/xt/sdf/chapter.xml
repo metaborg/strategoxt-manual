@@ -1,0 +1,10 @@
+<chapter xml:id="tutorial-sdf"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Syntax Definition and Parsing (*)</title>
+
+  <para>
+    Refer to SDF manual. Examples of pack-sdf, sglri, and sdf2table.
+  </para>
+</chapter>

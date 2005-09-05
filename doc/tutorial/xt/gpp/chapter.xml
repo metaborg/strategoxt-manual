@@ -15,4 +15,12 @@
 
   <xi:include href="box.xml"/>
   <xi:include href="pp-table.xml"/>
+
+  <section>
+    <title>Pretty Printing using Stratego (*)</title>
+    <para>
+      In this section, we explain how you can use Box in Stratego to
+      implement a pretty-printer by hand.
+    </para>
+  </section>
 </chapter>
