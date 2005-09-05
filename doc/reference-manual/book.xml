@@ -7,6 +7,7 @@
   <xi:include href="../stratego/reference/reference.xml"/>
   <xi:include href="../aterms/aterms.xml" /> 
   <xi:include href="../sdf/part.xml"/>
+  <xi:include href="../xdoc/xdoc.xml" />
   <xi:include href="../toolref/reference.xml" />
 
   <xi:include href="development/part.xml" />

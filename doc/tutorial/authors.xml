@@ -1,0 +1,50 @@
+<info
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <authorgroup>
+    <author>
+      <personname>
+	<firstname>Martin</firstname>
+	<surname>Bravenboer</surname>
+      </personname>
+      <affiliation>
+	<orgname>Universiteit Utrecht</orgname>
+      </affiliation>
+    </author>
+    <author>
+      <personname>
+	<firstname>Karl Trygve</firstname>
+	<surname>Kalleberg</surname>
+      </personname>
+      <affiliation>
+	<orgname>Universitetet i Bergen</orgname>
+      </affiliation>
+    </author>
+    <author>
+      <personname>
+	<firstname>Rob</firstname>
+	<surname>Vermaas</surname>
+      </personname>
+      <affiliation>
+	<orgname>Universiteit Utrecht</orgname>
+      </affiliation>
+    </author>
+    <author>
+      <personname>
+	<firstname>Eelco</firstname>
+	<surname>Visser</surname>
+      </personname>
+      <affiliation>
+	<orgname>Universiteit Utrecht</orgname>
+      </affiliation>
+    </author>
+  </authorgroup>
+  
+  <copyright>
+    <year>2003</year>
+    <year>2004</year>
+    <year>2005</year>
+    <holder>Eelco Visser</holder>
+  </copyright>
+</info>

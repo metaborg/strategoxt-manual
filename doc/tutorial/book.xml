@@ -4,52 +4,21 @@
 
   <title>Stratego/XT Tutorial</title>
 
-  <info>
-    <authorgroup>
-      <author>
-        <personname>
-	      <firstname>Karl Trygve</firstname>
-	      <surname>Kalleberg</surname>
-	    </personname>
-	    <affiliation>
-	      <orgname>Universitetet i Bergen</orgname>
-	    </affiliation>
-      </author>
-      <author>
-        <personname>
-	      <firstname>Eelco</firstname>
-	      <surname>Visser</surname>
-	    </personname>
-	    <affiliation>
-	      <orgname>Universiteit Utrecht</orgname>
-	    </affiliation>
-      </author>
-    </authorgroup>
+  <xi:include href="authors.xml"/>
 
-    <copyright>
-      <year>2005</year>
-      <holder>Eelco Visser</holder>
-    </copyright>
-  </info>
-
-    <part xml:id="tutorial-introduction">
-      <title>Introduction</title>
-      <xi:include href="introduction.xml"/>
-      <xi:include href="../representation/chapter.xml"/>
-    </part>
-
-    <xi:include href="../stratego/part.xml"/>
-    
-    <part xml:id="manual-xt">
-      <title>The XT Transformation Tools</title>
-      <xi:include href="../gpp/gpp.xml" />
-      <xi:include href="../xtc/xtc.xml" />
-      <xi:include href="../format/format.xml" />
-      <xi:include href="../xdoc/xdoc.xml" />
-    </part>
-
-    <part xml:id="getting-started">
-      <title>Getting Started</title>
-      <xi:include href="../installation/installation.xml" />
-    </part>
+  <part xml:id="tutorial-introduction">
+    <title>Introduction</title>
+    <xi:include href="introduction.xml"/>
+    <xi:include href="representation/chapter.xml"/>
+    <xi:include href="installation/chapter.xml" />
+  </part>
+  
+  <xi:include href="../stratego/part.xml"/>
+  
+  <part xml:id="manual-xt">
+    <title>The XT Transformation Tools</title>
+    <xi:include href="gpp/gpp.xml" />
+    <xi:include href="xtc/xtc.xml" />
+    <xi:include href="format/format.xml" />
+  </part>
 </book>
