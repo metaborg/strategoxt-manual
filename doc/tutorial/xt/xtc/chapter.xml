@@ -5,14 +5,41 @@
   <title>Transformation Tool Composition with XTC (*)</title>
   
   <para>
+    Introduce the concept of XTC.
   </para>
+
+  <section>
+    <title>Registration of Programs and Data</title>
+
+    <para>
+      Creating a repository
+    </para>
+
+    <para>
+      Importing a repository.
+    </para>
+
+    <para>
+      By hand
+    </para>
+
+    <para>
+      In Automake
+    </para>
+  </section>
   
   <section>
-    <title>Composing tools</title>
-    
+    <title>Composing Tools in Stratego</title>
+
     <para>
+      xtc-io-wrap, xtc-transform, read-from, write-to,
+      xtc-io-transform, xtc-find, etc.
     </para>
-    
+
+    <para>
+      Compiling with a default xtc repository: --xtc-repos of
+      AutoXT/Automake.
+    </para>
   </section>
 </chapter>
 
