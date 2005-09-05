@@ -13,8 +13,7 @@ XSLTPROC_FLAGS =					 \
 
 BOOK = $(top_srcdir)/doc/book
 
-pkgdata_DATA = index.html $(wildcard *.html)  $(wildcard *.png) \
-	examples.tar.gz examples-full.tar.gz 
+noinst_DATA = index.html examples.tar.gz examples-full.tar.gz 
 
 CLEANFILES = $(wildcard *.html)
 

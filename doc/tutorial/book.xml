@@ -17,8 +17,8 @@
   
   <part xml:id="manual-xt">
     <title>The XT Transformation Tools</title>
-    <xi:include href="gpp/gpp.xml" />
-    <xi:include href="xtc/xtc.xml" />
-    <xi:include href="format/format.xml" />
+    <xi:include href="gpp/chapter.xml" />
+    <xi:include href="xtc/chapter.xml" />
+    <xi:include href="format/chapter.xml" />
   </part>
 </book>
