@@ -8,7 +8,7 @@
 
   <xi:include href="tutorial/book.xml" />
   <xi:include href="examples/book.xml" />
-  <xi:include href="reference-manual/book.xml" />
+  <xi:include href="reference/book.xml" />
   
   <xi:include href="java/book.xml"/>
 </set>
