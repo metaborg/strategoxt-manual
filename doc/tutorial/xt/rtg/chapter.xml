@@ -1,0 +1,12 @@
+<chapter xml:id="tutorial-sdf"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Tree Grammars and Format Checking (*)</title>
+
+  <para>
+    RTG, format-checking, rtg-script
+  </para>
+
+  <xi:include href="format/section.xml"/>
+</chapter>
