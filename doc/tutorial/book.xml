@@ -32,7 +32,7 @@
     </copyright>
   </info>
 
-    <part>
+    <part xml:id="manual-introduction">
       <title>Introduction</title>
       <xi:include href="introduction.xml"/>
       <xi:include href="../representation/chapter.xml"/>

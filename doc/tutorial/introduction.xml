@@ -1,4 +1,4 @@
-<chapter xml:id="manual-intro"
+<chapter xml:id="tutorial-software-transformation-systems"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -8,34 +8,35 @@
   <title>What is Software Transformation?</title>
 
   <para>
-	Imagine finding yourself in the a situation where you have a
-	collection of files containing source code. If this is an unreasonable
-	prospect for you, stop reading and pick another tutorial. If you
-	are still with us, consider these files the blueprints for your
-	software. They are still not the award-winning, executable program
-	you are aiming for, but by applying a compiler to them, you can
-	generate one (with some minor provisions about syntactial and
-	semantical correctness). If so inclined, you may also run a
-	documentation generator like Javadoc on the source, to 
-	generate structured	documentation. Or, while colleagues are not
-	looking, you can secretly invoke tools like <command>lint</command>
-	(C/C++) or FindBugs (Java) to weed out common programming errors. 
+    Imagine finding yourself in the a situation where you have a
+    collection of files containing source code. If this is an
+    unreasonable prospect for you, stop reading and pick another
+    tutorial. If you are still with us, consider these files the
+    blueprints for your software.  They are still not the
+    award-winning, executable program you are aiming for, but by
+    applying a compiler to them, you can generate one (with some minor
+    provisions about syntactial and semantical correctness). If so
+    inclined, you may also run a documentation generator like Javadoc
+    on the source, to generate structured documentation. Or, while
+    colleagues are not looking, you can secretly invoke tools like
+    <command>lint</command> (C/C++) or FindBugs (Java) to weed out
+    common programming errors.
   </para>
   
   <para>
-    The compilation, documentation generation and source-code
-    analysis are all examples of <emphasis>software transformations
-	</emphasis>, but they are certainly not the only ones. Software
-	transformation has been used by the mathematically inclined for
-	generating programs from high-level specifications, by forgetful
-	people to recover lost design and architecture from legacy code
-	and by reverse-engineers to obtain high-level, readable code
-	from binary	files after somebody accidentally misplaced a stack
-	of backup tapes. Specialization of a program to known inputs
-	in order to improve performance, optimization using domain
-	knowledge from the application domain and improving program
-	understanding by analysing sources are also favoured topics
-	among software transformers.
+    The compilation, documentation generation and source-code analysis
+    are all examples of <emphasis>software transformations
+    </emphasis>, but they are certainly not the only ones. Software
+    transformation has been used by the mathematically inclined for
+    generating programs from high-level specifications, by forgetful
+    people to recover lost design and architecture from legacy code
+    and by reverse-engineers to obtain high-level, readable code from
+    binary files after somebody accidentally misplaced a stack of
+    backup tapes. Specialization of a program to known inputs in order
+    to improve performance, optimization using domain knowledge from
+    the application domain and improving program understanding by
+    analysing sources are also favoured topics among software
+    transformers.
   </para>
 
   <para>
@@ -43,12 +44,12 @@
     problem resembling any in Figure 1 are. All too often, Real
     Programmers with such a problem have the opinion that software
     transformation is overly complicated dark magic, and that simple
-    regular expression hacks solve the problem just fine. Almost equally
-    often, their ad-hoc, text-based solutions turn out to be brittle,
-    overly complicated and acquire a status of dark magic, with the
-    result that no other team member dears touch the stuff. Most of
-    the time, the problem would be easily solved in a maintainable
-    and robust way if only the right tool could be found.
+    regular expression hacks solve the problem just fine. Almost
+    equally often, their ad-hoc, text-based solutions turn out to be
+    brittle, overly complicated and acquire a status of dark magic,
+    with the result that no other team member dears touch the
+    stuff. Most of the time, the problem would be easily solved in a
+    maintainable and robust way if only the right tool could be found.
   </para>
 
   <screen>
@@ -87,11 +88,11 @@ Document generation/transformation
     that you have to do some transformation on? Obviously, using the
     the right tool for the job is a good start. We don't recommend
     using toothpicks to move software mountains. Instead, we think
-    using Stratego for this is a good idea. In this tutorial, we
-    will use small, understandable and cute examples that you can
-    try out in the leisure of your own desktop. We hope these will
-    convince you exactly how good an idea using Stratego for
-    software transformation really is.
+    using Stratego for this is a good idea. In this tutorial, we will
+    use small, understandable and cute examples that you can try out
+    in the leisure of your own desktop. We hope these will convince
+    you exactly how good an idea using Stratego for software
+    transformation really is.
   </para>
 
 </section>
@@ -107,22 +108,22 @@ Document generation/transformation
   
   <para>
     It goes on to boast that: <emphasis>The framework aims at better
-    productivity in the development of transformation systems
-    through the use of high-level representations, domain-specific
-    languages, and generative programming for various aspects of
-    transformation systems: <emphasis>ATerms</emphasis> for program
-    representation, <emphasis>SDF</emphasis> for syntax definition
-    and parsing, <emphasis>GPP</emphasis> for pretty-printing,
-    <emphasis>Stratego</emphasis> for transformation, 
-    <emphasis>XTC</emphasis> for transformation tool composition,
-    and the XT tools for the generation of intermediate products
-    needed in the construction of transformation systems.</emphasis>
+    productivity in the development of transformation systems through
+    the use of high-level representations, domain-specific languages,
+    and generative programming for various aspects of transformation
+    systems: <emphasis>ATerms</emphasis> for program representation,
+    <emphasis>SDF</emphasis> for syntax definition and parsing,
+    <emphasis>GPP</emphasis> for pretty-printing,
+    <emphasis>Stratego</emphasis> for transformation,
+    <emphasis>XTC</emphasis> for transformation tool composition, and
+    the XT tools for the generation of intermediate products needed in
+    the construction of transformation systems.</emphasis>
   </para>
   
   <para>
-    Exactly what all this means will become clear to you as we
-    move along in this tutorial, but at least we can start by plotting
-    them in on the map of a Transformation System, given in Figure 2.
+    Exactly what all this means will become clear to you as we move
+    along in this tutorial, but at least we can start by plotting them
+    in on the map of a Transformation System, given in Figure 2.
   </para>
 
 <screen>
@@ -134,10 +135,10 @@ parser -> transformation -> pretty-printer
   <para>
     A program transformation system is usually organized as a simple
     pipeline of transformation steps. At the source of the pipeline
-    (far left), a parser reads the text of the input program and turns it
-    into a parse tree or abstract syntax tree. Subsequently, one or
-    several transformations components modify the tree. At the sink
-    of the pipeline (far right), a pretty-printer turns the output tree
+    (far left), a parser reads the text of the input program and turns
+    it into a parse tree or abstract syntax tree. Subsequently, one or
+    several transformations components modify the tree. At the sink of
+    the pipeline (far right), a pretty-printer turns the output tree
     into program text.
   </para>
   
@@ -151,13 +152,12 @@ parser -> transformation -> pretty-printer
   <title>Outline</title>
 
   <para>
-    The rest of this tutorial is organized as follows. First, we
-    will discuss how we represent programs in Stratego/XT. Afterwards,
-    we will discuss the Stratego language itself, which our primary
-    tool for manipulating the programs. We will then cover how to
-    construct parsers using the syntax definition formalism SDF.
-    We round off with a brief guide to the most important tools in the
-    XT toolkit.
+    The rest of this tutorial is organized as follows. First, we will
+    discuss how we represent programs in Stratego/XT. Afterwards, we
+    will discuss the Stratego language itself, which our primary tool
+    for manipulating the programs. We will then cover how to construct
+    parsers using the syntax definition formalism SDF.  We round off
+    with a brief guide to the most important tools in the XT toolkit.
   </para>
   
 </section>

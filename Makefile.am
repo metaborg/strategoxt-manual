@@ -5,6 +5,10 @@ EXTRA_DIST = bootstrap docbook.m4 Makefile.docbook
 relname:
 	echo -n $(distdir) > relname
 
+html-only :
+	cd doc; $(MAKE)
+	cd html; $(MAKE)
+
 doc-only : 
 	cd doc; $(MAKE)
 	cd html; $(MAKE)
