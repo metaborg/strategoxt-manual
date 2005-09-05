@@ -6,6 +6,57 @@
 
   <para>
 
+        Term rewriting is an attractive paradigm for
+        program transformation.  First-order terms can be used to
+        describe the abstract syntax of programs.  For example,
+        consider the declaration of propositional formulae in
+        Figure~\ref{Fig:prop}.  A rewrite rule of the form
+\texttt{t1 -> t2}
+        declares the transformation of a term matching pattern
+        \texttt{t1} to the instantiation of \texttt{t2}.  Rewrite rules
+        can be used to express basic transformation rules and can be
+        considered as operationalizations of the algebraic laws of the
+        language.  For example, the rewrite rules in
+        Figure~\ref{Fig:prop} express basic laws of propositional
+        logic, i.e., the distribution rules, the rule of double
+        negation, and the De Morgan rules.  Using stronger forms of
+        pattern matching such as various instances of equational
+        matching (e.g., AC matching, list matching), patterns can
+        capture complicated term configurations.  Furthermore, in
+        conditional rewrite rules additional tests on the patterns can
+        be stated.
+
+        A redex is a subterm that matches with a rewrite rule.  A term
+        is in normal form if it has no redices.  Standard rewrite
+        engines for term rewrite systems compute the normal form of
+        terms with respect to sets of rules in specifications.  This
+        involves exhaustively applying rules to subterms until no more
+        rules apply.  A rewrite engine can employ different strategies
+        to order the application of rules.  In innermost rewriting all
+        subterms of a term are normalized before rules are applied to
+        the term itself.  In outermost rewriting redices closest to
+        the root of the term are rewritten first. This implies that
+        rules are automatically applied throughout a term and that no
+        traversals over the syntax tree need to be defined.
+
+        However, the complete normalization approach of rewriting
+        turns out not to be adequate for program transformation,
+        because rewrite systems for programming languages will often
+        be non-terminating and/or non-confluent. In general, it is
+        not desirable to apply all rules at the same time or to apply
+        all rules under all circumstances.
+
+        As an example, consider again the set of rewrite rules in
+        Figure~\ref{Fig:prop}.  This rewrite system is non-terminating
+        because after applying rules \texttt{DAOL} and \texttt{DAOR}, the
+        rules \texttt{DOAL} and \texttt{DOAR} can be applied, and vice
+        versa.  If we want to define a transformation to normalize
+        formulae to disjunctive normal form we could discard rules
+        \texttt{DOAL} and \texttt{DOAR}. However, if in another part of
+        the transformation a conjunctive normal form is required we
+        need a different rewrite system. It is not possible to combine
+        these rules in one rewrite system.
+
     Term Rewriting for Program Transformation
 
 apply set of rewrite rules exhaustively 
@@ -61,6 +112,21 @@ Normalize terms f(t) with respect to these rules
 
 The function now controls where rules are applied
 
+        The common solution to this kind of problem is to introduce
+        additional constructors that achieve normalization under a
+        restricted set of rules. That is, the original set of rules
+        \texttt{$p_1$ -> $p_2$} is transformed into rules of the form
+        \texttt{f($p_1$) -> $p_2'$}, where \texttt{f} is some new
+        constructor symbol and the right-hand side of the rule
+        contains recursive calls to one or more new functions. In this
+        style of specification, constructors such as \texttt{f} are
+        called \emph{functions} and are distinghuished from
+        constructors. Normal forms over such rewrite systems are
+        assumed to be free of function symbols; otherwise the function
+        would have an incomplete definition.
+
+
+
   </para>
 
 <screen>
@@ -95,6 +161,27 @@ fold : Times(e1, e2) -> &lt;try(Eval)>Times(&lt;fold>e1, &lt;fold>e2)
   <para>
 
 Traversal and application of rules are tangled
+
+        As an example of such an adaptation of a set of rewrite rules,
+        consider Figure~\ref{Fig:dnf}, which shows the rewrite system
+        in Figure~\ref{Fig:prop} turned into a terminating rewrite
+        system that defines the normalization to disjunctive normal
+        form (DNF). To transform a formula $t$ to DNF the function
+        \texttt{dnf} should be applied to it. The resulting term
+        \texttt{dnf($t$)} should be normalized with respect to the
+        rules in Figure~\ref{Fig:dnf}.  The \texttt{dnf} function
+        mimics the innermost normalization strategy by recursively
+        traversing terms. The auxiliary functions \texttt{not} and
+        \texttt{and} are used to apply the distribution rules and the
+        negation rules. In functional programming such auxiliary
+        functions are known as \emph{smart constructors}~\cite{EFM00};
+        before constructing a value, the function inspects its
+        arguments to create a simplified value, if possible.  In the
+        definition of the rules for \texttt{and} and \texttt{not} it
+        is assumed that the arguments of these functions are already
+        in disjunctive normal form. For example, if none of the
+        arguments of \texttt{and} is an \texttt{Or} term, the term
+        itself is considered to be in DNF.
 
   </para>
 
@@ -134,9 +221,45 @@ Intertwining makes it more difficult to understand the transformation
 
 Intertwining makes it impossible to reuse the rules in a different transformation.
 
+        In the solution in Figure~\ref{Fig:dnf}, the original rules
+        have been completely intertwined with the \texttt{dnf}
+        transformation. The rules for negation cannot be reused in the
+        definition of normalization to conjunctive normal form.  For
+        each new transformation a new traversal function and new smart
+        constructors have to be defined. Many additional rules had to
+        be added to traverse the term to find the places to apply the
+        rules. Instead of 5 rules, a total of 13 rules were
+        needed. Rules \texttt{AND3} and \texttt{NOT4} are default
+        rules that only apply if the other rules do not apply.
+        Without this mechanism even more rules would have had to be
+        used to handle the cases were the transformation rules do not
+        apply. Defining a normalization to conjunctive normal form
+        using the same approach would require another set of traversal
+        rules.
+
+        In general, there are two problems with this functional
+        approach to encoding the control over the application of
+        rewrite rules, when comparing it to the original term
+        rewriting approach: traversal overhead and loss of separation
+        of rules and strategies.
+
   </para>
 
   <para>
+        In the first place, the functional encoding incurs a large
+        \emph{overhead} due to the explicit specification of
+        \emph{traversal}.  In pure term rewriting, the implicit
+        strategy takes care of traversing the term in search of
+        redices.  In the functional approach traversal is spelled out
+        in the definition of the function, requiring the specification
+        of many additional rules.  A traversal rule needs to be
+        defined for each constructor in the signature and for each
+        transformation.  The overhead for transformation systems for
+        real languages can be inferred from the number of constructors
+        for some typical languages in
+        Table~\ref{Table:LanguageComplexity}.
+
+
 Language Complexity
 
 Traversal overhead and reuse of rules is important, considering the complexity of real programming languages: 
@@ -154,6 +277,29 @@ COBOL 300 1200
   </para>
 
   <para>
+
+        In the second place, rewrite rules and the strategy that
+        defines their application are completely \emph{intertwined}.
+        Another advantage of pure term rewriting is the separation of
+        the specification of the rules and the strategy that controls
+        their application. Intertwining these specifications makes it
+        more difficult to \emph{understand} the specification, since
+        rules cannot be distinghuished from the transformation they
+        are part of.  Furthermore, intertwining makes it impossible to
+        \emph{reuse} the rules in a different transformation.
+
+        \bigskip
+
+        \noindent There are several approaches to overcoming the
+        problems of explicit encoding of control. In the next three
+        sections three approaches are discussed that each tackle a
+        specific aspect of the encoding problem. The last section then
+        introduce the paradigm of programmable rewriting strategies,
+        which aims to be a unifying solution in which appliction of
+        rules can be carefully controlled, while incurring minimal
+        traversal overhead and preserving separation of rules and
+        strategies.
+
 Requirements
 
 Control over application of rules 
@@ -161,6 +307,68 @@ Control over application of rules
 No traversal overhead 
 
 Separation of rules and strategies
+
+        From this analysis we can derive a list of requirements for a
+        good solution to the problem of control in rewriting:
+\begin{description}
+
+        \item[Separation of rules and strategy]
+
+                Basic transformation rules can be defined separately
+                from the strategy that applies them, such that they
+                can be understood independently.
+
+        \item[Rule selection]
+
+                A transformation can select the necessary set of rules
+                from a collection (library) of rules.
+
+        \item[Control]
+
+                A transformation can exercise complete control over
+                the application of rules. This control may be
+                fine-grained or course-grained depending on the
+                application.
+
+        \item[No traversal overhead]
+
+                Transformations can defined without overhead for
+                the definition of traversals.
+
+        \item[Reuse of rules]
+
+                Rules can be reused in different transformations.
+
+        \item[Reuse of traversal schemas]
+
+                Traversal schemas can be reused in different
+                transformations.
+
+        One approach to the problem of encoding control is to
+        control the selection of rules used in a normalization. This
+        approach was adopted in {\sc Tampr}, the \emph{Transformation
+        Assisted Multiple Program Realization
+        System}~\cite{Boyle89,BoyleEtAl97}.  A {\sc tampr}
+        specification consists of a series of rewrite rules. The {\sc
+        tampr} rewrite engine applies rewrite rules exhaustively to
+        reach a canonical form.  The problem of non-termination caused
+        by rules that are each others' inverses is solved in {\sc
+        tampr} by organizing a large transformation into a sequence of
+        consecutive reductions to canonical forms under different sets
+        of rewrite rules.  Typically such a sequence starts with
+        several preparatory steps that bring the program in the right
+        form, followed by the pivotal step which achieves the actual
+        transformation, followed by some post-processing.
+
+        The `sequences of canonical forms' approach stays close to the
+        original term rewriting paradigm. Traversal is implicit and
+        handled by the rewriting strategy. The problem of conflicting
+        rules is solved by staging the application of such rules. At
+        each stage the applicable rules are selected instead of
+        normalizing with respect to all rules.  However, the approach
+        does not allow more fine-grained control over the application
+        of rules, e.g., limiting the normalization of terms in a
+        certain context as can be done with strategy annotations.
 
   </para>
 
@@ -171,6 +379,50 @@ Separation of rules and strategies
   <para>
 
 Cascading Transformations
+
+        The basic idiom of program transformation achieved with term
+        rewriting is that of \emph{cascading transformations}.
+        Instead of applying a single complex transformation algorithm
+        to a program, a number of small, independent transformations
+        are applied in combination throughout a program or program
+        unit to achieve the desired effect.  Although each individual
+        transformation step achieves little, the cumulative effect can
+        be significant, since each transformation feeds on the results
+        of the ones that came before it. Cascading transformations are
+        the key, for example, to the compilation-by-transformation
+        approach \cite{FM91} applied in the Glasgow Haskell Compiler
+        \cite{PS98}. GHC applies a large number of small, almost
+        trivial program transformations throughout programs to achieve
+        large-scale optimization by accumulating small program
+        changes.
+
+        One common cascading of transformations is accomplished by
+        exhaustively applying rewrite rules to a subject term. In
+        Stratego the definition of a cascading normalization strategy
+        with respect to rules \texttt{R1}, ... ,\texttt{Rn} can be
+        formalized using an \texttt{innermost} strategy:
+\begin{verbatim}
+  simplify = innermost(R1 + ... + Rn)
+\end{verbatim}
+
+        The running example in this chapter was the normalization of
+        proposition formulae to disjunctive and conjunctive normal
+        form. These transformations can be achieved simply by
+        innermost rewriting. However, the rules for both
+        transformations together form a non-terminating rewrite
+        system. It is desirable to develop a large library of
+        transformation rules that can be called upon when necessary,
+        without having to compose a rewrite system by cutting and
+        pasting. Using the \texttt{innermost} strategy, the
+        normalization to disjunctive normal form can be specified as
+\begin{verbatim}
+  dnf = innermost(DAOL + DAOR + DN + DMA + DMO)
+\end{verbatim}
+        and the normalization to conjunctive normal form as
+\begin{verbatim}
+  cnf = innermost(DOAL + DOAR + DN + DMA + DMO)
+\end{verbatim}
+
 
 Apply small, independent transformations in combination 
 
@@ -195,6 +447,24 @@ cnf = innermost(DOAL &lt;+ DOAR &lt;+ DN &lt;+ DMA &lt;+ DMO)
 
 One-pass Traversals 
 
+        However, other strategies are possible. For example, the GHC
+        simplifier applies rules in a single traversal over a program tree
+        in which rules are applied both on the way down and on the way up.
+        This is expressed in Stratego by the strategy
+\begin{verbatim}
+  simplify  = downup(repeat(R1 + ... + Rn))
+\end{verbatim}
+        Another example is constant folding of proposition formulae,
+        which requires a simple one-pass bottom-up traversal.
+        Figure~\ref{Fig:BottomupRepeat} shows a set of rewrite rules
+        implementing the thruth tables for the propositional
+        operators. The strategy \texttt{eval} applies these rules in a
+        bottom-up traversal over a term, using the
+        \texttt{bottomup(s)} strategy. At each sub-term, the rules are
+        applied repeatedly until no more rule applies using the
+        \texttt{repeat(s)} strategy.
+
+
 Apply rules in a single traversal over a program tree 
 
 Realization in Stratego
@@ -205,9 +475,42 @@ simplify = bottomup(repeat(R1 &lt;+ ... &lt;+ Rn))
 
 Example
 
-eval = bottomup( repeat( T1 &lt;+ T2 &lt;+ T3 &lt;+ T4 &lt;+ T5 &lt;+ T6 &lt;+ T7 &lt;+ T8 &lt;+ T9 &lt;+ T10 &lt;+ T11 &lt;+ T12 &lt;+ T13 &lt;+ T14 &lt;+ T15 &lt;+ T16 &lt;+ T17 ) )
+<screen>
+rules
+  T1  : Not(True) -> False       T2  : Not(False) -> True
+  T3  : And(True, x) -> x        T5  : And(False, x) -> False
+  T4  : And(x, True) -> x        T6  : And(x, False) -> False
+  T7  : Or(True, x) -> True      T9  : Or(False, x) -> x
+  T8  : Or(x, True) -> True      T10 : Or(x, False) -> x
+  T11 : Impl(True, x) -> x       T13 : Impl(False, x) -> True
+  T12 : Impl(x, True) -> True
+  T14 : Eq(False, x) -> Not(x)   T16 : Eq(True, x) -> x
+  T15 : Eq(x, False) -> Not(x)   T17 : Eq(x, True) -> x
+strategies
+  eval =
+    bottomup(
+      repeat(
+        T1 + T2 + T3 + T4 + T5 + T6 + T7 + T8 + T9 + T10 +
+        T11 + T12 + T13 + T14 + T15 + T16 + T17
+      )
+    )
+</screen>
 
   </para>
+
+<para>
+
+        Figure~\ref{Fig:TopdownTry} shows several \emph{desugaring}
+        rules, which express propositional operators in terms of
+        others. The strategies \texttt{desugar} and \texttt{impl-nf}
+        define two different transformations using these rules.  Both
+        transformation use a top-down traversal \texttt{topdown(s)},
+        which visits a term starting at the root and then
+        descending. The strategy \texttt{try(s)} tries to apply
+        transformation \texttt{s}. In case of failure it does nothing.
+
+
+</para>
 
 <screen>
 DefN  : Not(x)     -> Impl(x, False)
@@ -235,6 +538,24 @@ set of available rules are applied.
 
 Realization in Stratego
 
+        Cascading transformations apply a number of rules one after
+        another to an entire program. But in some cases this is not
+        appropriate. For instance, two transformations may be inverses
+        of one another, so that repeatedly applying one and then the
+        other would lead to non-termination. To remedy this difficulty,
+        Stratego supports the idiom of \emph{staged transformation}.
+
+        In staged computation, transformations are not applied to a
+        subject term all at once, but rather in stages.  In each
+        stage, only rules from some particular subset of the entire
+        set of available rules are applied. In the TAMPR program
+        transformation system~\cite{Boyle89,BoyleEtAl97} this idiom is
+        called \emph{sequence of normal forms}, since a program tree
+        is transformed in a sequence of steps, each of which performs
+        a normalization with respect to a specified set of rules. In
+        Stratego this idiom can be expressed directly as
+
+
   </para>
 
 <screen>
@@ -252,6 +573,39 @@ Apply rules only to selected parts of the subject program
 
 Realization in Stratego
 
+        In conventional program optimization, transformations are
+        applied throughout a program.  In optimizing imperative
+        programs, for example, complex transformations are applied to
+        entire programs \cite{Muc97}. In GHC-style
+        compilation-by-transformation, small transformation steps are
+        applied throughout programs.  Another style of transformation
+        is a mixture of these ideas. Instead of applying a complex
+        transformation algorithm to a program we use staged, cascading
+        transformations to accumulate small transformation steps for
+        large effect. However, instead of applying transformations
+        throughout the subject program, we often wish to apply them
+        locally, i.e., only to selected parts of the subject program.
+        This allows us to use transformations rules that would not be
+        beneficial if applied everywhere.
+
+        One example of a strategy which achieves such a transformation
+        is
+
+        The strategy \texttt{alltd(s)} descends into a term until a
+        subterm is encountered for which the transformation \texttt{s}
+        succeeds.  In this case the strategy
+        \texttt{trigger-trans\-formation} recognizes a program
+        fragment that should be transformed. Thus, cascading
+        transformations are applied locally to terms for which the
+        transformation is triggered. Of course more sophisticated
+        strategies can be used for finding application locations, as
+        well as for applying the rules locally. Nevertheless, the key
+        observation underlying this idiom remains: Because the
+        transformations to be applied are local, special knowledge
+        about the subject program at the point of application can be
+        used. This allows the application of rules that would not be
+        otherwise applicable.
+
   </para>
 
 <screen>
@@ -260,12 +614,6 @@ Realization in Stratego
       trigger-transformation
       ; innermost(A1 &lt;+ ... &lt;+ An)
     )
-</screen>
-
-<screen>
-</screen>
-
-<screen>
 </screen>
 
 </section>

@@ -13,14 +13,34 @@
     Choice; identity, Failure, and Negation
   </para>
 
+<section>
+    <title>Sequential Composition</title>
+
+    <para>
+       of rules
+
+       example; composition of rules
+
+        Using the sequential composition B;A, the term P(S(Z),Z) is
+        reduced to S(Z)
+
+    </para>
+
+<screen>
+  rules
+    A : P(Z,x) -> x
+    B : P(S(x),y) -> P(x,S(y))
+</screen>
+
+</section>
+
 <section xml:id="leftchoice">
     <title>Deterministic Choice (left choice)</title>
 
     <para>
       The left choice or deterministic choice s1 &lt;+ s2 chooses one
       of the trans- formations to apply. That is, s1 is first applied,
-      and s2 is only applied if s2 fails. Formally, the left choice
-      operator is defined as:
+      and s2 is only applied if s2 fails. 
     </para>
 
     <para>

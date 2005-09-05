@@ -120,6 +120,16 @@ while(c, s) = if c then s; while(c,s) end
 do-while(s, c) = s; if c then do-while(s, c) end
   </screen>
 
+<screen>
+  strategies
+    repeat(s) = s; repeat(s) &lt;+ id
+    eval = repeat(A &lt;+ B)
+  rules
+    A : P(Z,x) -> x
+    B : P(S(x),y) -> P(x,S(y))
+</screen>
+
+
   <para>
   </para>
 
@@ -154,10 +164,37 @@ length = foldr(!0, add, !1)
 
     <screen>repeat(s) = try(s; repeat(s))</screen>
 
+
+    <para>
+Iteration Strategies}
+
+        Using sequential composition, choice, and recursion a large
+        variety of iteration strategies can be defined. The following
+        module is part of the Stratego Standard Library:
+
+    </para>
+
+<screen>
+  module iteration
+  imports conditional
+  strategies
+    repeat(s, c)       = rec x(s; x &lt;+ c)
+    repeat(s)          = repeat(s, id)
+    repeat1(s, c)      = rec x(s; (x &lt;+ c))
+    repeat1(s)         = repeat1(s, id)
+    repeat-until(s, c) = rec x(s; (c &lt;+ x))
+
+    while(c, s)        = rec x(try(c; s; x))
+    do-while(s, c)     = rec x(s; try(c; x))
+    while-not(c, s)    = rec x(c &lt;+ s; x)
+
+    for(i, c, s)       = i; while-not(c, s)
+</screen>
+
 </section>
 
 <section>
-  <title></title>
+  <title>External and Primitive Definitions</title>
 
   <para>
   </para>
