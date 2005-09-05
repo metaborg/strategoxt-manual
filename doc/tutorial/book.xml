@@ -14,12 +14,5 @@
   </part>
   
   <xi:include href="stratego/part.xml"/>
-  
-  <part xml:id="manual-xt">
-    <title>The XT Transformation Tools</title>
-    <xi:include href="xt/sdf/chapter.xml" />
-    <xi:include href="xt/gpp/chapter.xml" />
-    <xi:include href="xt/rtg/chapter.xml" />
-    <xi:include href="xt/xtc/chapter.xml" />
-  </part>
+  <xi:include href="xt/part.xml"/>
 </book>

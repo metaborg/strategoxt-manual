@@ -301,8 +301,8 @@
 
   <para>
 
-     A <link linkend="ref-rtg">regular tree grammar</link> defines
-     well-formedness rules for a set of trees (or terms).  The
+     A <link linkend="tutorial-rtg">regular tree grammar</link>
+     defines well-formedness rules for a set of trees (or terms).  The
      following regular tree grammar has been generated from the syntax
      definition of TIL and precisely describes the abstract syntax
      trees of TIL programs.

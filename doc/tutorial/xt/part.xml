@@ -1,0 +1,10 @@
+<part xml:id="tutorial-xt"
+      xmlns="http://docbook.org/ns/docbook"
+      xmlns:xi="http://www.w3.org/2003/XInclude">
+  
+  <title>The XT Transformation Tools</title>
+  <xi:include href="sdf/chapter.xml" />
+  <xi:include href="gpp/chapter.xml" />
+  <xi:include href="rtg/chapter.xml" />
+  <xi:include href="xtc/chapter.xml" />
+</part>
