@@ -9,7 +9,6 @@
   <part xml:id="tutorial-introduction">
     <title>Introduction</title>
     <xi:include href="introduction.xml"/>
-    <xi:include href="representation/chapter.xml"/>
     <xi:include href="installation/chapter.xml" />
   </part>
 
