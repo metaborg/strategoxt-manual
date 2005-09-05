@@ -1,7 +1,6 @@
-<chapter xml:id="sdf-unit-testing"
+<section xml:id="sdf-unit-testing"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
-
   
   <title>Unit Testing with parse-unit</title>
   
@@ -129,4 +128,4 @@ PARSE_UNIT_PTABLE = $(top_srcdir)/syn/Foo.tbl
 installcheck-local: $(TESTSUITES:.testsuite=.runtestsuite)
     </programlisting>
   </section>
-</chapter>
+</section>

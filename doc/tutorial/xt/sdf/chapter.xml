@@ -7,4 +7,6 @@
   <para>
     Refer to SDF manual. Examples of pack-sdf, sglri, and sdf2table.
   </para>
+
+  <xi:include href="parse-unit/section.xml"/>
 </chapter>
