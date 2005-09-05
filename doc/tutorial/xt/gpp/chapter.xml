@@ -17,6 +17,15 @@
   <xi:include href="pp-table.xml"/>
 
   <section>
+    <title>Restoring Parenthesis</title>
+    <para>
+      In this section, we explain how you can generate a tool that
+      restores all parentheses at the places where necessary according
+      to the priorities and associativities of a language.
+    </para>
+  </section>
+
+  <section>
     <title>Pretty Printing using Stratego (*)</title>
     <para>
       In this section, we explain how you can use Box in Stratego to
