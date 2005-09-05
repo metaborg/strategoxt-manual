@@ -13,7 +13,7 @@
     <xi:include href="installation/chapter.xml" />
   </part>
   
-  <xi:include href="../stratego/part.xml"/>
+  <xi:include href="stratego/part.xml"/>
   
   <part xml:id="manual-xt">
     <title>The XT Transformation Tools</title>
