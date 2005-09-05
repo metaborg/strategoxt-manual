@@ -21,7 +21,7 @@ AC_DEFUN([USE_DOCBOOK], [
     DOCBOOKXI_RNG_WORKS=
   )
 
-# DocBook XSL
+  # DocBook XSL
 
   AC_ARG_WITH(docbook-xsl, 
     AC_HELP_STRING([--with-docbook-xsl=DIR], [use DocBook XSL at DIR @<:@PREFIX@:>@]), 
@@ -108,7 +108,7 @@ END
     if test "$?" = 0; then
       JING_WORKS=yes
     fi
-    rm -f jing-test.xml
+    rm -f jingtest.xml
     AC_MSG_RESULT($JING_WORKS)
   fi
 
