@@ -6,6 +6,34 @@
 
    <screen>
 
+        In the previous section we have seen combinators for composing
+        \emph{type preserving} strategies. That is, structural
+        transformations in which basic transformation rules don't
+        change the type of a term. Such strategies are typically
+        applied in transformations, which change the structure of a
+        term, but not its type. Examples are simplification and
+        optimization.
+
+        In this section we consider the class of \emph{type unifying}
+        strategies, in which terms of different types are mapped onto
+        one type. The application area for this type of strategy is
+        analysis of expresssions with examples such as free variables
+        collection and call-graph extraction.
+
+        We will consider the following example problems:
+        \begin{itemize}
+
+        \item \verb|term-size|: Count the number of nodes in a term
+
+        \item \verb|occurrences|: Count number of occurrences of a
+        subterm in a term
+
+        \item \verb|collect-vars|: Collect all variables in expression
+
+        \item \verb|free-vars|: Collect all \emph{free} variables in
+        expression \end{itemize}
+
+
 Type preserving 
 
 Structural transformation 
@@ -56,7 +84,9 @@ Collect all free variables in expression
    <title>Type Unifying List Transformations</title>
 
    <screen>
-     
+
+            We start by considering type-unifying operations on lists.
+
    </screen>
 
    <screen>
@@ -142,6 +172,14 @@ AssignSize :
    </screen>
 
    <screen>
+
+        Definining folds in this manner has several limitations.  In
+        the definition of fold, one parameter for each constructor is
+        provided and traversal is defined explicitly for each
+        constructor.  Furthermore, in the instantiation of fold one
+        rule for each constructor is needed, and the default behaviour
+        is not generically specified.
+
      Limitations of Fold 
 
 Definition of fold 
@@ -158,6 +196,11 @@ Default behaviour not generically specified
    </screen>
 
    <screen>
+
+        One solution would be to use the generic traversal strategy
+        \verb|bottomup| to deal with fold:
+
+
 Defining Fold with Generic Traversal 
 
 Fold is bottomup traversal: 
@@ -176,6 +219,11 @@ One parameter:
 rules combined with choice 
 
 Instantiation: default behaviour not generically specified
+
+        Although the recursive application to subterms is now defined
+        generically , one still has to specify rules for the default
+        behaviour.
+
    </screen>
 
    <screen>
@@ -188,6 +236,11 @@ Instantiation: default behaviour not generically specified
    <title>Generic Term Deconstruction</title>
 
    <screen>
+
+        Instead of having folding rules that are specific to a data
+        type, such as
+
+
 Generic Term Deconstruction 
 
 (1) Specific definitions 
@@ -204,9 +257,21 @@ CSize :
   c(e1, e2, ...) -> &lt;add>(e1, &lt;add>(e2, ...)) 
 
 Requires generic decomposition of constructor application
+
+        This requires generic decomposition of a constructor
+        application into its constructor and the list with
+        children. This can be done using the \verb|#| operator. The
+        match strategy \verb|?p1#(p2)| decomposes a constructor
+        application into its onstructor name and the list of direct
+        subterms. Matching such a pattern against a term of the form
+        \verb|C(t1,...,tn)| results in a match of \verb|"C"| against
+        \verb|p1| and a match of \verb|[t1,...,tn]| against \verb|p2|.
+
    </screen>
 
    <screen>
+
+
 Generic Term Deconstruction Syntax: ?p1#(p2) 
 
 Semantics: when applied to a term c(t1,...,tn) matches 
@@ -229,6 +294,10 @@ variable xs bound to [Int("1"), Var("2")]
    </screen>
 
    <screen>
+
+        Reduce a constructor application by folding the list of
+        subterms.
+
 Definition of Crush 
 
 crush(nul, sum, s) : 
@@ -236,6 +305,10 @@ crush(nul, sum, s) :
    </screen>
 
    <screen>
+
+   Now we can define all kinds of operations generically
+
+
 Applications of Crush 
 
 node-size = 
@@ -337,6 +410,18 @@ free-vars = collect-exc(ExpVars, FreeVars)
    <title>Generic Term Construction</title>
 
    <screen>
+
+        It can also be useful to \emph{construct} terms
+        generically. For example, in parse tree implosion, application
+        nodes should be reduced to constructor applications. Hence
+        build operators can also use the \verb|#| operator. In a
+        strategy \verb|!p1#(p2)|, the current subject term is replaced
+        by a constructor application, where the constructor name is
+        provided by \verb|p1| and the list of subterms by
+        \verb|p2|. So, if \verb|p1| evaluates to \verb|"C"| and
+        \verb|p2| evaluates to \verb|[t1,...,tn]|, the expression
+        \verb|!p1#(p2)| build the term \verb|C(t1,...,tn)|.
+
 Generic Term Construction 
 
 Syntax: !p1#(p2) 

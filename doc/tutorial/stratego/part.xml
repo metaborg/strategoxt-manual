@@ -13,6 +13,12 @@
     <xi:include href="language/compiler-interpreter.xml"/>
   </chapter>
   
+  <chapter xml:id="stratego-rewriting-strategies">
+    <title>From Rewriting to Rewriting Strategies (*)</title>
+    <xi:include href="language/term-rewriting.xml"/>
+    <xi:include href="language/in-control.xml"/>
+  </chapter>
+
   <chapter xml:id="stratego-basic-strategies">
     <title>Basic Strategies (*)</title>
     <xi:include href="language/build-match.xml"/>
@@ -23,7 +29,6 @@
   
   <chapter xml:id="stratego-traversal-strategies">
     <title>Traversal Strategies (*)</title>
-    <xi:include href="language/in-control.xml"/>
     <xi:include href="language/traversal.xml"/>
     <xi:include href="language/type-unifying.xml"/>
   </chapter>
