@@ -1,0 +1,8 @@
+<part xml:id="tutorial-introduction"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Introduction</title>
+  <xi:include href="transformation-systems.xml"/>
+  <xi:include href="installation.xml" />
+</part>

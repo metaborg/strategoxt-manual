@@ -60,7 +60,6 @@
     parser, transformer, and pretty-printer is embedded in the parse
     table, signature, and pretty-print table, which are all generated
     from the same syntax definition.
-
   </para>
 
   <figure xml:id="Fig-GrammarsAsContracts">

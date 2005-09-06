@@ -6,12 +6,7 @@
 
   <xi:include href="authors.xml"/>
 
-  <part xml:id="tutorial-introduction">
-    <title>Introduction</title>
-    <xi:include href="introduction.xml"/>
-    <xi:include href="installation/chapter.xml" />
-  </part>
-
+  <xi:include href="introduction/part.xml"/>  
   <xi:include href="xt/part.xml"/>  
   <xi:include href="stratego/part.xml"/>
 </book>
