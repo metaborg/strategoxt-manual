@@ -41,17 +41,22 @@
 
   <para>
     But who uses software transformation, anyway? People with a
-    problem resembling any in Figure 1 are. All too often, Real
-    Programmers with such a problem have the opinion that software
-    transformation is overly complicated dark magic, and that simple
-    regular expression hacks solve the problem just fine. Almost
-    equally often, their ad-hoc, text-based solutions turn out to be
-    brittle, overly complicated and acquire a status of dark magic,
-    with the result that no other team member dears touch the
-    stuff. Most of the time, the problem would be easily solved in a
-    maintainable and robust way if only the right tool could be found.
+    problem resembling any in <xref linkend="Fig-Applications"/>
+    are. All too often, Real Programmers with such a problem have the
+    opinion that software transformation is overly complicated dark
+    magic, and that simple regular expression hacks solve the problem
+    just fine. Almost equally often, their ad-hoc, text-based
+    solutions turn out to be brittle, overly complicated and acquire a
+    status of dark magic, with the result that no other team member
+    dears touch the stuff. Most of the time, the problem would be
+    easily solved in a maintainable and robust way if only the right
+    tool could be found.
   </para>
 
+  <figure xml:id="Fig-Applications">
+    <title>
+      Applications of Program Transformation.
+    </title>
   <screen>
 Compilers 
 - translation   
@@ -82,6 +87,7 @@ Program understanding
 Document generation/transformation 
 - Web/XML programming (server-side  scripts )
   </screen>
+  </figure>
   
   <para>
     So what do should you do if you have a mountain of source code
@@ -99,13 +105,37 @@ Document generation/transformation
 
 <section>
   <title>What is Stratego/XT?</title>
-  
+
   <para>
-    The label on the tin says: <emphasis>Stratego/XT is a framework
-    for the implementation of transformation systems based on
-    structural representations of programs.</emphasis>
+    A program transformation system is usually organized as a simple
+    pipeline of transformation steps. At the source of the pipeline
+    (far left), a parser reads the text of the input program and turns
+    it into a parse tree or abstract syntax tree. Subsequently, one or
+    several transformations components modify the tree. At the sink of
+    the pipeline (far right), a pretty-printer turns the output tree
+    into program text. <xref linkend="Fig-Pipeline"/> plots these
+    components in on the map of a Transformation System. Of course,
+    the output program need not be in the same language as the input
+    program. It need not even be a programming language.
+  </para>
+
+  <figure xml:id="Fig-Pipeline">
+    <title>
+      Pipeline of a software transformation system.
+    </title>
+    <pngobject fileref="pipe.png" align="center"/>
+  </figure>
+
+  <para>
+    So, what is Stratego/XT? The label on the tin says:
+    <emphasis>Stratego/XT is a framework for the implementation of
+    transformation systems based on structural representations of
+    programs.</emphasis>. In other words: Stratego/XT is a framework
+    that aids in the development of all components of a transformation
+    system.
   </para>
   
+  <!-- TODO: this should be reprased -->
   <para>
     It goes on to boast that: <emphasis>The framework aims at better
     productivity in the development of transformation systems through
@@ -119,40 +149,17 @@ Document generation/transformation
     the XT tools for the generation of intermediate products needed in
     the construction of transformation systems.</emphasis>
   </para>
-  
+
   <para>
     Exactly what all this means will become clear to you as we move
-    along in this tutorial, but at least we can start by plotting them
-    in on the map of a Transformation System, given in <xref
-    linkend="Fig-Pipeline"/>.
-  </para>
-
-  <figure xml:id="Fig-Pipeline">
-    <title>
-      Pipeline of a software transformation system.
-    </title>
-    <pngobject fileref="pipe.png" align="center"/>
-  </figure>
-
-  <para>
-    A program transformation system is usually organized as a simple
-    pipeline of transformation steps. At the source of the pipeline
-    (far left), a parser reads the text of the input program and turns
-    it into a parse tree or abstract syntax tree. Subsequently, one or
-    several transformations components modify the tree. At the sink of
-    the pipeline (far right), a pretty-printer turns the output tree
-    into program text.
-  </para>
-  
-  <para>
-    Of course, the output need not be in the same language as the
-    input. It need not even be a programming language.
+    along in this tutorial.
   </para>
 </section>
   
 <section>
   <title>Outline</title>
 
+  <!-- TODO: outline must be updated -->
   <para>
     The rest of this tutorial is organized as follows. First, we will
     discuss how we represent programs in Stratego/XT. Afterwards, we
