@@ -14,16 +14,16 @@ doc-only :
 	cd html; $(MAKE)
 	cd man; $(MAKE)
 
-.PHONY : mandist
+.PHONY : manual mandist
 
-# Todo: maybe not copying docbook and makefiles is more effective ...
-# We could also use a separate source tree for example files.
-# (what happens if there is an .xml file ...)
-mandist:
+# Create a complete manual in the dir mandist/manual
+manual :
+	cd doc; $(MAKE)
+	cd html; $(MAKE)
 	rm -rf mandist
 	mkdir mandist
-	mkdir mandist/$(distdir)
-	cp html/*.css html/*.html mandist/$(distdir)
+	mkdir mandist/manual
+	cp html/*.css html/*.html mandist/manual
 	cd doc && find . \
            -name *.png -or \
            -name *.str -or \
@@ -31,14 +31,18 @@ mandist:
            -name *.str -or \
            -name *.rtg -or \
            -name *.pp -or \
-           -name *.meta | xargs -i cp --parents {} ../mandist/$(distdir)
-	cp src/examples.tar.gz mandist/$(distdir)
-	cd mandist/$(distdir) && tar zxvf ../../src/examples-full.tar.gz
+           -name *.meta | xargs -i cp --parents {} ../mandist/manual
+	cp src/examples.tar.gz mandist/manual
+	cd mandist/manual && tar zxvf ../../src/examples-full.tar.gz
+
+# Creates several distributions of the manual
+mandist: manual
+	cd mandist && tar cvfj manual.tar.bz2 manual
+	mv mandist/manual.tar.bz2 .
+	cd mandist && mv manual $(distdir)
 	cd mandist && tar cvfj $(distdir).tar.bz2 $(distdir)
 	cd mandist && tar cvfz $(distdir).tar.gz $(distdir)
 	cd mandist && zip -r $(distdir).zip $(distdir)
-	cd mandist && mv $(distdir) manual && tar cvfj manual.tar.bz2 manual
-	mv mandist/manual.tar.bz2 .
-	rm -rf mandist/$(distdir)
-	rm -rf mandist/manual
+
+
 

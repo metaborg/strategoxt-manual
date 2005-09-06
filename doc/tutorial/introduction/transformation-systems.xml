@@ -131,7 +131,7 @@ Document generation/transformation
     <title>
       Pipeline of a software transformation system.
     </title>
-    <pngobject fileref="xmpl/transf-cycle.png" align="center"/>
+    <pngobject fileref="pipe.png" align="center"/>
   </figure>
 
   <para>
