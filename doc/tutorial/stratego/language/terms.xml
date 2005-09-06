@@ -110,10 +110,29 @@ Plus(
 
  <section>
    <title>Signatures</title>
+
    <para>
      to use terms in Stratego programs, their constructors should be
      declared in a signature
+
+     contains for each constructor the number and types of the arguments
+
+     altough types are not checked in the current implementation of Stratego
+     it is considered good style 
    </para>
+
+<screen>
+signature
+  sorts Id Exp
+  constructors
+           : String -> Id
+    Var    : Id -> Exp
+    Int    : Int -> Exp
+    Plus   : Exp * Exp -> Exp
+    Mul    : Exp * Exp -> Exp
+    Call   : Id  * List(Exp) -> Exp
+</screen>
+
  </section>  
 
  <section>

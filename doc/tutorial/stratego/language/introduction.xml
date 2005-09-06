@@ -172,6 +172,10 @@
      Chapter XXX argues the need for control over the application of
      rewrite rules and introduces strategies for achieving this.
 
+  </para>
+
+  <para>
+
      The rest of the chapters in this tutorial explain the language in
      more detail, starting bottom-up from the basic operations.
 
