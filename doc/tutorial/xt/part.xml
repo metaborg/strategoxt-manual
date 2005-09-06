@@ -7,6 +7,5 @@
   <xi:include href="sdf/chapter.xml" />
   <xi:include href="gpp/chapter.xml" />
   <xi:include href="rtg/chapter.xml" />
-  <xi:include href="xtc/chapter.xml" />
   <xi:include href="xml/chapter.xml" />
 </part>

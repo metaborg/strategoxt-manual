@@ -11,4 +11,5 @@
   <xi:include href="io.xml"/>
   <xi:include href="options.xml"/>
   <xi:include href="sunit.xml"/>
+  <xi:include href="xtc/chapter.xml" />
 </part>
