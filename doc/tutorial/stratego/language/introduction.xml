@@ -1,4 +1,4 @@
-<section
+<partintro
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -29,8 +29,16 @@
 
   </para>
 
+  <para>
+
+    Stratego is a language designed for this purpose. It is a language
+    based on the paradigm of rewriting with programmable rewriting
+    strategies and dynamic rules.
+
+  </para>
+
 <section>
-  <title>Transformation by Term Rewriting</title>
+  <title>Transformation by Rewriting</title>
 
   <para>
 
@@ -41,7 +49,7 @@
     side pattern p2. For instance, the rewrite rule
 
 <screen>
-|[ i + j ]| -> |[ k ]| where &lt;add>(i ,j ) => k 
+|[ i + j ]| -> |[ k ]| where &lt;add>(i, j) => k 
 </screen>
 
     expresses constant folding for addition, i.e. replacing an
@@ -66,9 +74,9 @@
 
   <para>
 
-    However, there are two problems associated with the application of
-    standard term rewriting techniques to program transformation: the
-    need to intertwine rules and strategies in order to control the
+    However, there are two limitations to the application of standard
+    term rewriting techniques to program transformation: the need to
+    intertwine rules and strategies in order to control the
     application of rewrite rules and the context-free nature of
     rewrite rules.
 
@@ -151,85 +159,46 @@
 
   <para>
 
-        Stratego is a language for program transformation based on
-        term rewriting with programmable rewriting strategies.
+     The following chapters give a tutorial for the Stratego language
+     in which these ideas are explained and illustrated.
 
-  </para>
+     The first three chapters outline the basic ideas of Stratego programming
+     in bold strokes.
 
-  <para>
+     Chapter XXX shows how to set up, compile, and use a Stratego program.
 
-        Conventional Term Rewriting
+     Chapter XXX introduces term rewrite rules and term rewriting.
 
-        - Rewrite system = set of rewrite rules
+     Chapter XXX argues the need for control over the application of
+     rewrite rules and introduces strategies for achieving this.
 
-        - Redex = reducible expression
+     The rest of the chapters in this tutorial explain the language in
+     more detail, starting bottom-up from the basic operations.
 
-        - Normalization = exhaustive application of rules to term
+     Chapter XXX introduces the notions of building and matching
+     terms, which provide the core to all manipulations of
+     programs. It then goes on to show how these actions can be used
+     to define higher-level constructs for expressing transformations,
+     such as rewrite rules.
 
-        - (Stop when no more redices found)
+     Chapter XXX explains how to name reusable strategy expressions
+     using definitions, and how to create more complex transformations
+     using control combinators.
 
-        - Strategy = algorithm used to search for redices
+     Chapter XXX introduces the notion of data-type specific and generic
+     traversal combinators.
 
-        - Strategy given by engine
+     Chapter XXX shows how to generically define program analyses
+     using type-unifying strategies.
+ 
+     Chapter XXX shows ho to use the syntax of the source language in
+     the patterns of transformation rules.
 
-  </para>
-
-  <para>
-
-        Strategic Term Rewriting
-
-        - Select rules to use in a specific transformation
-
-        - Select strategy to apply
-
-        - Define your own strategy if necessary
-
-        - Combine strategies
-
-  </para>
-
-  <para>
-
-        - Basic Transformation Strategies
-
-        - Creating rewrite rules from first principles
-
-        - Composition of Transformation Strategies
-
-        - Combining rewrite rules into complex transformations
-
-        - Combinators for Term Traversal
-
-        - Data-type specific and generic combinators for traversal
-
-        - Transformation Components
-
-        - Creating executable transformation components
-
-  </para>
-
-
-  <para>
-
-High-level specification of transformations 
-
-Applicable to many kinds of transformation   
-compilation, generation, analysis, migration, ... 
-
-Separation of rules and strategy   
-
-specify rules separately from strategy that applies them 
-
-Reuse of transformations at di erent levels of granularity   
-
-rule, strategy, tool, system 
-
-No strict separation between abstractions   
-
-mix rules, strategies, tools
-
+     Finally, Chapter XXX introduces the notion of dynamic rules for
+     expressing context-sensitive transformations.     
+        
   </para>
 
 </section>
 
-</section>
+</partintro>

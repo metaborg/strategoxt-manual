@@ -1,8 +1,11 @@
-<section
+<chapter
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
- <title>Combinators for Term Traversal (*)</title>
+ <title>Traversal Strategies (*)</title>
+
+<section>
+  <title>Introduction</title>
 
  <para>
 
@@ -108,6 +111,8 @@ Some Apply to as many direct subterms as possible, and at least one
  <para> 
 
  </para>
+
+</section>
 
 <section>
    <title>Congruence Operators</title>
@@ -824,4 +829,4 @@ Dynamic programming
 
 
 
-</section>
+</chapter>

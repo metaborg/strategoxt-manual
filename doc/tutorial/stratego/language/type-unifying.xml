@@ -1,8 +1,11 @@
-<section
+<chapter
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
    <title>Type Unifying Strategies (*)</title>
+
+<section>
+   <title>Introduction</title>
 
    <screen>
 
@@ -79,6 +82,8 @@ free-vars
 Collect all free variables in expression
 
    </screen>
+
+</section>
 
 <section>
    <title>Type Unifying List Transformations</title>
@@ -459,4 +464,4 @@ See implode-asfix for full strategy
 </section>
 
 
-</section>
+</chapter>
