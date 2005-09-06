@@ -43,3 +43,4 @@ mandist: manual
 	cd mandist && tar cvfj $(distdir).tar.bz2 $(distdir)
 	cd mandist && tar cvfz $(distdir).tar.gz $(distdir)
 	cd mandist && zip -r $(distdir).zip $(distdir)
+	rm -rf mandist/$(distdir)
