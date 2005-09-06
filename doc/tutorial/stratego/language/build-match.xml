@@ -5,6 +5,29 @@
   <title>Building and Matching Terms (*)</title>
     
   <para>
+
+        Rules are not really atomic transformation actions. To see
+        this, consider what happens when the rewrite rule
+<screen>
+  DAOL : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
+</screen>
+        is applied.  First it matches the subject term against the
+        pattern \texttt{And(Or(x, y), z)} in the left-hand side. This
+        means that a substitution for the variables \texttt{x},
+        \texttt{y}, and \texttt{z} is sought, that makes the pattern
+        equal to the subject term. If the match fails, the rule
+        fails. If the match succeeds, the pattern \texttt{Or(And(x,
+        z), And(y, z))} on the right-hand side is instantiated with
+        the bindings found during the match of the left-hand side. The
+        instantiated term then replaces the original subject
+        term. Furthermore, the rule limits the scope of the variables
+        occurring in the rule. That is, the variables \texttt{x},
+        \texttt{y}, \texttt{z} are local to this rule. After the rule
+        is applied the bindings to these variables are invisible
+        again.
+
+
+
     The atomic actions of program transformation in Stratego are
     building terms from patterns and matching terms against
     patterns.
@@ -14,6 +37,16 @@
     <title>Building terms</title>
     
     <para>
+
+        The build operation \texttt{!p} replaces the subject term with
+        the instantiation of the pattern~\texttt{p} using the bindings
+        from the environment to the variables occurring in \texttt{p}.
+        For example, the strategy \texttt{!Or(And(x, z), And(y, z))}
+        replaces the subject term with the instantiation of
+        \texttt{Or(And(x, z), And(y, z))} using bindings to variables
+        \texttt{x}, \texttt{y} and \texttt{z}. 
+
+
       Building a term will replace the current term by the term that
       is build. The syntax for building a term is
       <code>!<replaceable>t</replaceable></code>, where
@@ -48,6 +81,21 @@ Var("b")</screen>
     <title>Matching terms</title>
 
     <para>
+
+        The match operation \texttt{?$p$} \index{match \texttt{?$p$}}
+        matches the subject term against the term pattern
+        \texttt{p}. This involves checking that the subject term
+        corresponds to the pattern and binding the variables in
+        \texttt{t} to the corresponding subterms of the subject term.
+        For example, \texttt{?And(Or(x, y), z)} matches the subject
+        term against the pattern \texttt{And(Or(x, y), z)} and binds
+        the variables \texttt{x}, \texttt{y} and \texttt{z}.  Matching
+        is defined formally using the following rules.  A strategy
+        $\match(p)$ applies to a term $t$ if there is a substitution
+        that extends the current environemnt $\env$ and makes $p$
+        equal to term.  A match fails if there is no such
+        substitution.
+
 Syntax: ?t 
 
 Match current term against term t 

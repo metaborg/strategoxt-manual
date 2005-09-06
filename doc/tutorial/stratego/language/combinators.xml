@@ -5,6 +5,8 @@
   <title>Composition of Transformation Strategies (*)</title>
 
   <para>
+
+
     Rules define one-step transformations 
 
     Program transformations require many one-step transformations

@@ -5,6 +5,22 @@
  <title>Combining Match and Build (*)</title>
 
  <para>
+        Using match and build we can now construct rewrite rules by
+        sequentially composing a match and a build. For example, the
+        \texttt{DAOL} rule at the beginning of this chapter can be
+        written as
+<screen>
+  DAOL = ?And(Or(x, y), z); !Or(And(x, z), And(y, z))
+</screen>
+        Note that the variables bound in the match are carried over by
+        the sequential composition to the build. In other words,
+        variable bindings are visible at the level of strategies.
+        This should be expressed in the semantics of the language by
+        extending the semantic rules from the previous chapter with
+        environments. For example, the positive rule for sequential
+        composition becomes
+
+
 	Basic transformations are combinations of match and build
 
 	Combination requires
@@ -108,6 +124,26 @@ x is bound to "3"</screen>
 	<para>
 	  Term variable scope
 
+        Once a variable is bound it cannot be rebound to a different
+        term. To use a variable name more than once we introduce
+        variable scopes.  A scope $\{x_1,\ldots,x_n:s\}$ locally
+        undefines the variables $\vec{x}$. That is, the binding to a
+        variable $x_i$ outside the scope $\scope{\vec{x}}{s}$ is not
+        visible inside it, nor is the binding to $x_i$ inside the
+        scope visible outside it. For example, in the following
+        definition, the scope of the variables \texttt{x}, \texttt{y}, and
+        \texttt{z} is restricted to the match and build sequence:
+<screen>
+  DAOL = {x, y, z: ?And(Or(x, y), z); !Or(And(x, z), And(y, z))}
+</screen>
+        In the strategy expression
+<screen>
+   {x, y : ?x; {x : ?F(x, y)}; !G(x, y)}
+</screen>
+        the inner \texttt{x} shadows the outer \texttt{x}.
+
+
+
 Syntax: {x1,...,xn:s} 
 
 Restrict scope of variables x1,...,xn to s 
@@ -124,12 +160,47 @@ Plus(Var("a"),Int("3"))
 e3 is not bound to a term</screen>
 
 	</para>
+
+<para>
+
+       Note that this definition supports matching with non-linear
+        patterns. If a variable $x$ occurs more than once in a pattern
+        $p$, then $\match(p)$ succeeds only if all occurrences of $x$
+        in $p$ are bound to the same term.  Moreover, if a variable
+        $x$ in $p$ was already bound by a previous match, it should
+        match to the exact same term as it was bound to before. For
+        example, consider the strategy \tty{contains}, which tests
+        whether $x$ is a subterm of $y$ or not. It is defined as
+<screen>
+  contains = {x, y: ?(x, y); test(!y; oncetd(?x))}
+</screen>
+        The first $\match()$ matches a pair of terms $(t_1,t_2)$,
+        binding $t_1$ to $x$ and $t_2$ to $y$. The $\build()$ replaces
+        the pair by $t_2$. The traversal
+        $\tty{oncetd}$\footnote{\tty{oncetd} will be defined in the
+        next chapter.} searches for an occurrence of $t_1$ in $t_2$ by
+        matching $x$ (which is bound to $t_1$) against subterms of
+        $t_2$. The strategy succeeds if it actually finds a matching
+        subterm. The use of $\test$ ensures that the predicate does
+        not affect the term to which it is applied.
+
+</para>
+
 </section>
 
 <section>
 	<title>Where</title>
 	
 	<para>
+
+        The strategy operator $\where$ is similar to the $\test$
+        operator in that it tries a strategy and returns the original
+        term if it succeeds. However, it keeps the transformation on
+        the environment. This operator can be used to encode a local
+        computation that binds the answer to a variable to be used
+        outside it, without actually transforming the term.
+
+
 Syntax: where(s) 
 
 Test and compute variable bindings 
@@ -142,6 +213,15 @@ Plus(Int("14"),Int("3"))
 Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> :binding i i is bound to "14"
 <prompt>stratego></prompt> :binding k k is bound to "17"</screen>
+
+
+        With the match and build constructs the \texttt{where} operator
+        can actually be considered as syntactic sugar.
+
+        Thus, the current subject term is \emph{saved} by binding it
+        to a new variable $x$, then the strategy $s$ is applied, and
+        finally, the original term is \emph{restored} by building $x$.
+
 	</para>
 </section>
       
@@ -175,6 +255,9 @@ Rewrite rule with condition s
 Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables in p1
    </para>
 
+
+
+
    <screen>
 Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> \ Plus(Int(i),Int(j)) -&gt; Int(k) where &lt;addS&gt;(i,j) =&gt; k \
@@ -189,6 +272,34 @@ k is bound to "17"</screen>
 <section>
    <title>Apply</title>
    <para>   
+        One frequently occuring scenario is that of applying a
+        strategy to a term and then matching the result against a
+        pattern. This typically occurs in the condition of a rule. In
+        the constant folding example above we saw this scenario:
+<screen>
+  Fold : Add(Int(i),Int(j)) -> Int(k)
+         where !(i,j); add; ?k
+</screen>
+        In the condition, first the term \texttt{(i,j)} is built, then
+        the strategy \texttt{add} is applied to it, and finally the
+        result is matched against the pattern \texttt{k}.
+
+        To improve the readability of such expressions, the following
+        two constructs are provided. The operation \texttt{ &lt;s> p}
+        captures the notion of \emph{applying} a strategy to a term,
+        i.e., the scenario \texttt{!p; s}. The operation \texttt{s => p}
+        capture the notion of applying a strategy to the current
+        subject term and then matching the result against the pattern
+        \texttt{p}, i.e., \texttt{s; ?p}.  The combined operation
+        \texttt{ &lt;s> p1 => p2} thus captures the notion of applying a
+        strategy to a term $p_1$ and matching the result against
+        $p_2$, i.e, \texttt{!t1; s; ?t2}.  Using this notation we
+        can improve the constant folding rule above as
+<screen>
+  Fold : Add(Int(i),Int(j)) -> Int(k)
+         where &lt;add>(i,j) => k
+</screen>
+
 Syntax: !p[&lt;s&gt;p0] 
 
 Strategy application in pattern 
@@ -201,11 +312,58 @@ Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> \ Plus(Int(i),Int(j)) -&gt; Int(&lt;addS&gt;(i,j)) \
 Int("17")</screen>
 
+<para>
+Applying Strategies in Build
+
+        Sometimes it useful to apply a strategy directly to a subterm
+        of a pattern, for example in the right-hand side of a rule,
+        instead of computing a value in a condition, binding the
+        result to a variable, and then using the variable in the build
+        pattern. The constant folding rule above, for example, could
+        be further simplified by directly applying the addition in
+        the right-hand side:
+<screen>
+  Fold : Add(Int(i),Int(j)) -> Int(&lt;add>(i,j))
+</screen>
+        This abbreviates the conditional rule above.  
+
+</para>
+
 </section>
+
    
 <section>
    <title>Term Wrap</title>
    <para>   
+        One often write rules of the form
+\verb|\ x -> Foo(Bar(x))\|,
+        i.e., wrapping a term pattern around a term. Using rule syntax
+        this is quite verbose. The syntactic abstraction of \emph{term
+        wraps}, allows the concise specification of such little
+        transformations.
+
+        A term wrap is a build expression \texttt{!$p[$&lt;$s$>$]$} containing a
+        strategy application \texttt{&lt;$s$>} that is not applied to a term.
+        Using a new variable $x$, such an expression is desugared
+        as
+\[
+        \sem{\ \tty{!$p[$&lt;$s$>$]$}\ }
+        \quad\to\quad
+        \sem{\ \tty{\{$x$:\ $s$ => $x$; !$p[x]$\}}\ }
+\]
+        In other words, the strategy $s$ is applied to the
+        \emph{current subject term}, i.e., the term to which the build
+        is applied.
+
+        Using this abstraction one can now write \texttt{!Foo(Bar(&lt;id>))},
+        for the strategy
+\texttt{\{x: id => x; !Foo(Bar(x))\}},
+        which after simplification is equivalent to
+\texttt{\{x: ?x; !Foo(Bar(x))\}},
+        i.e., exactly the original anonymous rule
+\texttt{\bs x -> Foo(Bar(x))\bs}.
+
+
 Syntax: !p[&lt;s&gt;] 
 
 Strategy application in pattern to current subterm 
@@ -231,6 +389,32 @@ Call("foobar", [])</screen>
 <section>
    <title>Term Project</title>
    <para>   
+
+        Term projections are the match dual of term wraps. A match
+        expression \texttt{?$p[$&lt;$s$>$]$} is desugared as
+\[
+        \sem{\ \tty{?$p[$&lt;$s$>$]$}\ }
+        \quad\to\quad
+        \sem{\ \tty{\{$x$:\ ?$p[x]$; &lt;$s$>$x$\}}\ }
+\]
+        That is, after the pattern \texttt{$p[x]$} matches, it is
+        reduced to the subterm bound to $x$ to which $s$ is applied.
+        Term projections can be used to \emph{project} a subterm from
+        a term pattern. For example, the expression
+        \texttt{?And(&lt;id>,x)} matches terms of the form
+        \texttt{And(t1,t2)} and reduces them to the first subterm
+        \texttt{t1}. Another example is the strategy
+<screen>
+  map(?FunDec(&lt;id>,_,_))
+</screen>
+        which reduces a list of function declarations to a list of the
+        names of the functions, i.e., the first arguments of the
+        \texttt{FunDec} constructor.
+
+        Term projections can also be used to apply additional
+        constraints to subterms in a match pattern. When multiple
+        projects are used within a match the outcome is undefined.
+
 Syntax: ?p[&lt;s&gt;] 
 
 Strategy application in pattern match 
@@ -247,6 +431,176 @@ Equivalent to: {x: ?p[x]; &lt;s&gt;x} for some fresh variable x
 Call("foobar", [])
 <prompt>stratego></prompt> ?Call(&lt;id&gt;, [])
 "foobar"</screen>
+
+
+<screen>
+
+\section{Rules Revisited}
+
+	With the machinery developed in the previous section we can
+	formally define the semantics of rewrite rules. That is,
+	rewrite rules can be seen as syntactic abstractions that can
+	be defined by translation to the match and build operators.
+	Using the same approach we can define alternative rule
+	constructs.
+
+\subsection{Rewrite Rules}
+
+	Using match, build, and scope a labeled rewrite rule can be
+	desugared to a strategy definition as follows:
+\[
+  	\sem{\tty{$L$:\ $p_1$ -> $p_2$}}
+	\quad \to \quad
+   	\sem{\tty{$L$ = \{$x_1$,...,$x_n$:\ ?$p_1$; !$p_2$\}}}
+\]
+	where $x_1$,...,$x_n$ are the free variables of the patterns
+	$p_1$ and $p_2$.  For example, using this transformation the
+	rule
+\begin{verbatim}
+  B : P(S(x),y) -> S(P(x,y))
+\end{verbatim}
+	is desugared to
+\begin{verbatim}
+  B = {x,y: ?P(S(x),y); !S(P(x,y))}
+\end{verbatim}
+
+\subsection{Conditional Rewrite Rules}
+
+	A simple rewrite rule succeeds if the match of the left-hand
+	side succeeds. Sometimes it is useful to place additional
+	requirements on the application of a rule, or to compute some
+	value for use in the right-hand side of the rule. This can be
+	achieved with \emph{conditional rewrite rules}.
+
+        A conditional rule \texttt{$L$:\ $p_1$ -> $p_2$ where $s$} is
+        a simple rule extended with an additional computation $s$
+        which should succeed in order for the rule to apply. A
+        conditional rule can be desugared similarly to an
+        unconditional rule
+\[
+  	\sem{\tty{$L$:\ $p_1$ -> $p_2$ where $s$}}
+	\to
+   	\sem{\tty{$L$ = \{$x_1$,...,$x_n$:\ ?$p_1$; where($s$); !$p_2$\}}}
+\]
+	where $x_1$,...,$x_n$ are the free variables of the patterns
+	$p_1$ and $p_2$, and the strategy expression $s$.  Thus, after
+	the match with $p_1$ succeeds the strategy $s$ is applied to
+	the subject term. Only if the application of $s$ succeeds, is
+	the right-hand side $p_2$ built. Note that since $s$ is
+	applied within a \texttt{where}, the build \texttt{!$p_2$} is
+	applied to the original subject term; only variable bindings
+	computed within $s$ can be used in $p_2$.
+
+	As an example, consider the following constant folding rule,
+	which reduces an addition of two integer constants to the
+	constant obtained by computing the addition.
+\begin{verbatim}
+  Fold : Add(Int(i),Int(j)) -> Int(k)
+         where !(i,j); add; ?k
+\end{verbatim}
+	The addition is computed by applying the primitive strategy
+	\texttt{add} to the pair of integers \texttt{(i,j)} and
+	matching the result against the variable \texttt{k}, which is
+	then used in the right-hand side. This rule is desugared to
+\begin{verbatim}
+  Fold = {i,j,k: ?Add(Int(i),Int(j))
+                 ; where(!(i,j); add; ?k)
+                 ; !Int(k) }
+\end{verbatim}
+
+\subsection{Parameterized Rules}
+
+	Definitions of strategy operators can be parameterized with a
+	list of argument strategies. Since rules are desugared to
+	strategy definitions, rules can have parameters as well, the
+	general form of a labeled rule is
+\[
+  	\tty{$L$($x_1$,...,$x_n$|$y_1$,...,$y_m$):\ $p_1$ -> $p_2$ where $s$}
+\]
+	where both the parameter lists and the condition are optional.
+	Parameterized rules are desugared according to the rules
+	established above, where the rule parameters become parameters
+	of the strategy definition.
+
+\subsection{Anonymous Rules}
+
+	So far rules have always been named entities. Sometimes it is
+	useful to define a rule anonymously within a strategy
+	expression. There are various ways to do this. One notation is
+	an anonymous rule of the form
+\tty{\bs $p_1$ -> $p_2$ where $s$\bs}
+	which is desugared according to the rule
+\[
+  	\sem{\tty{\bs $p_1$ -> $p_2$ where $s$\bs }}
+	\quad \to \quad 
+	\sem{\tty{\{$x_1$,...,$x_n$:\ ?$p_1$; where($s$); !$p_2$\}}}
+\]
+	with $x_1$,...,$x_n$ the free variables of $p_1$
+	\emph{only}. This means that any variables used in $s$ and
+	$p_2$, which do \emph{not} occur in $p_1$ are bound in context
+	of the anonymous rule.
+                
+	A typical example of the use of an anonymous rule is the
+	reduction of a list of function declarations to the list of
+	names of the functions using the expression
+\begin{verbatim}
+  map(\ FunDec(f, xs, e) -> f \ )
+\end{verbatim}
+	which is equivalent to
+\begin{verbatim}
+  map({f,xs,e: ?Fdec(f, xs, e); !f})
+\end{verbatim}
+
+	Another style of anonymous rule \tty{($p_1$ -> $p_2$ where
+	$s$)} does not imply any scope for the variables of the rule,
+	but only provides rule-like syntax. Thus, this notation is
+	desugared as 
+\[
+  	\sem{\tty{($p_1$ -> $p_2$ where $s$)}}
+	\quad \to \quad 
+	\sem{\tty{?$p_1$; where($s$); !$p_2$}}
+\]
+	in which the variables are bound in the surrounding scope.
+
+	Both forms of anonymous rules can of course also be used
+	without condition. In general, an unconditional rule can be
+	seen as sugar for a conditional rule with the identity
+	condition:
+\[
+  	\sem{\tty{$p_1$ -> $p_2$}}
+	\quad \to \quad 
+  	\sem{\tty{$p_1$ -> $p_2$ where id}}
+\]
+
+\subsection{Implicit Variable Scope}
+
+	When using match and build directly in a strategy definition,
+	rather than in the form of a rule, the definition contains
+	free variables.  Strictly speaking such variables should be
+	declared using a scope, that is one should write
+\begin{verbatim}
+  Foo = {x : ?Bar(x); !FooBar(x) }
+\end{verbatim}
+	However, since declaring all variables at the top of a
+	definition is destracting and does not add much to the
+	definition, such a scope declaration can be left out. Thus,
+	one can write
+\begin{verbatim}
+  Foo = ?Bar(x); !FooBar(x)
+\end{verbatim}
+	instead. The scope is automatically inserted by the compiler.
+	This implies that there is no global scope for term variables.
+	Of course, variables in inner scopes should be declared where
+	necessary. In particular, note that variable scope is
+	\emph{not} inserted for strategy definitions in a let binding,
+	such as
+\begin{verbatim}
+  let  Foo = ?Bar(x); !FooBar(x)  in ... end
+\end{verbatim}
+
+%% \subsection{Contextual Rules **}
+
+</screen>
 
 </section>
 
