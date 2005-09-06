@@ -8,5 +8,27 @@
     RTG, format-checking, rtg-script
   </para>
 
+  <section>
+    <title>Regular Tree Grammars</title>
+    <para>
+      Explains regular tree grammars and how to generate them.  See
+      thesis.
+    </para>
+  </section>
+
+  <section>
+    <title>Generating Code from an RTG</title>
+    <para>
+      Typematch, API.
+    </para>
+  </section>
+
+  <section>
+    <title>Creating a Subset of a Regular Tree Grammar</title>
+    <para>
+      Explains rtg-script
+    </para>
+  </section>
+  
   <xi:include href="format/section.xml"/>
 </chapter>

@@ -4,7 +4,6 @@ XSLTPROC_FLAGS =					 \
 	--param html.stylesheet \'style.css\'		 \
         --param use.id.as.filename \'1\'		 \
 	--param chunk.section.depth \'0\'		 \
-        --param chunk.fast \'1\'                         \
         --param toc.max.depth \'3\'			 \
 	--param toc.section.depth 2			 \
 	--param xref.with.number.and.title 1		 \
