@@ -1,0 +1,1286 @@
+<chapter xml:id="stratego-dynamic-rules">
+  <title>Scoped Dynamic Rewrite Rules (*)</title>
+
+<section>
+   <title>foo</title>
+
+<screen>
+
+\chapter{Scoped Dynamic Rewrite Rules}
+	\label{Chap:DynamicRules}
+
+   	The applicability of term rewriting to program transformation
+   	is limited by the lack of control over rule application and by
+   	the context-free nature of rewrite rules. The first problem is
+   	addressed by user-definable rewriting strategies. This chapter
+   	addresses the second problem by extending rewriting strategies
+   	with scoped dynamic rewrite rules. Dynamic rules are generated
+   	at run-time and can access variables available from their
+   	definition context. Rules generated within a rule scope are
+   	automatically retracted at the end of that scope. The
+   	technique is illustrated by means of several program
+   	tranformations: bound variable renaming, function inlining,
+   	and dead function elimination.
+
+\section{Rewrite Rules are Context-free}
+
+	After solving the problem of control over the application of
+	rewrite rules, the second problem of rewriting is the
+	context-free nature of rewrite rules. A rule has only
+	knowledge of the construct it is transforming. However,
+	transformation problems are often context-sensitive.  For
+	example, when inlining a function at a call site, the call is
+	replaced by the body of the function in which the actual
+	parameters have been substituted for the formal parameters.
+	This requires that the formal parameters and the body of the
+	function are known at the call site, but these are only
+	available higher-up in the syntax tree.
+
+	There are many similar problems in program transformation,
+	including bound variable renaming, typechecking, constant and
+	copy propagation, and dead code elimination.  Although the
+	basic transformations in all these applications can be
+	expressed by means of rewrite rules, they need contextual
+	information.
+
+	The usual solution to this problem is to extend the traversal
+	over the tree (be it hand-written or generic) such that it
+	distributes the data needed by transformation rules.  For
+	example, traversal functions in ASF+SDF \cite{BKV01} can be
+	declared to have an accumulation parameter in which data can
+	be collected.  Language independent definitions of operations
+	such as bound variable renaming in Stratego \cite{Vis00}
+	capture a generic tree traversal schema that takes care of
+	distributing an environment through a tree.  The disadvantage
+	of these solutions is that the traversal strategy becomes data
+	heavy instead of just handling control flow. That is, all
+	traversal functions become infected with additional parameters
+	carrying context information.  Generic solutions break down
+	when multiple environments are needed, to handle multiple name
+	spaces, for instance.
+
+	Another solution is the use of contextual rules
+	\cite{AJ97,VBT98}.  Contextual rules combine the context and
+	the local transformation in one rule by using a local
+	traversal that applies a rule that reuses information from the
+	context.  The problem with this approach is that it performs
+	an extra traversal over the abstract syntax tree, leading to
+	quadratic complexity in case the contextual rule is applied as
+	part of a traversal over the same tree that the context
+	accesses.
+
+	This chapter introduces the extension of rewriting strategies
+	with \emph{scoped dynamic rules}.  A dynamic rule is a normal
+	rewrite rule that is generated at run-time and that can access
+	information from its generation context.  For example, to
+	define an inliner, a rule that inlines function calls for a
+	specific function can be generated at the point where the
+	function is declared, and used at call sites of the function.
+
+	Dynamic rules are first-class.  Their application is under
+	control of a normal strategy. Thus, dynamic rules can be
+	applied as part of a global tree traversal.  Rules can
+	overrule the definition of previously generated rules.  To
+	restrict the application of a dynamic rule to a certain part
+	of the tree, the live range of a rule can be determined by
+	rule scopes (Section~\ref{Sec:renaming}). A rule temporarily
+	overruled in a scope becomes visible again at the end of that
+	scope.  To hide rules generated in outer scopes, rules can be
+	undefined (Section~\ref{Sec:inlining}).  Rules from outer
+	scopes can also be permanently overridden
+	(Section~\ref{Sec:elimination}). These concepts are introduced
+	in Sections~\ref{Sec:renaming} through \ref{Sec:elimination}
+	by means of a number of transformations on Tiger programs:
+	bound variable renaming (Section~\ref{Sec:renaming}), function
+	inlining (Section~\ref{Sec:inlining}), and dead function
+	elimination (Section~\ref{Sec:elimination}).  Each of these
+	examples motivates and illustrates an aspect of dynamic rules.
+
+\section{Bound Variable Renaming}
+	\label{Sec:renaming}
+
+	Bound variable renaming is a transformation that replaces
+	bound variables and their corresponding occurrences by new
+	unique names. As a result of the transformation a name is used
+	by at most one binding. This transformation is necessary to
+	prevent free variable capture when substituting expressions
+	under bindings, for example when performing function inlining.
+
+	The following transformation illustrates renaming of variable
+	declarations in Tiger programs. 
+%
+	\begin{center}
+	\begin{boxedminipage}{5.5cm}\small
+	\verbatiminput{xmpl/renaming-xmpl1.txt}
+let var i := 1
+ in (let var i := (i + 2)
+      in i
+     end + i)
+end
+
+	\end{boxedminipage}
+	$\Rightarrow$
+	\begin{boxedminipage}{6.5cm}\small
+	\verbatiminput{xmpl/renaming-xmpl1.rna.txt}
+
+let var a_0 := 1
+ in (let var b_0 := (a_0 + 2)
+      in b_0
+     end + a_0)
+end
+
+	\end{boxedminipage}
+	\end{center}
+%
+	Note that the \verb|i| used in the initialization of the
+	second declaration is bound by the outer declaration, and that
+	the \verb|i| used after the inner let also refers to the outer
+	declaration. However, the \verb|i| inside the inner let refers
+	to the inner declaration. These issues are clarified by the
+	renamed version on the right.
+
+	The abstract syntax representation for the expression on the
+	left is the term:
+	\begin{center}
+	\begin{boxedminipage}{\hsize}\small
+\begin{code}
+Let([VarDec("i",None,Int("1"))],
+    [BinOp(PLUS,
+           Let([VarDec("i",None,BinOp(PLUS,Var("i"),Int("2")))],
+               [Var("i")]),
+           Var("i"))])
+\end{code}
+	\end{boxedminipage}
+	\end{center}
+
+
+ \subsection{Functional Definition of Renaming}
+
+	A conventional implemention of bound variable renaming defines
+	a function \verb|exprename| that recursively visits all nodes of
+	an abstract syntax tree, carrying a renaming table \verb|rn|,
+	which is extended at binding sites and consulted at variable
+	occurrences (Figure~\ref{Fig:rename-fun}).
+	Note that for renaming the initializer of the declaration the
+	unextended renaming environment is used. The \verb|new|
+	function generates a new string that is unique in the sense
+	that it does not occur anywhere in the current syntax tree.
+
+\begin{figure}[b]
+\begin{center}
+\begin{boxedminipage}{\hsize}\small
+\begin{code}
+exprename(Let([VarDec(x, t, e1)], e2), rn) =
+  Let([VarDec(y, t, exprename(e1, rn))], exprename(e2, (x,y) : rn))
+  where new => y
+exprename(Var(x), rn) = 
+  Var(lookup(x, rn))
+\end{code}
+\end{boxedminipage}
+\\
+\begin{boxedminipage}{\hsize}\small
+\begin{code}
+exprename(BinOp(op, e1, e2), rn) = 
+  BinOp(op, exprename(e1, rn), exprename(e2, rn))
+\end{code}
+\end{boxedminipage}
+\end{center}
+\caption{Definition of renaming function. The first box contains the
+essential rules. The second box shows an example of the other rules
+the definition consists of.}
+\label{Fig:rename-fun}
+\end{figure}
+
+	The disadvantage of this implementation is that the function
+	has to explicitly visit all tree nodes, even those (such as
+	\verb|BinOp|) that are not variables or do not bind variables.
+	Thus, the definition of a renaming function has a rule for
+	each constructor following the schema
+\begin{code}
+  exprename(C(e1, ..., en), rn) = 
+    C(exprename(e1, rn), ..., exprename(en, rn))
+\end{code}
+	For a full definition of renaming of Tiger programs, 6
+	essential renaming rules and 17 additional rules are required.
+	For real languages the ratio of essential rules over
+	additional rules is likely to decrease.
+
+ \subsection{Renaming using Rewrite Rules}
+
+	Generic traversals make it possible to avoid the overhead of
+	defining traversals of constructs not involved in the
+	transformation at hand.  The recursive rename function above
+	can be expressed essentially by a topdown traversal
+\begin{code}
+  exprename = topdown(try(RenameVarDec + RenameVar))
+\end{code}
+	This strategy traverses an abstract syntax tree, and at each
+	subtree tries to apply one of the rules \verb|RenameVarDec| or
+	\verb|RenameVar|. The operator \verb|try| is defined as 
+\verb|try(s) = s &lt;+ id|, i.e., it tries to apply a transformation \verb|s|,
+	but if that fails returns the original term.  Only rules for
+	constructs that are actually changed need to be provided.  
+
+	The first rule renames the binding variable in a variable
+	declaration by generating a new name:
+\begin{code}
+  RenameVarDec :
+    Let([VarDec(x, t, e1)], e2) -> Let([VarDec(y, t, e1)], e2) 
+    where new => y
+\end{code}
+	The second rule renames an occurrence of \verb|Var(x)| to
+	\verb|Var(y)|:
+\begin{code}
+  RenameVar : 
+    Var(x) -> Var(y)
+\end{code}
+	But here is the catch: in rule \verb|RenameVar| the intention
+	is not to rename just any variable to any other variable, but
+	to rename an occurrence of a bound variable to its new name
+	generated at its binding site, i.e., in rule
+	\verb|RenameVarDec|.
+
+ \subsection{Generating Renaming Rules}
+
+	The rule for renaming a variable thus depends on the renaming
+	of the corresponding binding construct. This dependency can be
+	expressed using dynamic rules. \verb|RenameVarDec| can be
+	reformulated such that it generates a renaming rule for the
+	variable that is bound by the declaration construct:
+\begin{code}
+  RenameVarDec :
+    Let([VarDec(x, t, e1)], e2) -> Let([VarDec(y, t, e1)], e2) 
+    where new => y
+        ; rules(RenameVar : Var(x) -> Var(y))
+\end{code}
+	The dynamic rule declaration 
+\verb|rules(RenameVar : Var(x) -> Var(y))| 
+	in the condition of \verb|RenameVarDec| generates an instance
+	of the \verb|RenameVar| rule that inherits the values of the
+	meta-variables \verb|x| and \verb|y| in its context.
+
+	As an example of the operation of this dynamic rule
+	generation, consider the application of \verb|RenameVarDec| to
+	the term
+\begin{code}
+  Let([VarDec("i", None, Int("1"))], ... )
+\end{code}
+	When matching the left-hand side of the rule against this
+	term, the variable \verb|x| is bound to the string
+	\verb|"i"|. Subsequently, a new unique string, say
+	\verb|"a_0"|, is generated by \verb|new|, and bound to the
+	variable \verb|y|.  In the context of these bindings the
+	dynamic rule \verb|RenameVar| is created, resulting in the
+	generation of the rule:
+\begin{code}
+  RenameVar : Var("i") -> Var("a_0")
+\end{code}
+	Finally, the renamed variable declaration is produced:
+\begin{code}
+  Let([VarDec("a_0", None, Int("1"))], ... )
+\end{code}
+	While further traversing the tree, each occurrence of
+	\verb|Var("i")| to which the dynamically generated rule
+	\verb|RenameVar| is applied is replaced by \verb|Var("a_0")|,
+	while other (free) variables are not affected.
+
+ \subsection{Limiting the Scope of Generated Rules}
+
+	The topdown renaming strategy using \verb|RenameVarDec| and
+	\verb|RenameVar| as defined above is not quite right, yet. If
+	we apply it to our example expression, we get:
+%
+	\begin{center}
+	\begin{boxedminipage}{4.8cm}\small
+	\verbatiminput{xmpl/renaming-xmpl1.txt}
+
+let var i := 1
+ in (let var i := (i + 2)
+      in i
+     end + i)
+end
+
+	\end{boxedminipage}
+	$\Rightarrow$
+	\begin{boxedminipage}{5.6cm}\small
+	\verbatiminput{xmpl/renaming-xmpl1.rnb.txt} 
+
+let var a_0 := 1
+ in (let var b_0 := (b_0 + 2)
+      in b_0
+     end + b_0)
+end
+
+	\end{boxedminipage}
+	\end{center}
+%
+	The renaming rule generated for the inner declaration of
+	\verb|i| overrides the rule for the outer declaration.  That
+	is correct for the occurrences of \verb|i| inside the inner
+	let, but the rule also still applies after the inner let.
+
+	This problem suggests that it should be possible to retract
+	generated rules after the scope in which they are valid ends.
+	This is exactly what the \emph{rule scope}
+\verb+{| lab : s |}+
+	achieves. A rule with label \verb|lab| that is generated while
+	executing \verb|s| is automatically removed at the end of the
+	scope. Thus, any rule that was overridden by rules generated
+	inside the scope becomes visible again after the scope.
+	Recall that \verb|exprename| was defined as
+\begin{code}
+  exprename = topdown(try(RenameVarDec + RenameVar))
+\end{code}
+	where the definition of \verb|topdown| is:
+\begin{code}
+  topdown(s) = rec x(s; all(x))
+\end{code}
+	By redefining the renaming strategy as
+\begin{code}
+  exprename = 
+    rec r({| RenameVar : 
+             try(RenameVarDec + RenameVar); all(r) 
+          |})
+\end{code}
+	a \verb|RenameVar| rule generated by a variable declaration is
+	automatically removed after exiting the scope. It is necessary
+	to inline the definition of \verb|topdown| since the scope of
+	the generated renaming rules should include the traversal of
+	the subterms with \verb|all(r)|.
+
+	Consider the effect of the new strategy on the example and
+	note that \verb|i| after the inner let is now correctly
+	renamed:
+%
+	\begin{center}
+	\begin{boxedminipage}{4.8cm}\small
+	\verbatiminput{xmpl/renaming-xmpl1.txt}
+
+let var i := 1
+ in (let var i := (i + 2)
+      in i
+     end + i)
+end
+
+	\end{boxedminipage}
+	$\Rightarrow$
+	\begin{boxedminipage}{5.6cm}\small
+	\verbatiminput{xmpl/renaming-xmpl1.rnc.txt}
+
+let var a_0 := 1
+ in (let var b_0 := (b_0 + 2)
+      in b_0
+     end + a_0)
+end
+
+	\end{boxedminipage}
+	\end{center}
+%
+	However, the renaming is still not correct, since the \verb|i|
+	in the initializer is not renamed correctly.  
+
+	To also correctly treat initializers of variable declarations
+	the traversal should be adapted such that variables in
+	initializers are renamed before generating a new renaming
+	rule. That is what the following strategy achieves.  The
+	congruence \verb|Let([VarDec(id,id,r)],id)| visits the
+	initializer of a variable declaration, while the congruence
+	\verb|Let([VarDec(id,id,id)],r)| only visits the body of the
+	\verb|Let|:
+\begin{code}
+  exprename = 
+    rec r(try(Let([VarDec(id,id,r)],id));
+          {| RenameVar : 
+             try(RenameVarDec + RenameVar); 
+             (Let([VarDec(id,id,id)],r) &lt;+ all(r))
+          |})
+\end{code}
+	The choice 
+\verb|(Let([VarDec(id,id,id)],r) &lt;+ all(r))| 
+	adapts the generic traversal just for the case of a 
+	variable declaration.
+
+ \subsection{Abstracting over Rule Generation}
+
+	Since there are several constructs that bind variables in
+	Tiger it is unattractive to repeat the code for generating
+	renaming rules for every binding construct. This can be
+	avoided by creating a rule that transforms a name into a fresh
+	name and at the same time generates a renaming rule.
+	
+	Figure~\ref{Fig:rename} defines a full-fledged renaming
+	strategy for Tiger programs covering all binding constructs,
+	and also renaming type identifiers, thus dealing with two name
+	spaces simultaneously.  The renaming rules for the binding
+	constructs call rule \verb|NewVar| to generate a new name and
+	a corresponding variable renaming rule. The rule is defined as
+	follows:
+\begin{code}
+  NewVar : x -> y 
+     where new => y; rules(RenameVar : Var(x) -> Var(y))
+\end{code}
+
+ %\subsection{Bla}
+
+	The renamer defined using this rule renames all variables,
+	even if a variable name was already unique. For some
+	applications it is useful to rename as few variables as
+	possible, for instance, when the result should be readable by
+	a programmer. One approach is to rename only those variables
+	that clash with outer bindings. In our running example this approach
+	has the following effect:
+%
+	\begin{center}
+	\begin{boxedminipage}{4.8cm}\small
+	\verbatiminput{xmpl/renaming-xmpl1.txt}
+let var i := 1
+ in (let var i := (i + 2)
+      in i
+     end + i)
+end
+
+	\end{boxedminipage}
+	$\Rightarrow$
+	\begin{boxedminipage}{5.4cm}\small
+	\verbatiminput{xmpl/renaming-xmpl1.rn.txt}
+
+let var i := 1
+ in (let var a_0 := (i + 2)
+      in a_0
+     end + i)
+end
+
+	\end{boxedminipage}
+	\end{center}
+%
+	This can be achieved by only generating a new name for
+	variables that already exist in an outer scope.  The following
+	rule tries to apply \verb|RenameVar| to the variable
+	\verb|x|. If that succeeds the variable was already declared
+	in an outer scope. In that case a new variable is
+	generated. Otherwise the original variable name is used. 
+\begin{code}
+  NewVar : x -> y 
+     where (&lt;RenameVar> Var(x); new &lt;+ !x) => y
+         ; rules(RenameVar : Var(x) -> Var(y))
+\end{code}
+
+	\begin{figure}[t]
+	\begin{boxedminipage}{\hsize}\small
+	\input{xmpl/Tiger-Rename.r}
+\begin{code}
+module Tiger-Rename
+imports Tiger dynamic-rules lib
+strategies
+  exprename =
+    rec r(try(Let([VarDec(id,id,r)],id))
+          ; {| RenameVar, RenameTid :
+               try(RenameDeclaration + RenameArgs + RenameFor 
+                   + RenameVar + RenameTid); 
+               (Let([VarDec(id,id,id)],r) &lt;+ all(r))
+            |})
+
+  RenameDeclaration =
+    Let([RenameVarDec + FunctionDec(map(RenameFun)) 
+         + TypeDec(map(RenameTdec))], id)
+
+  RenameVarDec :
+    VarDec(x, t, e) -> VarDec(y, t, e)
+    where &lt;NewVar> x => y
+
+  RenameFun :
+    FunDec(f, xs, t, e) -> FunDec(g, xs, t, e)
+    where &lt;NewVar> f => g
+
+  RenameArgs :
+    FunDec(f, xs, t, e) -> FunDec(f, ys, t, e)
+    where &lt;map(FArg(NewVar,id))> xs => ys
+
+  RenameFor :
+    For(Var(x), e1, e2, e3) -> For(Var(y), e1, e2, e3)
+    where &lt;NewVar> x => y
+
+  RenameTdec :
+    Tdec(x, t) -> Tdec(y, t)
+    where &lt;NewTid> x => y
+\end{code}
+\endinput
+\begin{code}
+strategies
+  Tiger-Rename = iowrap(exprename)
+
+  NewTid : 
+    x -> y 
+    where (&lt;RenameTid> Tid(x); new &lt;+ !x) => y
+        ; rules(RenameTid : Tid(x) -> Tid(y))
+
+  NewVar : 
+    x -> y 
+    where (&lt;RenameVar> Var(x); new &lt;+ !x) => y
+        ; rules(RenameVar : Var(x) -> Var(y))
+
+  NewVar' : 
+    x -> y 
+    where new => y
+        ; rules(RenameVar : Var(x) -> Var(y))
+
+  exprename-all =
+    {| RenameVar :
+       rules(RenameVar : Var(x) -> Var(x));
+       exprename
+    |}
+\end{code}
+
+	\end{boxedminipage}
+	\caption{Renaming of bound variables and type names}
+	\label{Fig:rename}
+	\end{figure}
+
+ \subsection{Summary}
+
+	In this section we have seen how context-dependent rewrite
+	rules can be generated using the \verb|rules(...)| construct
+	using information from the context in which they are defined.
+	Subsequent generation of rules overrides previously generated
+	rules. A rule scope \verb+{| lab : s |}+ limits the live range
+	of a rule generated by \verb|s| to the scope.  Dynamic rules
+	for several name spaces (e.g., variables and types), can be
+	generated at the same time.  Dynamic rules can be used like
+	static rules in a generic traversal of the tree
+	structure. Thus only relevant tree nodes are visited
+	explicitly, other nodes are traversed implicitly.
+
+\begin{comment}
+  \subsection{Default Definition}
+
+  	Given the last definition were only shadowed variables are
+	renamed, a version were all variables are renamed can
+	be constructed as follows
+\begin{code}
+  exprename-all =
+    {| RenameVar :
+       rules(RenameVar : Var(x) -> Var(x));
+       exprename
+    |}
+\end{code}
+	This adds a rule that renames any variable to itself. Subsequent
+	definitions of \verb|NewVar| then redefine this mapping for 
+	specific variables.
+	
+	Problem: order of rules; \verb|exprename-all| should be defined
+	after \verb|NewVar|. This depends on compiler semantics of
+	compilation and does not work across modules.
+\end{comment}
+ 
+\section{Function Inlining}
+	\label{Sec:inlining}
+
+	Function inlining is a transformation that replaces a function
+	call by the body of the function in which the actual
+	parameters have been substituted for the formal parameters.
+	For example, consider the following simple example, in which a
+	call to the \verb|sqr| function is replaced by its body.
+%
+	\begin{center}
+	\begin{boxedminipage}{5.4cm}\small
+	\verbatiminput{xmpl/inlining-xmpl1.txt}
+let function sqr(x : int) =
+      (x * x)
+ in sqr((3 + y))
+end
+
+	\end{boxedminipage}
+	$\Rightarrow$
+	\begin{boxedminipage}{6cm}\small
+	\verbatiminput{xmpl/inlining-xmpl1.inl.txt} 
+let function sqr(x : int) =
+      (x * x)
+in let var a_0 : int := (3 + y)
+   in (a_0 * a_0)
+   end
+end
+
+	\end{boxedminipage}
+	\end{center}
+%
+	Note that the replacement introduces local variables to bind
+	the actual parameters to the (renamed) formal parameters.
+	This is necessary since Tiger is an imperative language.
+	Simply substituting the actual parameters for the formal
+	parameters could lead to duplication of work or even to errors
+	because of intervening assignments.  Further optimizations
+	such as constant and copy propagation can get rid of the local
+	declarations if possible.
+
+	The function inlining transformation is expressed by the
+	\verb|InlineFun| rule that is defined as follows:
+\begin{code}
+  InlineFun : 
+    Call(Var(f),es) -> Let(ds, e)
+    where &lt;exprename-all> fdec => FunDec(_, xs, t, e)
+        ; &lt;zip(BindVar)> (xs, es) => ds
+\end{code}
+	A function call is replaced with a let expression that has the
+	body of the function declaration \verb|e| as its body.
+	Furthermore, the let introduces a list of variable
+	declarations corresponding to the formal parameters \verb|xs|
+	of the function declaration (after renaming the declaration).
+	The local variables \verb|xs| are bound to the actual
+	parameters \verb|es| by zipping together the lists of formals
+	and actuals and building a variable declaration using rule
+	\verb|BindVar|:
+\begin{code}
+  BindVar :
+    (FArg(x,t), e) -> VarDec(x, Some(t), e)
+\end{code}
+
+	The variable \verb|fdec| in the rule should be bound to the
+	original function declaration of \verb|f|. This information is
+	not normally available at the call site of the function.  By
+	generating rule \verb|InlineFun| dynamically when encountering
+	a function declaration the necessary information can be passed
+	on to \verb|InlineFun|.  In Figure~\ref{Fig:inline} strategy
+	\verb|DeclareFun| generates an inlining rule for a function
+	declaration if it is \verb|inlineable|.
+
+	\begin{figure}[t]
+	\begin{boxedminipage}{\hsize}\small
+	\input{xmpl/Tiger-Inline.r}
+\begin{code}
+module Tiger-Inline
+imports Tiger Tiger-Rename
+strategies
+  inline(s1,s2) = 
+    rec x(s1; try(Let([VarDec(id,id,x)],id))
+          ; {| InlineFun :
+               (Declare; Let([VarDec(id,id,id)] &lt;+ x, id)
+                       ; Declare; Let(id, x)
+                &lt;+ all(x))
+             ; s2
+            |})
+
+  Declare = 
+    Let([FunctionDec(map(DeclareFun &lt;+ UnDeclareFun))
+         + UnDeclareVars], id)
+    + UnDeclareVars
+
+  DeclareFun =
+    ?fdec@FunDec(f, _, _, _);
+    inlineable;
+    rules(
+      InlineFun : 
+        Call(Var(f),es) -> Let(ds, e)
+        where &lt;exprename-all> fdec => FunDec(_, xs, t, e)
+            ; &lt;zip(BindVar)> (xs, es) => ds
+    )
+
+  BindVar :
+    (FArg(x,t), e) -> VarDec(x, Some(t), e)
+
+  UnDeclareFun =
+    ?FunDec(x, _, _, _);
+    rules( InlineFun : Call(Var(x),_) -> Undefined )
+ 
+  UnDeclareVars =
+    (?VarDec(x,_,_) + ?For(Var(x),_,_,_));
+    rules( InlineFun : Call(Var(x),_) -> Undefined )
+\end{code}
+\endinput
+
+\begin{code}
+strategies
+
+  Tiger-Inline = iowrap(inline(try(InlineFun),id))
+
+  inlineable = 
+    not(is-recursive)
+
+  is-recursive = 
+    where(FunDec(?f,id,id,oncetd(Call(Var(?f),id))))
+\end{code}
+
+	\end{boxedminipage}
+	\caption{Simple inlining strategy}
+	\label{Fig:inline}
+	\end{figure}
+
+	Figure~\ref{Fig:inline} defines a simple inlining strategy
+	\verb|inline| that is parameterized with two transformation
+	strategies \verb|s1| and \verb|s2|. These are transformations
+	to apply on the way down the tree (\verb|s1|) and on the way
+	up (\verb|s2|). An example instantiation could be
+\begin{code}
+  inline(repeat(InlineFun + Simplify), repeat(Simplify))
+\end{code}
+	that inlines functions on the way down and simplifies
+	expressions (e.g., constant folding) on the way down and up.
+	The strategy basically comes down to the following:
+\begin{code}
+  inline(s1,s2) = 
+    rec x(s1; {| InlineFun : try(Declare); all(x); s2 |})
+\end{code}
+	That is, first the \verb|s1| transformation is applied. Then,
+	after entering the scope for the \verb|InlineFun| rule,
+	\verb|Declare| generates inline rules for any local function
+	declarations. Subsequently all subtrees are visited
+	recursively.  After that the \verb|s2| transformation is
+	applied. The strategy in Figure~\ref{Fig:inline} deals with
+	the scope rule of variable declarations and regenerates the
+	inline rules after optimizing their bodies such that only
+	already optimized functions are inlined.
+
+ \subsection{Undefining Rules}
+
+	Strategy \verb|DeclareFun|, which generates the
+	\verb|InlineFun| rules, only does so when the function
+	declaration is deemed to be \verb|inlineable|.  The exact
+	definition of \verb|inlineable| does not matter here; it could
+	be defined using various heuristics based on static or dynamic
+	program analyses.  What does matter is the fact that for
+	non-inlineable functions no \verb|InlineFun| rule is
+	generated. If two functions with the same name exist, one
+	shadowing the other, and the outer is inlineable while the
+	inner is not, this could lead to replacing a call with the
+	wrong function body.  Thus, it is necessary to prevent
+	inlining rules from outer scopes to creep trough.
+
+	Dynamic rules can be declared as \emph{undefined}.  The
+	strategy \verb|UnDeclareFun| generates an \verb|InlineFun|
+	rule that is undefined:
+\begin{code}
+  UnDeclareFun =
+    ?Fdec(x, _, _, _);
+    rules( InlineFun : Call(Var(x),_) -> Undefined )
+\end{code}
+	This rule always fails when called. The effect is to hide any
+	rules from outer scopes for the same function name. The same
+	is done for variable declarations and loop counter variables,
+	since they may shadow function definitions.
+
+	An alternative to undefining \verb|InlineFun| for functions
+	that should not be inlined is to compute the \verb|inlineable|
+	condition in the where clause of the generated
+	\verb|InlineFun| rule instead of computing it at generation
+	time. This expensive, however, since it would entail
+	recomputing the condition everytime the rule is called.
+
+\section{Dead Function Elimination}
+	\label{Sec:elimination}
+
+	The purpose of dead code elimination is to remove code
+	fragments from a program that are never used at run-time.
+	Dead function elimination is a special case of dead code
+	elimination in which function declarations are removed if the
+	function being defined is never called.  An example of dead
+	function elimination is the following transformation that
+	takes the result of inlining from the previous section and
+	removes the, now unused, \verb|sqr| function:
+%
+	\begin{center}
+	\begin{boxedminipage}{6cm}\small
+	\verbatiminput{xmpl/inlining-xmpl1.inl.txt}
+let function sqr(x : int) =
+      (x * x)
+in let var a_0 : int := (3 + y)
+   in (a_0 * a_0)
+   end
+end
+
+	\end{boxedminipage}
+	$\Rightarrow$
+	\begin{boxedminipage}{5.4cm}\small
+	\verbatiminput{xmpl/inlining-xmpl1.inl.ed.txt} 
+
+let var a_0 : int := (3 + y)
+ in (a_0 * a_0)
+end
+
+	\end{boxedminipage}
+	\end{center}
+ 
+	Elimination of dead functions requires a traversal over the
+	program to establish whether there are any calls to a
+	function.  Figure~\ref{Fig:elimdead} gives a definition of
+	dead function elimination using dynamic rules.  The strategy
+	is to declare each function to be dead by default. The
+	strategy \verb|DeclareDead| defines the rule \verb|IsDead| for
+	a function once its declaration is in scope.  When, during the
+	traversal of the syntax tree, a call to a function is
+	encountered, the \verb|IsDead| rule is \emph{undefined} by
+	\verb|NotDead|.  On the way out all functions for which rule
+	\verb|IsDead| still succeeds are then eliminated by strategy
+	\verb|Eliminate|, which filters out all functions that should
+	be eliminated.  Note that this strategy should be refined in
+	order to eliminate dead (mutually) recursive functions.
+
+ \subsection{Overriding Rules}
+
+	This strategy requires a new kind of dynamic rule
+	introduction.  Consider a definition of \verb|NotDead| using
+	regular dynamic rules:
+\begin{code}
+  NotDead =
+    ?Call(Var(f),_);
+    rules( IsDead : FunDec(f,_,_,_) -> Undefined )
+\end{code}
+	This would entail that a new rule \verb|IsDead| would be
+	added for the function called at that position.  However, this
+	new rule would be removed as soon as the transformation exits
+	the surrounding scope and the function declaration would still
+	be eliminated.
+	
+	However, this is not what we want, since the intention of
+	\verb|NotDead| is to change the original rule defined in the
+	scope of the function declaration, rather than to undefine
+	\verb|IsDead| for local purposes.  This is achieved by
+	declaring the dynamic rules as \texttt{override rules}.  The
+	generation of an overriding dynamic rule only succeeds if
+	there was a prior definition of a dynamic rule for the same
+	left-hand side.
+
+	\begin{figure}[t]
+	\begin{boxedminipage}{\hsize}\small
+	\input{xmpl/Tiger-ElimDead.r}
+\begin{code}
+module Tiger-ElimDead
+imports Tiger Tiger-Rename
+strategies
+  eliminate-dead-functions = 
+    rec x(try(Let([VarDec(id,id,x)],id))
+          ; {| IsDead :
+               try(DeclareDead)
+             ; (Let([VarDec(id,id,id)] &lt;+ x, x) &lt;+ all(x))
+             ; try(NotDead + Eliminate; try(RmEmptyLet))
+            |})
+
+  DeclareDead = 
+    Let([FunctionDec(map(DeclareDead))], id)
+
+  DeclareDead =
+    ?fdec@FunDec(f, _, _, _);
+    rules( IsDead : FunDec(f,_,_,_) -> () )
+
+  NotDead =
+    ?Call(Var(f),_);
+    override rules( IsDead : FunDec(f,_,_,_) -> Undefined )
+
+  Eliminate =
+    Let([FunctionDec(filter(not(IsDead)))],id)
+
+  RmEmptyLet :
+    Let([], e) -> e
+
+  RmEmptyLet :
+    Let([FunctionDec([])], e) -> e
+\end{code}
+\endinput
+\begin{code}
+  Tiger-ElimDead = 
+    iowrap(eliminate-dead-functions)
+\end{code}
+
+	\end{boxedminipage}
+	\caption{Strategy for eliminating dead functions}
+	\label{Fig:elimdead}
+	\end{figure}
+
+\section{Other Applications}
+
+	Dynamic rules have been applied succesfully in a number of
+	transformations.
+
+	In an abstract interpretation style typechecker for Tiger,
+	dynamic rules are used to generate typechecking rules for
+	variables and functions. Thus, there is no need for threading
+	type environments along traversals, and type rules can be
+	expressed directly as rewrite rules.
+
+	In an interpreter for Tiger, dynamic rules are used to
+	represent mappings from variables to values on the stack or
+	heap. Variable bindings are dealt with using a scoped
+	traversal similar to that of the renamer. Globally visible
+	heap objects are represented by an unscoped dynamic rule that
+	maps reference values (pointers) to values. Evaluation for
+	individual constructs is expressed using constant folding
+	rules.
+
+	Several optimizations for Tiger programs including constant
+	propagation, copy propagation, and dead code elimination can
+	be expressed elegantly using dynamic rules. In forward
+	transformation problems, dynamic rules rewrite variables to
+	constant or to copy expressions. In backward problems, dynamic
+	rules keep track of use/def and neededness information.
+	Instrumentations of Tiger programs for tracing and profiling
+	use dynamic rules to selectively extend functions with extra
+	functionality.
+
+	There are many other program transformations that can benefit
+	from the use of dynamic rules.  It seems that the data-flow
+	transformations above can be easily extended to
+	inter-procedural transformations by generating appropriate
+	rules for function calls from their function declarations.
+	The warm fusion algorithm for deforestation \cite{LS95} uses
+	dynamically generated rewrite rules for the derivation of
+	catamorphisms from recursive function definitions. The
+	implementation of warm fusion in Stratego \cite{JV00} can be
+	simplified using dynamic rules.  Dynamic rules can also be
+	used for memoization. The use/def analysis mentioned above
+	uses a memoization scheme to incrementally recompute the
+	analyses for an expression.
+
+	Another application area is the run-time configuration of
+	transformation components. Options passed on the command-line
+	can be used to generate rules used during a transformation.
+	This can range from simple information such as optimization
+	level to user-defined optimization rules and instantiation of
+	an analysis with a set of initial variables to scrutinize.
+
+\section{Open Issues}
+
+  \subsection{Abstraction over Object Variables}
+
+	Wadler's deforestation algorithm~\cite{Wad90} can be expressed
+	using rewrite rules and a simple strategy. Dynamic rules can
+	be used to implement the folding of recursive occurrences of
+	the function composition being deforested. However, this
+	requires abstracting over object variables, which is not
+	supported by the dynamic rules discussed in this
+	chapter. Currently, dynamic rules can only inherit ground
+	terms from their definition context. Another application that
+	would need abstraction over object variables are the rule
+	pragmas of the Glasgow Haskell Compiler \cite{PTH01} that
+	allow the user to state rewrite rules that should be applied
+	during compilation in addition to normal optimizations.
+
+  \subsection{Namespace Dependencies}
+
+	In the scheme described in this chapter each dynamic rule
+	defines its own namespace. In order to achieve shadowing
+	effects in the namespaces of other rules, these rules should
+	be undefined. When mixing many rules this might become
+	unattractive. Some means of declaring the namespace
+	dependencies between rules will be useful.
+
+  \subsection{Abstraction over Rule Names}
+
+	Each of the Tiger transformations in this chapter defines its
+	own traversal over syntax trees and has to deal with the
+	peculiarities of the scope rules for variable declarations.
+	It would be better if the schema for the scope rules of a
+	language could be captured in a generic strategy. However,
+	this requires abstraction over dynamic rule names (rather than
+	transformations) for limiting the scope of dynamic
+	variables. This is possible in the underlying implementation,
+	but it would be more attractive to express this at the level
+	of the language extension.
+
+  \subsection{Interaction between Optimizations}
+
+	It will also be interesting to investigate the interaction
+	between various optimizations based on dynamic rules if they
+	are combined in a single traversal.
+
+  \subsection{Dynamic Rule Closures}
+
+	Finally, dynamic scoping may give rise to unexpected behaviour
+	when a dynamically generated rule \verb|A| itself calls a
+	dynamic rule \verb|B|, which is intended to be the \verb|A|
+	\emph{generation time} instance of rule \verb|B|, instead of
+	the \verb|A| \emph{call time} instance of \verb|B|, i.e.,
+	\verb|B| could change between the generation of \verb|A| and a
+	call to \verb|A|. This can often be solved by invoking
+	\verb|B| in the generation context of \verb|A|. However, in
+	general this may require closures of dynamic rules. 
+
+\section{Further Reading} 
+
+  \subsection{Language Independent Traversals}
+
+	In \cite{Vis00} it is shown how generic traversal strategies
+	can be used to define generic, language independent algorithms
+	for language processing problems such as free variable
+	extraction, bound variable renaming, substitution, and
+	unification. These generic algorithms are parameterized with
+	strategies for recognizing the various aspects of the object
+	language such as representation of variables, variable binding
+	constructs, and binding positions of binding constructs.
+	Dynamic rules are orthogonal to generic traversals and can
+	make their implementation easier since environment threading
+	can be delegated to dynamic rules.
+
+  \subsection{Assert in Prolog}
+
+	Dynamic rules are most closely related to the extra-logical
+	operators assert and retract in Prolog.  The goal
+	\verb|assert(G)| adds \verb|G| to the rule database.  All free
+	logic variables in \verb|G| are universally quantified.  This
+	is similar to the variables in dynamic rules that do not occur
+	in the context. The goal \verb|retract(G)| retracts from the
+	rule database \emph{all} rules that unify with \verb|G|.  The
+	dynamic rule mechanism in this chapter does not provide a
+	retract. Instead, the live range of a rule can be controlled
+	by means of rule scope that automatically retracts rules at
+	the end of their scope. This provides a much cleaner way to
+	retract rules, since only those rules generated before are
+	retracted. Rules that were declared outside the scope become
+	visible again. This cannot be modeled using retract.  A
+	declarative formulation of assert in LProlog is described
+	in~\cite{dietzen91declarative}.
+
+  \subsection{Reflection}
+
+	Dynamic rules could be considered as a restricted form of
+	computational reflection \cite{Mae87}.  However, it is not
+	nearly as general as general reflection in rewriting logic, as
+	provided in Maude \cite{CM96}, which supports arbitrary
+	manipulation of specifications at the meta-level at run-time.
+	A reflective extension of ELAN is proposed in \cite{KM96}.
+	The more restricted form of reflection presented in this chapter
+	can be (and has been) effectively implemented by a compiler,
+	i.e., does not require interpretation.
+
+ \subsection{Dynamic Variables}
+
+	Dynamic rules are related to dynamically scoped variables in
+	programming languages.  In Lisp dynamic scope is considered a
+	bug in the implementation.  Domain-specific languages such as
+	TeX makes use of dynamically scoped variables that allows
+	for easy redefinition of behaviour; configuration of a
+	document style can be influenced by redefining macros
+	representing parameters of the style.  More recently several
+	papers \cite{LLMS00,HP01} have reintroduced dynamic scope as a
+	feature in general purpose languages.
+
+	Lewis et al. \cite{LLMS00} introduce implicit parameters in
+	functional languages such as Haskell.  Implicit parameters can
+	be used deeply embedded in a functional definition and can be
+	bound at some outer level without having to pass the value
+	explicitly through all the intermediate function calls.
+	Hansson et al. \cite{HP01} introduce dynamic variables in an
+	imperative setting. A dynamic variable is created and
+	initialized with an initial value. A use of a dynamic variable
+	refers to the most recent setting of a dynamic variable with
+	the same name. The main difference between the approaches is
+	the fact that the value of an implicit parameter in
+	\cite{LLMS00} cannot be changed, while a dynamic variable is
+	passed \emph{by reference} to the use site and can thus be
+	updated. Such updating corresponds to the notion of
+	\emph{overriding rules} generation in this chapter.
+
+	In contrast to these approaches, dynamic rules define
+	\emph{mappings} from tuples of terms to tuples of terms (the
+	bindings to context variables in the left-hand side and
+	right-hand side, respectively).  When introducing a new rule
+	only the points in the mapping that overlap the left-hand side
+	variables are shadowed, while other rule instances remain
+	visible.
+
+	Furthermore, unlike the approaches of implicit parameters and
+	dynamic variables, the dynamic rule \emph{scope} construct in
+	this chapter is separated from both the generation and use of
+	dynamic rules.  This entails greater flexibility; strategies
+	that introduce dynamic rules can be put to different use by
+	manipulating the range of the scope. This is illustrated for
+	example by the various strategies for variable renaming that
+	reflect different (object language) scope rules, while
+	(re-)using the same renaming rules.
+	
+
+\begin{comment}
+\section{Conclusion}
+	\label{Sec:conclusion}
+
+	This chapter presented an extension of term rewriting with the
+	run-time generation of context-dependent rewrite rules.
+	Generated rules can be used as part of the global tree
+	traversal, thus not increasing complexity by performing
+	additional traversals.  The extension is not limited to some
+	specific form of program representation such as control flow
+	graphs, but can be applied in the transformation of arbitrary
+	abstract syntax trees.
+
+	Scoped dynamic rewrite rules solve (many of) the limitations
+	caused by the context-free nature of rewrite rules,
+	strengthening the separation of rules and strategies, and
+	supporting concise and elegant specification of program
+	transformations.  This has been illustrated in this chapter by
+	the specification of three transformations, i.e., bound
+	variable renaming, function inlining, and dead function
+	elimination. 
+
+	\paragraph{Acknowledgments}
+	I would like to thank Patricia Johann for comments on a
+	previous version of this chapter.
+
+
+	*** Jan Heering : typechecking in LProlog
+	
+	*** teyjus
+
+	*** FreshML: deals with variable renaming in a transparant
+	way but not with other context-dependent operations
+
+	Oege's 
+\end{comment}
+
+\section{Exercises}
+
+\subsection{}
+
+	Consider the following fragment of a Tiger program:
+\begin{verbatim}
+let function f(x : int) = x + 1 in f(y) * f(z + 1) end
+\end{verbatim}
+
+	\begin{enumerate}
+
+	\item What is the effect of renaming bound variables on this
+	expression? Sketch how the renaming strategy works, in
+	particular how dynamic rules are introduced and discarded.
+
+	\item What is the result of inlining the function \verb|f| in
+	this fragment using the inlining transformation?  Sketch how
+	the inlining strategy works, in particular how dynamic rules
+	are introduced and discarded.
+
+	\item After inlining the function \verb|f|, it becomes a dead
+	declaration. What is the result of dead function elimination
+	on the result of inlining?  Sketch how the
+	\verb|eliminate-dead-functions| strategy works, in particular
+	how dynamic rules are introduced and discarded.
+
+	\end{enumerate}
+
+\subsection{}
+
+	In data-flow transformations, data is propagated through a
+	program according to the control-flow semantics of the
+	language constructs. Dynamic rules in combination with
+	traversals can be used to model such transformations.
+
+	Consider the problems of constant propagation for
+	straight-line Tiger programs. In constant propagation constant
+	values assigned to variables are propagated to variable uses,
+	and constant operator applications are reduced (constant
+	folding). In this transformation one should account for the
+	fact that assignments to variables stop the propagation of a
+	constant to variable. For example, in the transformation
+\begin{center}
+\hfill
+\begin{boxedminipage}{3cm}
+\begin{verbatim}
+(x := 42;
+ y := x + 17;
+ x := z;
+ z := x + y)
+\end{verbatim}
+\end{boxedminipage}
+\hfill
+$\Rightarrow$
+\hfill
+\begin{boxedminipage}{3cm}
+\begin{verbatim}
+(x := 42;
+ y := 59;
+ x := z;
+ z := x + 59)
+\end{verbatim}
+\end{boxedminipage}
+\hspace*{\fill}
+\end{center}
+	the second occurence of the variable set is not replaced since
+	it is not bound to a constant. After this transformations one
+	typically applies dead code elimination to delete the useless
+	assignments.
+
+	Write transformations for straight-line Tiger programs that
+	perform constant propagation. Assume that expressions consist
+	of sequences of assignments only. Of course, it is a good idea
+	to use dynamic rules to realize this transformation.
+
+	What would be needed to extend this scheme to deal with
+	control-flow constructs such as \verb|if-then-else| and
+	\verb|while-do|?
+
+\subsection{}
+
+	In data-flow transformations, data is propagated through
+	a program according to the control-flow semantics of the
+	language constructs. Dynamic rules in combination with
+	traversals can be used to model such transformations. 
+
+	Consider the problems of constant propagation and copy propagation
+	for straight-line Tiger programs. In constant propagation constant
+	values assigned to variables are propagated to variable uses, and
+	constant operator applications are reduced (constant folding). In this
+	transformation one should account for the fact that assignments to
+	variables stop the propagation of a constant to variable. For
+	example, in the transformation
+\begin{center}
+\hfill
+\begin{boxedminipage}{3cm}
+\begin{verbatim}
+(x := 42;
+ y := x + 17;
+ x := z;
+ z := x + y)
+\end{verbatim}
+\end{boxedminipage}
+\hfill
+$\Rightarrow$
+\hfill
+\begin{boxedminipage}{3cm}
+\begin{verbatim}
+(x := 42;
+ y := 59;
+ x := z;
+ z := x + 59)
+\end{verbatim}
+\end{boxedminipage}
+\hspace*{\fill}
+\end{center}
+	the second occurence of the variable set is not replaced since
+	it is not bound to a constant.
+
+	In copy propogation assignments of variables to variables are
+	propagated through a program. For example,
+\begin{center}
+\hfill
+\begin{boxedminipage}{3cm}
+\begin{verbatim}
+(x := a;
+ y := x + 17;
+ x := z;
+ z := x + y)
+\end{verbatim}
+\end{boxedminipage}
+\hfill
+$\Rightarrow$
+\hfill
+\begin{boxedminipage}{3cm}
+\begin{verbatim}
+(x := a;
+ y := a + 17;
+ x := z;
+ z := x + y)
+\end{verbatim}
+\end{boxedminipage}
+\hspace*{\fill}
+\end{center}
+	Here the first occurrence of x has been replaced with a, but not
+	the second. After these transformations one typically applies
+	dead code elimination to delete the useless assignments.
+
+	Write transformations for straight-line Tiger programs that
+	perform constant and copy progation. Assume that expressions
+	consist of sequences of assignments only. Of course, it is a
+	good idea to use dynamic rules to realize this transformation.
+
+	What would be needed to extend this scheme to deal with
+	control-flow constructs such as \verb|if-then-else| and
+	\verb|while-do|?
+
+</screen>
+</section>
+
+  </chapter>
