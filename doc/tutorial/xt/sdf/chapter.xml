@@ -2,14 +2,34 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Syntax Definition and Parsing (*)</title>
+  <title>Syntax Definition and Parsing</title>
 
   <para>
-    Refer to SDF manual. Examples of pack-sdf, sglri, and sdf2table.
-
     Note: there is already a lot of explanation in the TIL syntax
     example.
   </para>
+
+  <section>
+    <title>Modular Syntax Definition</title>
+    <para>
+      Little bit about SDF, refer to SDF maual for more details.
+    </para>
+  </section>
+
+
+  <section>
+    <title>Generating a Parse Table</title>
+    <para>
+      Invoke sdf2table
+    </para>
+  </section>
+
+  <section>
+    <title>Invoking the Parser</title>
+    <para>
+      sglri, options
+    </para>
+  </section>
 
   <xi:include href="parse-unit/section.xml"/>
 </chapter>
