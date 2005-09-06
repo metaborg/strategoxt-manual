@@ -1,8 +1,8 @@
-<section
+<chapter
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>In Control of Rewriting (*)</title>
+  <title>Rewriting Strategies(*)</title>
 
   <para>
 
@@ -616,5 +616,5 @@ Realization in Stratego
     )
 </screen>
 
-</section>
+</chapter>
 
