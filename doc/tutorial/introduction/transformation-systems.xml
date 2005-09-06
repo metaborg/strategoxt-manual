@@ -123,14 +123,16 @@ Document generation/transformation
   <para>
     Exactly what all this means will become clear to you as we move
     along in this tutorial, but at least we can start by plotting them
-    in on the map of a Transformation System, given in Figure 2.
+    in on the map of a Transformation System, given in <xref
+    linkend="Fig-Pipeline"/>.
   </para>
 
-<screen>
-Map of a Transformation System:
-
-parser -> transformation -> pretty-printer
-</screen>
+  <figure xml:id="Fig-Pipeline">
+    <title>
+      Pipeline of a software transformation system.
+    </title>
+    <pngobject fileref="xmpl/transf-cycle.png" align="center"/>
+  </figure>
 
   <para>
     A program transformation system is usually organized as a simple
