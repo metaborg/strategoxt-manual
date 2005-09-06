@@ -8,6 +8,7 @@
 	<firstname>Martin</firstname>
 	<surname>Bravenboer</surname>
       </personname>
+      <email>martin@cs.uu.nl</email>
       <affiliation>
 	<orgname>Universiteit Utrecht</orgname>
       </affiliation>
@@ -17,6 +18,7 @@
 	<firstname>Karl Trygve</firstname>
 	<surname>Kalleberg</surname>
       </personname>
+      <email>karltk@ii.uib.no</email>
       <affiliation>
 	<orgname>Universitetet i Bergen</orgname>
       </affiliation>
@@ -26,6 +28,7 @@
 	<firstname>Eelco</firstname>
 	<surname>Visser</surname>
       </personname>
+      <email>visser@acm.org</email>
       <affiliation>
 	<orgname>Universiteit Utrecht</orgname>
       </affiliation>

@@ -1,0 +1,255 @@
+<chapter xml:id="program-representation"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Architecture</title>
+
+  <para>
+    Program transformation systems need some kind of representation
+    for program that can be manipulated.  Programmers write programs
+    as texts using text editors.  Some programming environments
+    provide more graphical (visual) interfaces for programmers to
+    specify certain domain-specific ingredients (e.g., user interface
+    components). But ultimately, such environments have a textual
+    interface for specifying the details. Even if programs are written
+    in a `structured format' such as XML, the representation used by
+    programmers generally is text. So a program transformation system
+    needs to manipulate programs in text format.
+  </para>
+
+  <para>
+    However, for all but the most trivial transformations, a
+    structured rather than a textual representation is needed.  To
+    bridge the gap between textual and structured representation,
+    parsers and unparsers are needed. Since the theory of formal
+    languages, context-free and regular grammars, and parser
+    construction are standard fair (see for example [ASU86]), we will
+    not treat those subjects here. The purpose of this chapter is to
+    introduce the terminology and formalisms used in the rest of this
+    book. This includes formal syntax definition with the syntax
+    definition formalism SDF, parsing, representation of trees as
+    ATerms, mapping of parse trees to abstract syntax trees, and
+    pretty-printing using the target-independent Box language.  We
+    illustrate these concepts with a syntax definition for a subset of
+    the Tiger language.
+  </para>
+
+<section>
+  <title>Grammars as Contracts</title>
+
+  <para>
+    Syntax definitions formalize the interface between the textual
+    representation used by programmers and the structured
+    representation used by transformation systems. A syntax definition
+    (or grammar) formally declares the syntax of a programming
+    language and the mapping from a textual to a tree representation,
+    and back. That is, from a syntax definition one can automatically
+    derive the implementation of parsers, signatures, and
+    pretty-printers.  If multiple transformation components are in
+    play, syntax definitions can also define the interface between
+    these components. In other words, grammars form the contracts for
+    transformation components [JV00.gcse].
+  </para>
+
+  <para>
+    <xref linkend="Fig-GrammarsAsContracts"/> illustrates these ideas.
+    To transform a program, it is first parsed and represented as a
+    tree (triangle). The tree is transformed by a tree transformation
+    component which results in a transformed tree. This tree is then
+    rendered as text by a pretty-printer.  The contract between
+    parser, transformer, and pretty-printer is embedded in the parse
+    table, signature, and pretty-print table, which are all generated
+    from the same syntax definition.
+
+  </para>
+
+  <figure xml:id="Fig-GrammarsAsContracts">
+    <title>
+      Syntax definitions define the interfaces between transformation
+      components.
+    </title>
+    <pngobject fileref="xmpl/transf-cycle.png" align="center"/>
+  </figure>
+
+</section>
+
+<section>
+ <title>Trees are Terms</title>
+
+ <para>
+
+   <informalfigure pgwide="0">
+     <pngobject fileref="xmpl/test1-acub.png" align="right"/>
+   </informalfigure>
+
+   So far we have presented parse trees and abstract syntax trees as
+   graphical structures.  This representation corresponds closely to
+   the representation of trees in computer memory. However, drawing
+   pictures is not a very effective way of specifying tree
+   transformations, nor is manipulating tree structures using data
+   structure access functions in a general purpose language. There is
+   a one-to-one correspondence between trees and first-order prefix
+   terms.  A term is a constructor, i.e., an identifier, applied to
+   zero or more terms, where strings and integer constants are
+   considered as special cases of constructors. Thus, the term
+   <code>Times(Plus(Var("a"), Var("n")), Int("1"))</code> corresponds
+   to the abstract syntax tree on the right.
+
+ </para>
+
+ <para>
+
+   The Annotated Term Format [BJKO00], or <emphasis>ATerms</emphasis>
+   for short is a standard format for the representation of structured
+   data for exchange between programs. It is essentially the prefix
+   term format sketched above with a few additional features. An ATerm
+   is one of:
+
+   <itemizedlist>
+
+     <listitem>
+       <para>
+         Constant constructor: <code>Nil</code> or <code>Nil()</code>
+       </para>
+     </listitem>
+
+     <listitem>
+       <para>
+         Integer constant, e.g., <code>1</code>
+       </para>
+     </listitem>
+
+     <listitem>
+       <para>
+        Real constant, e.g., <code>0.1</code>
+       </para>
+     </listitem>
+
+     <listitem>
+       <para>
+        String constant, e.g., <code>"foo"</code>
+       </para>
+     </listitem>
+
+     <listitem>
+       <para>
+        Constructor application to n terms, e.g.,
+        <code>Plus(Var("a"),Int(1))</code>
+       </para>
+     </listitem>
+
+     <listitem>
+       <para>
+        A list of terms, e.g., <code>[A,B,C]</code>
+       </para>
+     </listitem>
+
+     <listitem>
+       <para>
+        A tuple of terms, e.g., <code>(A,B,C)</code>
+       </para>
+     </listitem>
+
+   </itemizedlist>
+
+   In addition, any ATerm can be annotated with a list of terms using
+   the notation <code>t{a1,...,an}</code>. The purpose of annotations
+   is to attach semantic information to terms without changing its
+   basic structure.  A precise syntax definition of ATerms can be
+   found in <xref linkend="ref-aterms"/>
+
+  </para>
+
+ <section>
+  <title>ATerm Library</title>
+
+  <para>
+        
+    The ATerm Format is an external representation for terms that can
+    be used to exchange structured data between programs.  In order to
+    use a term, a program needs to parse ATerms and transform them
+    into some internal representation. To export a term after
+    processing it, a program should transform the internal
+    representation into the standard format.  There are libraries
+    supporting these operation for a number of languages, including C,
+    Java, and Haskell.
+
+  </para>
+
+  <para>
+       
+    The implementation of the Stratego transformation language is
+    based on the C implementation of the library. The library provides
+    term input and output, and an API for constructing and inspecting
+    terms. Garbage collection is based on B\"ohms conservative garbage
+    collection algorithm.
+
+  </para>
+
+  <para>
+        
+    An important feature of the implementation is that terms are
+    represented using maximal sharing. This means that any term in use
+    in a program is represented only once. In other words, two
+    occurrences of the same term will be represented by pointers to
+    the same location. <xref linkend="Fig-Sharing"/> illustrates the
+    difference between a pure tree representation and a tree, or more
+    accurately, a <emphasis>directed acyclic graph</emphasis>, with
+    maximal sharing. That is, any sub-term is represented exactly once
+    in memory, with each occurrence pointing to the same memory
+    location. This representation entails that term equality is a
+    constant operation, since it consists of comparing pointers. It
+    should be noted that annotations create different terms, that is,
+    two terms, one with and the other without annotations that are
+    otherwise, modulo annotations, the same, are not equal.
+
+  </para>
+
+  <figure xml:id="Fig-Sharing">
+    <title>
+      Tree and dag for the string <code>(a + b) * c + (a + b)</code>
+    </title>
+    <nexttoeachother>
+      <entry>
+        <pngobject fileref="xmpl/sharing-acub.png" align="center"/>
+      </entry>
+      <entry>
+        <pngobject fileref="xmpl/sharing-scub.png" align="center"/>
+      </entry>
+    </nexttoeachother>
+  </figure>
+
+  <para>
+
+    Maximal sharing can make a big difference [BJKO00] in the amount
+    of memory needed for representing programs.  When exporting a term
+    using the textual exchange format, this compression is
+    lost. Therefore, the ATerm Library also provides a binary exchange
+    format that preserves maximal sharing.
+
+  </para>
+
+  <para>
+        
+    See <xref linkend="ref-aterms"/> for more information on ATerms.
+
+  </para>
+
+ </section>
+</section>
+
+<section>
+  <title>Tools</title>
+
+  <para>
+    The Stratego/XT collection provides various tools for parsing and
+    pretty-printing programs based on the syntax definition formalism
+    SDF2. (In fact the various tools originate from different
+    sub-packages, which does not correspond to the aggregation
+    presented here.) In this section an overview of the main tools is
+    given with their typical command-line arguments and a reference to
+    the tool documentation.
+  </para>
+</section>
+
+</chapter>

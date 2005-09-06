@@ -32,4 +32,257 @@
       implement a pretty-printer by hand.
     </para>
   </section>
+
+<section>
+  <title>Pretty-Printing (todo: imported)</title>
+
+  <para>
+
+    After transformation, an abstract syntax tree should be turned
+    into text again to be useful as a program. Mapping a tree into
+    text can be seen as the inverse as parsing, and is thus called
+    <emphasis>unparsing</emphasis>. When an unparser makes an attempt
+    at producing human readable, instead of just compiler parsable,
+    program text, an unparser is called a
+    <emphasis>pretty-printer</emphasis>. We use the pretty-printing
+    model as provided by the <link
+    linkend="generic-pretty-printing">Generic Pretty-Printing package
+    GPP</link>. In this model a tree is unparsed to a Box expression,
+    which contains text with markup for pretty-printing. A Box
+    expression can be interpreted by different back-ends to produce
+    text for different displaying devices, such as plain ASCII text,
+    HTML, and LaTeX.
+
+  </para>
+
+ <section>
+  <title>Unparsing</title>
+
+  <para>
+        
+    Unparsing is the inverse of parsing composed with abstract syntax
+    tree composition. That is, an unparser turns an abstract syntax
+    tree into a string, such that if the resulting string is parsed
+    again, it produces the same abstract syntax tree.
+
+  </para>
+
+  <para>
+
+    An unparser can be organized in two phases. In the first phase,
+    each node in an abstract syntax tree is replaced with the concrete
+    syntax tree of the corresponding grammar production.  In the
+    second phase, the strings at the leaves of the tree are
+    concatenated into a string.  <xref linkend="Fig-Unparsing"/>
+    illustrates this process. The replacement of abstract syntax tree
+    nodes by concrete syntax patterns should be done according to the
+    productions of the syntax definition. An unparsing table is an
+    abstraction of a syntax definition definining the inverse mapping
+    from constructors to concrete syntax patterns. An entry <code>c --
+    s1 ... sn</code> defines a mapping for constructor <code>c</code>
+    to the sequence <code>s1 ... sn</code>, where each
+    <code>s_i</code> is either a literal string or a parameter
+    <code>_i</code> referring to the <code>i</code>th argument of the
+    constructor. <xref linkend="Fig-UnparsingTable"/> shows an
+    unparsing table for some expression and statement
+    constructors. Applying an unparsing mapping to an abstract syntax
+    tree results in a tree structure with strings at the leafs, as
+    illustrated in <xref linkend="Fig-Unparsing"/>.
+
+  </para>
+
+  <figure xml:id="Fig-Unparsing">
+    <title>
+      Unparsing an abstract syntax tree.
+    </title>
+    <nexttoeachother>
+      <entry>
+         <pngobject fileref="xmpl/test6-acub.png" align="center"/>
+      </entry>
+      <entry>
+        <pngobject fileref="xmpl/test6-unparse.png" align="center"/>
+      </entry>
+    </nexttoeachother>
+    <screen>f(a + 10) - 3</screen>
+  </figure>
+
+  <figure xml:id="Fig-UnparsingTable">
+    <title>
+      Unparsing table
+    </title>
+    <showfile root="." file="xmpl/Statements-condensed.pp"/>
+  </figure>
+
+ </section>
+
+ <section>
+   <title>Pretty-Printing</title>
+
+  <para> 
+
+    Although the unparse of an abstract syntax tree is a text that can
+    be parsed by a compiler, it is not necessarily a
+    <emphasis>readable</emphasis> text. A
+    <emphasis>pretty-printer</emphasis> is an unparser attempting to
+    produce readable program text.  A pretty-printer can be obtained
+    by annotating the entries in an unparsing table with markup
+    instructing a typesetting process. <xref
+    linkend="Fig-PrettyPrinting"/> illustrates this process.
+
+  </para>
+
+  <para>
+        
+    Box is a target independent formatting language, providing
+    combinators for declaring the two-dimensional positioning of boxes
+    of text. Typical combinators are <code>H[b_1...b_n]</code>, which
+    combines the <code>b_i</code> boxes horizontally, and
+    <code>V[b_1...b_n]</code>, which combines the
+    <code>b_i</code> boxes vertically.  <xref
+    linkend="Fig-PrettyPrintTable"/> shows a pretty-print table with
+    Box markup. A more complete overview of the Box language and the
+    GPP tools can be found in <xref
+    linkend="generic-pretty-printing"/>.
+
+  </para>
+
+  <figure xml:id="Fig-PrettyPrinting">
+    <title>
+      Pretty-printing with Box markup
+    </title>
+    <nexttoeachother>
+      <entry>
+        <pngobject fileref="xmpl/test6-acub.png" align="center"/>
+      </entry>
+      <entry>
+        <pngobject fileref="xmpl/test6-abox-tree.png" align="center"/>
+      </entry>
+    </nexttoeachother>
+    <screen>f(a + 10) - 3</screen>
+  </figure>
+
+  <figure xml:id="Fig-PrettyPrintTable">
+    <title>
+      Pretty-print table with Box markup
+    </title>
+    <showfile root="." file="xmpl/Statements-pretty-condensed.pp"/>
+  </figure>
+
+  <figure>
+    <title>
+      Pretty-printing of if-then-else statement
+    </title>
+    <showfile root="." file="xmpl/test7.acub.edited"/>
+    <pngobject fileref="xmpl/test7-acub.png" align="center"/>
+    <pngobject fileref="xmpl/test7-abox-tree.png" align="center"/>
+    <showfile root="." file="xmpl/test7.acub.txt"/>
+  </figure>
+
+ </section>
+
+ <section>
+   <title>Disambiguation</title>
+
+  <para>
+       
+    Note: correct pretty-printing of an abstract syntax tree requires
+    that it contains nodes representing parentheses in the right
+    places. Otherwise, reparsing a pretty-printed string might get a
+    different interpretation. The <link
+    linkend="ref-sdf2parenthesize"><code>sdf2parenthesize</code></link>
+    tool generates from an SDF definition a Stratego program that
+    places parentheses at the necessary places in the tree.
+
+  </para>
+
+ </section>
+</section>
+
+ <section>
+   <title>Pretty-Printing and Term Visualization Tools (todo: imported)</title>
+
+  <formalpara>
+    <title><link linkend="ref-ppgen"><code>
+      ppgen -i m.def -o m.pp
+    </code></link></title>
+
+    <para>
+
+      <code>Ppgen</code> generates from an SDF syntax definition a
+      pretty-print table with an entry for each context-free syntax
+      production with a constructor annotation. Typically it is
+      necessary to edit the pretty-print table to add appropriate Box
+      markup to the entries. The result should be saved under a
+      different name to avoid overwriting it.
+
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-ast2abox"><code>
+      ast2abox -p m.pp -i file.ast -o file.abox
+    </code></link></title>
+
+    <para>
+
+      <code>ast2abox</code> maps an abstract syntax tree
+      <code>file.ast</code> to an abstract syntax representation
+      <code>file.abox</code> of a Box term based on a pretty-print
+      table <code>m.pp</code>.
+
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-abox2text"><code>
+      abox2text -i file.abox -o file.txt
+    </code></link></title>
+
+    <para>
+      <code>abox2text</code> formats a Box term as ASCII text.
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-pp-aterm"><code>
+      pp-aterm -i file1.trm -o file2.trm
+    </code></link></title>
+
+    <para>
+      <code>pp-aterm</code> formats an ATerm as an ATerm in text
+      format, adding newlines and indentation to make the structure of
+      the term understandable. This is a useful tool to inspect terms
+      while debugging transformations.
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><code>
+      term-to-dot -i file.trm -o file.dot (--tree | --graph)
+    </code></title>
+
+    <para>
+
+      <code>Term-to-dot</code> is another visualization tool for terms
+      that creates a <code>dot</code> graph representation, which can
+      be visualized using the <code>dot</code> tool from the graphviz
+      graph layout package. <code>Term-to-dot</code> can produce an
+      expanded tree view (<code>--tree</code>), or a directed acyclic
+      graph view (<code>--graph</code>) preserving the maximal sharing
+      in the term. This tool was used to produce the tree
+      visualizations in this chapter.
+
+      This tool is not part of the Stratego/XT distribution, but
+      included in the Stratego/XT Utilities package.
+    </para>
+
+  </formalpara>
+
+ </section>
+
+
 </chapter>

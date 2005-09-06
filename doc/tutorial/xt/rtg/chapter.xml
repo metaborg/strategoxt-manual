@@ -31,4 +31,82 @@
   </section>
   
   <xi:include href="format/section.xml"/>
+
+ <section>
+  <title>Signatures (todo: imported)</title>
+
+  <para>
+
+    The abstract syntax of a programming language or data format can
+    be described by means of an <emphasis>algebraic
+    signature</emphasis>.  A signature declares for each constructor
+    its arity <code>m</code>, the sorts of its arguments <code>S1 *
+    ... * Sm</code>, and the sort of the resulting term
+    <code>S0</code> by means of a constructor declaration <code>c:S1 *
+    ... * Sm -> S0</code>.  A term can be validated against a
+    signature by a <emphasis>format checker</emphasis>.
+
+  </para>
+
+  <para>
+
+    Signatures can be derived automatically from syntax definitions.
+    For each production <code>A1...An -> A0 {cons(c)}</code> in a
+    syntax definition, the corresponding constructor declaration is
+    <code>c:S1 * ... * Sm -> S0</code>, where the <code>Si</code> are
+    the sorts corresponding to the symbols <code>Aj</code> after
+    leaving out literals and layout sorts.  <xref
+    linkend="Fig-Signatures"/> shows the signatures of statement and
+    expression constructors for the example language from this
+    chapter.  The modules have been derived automatically from the
+    syntax definitions in <xref linkend="Fig-Expressions.sdf"/> and
+    <xref linkend="Fig-RegularExpressions"/>.
+
+  </para>
+
+  <figure xml:id="Fig-Signatures">
+    <title>
+      Signature for statement and expression constructors,
+      automatically derived from a syntax definition.
+    </title>
+    <showfile root="." file="xmpl/Statements.str"/>
+  </figure>
+
+ </section>
+
+ <section>
+   <title>Signature Tools (todo: imported)</title>
+
+  <formalpara>
+    <title><link linkend="ref-sdf2rtg"><code>
+       sdf2rtg -i m.def -o m.rtg -m M
+    </code></link></title>
+
+    <para>
+
+      <code>sdf2rtg</code> derives from an SDF syntax definition
+      <code>m.def</code> a regular tree grammar for the module
+      <code>M</code> and all modules it imports.
+
+    </para>
+
+  </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-rtg2sig"><code>
+       rtg2sig -i m.def -o m.rtg
+    </code></link></title>
+
+    <para>
+
+      <code>rtg2sig</code> generates from a regular tree grammar a
+      Stratego signature.
+
+    </para>
+
+  </formalpara>
+
+ </section>
+
+
 </chapter>

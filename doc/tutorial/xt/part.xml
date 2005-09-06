@@ -3,7 +3,7 @@
       xmlns:xi="http://www.w3.org/2003/XInclude">
   
   <title>The XT Transformation Tools</title>
-  <xi:include href="representation/chapter.xml" />
+  <xi:include href="architecture/chapter.xml" />
   <xi:include href="sdf/chapter.xml" />
   <xi:include href="gpp/chapter.xml" />
   <xi:include href="rtg/chapter.xml" />
