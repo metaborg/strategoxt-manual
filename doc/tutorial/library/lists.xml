@@ -1,10 +1,11 @@
-<section
+<chapter
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Hashtables</title>
+  <title>Lists</title>
   
   <para>
-    How to use hashtables
+    Lists
   </para>
-</section>
+</chapter>
+

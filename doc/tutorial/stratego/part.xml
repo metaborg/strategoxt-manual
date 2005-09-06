@@ -34,7 +34,4 @@
   <xi:include href="language/concrete-syntax.xml"/>
   <xi:include href="language/dynamic.xml"/>
   <!--xi:include href="language/dynamic-rules.xml"/-->
-  
-  <xi:include href="library/stratego-library.xml"/>
-  <xi:include href="sunit/sunit.xml"/>
 </part>

@@ -1,0 +1,14 @@
+<partintro xml:id="stratego-library-intro"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xl="http://www.w3.org/1999/xlink"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <para>
+    Outline
+  </para>
+  
+  <para>
+    API Documentation for the Stratego library can be found <link
+    xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">here</link>.
+  </para>
+</partintro>

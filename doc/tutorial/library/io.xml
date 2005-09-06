@@ -1,11 +1,11 @@
-<section
+<chapter
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Command-line Options</title>
+  <title>I/O (*)</title>
   
   <para>
-    How to handle command-line options.
+    Library strategies for file input and output.
   </para>
-</section>
+</chapter>
 
