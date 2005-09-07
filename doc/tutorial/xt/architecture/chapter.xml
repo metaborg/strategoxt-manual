@@ -8,10 +8,10 @@
     <title>Tools as Transformation Components</title>
     
     <para>
-      XT is a collection of components for implementing a
-      transformation systems. Some of these components generate code,
-      such as a parser or pretty-printer, that can be included in a
-      transformation system. Others can be used immediately, since
+      XT is a collection of components for implementing transformation
+      systems. Some of these components generate code that can be
+      included in a transformation system, such as a parser or
+      pretty-printer. Other components can be used immediately, since
       they are generic tools. The components of XT are all
       <emphasis>executable tools</emphasis>: they can be used directly
       from the command-line.
