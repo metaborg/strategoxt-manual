@@ -6,7 +6,7 @@ XSLTPROC_FLAGS =					 \
 	--param chunk.section.depth \'0\'		 \
         --param toc.max.depth \'3\'			 \
 	--param toc.section.depth 2			 \
-	--param xref.with.number.and.title 1		 \
+	--param xref.with.number.and.title 0		 \
 	--param section.label.includes.component.label 2 \
 	--param section.autolabel 1
 
