@@ -11,21 +11,21 @@
       XT is a collection of components for implementing a
       transformation systems. Some of these components generate code,
       such as a parser or pretty-printer, that can be included in a
-      transformation systems. Other components of XT can be used
-      immediately, since they are generic tools. The components of XT
-      are all <emphasis>executable tools</emphasis>: they can be used
-      directly from the command-line.
+      transformation system. Others can be used immediately, since
+      they are generic tools. The components of XT are all
+      <emphasis>executable tools</emphasis>: they can be used directly
+      from the command-line.
     </para>
 
     <para>
       According to the Unix philosophy, the tools that are part of XT
       all do just one thing (i.e. implement one aspect of a
       transformation system) and can be composed into a pipeline to
-      combine them in any way you want. a sketch of a typical pipeline
+      combine them in any way you want. A sketch of a typical pipeline
       is shown in <xref linkend="Fig-Pipeline2"/>. First, a parser is
       applied to a source program. This results in an abstract syntax
-      tree, which is then transformed by a sequence of
-      transformations. Finally, the tree is pretty-printed to a source
+      tree, which is then transformed by a sequence of transformation
+      tools. Finally, the tree is pretty-printed back to a source
       program. So, this pipeline is a source to source transformation
       system. The tools that are part of the pipeline exchange
       <emphasis>structured representations</emphasis> of a program, in
