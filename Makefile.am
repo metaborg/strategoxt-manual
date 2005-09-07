@@ -32,6 +32,8 @@ manual :
            -name *.rtg -or \
            -name *.pp -or \
            -name *.meta | xargs -i cp --parents {} ../mandist/manual
+	cd svg && find . \
+           -name *.png  | xargs -i cp --parents {} ../mandist/manual
 	cp src/examples.tar.gz mandist/manual
 	cd mandist/manual && tar zxvf ../../src/examples-full.tar.gz
 
