@@ -5,24 +5,105 @@
   <title>Running Stratego Programs (*)</title>
 
  <para>
-    how to run a Stratego program
- </para>
-  
-<section>
-    <title>Structure of a Stratego Program</title>
-    <para>
-       file extensions
 
-       libraries?
-    </para>
+   Now let's see how we can actually transform terms using Stratego
+   programs. In the rest of this chapter we will first look at the
+   structure of Stratego programs, and how to compile and run them.
+   In the next chapter we will then see how define transformations.
+
+ </para>
+
+<section>
+  <title>The Identity Transformation</title>
+
+<para>
+
+   The simplest program you can write in Stratego is the following:
+
+<screen>
+module identity
+imports list-cons
+strategies
+  main = id
+</screen>
+
+       main definition
+
+       identity strategy
+
+       compiling with the Stratego compiler <code>strc</code>
+
+<screen>
+$ strc -i identity.str
+</screen>
+
+<screen>
+$ ./identity foo bar
+["./identity","foo","bar"]
+</screen>
+
+       command-line arguments turned into a list of strings
+
+</para>
 </section>
 
 <section>
-	<title>Modules</title>
+  <title>The Identity Transformation with I/O</title>
 
-	<para>
-	  Modules
-	</para>
+<para>
+
+<screen>
+module identity-io
+imports liblib
+strategies
+  main = io-wrap(id)
+</screen>
+
+       seperate compilation
+
+       linking with stratego-lib
+
+<screen>
+$ strc -i identity-io.str -la stratego-lib
+</screen>
+
+       now we
+  
+<screen>
+$ echo "Foo(Bar())" | ./identity-io
+Foo(Bar)
+</screen>
+
+       so the <code>identity-io</code> program just returns its input, big deal.
+
+       In fact, the <code>identity-io</code> does not just accept any input.
+
+       If we try to apply the program to a text file that is not an
+       ATerm, it protests and fails:
+
+<screen>
+$ echo "+ foo bar" | ./identity-io
+readFromTextFile: parse error at line 0, col 0
+not a valid term
+./identity: rewriting failed
+</screen>
+
+       So we have written a program to check if a file represents an ATerm.
+
+</para>
+</section>
+
+<section>
+  <title>Structure of a Stratego Program</title>
+  <para>
+
+       file extensions
+
+       libraries?
+
+       modules, imports
+
+    </para>
 </section>
 
 <section>
@@ -36,12 +117,8 @@
 <section>
     <title>Running Programs Interactively</title>
     <para>
-       interpreter: just for trying out language
+       stratego-shell: just for trying out language
     </para>
-</section>
-
-<section>
-    <title>Strategies and the Current Term</title>
 
     <para>
       Strategies are the statements and functions of the Stratego
