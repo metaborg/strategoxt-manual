@@ -18,7 +18,8 @@
 
 <para>
 
-   The simplest program you can write in Stratego is the following:
+   The simplest program you can write in Stratego is the following
+   <code>identity.str</code> program:
 
 <screen>
 module identity
@@ -27,22 +28,119 @@ strategies
   main = id
 </screen>
 
-       main definition
+   It features the following elements:
 
-       identity strategy
+   Each Stratego file is a <emphasis>module</emphasis>, which has the
+   same name as the file it is stored in without the <code>.str</code>
+   extension.
 
-       compiling with the Stratego compiler <code>strc</code>
+   A module may <emphasis>import</emphasis> other modules in order to
+   the definitions in those modules.
+
+   A module may contain one or more <code>strategies</code> sections
+   that introduce new strategy definitions. It will become clear later
+   what strategies and strategy definitions are.
+
+   Each Stratego program has <emphasis>one main definition</emphasis>,
+   which indicates the strategy to be executed on invocation of the
+   program.
+
+   The body of this program's main definition is the
+   <emphasis>identity</emphasis> strategy <code>id</code>.
+
+</para>
+
+<para>
+
+   Now let's see what this program does when we execute it. For that
+   purpose we first need to compile it, which we do using the Stratego
+   compiler <code>strc</code> as follows:
 
 <screen>
 $ strc -i identity.str
+[ strc | info ] Compiling 'identity.str'
+[ strc | info ] Front-end succeeded         : [user/system] = [0.59s/0.56s]
+[ strc | info ] Back-end succeeded          : [user/system] = [0.46s/0.16s]
+[ strc | info ] C compilation succeeded     : [user/system] = [0.28s/0.23s]
+[ strc | info ] Compilation succeeded       : [user/system] = [1.35s/0.95s]
 </screen>
+
+   The <code>-i</code> option of <code>strc</code> indicates the
+   module to compile. The compiler also reads all imported modules, in
+   this case the <code>list-cons.str</code> module that is part of the
+   Stratego library and that <code>strc</code> magically knows how to
+   find. The compiler prints some information about what it is doing,
+   i.e., the stages of compilation that it goes through and the times
+   for those stages. You can turn this off using the argument
+   <code>--verbose 0</code>. However, since the compiler is not very
+   fast, it may be satisfying to see something going on.
+
+</para>
+
+<para>
+
+   The result of compilation is an executable
+   <code>identity</code>. Just to satisfy our curiosity we inspect the
+   file system to see what the compiler has done:
+
+<screen>
+$ ls -l identity*
+-rwxrwxr-x  1 7182 Sep  7 14:54 identity*
+-rw-------  1 1362 Sep  7 14:54 identity.c
+-rw-rw-r--  1  200 Sep  7 14:54 identity.dep
+-rw-rw-r--  1 2472 Sep  7 14:54 identity.o
+-rw-rw-r--  1   57 Sep  7 13:03 identity.str
+</screen>
+
+   Here we see that in addition to the executable the compiler has
+   produced a couple of other files. First of all the
+   <code>identity.c</code> file gives away the fact that the compiler
+   first translates a Stratego program to C and then uses the C
+   compiler to compile to machine code. The <code>identity.o</code>
+   file is the result of compiling the generated C program. Finally,
+   the contents of the <code>identity.dep</code> file will look
+   somewhat like this:
+
+<screen>
+identity: \
+        /usr/local/share/stratego-lib/collection/list/cons.rtree \
+        /usr/local/share/stratego-lib/list-cons.rtree \
+        ./identity.str
+</screen>
+
+   It is a rule in the Make language that declares the dependencie of
+   the <code>identity</code> program, that you can include in a
+   Makefile to automate its compilation.
+
+<screen>
+include identity.dep
+
+identity : identity.str
+        strc -i identity.str
+</screen>
+
+</para>
+
+<para>
+
+   Ok, we were digressing a bit. Let's turn back to finding out what
+   the <code>identity</code> program does. When we execute the program
+   with some arbitrary arguments on the command-line, this is what
+   happens:
 
 <screen>
 $ ./identity foo bar
 ["./identity","foo","bar"]
 </screen>
 
-       command-line arguments turned into a list of strings
+    The program writes to <code>stdout</code> the list of command-line
+    arguments as a list of strings in the ATerm format.
+
+    So what we have learned is that a Stratego program applies its
+    main strategy to the list of command-line arguments, and writes
+    the resulting term to <code>stdout</code>. Since the strategy in
+    the <code>identity</code> program is the identity it just writes
+    the original command-line arguments.
 
 </para>
 </section>
