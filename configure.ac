@@ -5,6 +5,8 @@ AM_INIT_AUTOMAKE
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 
 XT_PRE_RELEASE
+XT_USE_JRE
+XT_USE_BATIK
 USE_DOCBOOK
 
 AC_PROG_INSTALL
@@ -13,6 +15,7 @@ AC_CONFIG_FILES([
   Makefile
   src/Makefile
   doc/Makefile
+  svg/Makefile
   html/Makefile
   pdf/Makefile
   man/Makefile
