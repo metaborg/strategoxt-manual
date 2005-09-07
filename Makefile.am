@@ -19,6 +19,7 @@ doc-only :
 # Create a complete manual in the dir mandist/manual
 manual :
 	cd doc; $(MAKE)
+	cd svg; $(MAKE)
 	cd html; $(MAKE)
 	rm -rf mandist
 	mkdir mandist
