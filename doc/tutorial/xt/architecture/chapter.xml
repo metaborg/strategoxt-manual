@@ -4,105 +4,154 @@
 
   <title>Architecture</title>
 
-  <para>
-    Program transformation systems need some kind of representation
-    for program that can be manipulated.  Programmers write programs
-    as texts using text editors.  Some programming environments
-    provide more graphical (visual) interfaces for programmers to
-    specify certain domain-specific ingredients (e.g., user interface
-    components). But ultimately, such environments have a textual
-    interface for specifying the details. Even if programs are written
-    in a `structured format' such as XML, the representation used by
-    programmers generally is text. So a program transformation system
-    needs to manipulate programs in text format.
-  </para>
+  <section>
+    <title>Tools as Components</title>
+    
+    <para>
+      Components: executable tools
+    </para>
 
-  <para>
-    However, for all but the most trivial transformations, a
-    structured rather than a textual representation is needed.  To
-    bridge the gap between textual and structured representation,
-    parsers and unparsers are needed. Since the theory of formal
-    languages, context-free and regular grammars, and parser
-    construction are standard fair (see for example [ASU86]), we will
-    not treat those subjects here. The purpose of this chapter is to
-    introduce the terminology and formalisms used in the rest of this
-    book. This includes formal syntax definition with the syntax
-    definition formalism SDF, parsing, representation of trees as
-    ATerms, mapping of parse trees to abstract syntax trees, and
-    pretty-printing using the target-independent Box language.  We
-    illustrate these concepts with a syntax definition for a subset of
-    the Tiger language.
-  </para>
+    <para>
+      Composed in a pipeline to create a complete transformation system.
+    </para>
 
-<section>
-  <title>Grammars as Contracts</title>
+    <figure xml:id="Fig-Pipeline2">
+      <title>
+	Pipeline of a software transformation system.
+      </title>
+      <pngobject fileref="../../introduction/pipe.png" align="center"/>
+    </figure>
+    
+    <para>
+      The components exchange a structured representation of a program.
+    </para>
 
-  <para>
-    Syntax definitions formalize the interface between the textual
-    representation used by programmers and the structured
-    representation used by transformation systems. A syntax definition
-    (or grammar) formally declares the syntax of a programming
-    language and the mapping from a textual to a tree representation,
-    and back. That is, from a syntax definition one can automatically
-    derive the implementation of parsers, signatures, and
-    pretty-printers.  If multiple transformation components are in
-    play, syntax definitions can also define the interface between
-    these components. In other words, grammars form the contracts for
-    transformation components [JV00.gcse].
-  </para>
+    <para>
+      The Stratego/XT collection provides various tools for parsing
+      and pretty-printing programs based on the syntax definition
+      formalism SDF2. (In fact the various tools originate from
+      different sub-packages, which does not correspond to the
+      aggregation presented here.) In this section an overview of the
+      main tools is given with their typical command-line arguments
+      and a reference to the tool documentation.
+    </para>
 
-  <para>
-    <xref linkend="Fig-GrammarsAsContracts"/> illustrates these ideas.
-    To transform a program, it is first parsed and represented as a
-    tree (triangle). The tree is transformed by a tree transformation
-    component which results in a transformed tree. This tree is then
-    rendered as text by a pretty-printer.  The contract between
-    parser, transformer, and pretty-printer is embedded in the parse
-    table, signature, and pretty-print table, which are all generated
-    from the same syntax definition.
-  </para>
+  </section>
 
-  <figure xml:id="Fig-GrammarsAsContracts">
-    <title>
-      Syntax definitions define the interfaces between transformation
-      components.
-    </title>
-    <pngobject fileref="xmpl/transf-cycle.png" align="center"/>
-  </figure>
+  <section>
+    <title>Grammar Oriented</title>
 
-</section>
+    <para>
+      Syntax definition plays a central role.
+    </para>
+    
+    <para>
+      Used to derive a parser.
+    </para>
+    
+    <para>
+      The structured representation of a program is based on the syntax
+      definition.
+    </para>
+    
+    <para>
+      Pretty-printer can be generated.
+    </para>
 
-<section>
- <title>Trees are Terms</title>
+    <para>
+      Syntax definitions formalize the interface between the textual
+      representation used by programmers and the structured
+      representation used by transformation systems. A syntax definition
+      (or grammar) formally declares the syntax of a programming
+      language and the mapping from a textual to a tree representation,
+      and back. That is, from a syntax definition one can automatically
+      derive the implementation of parsers, signatures, and
+      pretty-printers.  If multiple transformation components are in
+      play, syntax definitions can also define the interface between
+      these components. In other words, grammars form the contracts for
+      transformation components [JV00.gcse].
+    </para>
+    
+    <para>
+      <xref linkend="Fig-Architecture"/> illustrates these ideas.
+      To transform a program, it is first parsed and represented as a
+      tree (triangle). The tree is transformed by a tree transformation
+      component which results in a transformed tree. This tree is then
+      rendered as text by a pretty-printer.  The contract between
+      parser, transformer, and pretty-printer is embedded in the parse
+      table, signature, and pretty-print table, which are all generated
+      from the same syntax definition.
+    </para>
+    
+    <figure xml:id="Fig-Architecture">
+      <title>
+	Syntax definitions define the interfaces between transformation
+	components.
+      </title>
+      <pngobject fileref="contracts.png" align="center"/>
+    </figure>
+  </section>
+  
+  <section>
+    <title>Structured Program Representation</title>
 
- <para>
+    <para>
+      Program transformation systems need some kind of representation
+      for program that can be manipulated.  Programmers write programs
+      as texts using text editors.  Some programming environments
+      provide more graphical (visual) interfaces for programmers to
+      specify certain domain-specific ingredients (e.g., user interface
+      components). But ultimately, such environments have a textual
+      interface for specifying the details. Even if programs are written
+      in a `structured format' such as XML, the representation used by
+      programmers generally is text. So a program transformation system
+      needs to manipulate programs in text format.
+    </para>
+    
+    <para>
+      However, for all but the most trivial transformations, a
+      structured rather than a textual representation is needed.  To
+      bridge the gap between textual and structured representation,
+      parsers and unparsers are needed. Since the theory of formal
+      languages, context-free and regular grammars, and parser
+      construction are standard fair (see for example [ASU86]), we will
+      not treat those subjects here. The purpose of this chapter is to
+      introduce the terminology and formalisms used in the rest of this
+      book. This includes formal syntax definition with the syntax
+      definition formalism SDF, parsing, representation of trees as
+      ATerms, mapping of parse trees to abstract syntax trees, and
+      pretty-printing using the target-independent Box language.  We
+      illustrate these concepts with a syntax definition for a subset of
+      the Tiger language.
+    </para>
 
-   <informalfigure pgwide="0">
-     <pngobject fileref="xmpl/test1-acub.png" align="right"/>
-   </informalfigure>
 
-   So far we have presented parse trees and abstract syntax trees as
-   graphical structures.  This representation corresponds closely to
-   the representation of trees in computer memory. However, drawing
-   pictures is not a very effective way of specifying tree
-   transformations, nor is manipulating tree structures using data
-   structure access functions in a general purpose language. There is
-   a one-to-one correspondence between trees and first-order prefix
-   terms.  A term is a constructor, i.e., an identifier, applied to
-   zero or more terms, where strings and integer constants are
-   considered as special cases of constructors. Thus, the term
-   <code>Times(Plus(Var("a"), Var("n")), Int("1"))</code> corresponds
-   to the abstract syntax tree on the right.
+    <informalfigure pgwide="0">
+      <pngobject fileref="xmpl/test1-acub.png" align="right"/>
+    </informalfigure>
+    
+    <para>
+      So far we have presented parse trees and abstract syntax trees
+      as graphical structures.  This representation corresponds
+      closely to the representation of trees in computer
+      memory. However, drawing pictures is not a very effective way of
+      specifying tree transformations, nor is manipulating tree
+      structures using data structure access functions in a general
+      purpose language. There is a one-to-one correspondence between
+      trees and first-order prefix terms.  A term is a constructor,
+      i.e., an identifier, applied to zero or more terms, where
+      strings and integer constants are considered as special cases of
+      constructors. Thus, the term <code>Times(Plus(Var("a"),
+      Var("n")), Int("1"))</code> corresponds to the abstract syntax
+      tree on the right.
+    </para>
 
- </para>
-
- <para>
-
-   The Annotated Term Format [BJKO00], or <emphasis>ATerms</emphasis>
-   for short is a standard format for the representation of structured
-   data for exchange between programs. It is essentially the prefix
-   term format sketched above with a few additional features. An ATerm
-   is one of:
+    <para>
+      The Annotated Term Format [BJKO00], or
+      <emphasis>ATerms</emphasis> for short is a standard format for
+      the representation of structured data for exchange between
+      programs. It is essentially the prefix term format sketched
+      above with a few additional features. An ATerm is one of:
 
    <itemizedlist>
 
@@ -158,9 +207,6 @@
    found in <xref linkend="ref-aterms"/>
 
   </para>
-
- <section>
-  <title>ATerm Library</title>
 
   <para>
         
@@ -227,28 +273,8 @@
     format that preserves maximal sharing.
 
   </para>
-
   <para>
-        
     See <xref linkend="ref-aterms"/> for more information on ATerms.
-
   </para>
-
  </section>
-</section>
-
-<section>
-  <title>Tools</title>
-
-  <para>
-    The Stratego/XT collection provides various tools for parsing and
-    pretty-printing programs based on the syntax definition formalism
-    SDF2. (In fact the various tools originate from different
-    sub-packages, which does not correspond to the aggregation
-    presented here.) In this section an overview of the main tools is
-    given with their typical command-line arguments and a reference to
-    the tool documentation.
-  </para>
-</section>
-
 </chapter>

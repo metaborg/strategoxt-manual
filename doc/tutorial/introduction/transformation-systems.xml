@@ -1,3 +1,4 @@
+
 <chapter xml:id="tutorial-software-transformation-systems"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
@@ -127,28 +128,76 @@ Document generation/transformation
   </figure>
 
   <para>
-    So, what is Stratego/XT? The label on the tin says:
-    <emphasis>Stratego/XT is a framework for the implementation of
-    transformation systems based on structural representations of
-    programs.</emphasis>. In other words: Stratego/XT is a framework
-    that aids in the development of all components of a transformation
-    system.
+    So, what is Stratego/XT? Stratego/XT combines Stratego, a language
+    for implementing program transformations, and XT, a collection of
+    transformation tools. The Stratego language is a powerful language
+    for implementing the core transformations of a complete
+    transformation system. The XT tools help with the implementation
+    of the infrastructure required around these core transformations,
+    such as a parser and a pretty-printer.
   </para>
-  
-  <!-- TODO: this should be reprased -->
+
   <para>
-    It goes on to boast that: <emphasis>The framework aims at better
-    productivity in the development of transformation systems through
-    the use of high-level representations, domain-specific languages,
-    and generative programming for various aspects of transformation
-    systems: <emphasis>ATerms</emphasis> for program representation,
-    <emphasis>SDF</emphasis> for syntax definition and parsing,
-    <emphasis>GPP</emphasis> for pretty-printing,
-    <emphasis>Stratego</emphasis> for transformation,
-    <emphasis>XTC</emphasis> for transformation tool composition, and
-    the XT tools for the generation of intermediate products needed in
-    the construction of transformation systems.</emphasis>
+    Stratego and XT aims at better productivity in the development of
+    transformation systems through the use of a high-level
+    representations of programs, domain-specific languages for the
+    development of parts of a transformation system, and generating
+    various aspects of a transformation system automatically.
   </para>
+
+  <variablelist>
+    <para>
+      The main ingredients of Stratego/XT are:
+    </para>
+
+    <varlistentry>
+      <term>ATerm Format</term>
+      <listitem>
+	<para>
+	  For the structured representation of a program.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Stratego Language</term>
+      <listitem>
+	<para>
+	  For implementing program transformations.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>SDF Language</term>
+      <listitem>
+	<para>
+	  For modular, concise, definition of the syntax of a
+	  language. Parsers can be fully generated from SDF.
+	</para>
+      </listitem>
+    </varlistentry>
+
+
+    <varlistentry>
+      <term>GPP and the Box Language</term>
+      <listitem>
+	<para>
+	  For generating and implementing pretty-printers.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>XTC</term>
+      <listitem>
+	<para>
+	  For composing individual transformation tools into a
+	  complete transformation systems.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
 
   <para>
     Exactly what all this means will become clear to you as we move
