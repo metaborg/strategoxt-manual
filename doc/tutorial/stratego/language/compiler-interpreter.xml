@@ -150,6 +150,12 @@ $ ./identity foo bar
 
 <para>
 
+    That was instructive, but not very useful. We are not interested
+    in transforming lists of strings, but rather programs represented
+    as terms. So we want to read a term from a file, transform it, and
+    write it to another file. Let's open the bag of tricks. The
+    <code>identity-io</code> program improves the previous program:
+
 <screen>
 module identity-io
 imports liblib
@@ -157,27 +163,86 @@ strategies
   main = io-wrap(id)
 </screen>
 
-       seperate compilation
+    The program looks similar to the previous one, but there are a
+    couple of differences. First, instead of importing module
+    <code>list-cons</code>, this module imports <code>liblib</code>,
+    which is the interface to the separately compiled Stratego
+    library. This library provides a host of useful strategies that
+    are needed in implementing program transformations. <xref
+    linkend="stratego-library"/> gives an overview of the Stratego
+    library, and we will every now and then use something useful from
+    the library before.
 
-       linking with stratego-lib
+</para>
+
+<para>
+
+    Right now we are interested in the <code>io-wrap</code> strategy
+    used above. It implements a wrapper strategy that takes care of
+    input and output for our program. To compile the program we need
+    to link it with the <code>stratego-lib</code> library using the
+    <code>-la</code> option:
 
 <screen>
 $ strc -i identity-io.str -la stratego-lib
 </screen>
 
-       now we
-  
+    What the relation is between <code>liblib</code> and
+    <code>stratego-lib</code> will become clear later; knowing how to
+    compile programs using <code>liblib</code> suffices for now.
+
+</para>
+
+<para>
+
+    If we run the compiled <code>identity-io</code> program with its
+    <code>--help</code> option we see the standard interface supported
+    by the <code>io-wrap</code> strategy:
+
 <screen>
-$ echo "Foo(Bar())" | ./identity-io
+$ ./identity-io --help
+Options:
+   -i f|--input f   Read input from f
+   -o f|--output f  Write output to f
+   -b               Write binary output
+   -S|--silent      Silent execution (same as --verbose 0)
+   --verbose i      Verbosity level i (default 1)
+                    ( i as a number or as a verbosity descriptor:
+                      emergency, alert, critical, error,
+                      warning, notice, info, debug, vomit )
+   -k i | --keep i  Keep intermediates (default 0)
+   --statistics i  Print statistics (default 0 = none)
+   -h|-?|--help     Display usage information
+   --about          Display information about this program
+   --version        Same as --about
+</screen>
+
+   The most relevant options are the <code>-i</code> option for the
+   input file and the <code>-o</code> option for the output file. For
+   instance, if we have some file <code>foo-bar.trm</code> containing
+   an ATerm we can apply the program to it:
+
+<screen>
+$ echo "Foo(Bar())" > foo-bar.trm
+$ ./identity-io -i foo-bar.trm -o foo-bar2.trm
+$ cat foo-bar2.trm
 Foo(Bar)
 </screen>
 
-       so the <code>identity-io</code> program just returns its input, big deal.
+   If we leave out the <code>-i</code> and/or <code>-o</code> options,
+   input is read from <code>stdin</code> and output is written to
+   <code>stdout</code>. Thus, we can also invoke the program in a
+   pipe:
 
-       In fact, the <code>identity-io</code> does not just accept any input.
+<screen>
+$ echo "Foo(Bar())" | ./identity-io 
+</screen>
 
-       If we try to apply the program to a text file that is not an
-       ATerm, it protests and fails:
+   Now it might seem that the <code>identity-io</code> program just
+   copies its input file to the output file. In fact, the
+   <code>identity-io</code> does not just accept any input.  If we try
+   to apply the program to a text file that is not an ATerm, it
+   protests and fails:
 
 <screen>
 $ echo "+ foo bar" | ./identity-io
@@ -186,14 +251,71 @@ not a valid term
 ./identity: rewriting failed
 </screen>
 
-       So we have written a program to check if a file represents an ATerm.
+   So we have written a program to check if a file represents an ATerm.
 
 </para>
 </section>
 
 <section>
-  <title>Structure of a Stratego Program</title>
-  <para>
+    <title>Running Programs Interactively</title>
+    
+<para>
+
+       stratego-shell: just for trying out language
+   
+</para>
+
+<para>
+
+      Strategies are the statements and functions of the Stratego
+      language. A strategy transforms a term into a new term, or
+      fails. The term to which a strategy is applied, is called the
+      <emphasis>current term</emphasis>. In the Stratego Shell you can
+      see the current term with <command>:show</command>.
+    
+</para>
+
+<screen>
+<prompt>stratego></prompt> :show
+()
+<prompt>stratego></prompt></screen>
+
+<para>
+      
+So, the current term is the empty tuple if you have just started
+      the Stratego Shell. At the prompt of the shell you can enter
+      strategies. If the strategy succeeds, then the shell will show
+      the transformed term, which is now the new current term.
+    
+</para>
+
+<screen>
+<replaceable>current term</replaceable>
+<prompt>stratego></prompt> <replaceable>strategy expression</replaceable>
+<replaceable>transformed current</replaceable>
+<prompt>stratego></prompt></screen>
+
+    
+<para>
+
+      Strategies can also fail. In that case, the shell will print a
+      message and leave the current term untouched:
+    
+</para>
+
+
+<screen>
+<replaceable>current term</replaceable>
+<prompt>stratego></prompt> <replaceable>strategy expression</replaceable>
+command failed
+<prompt>stratego></prompt> :show
+<replaceable>current term</replaceable></screen>
+
+ </section>
+
+<section>
+  <title>Summary</title>
+<para>
 
        file extensions
 
@@ -201,60 +323,12 @@ not a valid term
 
        modules, imports
 
-    </para>
-</section>
+       Compiling Programs
 
-<section>
-    <title>Compiling Programs</title>
-    <para>
        main definition
        seperate compilation
-    </para>
+
+</para>
 </section>
-
-<section>
-    <title>Running Programs Interactively</title>
-    <para>
-       stratego-shell: just for trying out language
-    </para>
-
-    <para>
-      Strategies are the statements and functions of the Stratego
-      language. A strategy transforms a term into a new term, or
-      fails. The term to which a strategy is applied, is called the
-      <emphasis>current term</emphasis>. In the Stratego Shell you can
-      see the current term with <command>:show</command>.
-    </para>
-
-    <screen>
-<prompt>stratego></prompt> :show
-()
-<prompt>stratego></prompt></screen>
-
-    <para>
-      So, the current term is the empty tuple if you have just started
-      the Stratego Shell. At the prompt of the shell you can enter
-      strategies. If the strategy succeeds, then the shell will show
-      the transformed term, which is now the new current term.
-    </para>
-
-    <screen>
-<replaceable>current term</replaceable>
-<prompt>stratego></prompt> <replaceable>strategy expression</replaceable>
-<replaceable>transformed current</replaceable>
-<prompt>stratego></prompt></screen>
-
-    <para>
-      Strategies can also fail. In that case, the shell will print a
-      message and leave the current term untouched:
-    </para>
-
-    <screen>
-<replaceable>current term</replaceable>
-<prompt>stratego></prompt> <replaceable>strategy expression</replaceable>
-command failed
-<prompt>stratego></prompt> :show
-<replaceable>current term</replaceable></screen>
- </section>
 
 </section>
