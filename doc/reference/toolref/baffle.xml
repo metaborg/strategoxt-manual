@@ -1,0 +1,33 @@
+<refentry xml:lang="en" xml:id="ref-baffle"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <refnamediv>
+    <refname>baffle</refname>
+    <refpurpose>
+      convert between ATerm formats
+    </refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>baffle</command>
+      <arg>-i <replaceable>file</replaceable></arg>
+      <arg>-o <replaceable>file</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  
+  <refsection>
+    <title>Description</title>
+    
+    <para>
+      
+    </para>
+    
+    <para>
+    </para> 
+  </refsection>
+
+  <!--include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/-->
+  <!--include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/-->
+</refentry>

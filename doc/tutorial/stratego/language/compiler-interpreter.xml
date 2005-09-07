@@ -2,45 +2,45 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
- <title>Running Stratego Programs (*)</title>
+  <title>Running Stratego Programs (*)</title>
 
  <para>
     how to run a Stratego program
  </para>
   
- <section>
+<section>
     <title>Structure of a Stratego Program</title>
     <para>
        file extensions
 
        libraries?
     </para>
- </section>
+</section>
 
- <section>
+<section>
 	<title>Modules</title>
 
 	<para>
 	  Modules
 	</para>
- </section>
+</section>
 
- <section>
+<section>
     <title>Compiling Programs</title>
     <para>
        main definition
        seperate compilation
     </para>
- </section>
+</section>
 
- <section>
+<section>
     <title>Running Programs Interactively</title>
     <para>
        interpreter: just for trying out language
     </para>
- </section>
+</section>
 
- <section>
+<section>
     <title>Strategies and the Current Term</title>
 
     <para>

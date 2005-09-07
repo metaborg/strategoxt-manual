@@ -16,6 +16,7 @@
   <xi:include href="ast2text.xml"/>
   <xi:include href="aterm2xml.xml"/>
   <xi:include href="autoxt.xml"/>
+  <xi:include href="baffle.xml"/>
   <xi:include href="format-check.xml"/>
   <xi:include href="gen-renamed-sdf-module.xml"/>
   <xi:include href="implode-asfix.xml"/>
