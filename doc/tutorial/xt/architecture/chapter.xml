@@ -127,9 +127,9 @@
 
 
     <informalfigure pgwide="0">
-      <pngobject fileref="xmpl/test1-acub.png" align="right"/>
+      <pngobject fileref="simple-expr-tree.png" align="right"/>
     </informalfigure>
-    
+
     <para>
       So far we have presented parse trees and abstract syntax trees
       as graphical structures.  This representation corresponds
