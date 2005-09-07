@@ -44,19 +44,30 @@
     </figure>
 
     <para>
-      Of course, you don't want 
-    </para>
-    
-    <para>
-      The Stratego/XT collection provides various tools for parsing
-      and pretty-printing programs based on the syntax definition
-      formalism SDF2. (In fact the various tools originate from
-      different sub-packages, which does not correspond to the
-      aggregation presented here.) In this section an overview of the
-      main tools is given with their typical command-line arguments
-      and a reference to the tool documentation.
+      Of course, some compositions are very common. For example, you
+      definitly don't want to enter the complete pipeline of a
+      compiler again and again. So, you want to pre-define such a
+      composition to make it reusable as single tool. For this, you
+      could of create a shell script, but option handling in shell
+      scripts is quite tiresome and you cannot easily add composition
+      specific glue code. To solve this, Stratego itself has a concise
+      library for creating compositions of transformation tools,
+      called XTC. We will come back to that later in <xref
+      linkend="xtc"/>.
     </para>
 
+    <para>
+      The nice thing about this approach is that all the tools can be
+      reused in different transformation systems. A parser,
+      pretty-printer, desugarer, optimizer, simplifier, and so an is
+      automatically available to other transformation systems that
+      operate on the same language. Even if a tool will typically be
+      used in a single dominant composition (e.g. a compiler), having
+      the tool available to different transformation systems is very
+      useful. In other words: an XT transformation system is
+      <emphasis>open</emphasis> and its components are
+      <emphasis>reusable</emphasis>.
+    </para>
   </section>
 
   <section>
