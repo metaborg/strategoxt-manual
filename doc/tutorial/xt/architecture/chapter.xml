@@ -4,6 +4,13 @@
 
   <title>Architecture</title>
 
+  <para>
+    In this chapter, a general overview is given of the architecture
+    of the XT transformation tools. The technical details of the tools
+    and languages that are involved will be discussed in the follwing
+    chapters.
+  </para>
+
   <section>
     <title>Tools as Transformation Components</title>
     
