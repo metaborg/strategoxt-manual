@@ -1,0 +1,20 @@
+digraph Term {
+  node134605568 [ label = "Add" ] ;
+  node134605568 -> node134605504 ;
+  node134605568 -> node134605408 ;
+  node134605504 [ label = "Mul" ] ;
+  node134605504 -> node134605408 ;
+  node134605504 -> node134841828 ;
+  node134841828 [ label = "Var" ] ;
+  node134841828 -> node134808952 ;
+  node134808952 [ label = "\"c\"" ] ;
+  node134605408 [ label = "Add" ] ;
+  node134605408 -> node134841804 ;
+  node134605408 -> node134841816 ;
+  node134841804 [ label = "Var" ] ;
+  node134841804 -> node134808240 ;
+  node134808240 [ label = "\"a\"" ] ;
+  node134841816 [ label = "Var" ] ;
+  node134841816 -> node134808944 ;
+  node134808944 [ label = "\"b\"" ] ;
+}

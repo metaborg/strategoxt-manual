@@ -184,10 +184,10 @@
       </title>
       <nexttoeachother>
 	<entry>
-	  <pngobject fileref="xmpl/sharing-acub.png" align="center"/>
+	  <pngobject fileref="sharing-tree.png" align="center"/>
 	</entry>
 	<entry>
-	  <pngobject fileref="xmpl/sharing-scub.png" align="center"/>
+	  <pngobject fileref="sharing-graph.png" align="center"/>
 	</entry>
       </nexttoeachother>
     </figure>

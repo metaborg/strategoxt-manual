@@ -5,7 +5,9 @@ noinst_DATA = $(PNG)
 PNG = \
   tutorial/introduction/pipe.png \
   tutorial/xt/architecture/contracts.png \
-  tutorial/xt/architecture/simple-expr-tree.png
+  tutorial/xt/architecture/simple-expr-tree.png \
+  tutorial/xt/terms/sharing-tree.png \
+  tutorial/xt/terms/sharing-graph.png
 
 rasterclean :
 	rm -f $(PNG)
@@ -16,14 +18,20 @@ RASTERIZE = $(JAVA) -jar $(BATIK)/batik-rasterizer.jar
 # ---------------
 # We really need target specific variables here, but I don't know how to do that.
 
-tutorial/xt/architecture/contracts.png : tutorial/xt/architecture/contracts.svg
-	$(RASTERIZE) -w 600 -h 450 $<
-
 tutorial/introduction/pipe.png : tutorial/introduction/pipe.svg
 	$(RASTERIZE) -w 600 -h 350 $<
 
+tutorial/xt/architecture/contracts.png : tutorial/xt/architecture/contracts.svg
+	$(RASTERIZE) -w 600 -h 450 $<
+
 tutorial/xt/architecture/simple-expr-tree.png : tutorial/xt/architecture/simple-expr-tree.svg
 	$(RASTERIZE) -w 225 -h 225 $<
+
+tutorial/xt/terms/sharing-tree.png : tutorial/xt/terms/sharing-tree.svg
+	$(RASTERIZE) -w 275 -h 275 $<
+
+tutorial/xt/terms/sharing-graph.png : tutorial/xt/terms/sharing-graph.svg
+	$(RASTERIZE) -w 275 -h 275 $<
 
 # Generic rules
 

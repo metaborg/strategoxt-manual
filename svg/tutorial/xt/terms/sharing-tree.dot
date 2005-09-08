@@ -1,0 +1,29 @@
+digraph Term {
+  a_0 [ label = "Add" ] ;
+  a_0 -> b_0 ;
+  a_0 -> c_0 ;
+  b_0 [ label = "Mul" ] ;
+  b_0 -> d_0 ;
+  b_0 -> e_0 ;
+  d_0 [ label = "Add" ] ;
+  d_0 -> f_0 ;
+  d_0 -> g_0 ;
+  f_0 [ label = "Var" ] ;
+  f_0 -> h_0 ;
+  h_0 [ label = "\"a\"" ] ;
+  g_0 [ label = "Var" ] ;
+  g_0 -> i_0 ;
+  i_0 [ label = "\"b\"" ] ;
+  e_0 [ label = "Var" ] ;
+  e_0 -> j_0 ;
+  j_0 [ label = "\"c\"" ] ;
+  c_0 [ label = "Add" ] ;
+  c_0 -> k_0 ;
+  c_0 -> l_0 ;
+  k_0 [ label = "Var" ] ;
+  k_0 -> m_0 ;
+  m_0 [ label = "\"a\"" ] ;
+  l_0 [ label = "Var" ] ;
+  l_0 -> n_0 ;
+  n_0 [ label = "\"b\"" ] ;
+}
