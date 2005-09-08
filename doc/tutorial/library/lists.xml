@@ -4,8 +4,48 @@
 
   <title>Lists</title>
   
+ 
   <para>
-    Lists
+    Making heads and tails of it
+  </para>
+
+  <para>
+    Lists in Stratego are nothing magical, except perhaps for some convenient
+    syntactic sugar, which we'll revisit now. As we know, lists are written 
+    <code>[ 1, 2, 3 ]</code>. Assume <code>xs</code> is this list. The code
+    <code>[ 0 | xs ]</code> will prepend a 0 to the list. Conversly, 
+    <code>![ 0, 1, 2, 3 ] ; ?[y | ys]</code> will bind <code>y</code> to
+    <code>0</code> and <code>ys</code> to <code>[1, 2, 3]</code>.
+  </para>
+
+  <para>
+    <code>elem</code>
+  </para>
+
+  <para>
+    <code>last</code>
+  </para>
+
+  <para>
+    Evil by association
+  </para>
+
+  <para>
+    Stratego also has library support for associative lists, sometimes known
+    as assoc lists. There are essentially lists of <code>(key, value)</code>
+    pairs, and work like a poor man's hash table. The primary strategy for
+    working with these lists is <code>lookup</code>. This strategy looks up
+    the first value associated with a particular key, and returns it.
+  </para>
+
+
+  <para>
+    <code>&lt;lookup> (2, [(1, "a"), (2, "b"), (3, "c")]) => "b"</code>
+  </para>
+
+  <para>
+    <code>length</code>
+    <code>fetch(s)</code>
   </para>
 </chapter>
 
