@@ -192,6 +192,35 @@
       </nexttoeachother>
     </figure>
   </section>
+
+  <section>
+    <title>Exchange Format</title>
+
+    <variablelist>
+      <varlistentry>
+	<term>Binary ATerm Format (BAF)</term>
+	<listitem> 
+	  <para> 
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Textual ATerm Format</term>
+	<listitem> 
+	  <para> 
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Shared Textual ATerm Format</term>
+	<listitem>
+	  <para> 
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
   
   <section>
     <title>ATerm Library</title>
