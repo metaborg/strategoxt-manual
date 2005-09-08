@@ -56,6 +56,7 @@
   <xi:include href="sglri.xml"/>
   <xi:include href="sglr.xml"/>
   <xi:include href="strc.xml"/>
+  <xi:include href="stratego-shell.xml"/>
   <xi:include href="unpack-sdf.xml"/>
   <xi:include href="visamb.xml"/>
   <xi:include href="xtc.xml"/>

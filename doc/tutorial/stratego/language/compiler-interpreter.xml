@@ -9,7 +9,8 @@
    Now let's see how we can actually transform terms using Stratego
    programs. In the rest of this chapter we will first look at the
    structure of Stratego programs, and how to compile and run them.
-   In the next chapter we will then see how define transformations.
+   In the next chapters we will then see how to define
+   transformations.
 
  </para>
 
@@ -35,7 +36,7 @@ strategies
    extension.
 
    A module may <emphasis>import</emphasis> other modules in order to
-   the definitions in those modules.
+   use the definitions in those modules.
 
    A module may contain one or more <code>strategies</code> sections
    that introduce new strategy definitions. It will become clear later
@@ -45,16 +46,16 @@ strategies
    which indicates the strategy to be executed on invocation of the
    program.
 
-   The body of this program's main definition is the
+   In the example, the body of this program's main definition is the
    <emphasis>identity</emphasis> strategy <code>id</code>.
 
 </para>
 
 <para>
 
-   Now let's see what this program does when we execute it. For that
-   purpose we first need to compile it, which we do using the Stratego
-   compiler <code>strc</code> as follows:
+   Now let's see what this program means. To find that out, we first
+   need to compile it, which we do using the Stratego compiler
+   <code>strc</code> as follows:
 
 <screen>
 $ strc -i identity.str
@@ -79,9 +80,10 @@ $ strc -i identity.str
 
 <para>
 
-   The result of compilation is an executable
-   <code>identity</code>. Just to satisfy our curiosity we inspect the
-   file system to see what the compiler has done:
+   The result of compilation is an executable named
+   <code>identity</code> after the name of the main module of the
+   program. Just to satisfy our curiosity we inspect the file system
+   to see what the compiler has done:
 
 <screen>
 $ ls -l identity*
@@ -108,9 +110,11 @@ identity: \
         ./identity.str
 </screen>
 
-   It is a rule in the Make language that declares the dependencie of
-   the <code>identity</code> program, that you can include in a
-   Makefile to automate its compilation.
+   It is a rule in the Make language that declares the dependencies of
+   the <code>identity</code> program. You can include this file in a
+   <code>Makefile</code> to automate its compilation. For example, the
+   following <code>Makefile</code> automates the compilation of the
+   <code>identity</code> program:
 
 <screen>
 include identity.dep
@@ -118,6 +122,9 @@ include identity.dep
 identity : identity.str
         strc -i identity.str
 </screen>
+
+   Just invoke <code>make</code> on the command-line whenever you
+   change something in the program.
 
 </para>
 
@@ -139,8 +146,8 @@ $ ./identity foo bar
     So what we have learned is that a Stratego program applies its
     main strategy to the list of command-line arguments, and writes
     the resulting term to <code>stdout</code>. Since the strategy in
-    the <code>identity</code> program is the identity it just writes
-    the original command-line arguments.
+    the <code>identity</code> program is the identity transformation
+    it just writes the original command-line arguments (as a term).
 
 </para>
 </section>
@@ -170,8 +177,8 @@ strategies
     library. This library provides a host of useful strategies that
     are needed in implementing program transformations. <xref
     linkend="stratego-library"/> gives an overview of the Stratego
-    library, and we will every now and then use something useful from
-    the library before.
+    library, and we will every now and then use some useful strategies
+    from the library before we get there.
 
 </para>
 
@@ -188,8 +195,9 @@ $ strc -i identity-io.str -la stratego-lib
 </screen>
 
     What the relation is between <code>liblib</code> and
-    <code>stratego-lib</code> will become clear later; knowing how to
-    compile programs using <code>liblib</code> suffices for now.
+    <code>stratego-lib</code> will become clear later; knowing that it
+    is needed to compile programs using <code>liblib</code> suffices
+    for now.
 
 </para>
 
@@ -236,6 +244,7 @@ Foo(Bar)
 
 <screen>
 $ echo "Foo(Bar())" | ./identity-io 
+Foo(Bar)
 </screen>
 
    Now it might seem that the <code>identity-io</code> program just
@@ -260,6 +269,17 @@ not a valid term
     <title>Running Programs Interactively</title>
     
 <para>
+  
+  We have just learned how to write, compile, and execute Stratego
+  programs. This is the normal mode for development of transformation
+  systems with Stratego. Indeed, we usually do not invoke the compiler
+  from the command-line `by hand', but have an automated build system
+  based on (auto)make to build all programs in a project at once.
+
+  For learning to use the language this can be rather laborious,
+  however. Therefore, we have also developed the <xref
+  linkend="ref-stratego-shell"/>, and interactive interpreter for the
+  Stratego language.
 
        stratego-shell: just for trying out language
    

@@ -183,8 +183,8 @@
     exactly coincide. Of course, internally a Stratego program uses a
     data-structure in memory with pointers rather than manipulating a
     textual representation of terms. But this is completely hidden
-    from the Stratego programmer. There are few facts that are useful
-    to be aware of.
+    from the Stratego programmer. There are a few facts that are
+    useful to be aware of, though.
 
   </para>
 
@@ -221,8 +221,8 @@
     ATerms. Stratego pioneers would do this by opening an ATerm file
     in emacs and trying to get a sense of the structure by parenthesis
     highlighting and inserting newlines here and there. These days
-    your life is much more pleasant through the tool
-    <code>pp-aterm</code>, which adds layout to a term to make it
+    your life is much more pleasant through the tool <xref
+    linkend="ref-pp-aterm"/>, which adds layout to a term to make it
     readable. For example, parsing the following program
 
 <programlisting>
@@ -247,7 +247,7 @@ If(Lt(Var("n"),Int("1")),Int("1"),Seq([Times(Var("n"),Call(Var("fact"),
 $ pp-aterm -i fac.trm -o fac-pp.trm --max-term-size 20
 </screen>
 
-     we get a much better readable term:
+     we get a much more readable term:
 
 <programlisting>
 Let(
@@ -304,11 +304,11 @@ signature
 
   <para>
 
-    Currently, the Stratego compiler only check the arity of
-    constructor applications against the signature. Still it is
+    Currently, the Stratego compiler only checks the arity of
+    constructor applications against the signature. Still, it is
     considered good style to also declare the types of constructors in
-    a sensible manner for the purpose of documentation. Also a later
-    version may introduce typechecking.
+    a sensible manner for the purpose of documentation. Also, a later
+    version of the language may introduce typechecking.
 
   </para>
 
