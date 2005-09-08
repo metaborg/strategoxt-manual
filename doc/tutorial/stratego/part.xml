@@ -6,12 +6,8 @@
   
   <xi:include href="language/introduction.xml" />
   
-  <chapter xml:id="stratego-programs">
-    <title>Stratego Programs</title>
-    <xi:include href="language/terms.xml" />
-    <xi:include href="language/compiler-interpreter.xml"/>
-  </chapter>
-  
+  <xi:include href="language/terms.xml" />
+  <xi:include href="language/compiler-interpreter.xml"/>
   <xi:include href="language/term-rewriting.xml"/>
 
   <xi:include href="language/in-control.xml"/>

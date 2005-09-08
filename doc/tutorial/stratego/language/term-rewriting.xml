@@ -4,29 +4,56 @@
 
   <title>Term Rewriting (*)</title>
 
-  <para>
+<para>
 
-  
-  </para>
+   In <xref linkend="tutorial-xt"/> we saw how terms provide a
+   structured representation for programs derived from a formal
+   definition of the syntax of a programming language.
+
+   Transforming programs then requires tranformation of terms. There
+   are various ways such transformations could be defined.
+
+   In this chapter we consider the paradigm of <emphasis>term
+   rewriting</emphasis> for specifying program transformations.  In
+   term rewriting a term is transformed by repeated application of
+   <emphasis>rewrite rules</emphasis>.
 
 <screen>
-
-        In the previous chapter we saw how terms provide a structured
-        representation for programs derived from a formal definition
-        of the syntax of the programming language. Transforming
-        programs then requires tranformation of terms. There are
-        various ways such transformations could be defined. In this
-        chapter we consider the paradigm of \emph{term rewriting} for
-        specifying program transformations.  In term rewriting a term
-        is transformed by repeated application of \emph{rewrite
-        rules}.  In the first section we first examine the equivalence
-        of expressions and equational reasoning. Then we will formally
-        define term patterns, substitution, term pattern matching,
-        rewrite rules, and normalization with respect to a set of
-        rewrite rules.
-
-
+module prop
+signature
+  sorts Prop
+  constructors
+    False : Prop
+    True  : Prop
+    Atom  : String -> Prop
+    Not   : Prop -> Prop
+    And   : Prop * Prop -> Prop
+    Or    : Prop * Prop -> Prop
 </screen>
+
+      example terms in this language
+
+<screen>
+module prop-laws
+imports prop
+rules
+  DAOL  : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
+  DAOR  : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
+  DOAL  : Or(And(x, y), z) -> And(Or(x, z), Or(y, z))
+  DOAR  : Or(z, And(x, y)) -> And(Or(z, x), Or(z, y))
+  DN    : Not(Not(x))      -> x
+  DMA   : Not(And(x, y))   -> Or(Not(x), Not(y))
+  DMO   : Not(Or(x, y))    -> And(Not(x), Not(y))
+</screen>
+
+  importing modules in the shell
+
+  applying a rule to a term
+
+<screen>
+</screen>
+
+  </para>
 
 <screen>
 
