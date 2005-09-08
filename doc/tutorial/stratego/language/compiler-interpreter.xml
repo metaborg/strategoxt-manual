@@ -2,7 +2,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Running Stratego Programs (*)</title>
+  <title>Running Stratego Programs</title>
 
  <para>
 
@@ -277,53 +277,84 @@ not a valid term
   based on (auto)make to build all programs in a project at once.
 
   For learning to use the language this can be rather laborious,
-  however. Therefore, we have also developed the <xref
-  linkend="ref-stratego-shell"/>, and interactive interpreter for the
-  Stratego language.
+  however. Therefore, we have also developed the <link
+  linkend="ref-stratego-shell">Stratego Shell</link>, an interactive
+  interpreter for the Stratego language. The shell allows you to type
+  in transformation strategies on the command-line and directly seeing
+  their effect on the current term. While this does not scale to
+  developing large programs, it can be instructive to experiment while
+  learning the language. In the following chapters we will use the
+  stratego-shell to illustrate various features of the language.
 
-       stratego-shell: just for trying out language
-   
 </para>
 
 <para>
 
-      Strategies are the statements and functions of the Stratego
-      language. A strategy transforms a term into a new term, or
-      fails. The term to which a strategy is applied, is called the
-      <emphasis>current term</emphasis>. In the Stratego Shell you can
-      see the current term with <command>:show</command>.
-    
-</para>
-
+  Here is a short session with the Stratego Shell that shows the
+  basics of using it:
+  
 <screen>
+$ stratego-shell
 <prompt>stratego></prompt> :show
 ()
-<prompt>stratego></prompt></screen>
+<prompt>stratego></prompt> !Foo(Bar())
+Foo(Bar)
+<prompt>stratego></prompt> id
+Foo(Bar)
+<prompt>stratego></prompt> fail
+command failed
+<prompt>stratego></prompt> :show
+Foo(Bar)
+<prompt>stratego></prompt> :quit
+Foo(Bar)
+$
+</screen>
 
-<para>
-      
-So, the current term is the empty tuple if you have just started
-      the Stratego Shell. At the prompt of the shell you can enter
-      strategies. If the strategy succeeds, then the shell will show
-      the transformed term, which is now the new current term.
-    
+  The shell is invoked by calling the command
+  <code>stratego-shell</code> on the regular command-line. The
+  <code>stratego></code> prompt then indicates that you have entered
+  the Stratego Shell. After the prompt you can enter strategies or
+  special shell commands. 
+
 </para>
 
+<para>
+
+  Strategies are the statements and functions of the Stratego
+  language. A strategy transforms a term into a new term, or
+  fails. The term to which a strategy is applied, is called the
+  <emphasis>current term</emphasis>. In the Stratego Shell you can see
+  the current term with <command>:show</command>. In the session above
+  we see that the current term is the empty tuple if you have just
+  started the Stratego Shell. 
+
+  At the prompt of the shell you can enter strategies. If the strategy
+  succeeds, then the shell will show the transformed term, which is
+  now the new current term. 
+
+  For example, in the session above the strategy
+  <code>!Foo(Bar())</code> replaces the current term with the term
+  <code>Foo(Bar())</code>, which is echoed directly after applying the
+  strategy. The next strategy that is applied is the identity strategy
+  <code>id</code> that we saw before. Here it becomes clear that it
+  just returns the term to which it is applied.
+
+  Thus, we have the following general scheme of applying a strategy to
+  the current term:
 <screen>
 <replaceable>current term</replaceable>
 <prompt>stratego></prompt> <replaceable>strategy expression</replaceable>
 <replaceable>transformed current</replaceable>
 <prompt>stratego></prompt></screen>
 
-    
-<para>
-
-      Strategies can also fail. In that case, the shell will print a
-      message and leave the current term untouched:
-    
 </para>
 
+<para>
 
+  Strategies can also fail. For example, the application of the
+  <code>fail</code> strategy always fails. In the case of failure, the
+  shell will print a message and leave the current term untouched:
+    
 <screen>
 <replaceable>current term</replaceable>
 <prompt>stratego></prompt> <replaceable>strategy expression</replaceable>
@@ -331,24 +362,149 @@ command failed
 <prompt>stratego></prompt> :show
 <replaceable>current term</replaceable></screen>
 
- </section>
+</para>
+
+<para>
+
+  Finally, you can leave the shell using the <command>:quit</command> command.
+
+</para>
+
+<para>
+
+   The Stratego Shell has a number of non-strategy commands to operate
+   the shell configuration. Theses commands are recognizable by the
+   <code>:</code> prefix. The <code>:help</code> command tells you
+   what commands are available in the shell:
+
+<screen>
+$ stratego-shell
+<prompt>stratego></prompt> :help
+
+Rewriting
+  strategy          rewrite the current subject term with strategy
+
+Defining Strategies
+  id = strategy     define a strategy  (doesn't change the current subject term)
+  id : rule         define a rule      (doesn't change the current subject term)
+  import modname    import strategy definitions from 'modname' (file system or xtc)
+  :undef id         delete defintions of all strategies 'id'/(s,t)
+  :undef id(s,t)    delete defintion of strategy 'id'/(s,t)
+  :reset            delete all term bindings, all strategies, reset syntax.
+
+Debugging
+  :show             show the current subject term
+  :autoshow on|off  show the current subject term after each rewrite
+  :binding id       show term binding of id
+  :bindings         show all term bindings
+  :showdef id       show defintions of all strategies 'id'/(s,t)
+  :showdef id(s,t)  show defintion of strategy 'id'/(s,t)
+  :showast id(s,t)  show ast of defintion of strategy 'id'/(s,t)
+
+Concrete Syntax
+  :syntax defname   set the syntax to the sdf definition in 'defname'.
+
+XTC
+  :xtc import pathname
+
+Misc
+  :include file     execute command in the script of `file`
+  :verbose int      set the verbosity level (0-9)
+  :clear            clear the screen
+  :exit             exit the Stratego Shell
+  :quit             same as :exit
+  :q                same as :exit
+  :about            information about the Stratego Shell
+  :help             show this help information
+stratego>
+</screen>
+
+</para>
+
+</section>
 
 <section>
   <title>Summary</title>
+
 <para>
 
-       file extensions
-
-       libraries?
-
-       modules, imports
-
-       Compiling Programs
-
-       main definition
-       seperate compilation
+   Let's summarize what we have learned so far about Stratego programming.
 
 </para>
+
+<para>
+
+  First, a Stratego program is divided into
+  <emphasis>modules</emphasis>, which reside in files with extension
+  <code>.str</code> and have the following general form:
+
+<screen>
+module mod0
+imports liblib mod1 mod2
+signature
+  sorts A B C
+  constructors
+    Foo : A -> B
+    Bar : A
+strategies
+  main = io-wrap(foo)
+  foo = id
+</screen>
+
+  Modules can import other modules and can define signatures for
+  declaring the structure of terms and can define strategies, which we
+  not really know much about yet. 
+
+  However, the <code>io-wrap</code> strategy can be used to handle the
+  input and output of a Stratego program. This strategy is defined in
+  the <code>liblib</code> module, which provides an interface to the
+  Stratego Library.
+
+  The main module of a Stratego program should have a
+  <code>main</code> strategy that defines the entry point of the
+  program.
+
+</para>
+
+<para>
+
+  Next, a Stratego program is compiled to an executable program using
+  the Stratego Compiler <code>strc</code>.
+
+<screen>
+$ strc -i mod0 -la stratego-lib
+</screen>
+
+  The resulting executable applies the <code>main</code> strategy to
+  command-line arguments turned into a list-of-strings term.
+
+  The <code>io-wrap</code> strategy interprets these command-line
+  arguments to handle input and output using standard command-line
+  options.
+
+</para>
+
+<para>
+
+  Finally, the Stratego Shell can be used to invoke strategies
+  interactively.
+
+<screen>
+$ stratego-shell
+<prompt>stratego></prompt> id
+()
+<prompt>stratego></prompt> 
+</screen>
+
+</para>
+
+<para>
+
+  <link linkend="term-rewriting">Next up</link>: transforming terms
+  with rewrite rules.
+
+</para>
+
 </section>
 
 </section>
