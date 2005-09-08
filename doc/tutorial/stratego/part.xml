@@ -2,12 +2,12 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>The Stratego Language</title>
+  <title>The Stratego Language (*)</title>
   
   <xi:include href="language/introduction.xml" />
   
   <chapter xml:id="stratego-programs">
-    <title>Stratego Programs(*)</title>
+    <title>Stratego Programs</title>
     <xi:include href="language/terms.xml" />
     <xi:include href="language/compiler-interpreter.xml"/>
   </chapter>
