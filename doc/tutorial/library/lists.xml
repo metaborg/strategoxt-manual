@@ -4,31 +4,87 @@
 
   <title>Lists</title>
   
- 
-  <para>
-    Making heads and tails of it
-  </para>
+  <section>
+  
+  <title>Making heads and tails of it</title>
 
   <para>
     Lists in Stratego are nothing magical, except perhaps for some convenient
-    syntactic sugar, which we'll revisit now. As we know, lists are written 
-    <code>[ 1, 2, 3 ]</code>. Assume <code>xs</code> is this list. The code
-    <code>[ 0 | xs ]</code> will prepend a 0 to the list. Conversly, 
-    <code>![ 0, 1, 2, 3 ] ; ?[y | ys]</code> will bind <code>y</code> to
-    <code>0</code> and <code>ys</code> to <code>[1, 2, 3]</code>.
+    syntactic sugar. As we know, lists are written 
+    <code>[1,2,3]</code>. Assume <code>xs</code> is this list. The code
+    <code>[0|xs]</code> will prepend a 0 to it, yielding [0,1,2,3]. Conversly, 
+    <code>![0,1,2,3] ; ?[y|ys]</code> will bind <code>y</code> to
+    the head of the list, <code>0</code>, and <code>ys</code> to the
+    tail of the list, <code>[1,2,3]</code>.
   </para>
 
   <para>
-    <code>elem</code>
+    There are also a few other convenience functions worth mentioning.
+    The strategy <code>elem</code> will check if a given value is in
+    a list. If it is, the identity of the list will be returned:
   </para>
+<screen>
+stratego> &lt;elem> (1, [2,3,1,4])
+[2,3,1,4]
+</screen>
+    
+  <para>
+    The following should speak for themselves:
+  </para>
+<screen>
+stratego> &lt;length> [1,2,3,4,5]
+5
+stratego> &lt;last> [5,6,7,8,9]
+9
+stratego> &lt;reverse> [1,2,3,4,5]
+[5,4,3,2,1]
+stratego> &lt;map(inc)> [1,2,3,4]
+[2,3,4,5]
+stratego> &lt;filter(?2)> [1,2,3,2]
+[2,2]
+</screen>
 
   <para>
-    <code>last</code>
+    There are two ways of concatenating lists. If the lists are
+    given as a tuple, use <code>conc</code>. If you have a list
+    of lists, use <code>concat</code>:
   </para>
+<screen>
+stratego> &lt;conc> ([1,2,3],[4,5,6],[7,8,9])
+[1,2,3,4,5,6,7,8,9]
+stratego> &lt;concat> [[1,2,3],[4,5,6],[7,8,9]]
+[1,2,3,4,5,6,7,8,9]
+</screen>
 
   <para>
-    Evil by association
+	The sublist of the first <emphasis>n</emphasis> elements can be
+	picked out with the <code>take(|n)</code> strategy:
   </para>
+<screen>
+stratego> &lt;take(|3)> [1,2,3,4,5]
+[1,2,3]
+</screen>  
+
+  <para>
+    Finally, the <code>fetch(s)</code> strategy can be used to find
+    the first element for which <code>s</code> succeeds:
+  </para>
+<screen>
+stratego> &lt;fetch(?2)> [1,2,3]
+2
+</screen>  
+
+  <para>
+    The Stratego library contains many other convenient functions,
+    which are documented in the API documentation.
+  </para>
+
+  </section>
+  
+  <section>
+  <title>
+    Associative lists
+  </title>
 
   <para>
     Stratego also has library support for associative lists, sometimes known
@@ -38,14 +94,29 @@
     the first value associated with a particular key, and returns it.
   </para>
 
+<screen>
+stratego> &lt;lookup> (2, [(1, "a"), (2, "b"), (3, "c")]) => "b"
+</screen>
 
-  <para>
-    <code>&lt;lookup> (2, [(1, "a"), (2, "b"), (3, "c")]) => "b"</code>
-  </para>
+  </section>
 
+  <section>
+  <title>  
+    Sets
+  </title>
   <para>
-    <code>length</code>
-    <code>fetch(s)</code>
+    <code>union</code>, <code>nub</code>
+    <code>set-eq</code>, <code>diff</code>
   </para>
+  </section>
+  
+  <section>
+  <title>
+    Zipping, joining
+  </title>
+  <para>
+    <code>cart</code>, <code>join</code>, <code>zip</code>, <code>unzip</code>
+  </para>
+  </section>
 </chapter>
 
