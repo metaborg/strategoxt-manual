@@ -150,6 +150,77 @@
   </section>
 
   <section>
+    <title>Inspecting Terms</title>
+    
+    <para>
+      As a Stratego programmer you will be looking a lot at raw
+      ATerms. Stratego pioneers would do this by opening an ATerm file
+      in emacs and trying to get a sense of the structure by
+      parenthesis highlighting and inserting newlines here and
+      there. These days your life is much more pleasant through the
+      tool <xref linkend="ref-pp-aterm"/>, which adds layout to a term
+      to make it readable. For example, parsing the following program
+
+<programlisting>
+let function fact(n : int) : int =
+      if n &lt; 1 then 1 else (n * fact(n - 1))
+ in printint(fact(10))
+end
+</programlisting>
+
+	produces the following ATerm (say in file fac.trm):
+
+<programlisting>
+Let([FunDecs([FunDec("fact",[FArg("n",Tp(Tid("int")))],Tp(Tid("int")),
+If(Lt(Var("n"),Int("1")),Int("1"),Seq([Times(Var("n"),Call(Var("fact"),
+[Minus(Var("n"),Int("1"))]))])))])],[Call(Var("printint"),[Call(Var(
+"fact"),[Int("10")])])])
+</programlisting>
+
+     By pretty-printing the term using <code>pp-aterm</code> as 
+
+<screen>
+<prompt>$</prompt> pp-aterm -i fac.trm
+</screen>
+
+     we get a much more readable term:
+
+<programlisting>
+Let(
+  [ FunDecs(
+      [ FunDec(
+          "fact"
+        , [FArg("n", Tp(Tid("int")))]
+        , Tp(Tid("int"))
+        , If(
+            Lt(Var("n"), Int("1"))
+          , Int("1")
+          , Seq(
+              [ Times(
+                  Var("n")
+                , Call(
+                    Var("fact")
+                  , [Minus(Var("n"), Int("1"))]
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  ]
+, [ Call(
+      Var("printint")
+    , [Call(Var("fact"), [Int("10")])]
+    )
+  ]
+)
+</programlisting>
+    </para>
+  </section>  
+
+  <section>
     <title>Maximal Sharing</title>
 
     <para>
@@ -164,18 +235,13 @@
       exactly once in memory, with each occurrence pointing to the
       same memory location. This representation entails that term
       equality is a constant operation, since it consists of comparing
-      pointers. It should be noted that annotations create different
-      terms, that is, two terms, one with and the other without
-      annotations that are otherwise, modulo annotations, the same,
-      are not equal.
+      pointers.
     </para>
 
     <para>
-      Maximal sharing can make a big difference [BJKO00] in the amount
-      of memory needed for representing programs.  When exporting a
-      term using the textual exchange format, this compression is
-      lost. Therefore, the ATerm Library also provides a binary
-      exchange format that preserves maximal sharing.
+      It should be noted that annotations create different terms, that
+      is, two terms, one with and the other without annotations that
+      are otherwise, modulo annotations, the same, are not equal.
     </para>
     
     <figure xml:id="Fig-Sharing">
@@ -195,6 +261,19 @@
 
   <section>
     <title>Exchange Format</title>
+
+    <para>
+      
+
+      Maximal sharing can make a big difference in the amount of bytes
+      needed for representing programs. 
+
+When exporting a term
+      using the textual exchange format, this compression is
+      lost. Therefore, the ATerm Library also provides a binary
+      exchange format that preserves maximal sharing.
+    </para>
+
 
     <variablelist>
       <varlistentry>
