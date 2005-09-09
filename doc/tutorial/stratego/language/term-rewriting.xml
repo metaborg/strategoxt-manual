@@ -196,7 +196,8 @@ $ ./prop-eval -i test2.prop
 And(And(Atom("p"),Atom("q")),ATom("p"))
 </screen>
 
-   extend
+   We can also import these definitions in the <link
+   linkend="stratego-shell">Stratego Shell</link>.
 
 </para>
 

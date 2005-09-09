@@ -265,8 +265,8 @@ not a valid term
 </para>
 </section>
 
-<section>
-    <title>Running Programs Interactively</title>
+<section xml:id="stratego-shell">
+    <title>Running Programs Interactively with the Stratego Shell</title>
     
 <para>
   
