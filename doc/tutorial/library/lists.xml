@@ -1,4 +1,5 @@
 <chapter
+   xml:id="library-lists"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -9,51 +10,54 @@
   <title>Making heads and tails of it</title>
 
   <para>
-    Lists in Stratego are nothing magical, except perhaps for some convenient
-    syntactic sugar. As we know, lists are written 
+    Lists in Stratego are nothing magical, except perhaps for some
+    convenient syntactic sugar. As we know, lists are written 
     <code>[1,2,3]</code>, but this is just sugar for the term
-    <code>Cons(1,Cons(2,Cons(3,Nil)))</code>. Assume <code>xs</code> is this list.
-    The code <code>[0|xs]</code> will prepend a 0 to it, yielding [0,1,2,3]. Conversely, 
-    <code>![0,1,2,3] ; ?[y|ys]</code> will bind <code>y</code> to
-    the head of the list, <code>0</code>, and <code>ys</code> to the
-    tail of the list, <code>[1,2,3]</code>.
+    <code>Cons(1,Cons(2,Cons(3,Nil)))</code>. Assume <code>xs</code> is 
+    this list. The code <code>[0|xs]</code> will prepend a 0 to it, 
+    yielding [0,1,2,3]. Conversely, <code>![0,1,2,3] ; ?[y|ys]</code>
+    will bind <code>y</code> to the head of the list, <code>0</code>,
+    and <code>ys</code> to the tail of the list, <code>[1,2,3]</code>.
   </para>
 
   <para>
-    There are also a few other convenience functions worth mentioning.
-    The strategy <code>elem</code> will check if a given value is in
-    a list. If it is, the identity of the list will be returned:
+    The module <code>list</code> contains a lot of convenience f
+    unctions for dealing with lists. For example, the strategy 
+    <code>elem</code> will check if a given value is in a list. If
+    it is, the identity of the list will be returned. 
   </para>
 <screen>
-stratego> &lt;elem> (1, [2,3,1,4])
+<prompt>stratego></prompt> import list
+<prompt>stratego></prompt> &lt;elem> (1, [2,3,1,4])
 [2,3,1,4]
 </screen>
     
   <para>
-    The following should speak for themselves:
+    Continuing on the above Stratego Shell session, we can exercise
+    some of the other strategies:
   </para>
 <screen>
-stratego> &lt;length> [1,2,3,4,5]
+<prompt>stratego></prompt> &lt;length> [1,2,3,4,5]
 5
-stratego> &lt;last> [5,6,7,8,9]
+<prompt>stratego></prompt> &lt;last> [5,6,7,8,9]
 9
-stratego> &lt;reverse> [1,2,3,4,5]
+<prompt>stratego></prompt> &lt;reverse> [1,2,3,4,5]
 [5,4,3,2,1]
-stratego> &lt;map(inc)> [1,2,3,4]
+<prompt>stratego></prompt> &lt;map(inc)> [1,2,3,4]
 [2,3,4,5]
-stratego> &lt;filter(?2)> [1,2,3,2]
+<prompt>stratego></prompt> &lt;filter(?2)> [1,2,3,2]
 [2,2]
 </screen>
 
   <para>
-    There are two ways of concatenating lists. If the lists are
-    given as a tuple, use <code>conc</code>. If you have a list
+    There are two strategies for concatenating lists. If the lists
+    are given as a tuple, use <code>conc</code>. If you have a list
     of lists, use <code>concat</code>:
   </para>
 <screen>
-stratego> &lt;conc> ([1,2,3],[4,5,6],[7,8,9])
+<prompt>stratego></prompt> &lt;conc> ([1,2,3],[4,5,6],[7,8,9])
 [1,2,3,4,5,6,7,8,9]
-stratego> &lt;concat> [[1,2,3],[4,5,6],[7,8,9]]
+<prompt>stratego></prompt> &lt;concat> [[1,2,3],[4,5,6],[7,8,9]]
 [1,2,3,4,5,6,7,8,9]
 </screen>
 
@@ -62,7 +66,7 @@ stratego> &lt;concat> [[1,2,3],[4,5,6],[7,8,9]]
 	picked out with the <code>take(|n)</code> strategy:
   </para>
 <screen>
-stratego> &lt;take(|3)> [1,2,3,4,5]
+<prompt>stratego></prompt> &lt;take(|3)> [1,2,3,4,5]
 [1,2,3]
 </screen>  
 
@@ -71,7 +75,7 @@ stratego> &lt;take(|3)> [1,2,3,4,5]
     the first element for which <code>s</code> succeeds:
   </para>
 <screen>
-stratego> &lt;fetch(?2)> [1,2,3]
+<prompt>stratego></prompt> &lt;fetch(?2)> [1,2,3]
 2
 </screen>  
 
@@ -81,10 +85,27 @@ stratego> &lt;fetch(?2)> [1,2,3]
   </para>
 
   </section>
-  
+
   <section>
   <title>
-    Associative lists
+    Sorting
+  </title>
+  
+  <para>
+    The list sorting function is called <code>qsort(s)</code>, and
+    implements the Quicksort algorithm. The strategy parameter
+    <code>s</code> is the comparator function. 
+  </para>
+  
+<screen>  
+<prompt>stratego></prompt> &lt;qsort(gt)> [2,3,5,1,9,7]
+[9,7,5,3,2,1]
+</screen>
+  </section>
+    
+  <section>
+  <title>
+    Associative Lists
   </title>
 
   <para>
@@ -96,58 +117,70 @@ stratego> &lt;fetch(?2)> [1,2,3]
   </para>
 
 <screen>
-stratego> &lt;lookup> (2, [(1, "a"), (2, "b"), (3, "c")]) => "b"
+<prompt>stratego></prompt> &lt;lookup> (2, [(1, "a"), (2, "b"), (3, "c")]) => "b"
 </screen>
 
   </section>
 
+
   <section>
-  <title>  
-    Sets
+  <title>
+    Pairing Lists
   </title>
   <para>
-    In Stratego, sets are implemented as lists. A set differs from a
-    list in that a given element (value) can only occur once. The
+    The library also contains some useful strategies for 
+    combining multiple lists. The <code>cart(s)</code> strategy
+    makes a cartesian product of two lists. For each pair,
+    the parameter strategy <code>s</code> will be called. In 
+    the second case below, each pair will be summed by
+    <code>add</code>.
+  </para>
+  
+<screen>
+<prompt>stratego></prompt> &lt;cart(id)> ([1,2,3],[4,5,6])
+[(1,4),(1,5),(1,6),(2,4),(2,5),(2,6),(3,4),(3,5),(3,6)]
+<prompt>stratego></prompt> &lt;cart(add)> ([1,2,3],[4,5,6])
+[5,6,7,6,7,8,7,8,9]
+</screen>
+
+  <para>
+    Two lists can be paired using <code>zip</code>. The inverse
+    function is <code>unzip</code>.
+  </para>
+  
+<screen>
+<prompt>stratego></prompt> &lt;zip> ([1,2,3],[4,5,6])
+[(1,4),(2,5),(3,6)]
+<prompt>stratego></prompt> unzip
+([1,2,3],[4,5,6])
+</screen>  
+  </section>
+
+  <section>
+  <title>  
+    Lightweight sets
+  </title>
+  <para>
+    In Stratego, lightweight sets are implemented as lists. A set differs
+    from a list in that a given element (value) can only occur once. The
     strategy <code>nub</code> (also known as <code>make-set</code>)
     can be use to make a list into a set. It will remove duplicate
     elements. The normal functions on sets are provided, among
     them union, intersection, difference and equality:
   </para>
 <screen>
-stratego> &lt;nub> [1,1,2,2,3,4,5,6,6]
+<prompt>stratego></prompt> &lt;nub> [1,1,2,2,3,4,5,6,6]
 [1,2,3,4,5,6]
-stratego> &lt;union> ([1,2,3],[3,4,5])
+<prompt>stratego></prompt> &lt;union> ([1,2,3],[3,4,5])
 [1,2,3,4,5]
-stratego> &lt;diff> ([1,2,3],[3,4,5])
+<prompt>stratego></prompt> &lt;diff> ([1,2,3],[3,4,5])
 [1,2]
-stratego> &lt;isect> ([1,2,3],[3,4,5])
+<prompt>stratego></prompt> &lt;isect> ([1,2,3],[3,4,5])
 [3]
-stratego> &lt;set-eq> ([1,2,3],[1,2,3])
+<prompt>stratego></prompt> &lt;set-eq> ([1,2,3],[1,2,3])
 ([1,2,3],[1,2,3])
 </screen>
   </section>
   
-  <section>
-  <title>
-    Zipping, joining
-  </title>
-  <para>
-    There are also strategies for combining multiple lists in various
-    non-trivial fashions, such as taking the cartesian product of
-    lists, zipping lists (pairing two lists) and unzipping:
-  </para>
-<screen>
-stratego> &lt;zip> ([1,2,3],[4,5,6])
-[(1,4),(2,5),(3,6)]
-stratego> unzip
-([1,2,3],[4,5,6])
-stratego> &lt;cart(id)> ([1,2,3],[4,5,6])
-[(1,4),(1,5),(1,6),(2,4),(2,5),(2,6),(3,4),(3,5),(3,6)]
-stratego> &lt;cart(add)> ([1,2,3],[4,5,6])
-[5,6,7,6,7,8,7,8,9]
-stratego> &lt;join(add)> ([1,2,3],[4,5,6])
-[5,6,7,8,9]
-</screen>  
-  </section>
 </chapter>
 
