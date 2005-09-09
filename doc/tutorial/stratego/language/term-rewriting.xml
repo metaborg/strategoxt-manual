@@ -20,7 +20,7 @@
 </para>
 
 <section>
-  <title>Evaluating Boolean Expressions</title>
+  <title>Transformation with Rewrite Rules</title>
 
 <para>
 
@@ -157,7 +157,8 @@ rules
 module prop-eval
 imports liblib prop-eval-rules
 strategies
-  main = io-wrap(innermost(E))
+  main = io-wrap(eval)
+  eval = innermost(E)
 </screen>
 
   The module imports the Stratego Library (<code>liblib</code>) and
@@ -186,25 +187,72 @@ $ strc -i prop-eval.str -la stratego-lib
    applications of the program:
 
 <screen>
-$ cat test1.prop
+<prompt>$</prompt> cat test1.prop
 And(Impl(True,And(False,True)),True)
-$ ./prop-eval -i test1.prop
+
+<prompt>$</prompt> ./prop-eval -i test1.prop
 False
-$ cat test2.prop
+
+<prompt>$</prompt> cat test2.prop
 And(Impl(True,And(Atom("p"),Atom("q"))),ATom("p"))
-$ ./prop-eval -i test2.prop
+
+<prompt>$</prompt> ./prop-eval -i test2.prop
 And(And(Atom("p"),Atom("q")),ATom("p"))
 </screen>
 
+</para>
+
+<para>
+
    We can also import these definitions in the <link
-   linkend="stratego-shell">Stratego Shell</link>.
+   linkend="stratego-shell">Stratego Shell</link>, as illustrated by
+   the following session:
+
+<screen>
+<prompt>$</prompt> stratego-shell
+<prompt>stratego></prompt> import lib
+<prompt>stratego></prompt> import prop-eval-rules
+<prompt>stratego></prompt> eval = innermost(E)
+
+<prompt>stratego></prompt> !And(Impl(True(),And(Atom("p"),Atom("q"))),ATom("p"))
+And(Impl(True,And(Atom("p"),Atom("q"))),ATom("p"))
+
+<prompt>stratego></prompt> eval
+And(And(Atom("p"),Atom("q")),ATom("p"))
+
+<prompt>stratego></prompt> !And(Impl(True(),And(False(),True())),True())
+And(Impl(True,And(False,True)),True)
+
+<prompt>stratego></prompt> eval
+False
+
+<prompt>stratego></prompt> :quit
+False
+<prompt>$</prompt>
+</screen>
+
+  The first few commands load the Strateg library, the module with
+  evaluation rules, and define the <code>eval</code>
+  strategy. 
+
+  (Currently, importing modules based on <code>liblib</code> is not
+  supported by the Stratego Shell.)
+
+  (*** Fix this when stratego-shell supports liblib ***)
+
+</para>
+
+<para>
+
+  The next commands apply the <code>eval</code> strategy to various
+  terms.
 
 </para>
 
 </section>
 
 <section>
-  <title>Extending a Rewrite System</title>
+  <title>Adding Rules to a Rewrite System</title>
 
 <para>
 
@@ -218,26 +266,12 @@ rules
 </screen>
 
 
-
 <screen>
 module prop-dnf
 imports prop
 rules
   E : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
   E : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
-</screen>
-
-<screen>
-module prop-laws
-imports prop
-rules
-  DAOL  : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
-  DAOR  : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
-  DOAL  : Or(And(x, y), z) -> And(Or(x, z), Or(y, z))
-  DOAR  : Or(z, And(x, y)) -> And(Or(z, x), Or(z, y))
-  DN    : Not(Not(x))      -> x
-  DMA   : Not(And(x, y))   -> Or(Not(x), Not(y))
-  DMO   : Not(Or(x, y))    -> And(Not(x), Not(y))
 </screen>
 
   importing modules in the shell
@@ -248,671 +282,6 @@ rules
 </screen>
 
   </para>
-
-</section>
-
-<section>
-  <title>Notes</title>
-
-<screen>
-
-\section{Equivalence of Expressions}
-
-	In transforming programs we repeatedly replace a fragment of a
-	program by another fragment. Generally, in doing so we expect
-	the \emph{meaning} of the program to remain the same. That is,
-	we want to replace program fragments only by \emph{equivalent}
-	program fragments.  In order to reason about equivalence we
-	need to know what the meaning of a program is and how we can
-	generalize this.  We illustrate these notions with evaluation
-	and laws for Boolean expressions.
-
-\subsection{Boolean Expressions}
-
-	A \emph{Boolean expression} or \emph{proposition} is a logical
-	expression parameterized with proposition letters (variables),
-	and composed with the connectives negation ($\neg$)
-	conjunction ($\wedge$), disjunction ($\vee$), implication
-	($\to$), and equivalence
-	($\leftrightarrow$). Figure~\ref{Fig:prop.sdf} defines the
-	syntax of Boolean expressions.  Examples of such expressions
-	are
-
-      	\begin{itemize}
-
-        \item
-\begin{verbatim}
-rain /\ ~rain
-\end{verbatim}
-
-        \item
-\begin{verbatim}
-~(a /\ b) &lt;-> (~a \/ ~b)
-\end{verbatim}
-
-        \end{itemize}
-
-	\begin{figure}[p]
-	\inputsource{xmpl/prop.sdf}
-	\caption{Syntax of Boolean expressions. Note that $\neg$ is represented
-	with the ascii symbol \texttt{\~}.}
-	\label{Fig:prop.sdf}
-	\end{figure}
-
-	\begin{figure}[p]
-	\begin{boxedminipage}{\hsize}
-	\hspace*{\fill}
-	\begin{minipage}[t]{5cm}
-	\begin{eqnarray*}
-		\neg\verb|true|  =  \verb|false| \\
-		\verb|true| \wedge \verb|true|  =  \verb|true| \\
-		\verb|true| \wedge \verb|false|  =  \verb|false| \\
-		\verb|false| \wedge \verb|true|  =  \verb|false| \\
-		\verb|false| \wedge \verb|false|  =  \verb|false| \\
-		\verb|true| \vee \verb|true|  =  \verb|true| \\
-		\verb|true| \vee \verb|false|  =  \verb|true| \\
-		\verb|false| \vee \verb|true|  =  \verb|true| \\
-		\verb|false| \vee \verb|false|  =  \verb|false| \\
-	\end{eqnarray*}
-	\end{minipage}
-	\hspace*{\fill}
-	\begin{minipage}[t]{5cm}
-	\begin{eqnarray*}
-		\neg\verb|false|  =  \verb|true| \\
-		\verb|true| \rightarrow \verb|true|  =  \verb|true| \\
-		\verb|true| \rightarrow \verb|false|  =  \verb|false| \\
-		\verb|false| \rightarrow \verb|true|  =  \verb|true| \\
-		\verb|false| \rightarrow \verb|false|  =  \verb|true| \\
-		\verb|true| \leftrightarrow \verb|true|  =  \verb|true| \\
-		\verb|true| \leftrightarrow \verb|false|  =  \verb|false| \\
-		\verb|false| \leftrightarrow \verb|true|  =  \verb|false| \\
-		\verb|false| \leftrightarrow \verb|false|  =  \verb|true| \\
-	\end{eqnarray*}
-	\end{minipage}
-	\hspace*{\fill}
-	\end{boxedminipage}
-	\caption{Truth tables for propositional formulae}
-	\label{Fig:truth}
-	\end{figure}
-
-\subsection{Evaluating Expressions}
-
-	The \emph{value} of a Boolean expression without any variables
-	is either \texttt{true} or \texttt{false}.  The value of an
-	expression can be computed using the truth tables for the
-	connectives.  A truth table defines the value of an expression
-	consisting of a single connective with constant arguments.
-	Truth tables can be described by means of \emph{equations}.
-	For example, the equation
-\[
-		\verb|false| \wedge \verb|true| =  \verb|false|
-\]
-	defines that the value of the conjunction of \texttt{false}
-	and \texttt{true} is \texttt{false}.  Similarly, the equations
-	in Figure~\ref{Fig:truth} define the truth tables for all
-	connectives.
-
-	A more complex expression can be \emph{evaluated} by
-	systematically applying the equations from the truth tables,
-	i.e., replacing each connective with constant arguments by the
-	corresponding value from the truth table.  For example, the
-	following sequence shows the evaluation of the expression
-	$\neg(\verb|true| \wedge \verb|false|) \leftrightarrow (\neg
-	\verb|true| \vee \neg\verb|false|)$ to \verb|true|:
-\[
-	\begin{array}{ll}
-	 \neg(\verb|true| \wedge \verb|false|) \leftrightarrow (\neg \verb|true| \vee \neg\verb|false|) \\
-	=  \neg\verb|false| \leftrightarrow (\neg\verb|true| \vee \neg\verb|false|) \\
-	=  \verb|true| \leftrightarrow (\neg\verb|true| \vee \neg\verb|false|) \\
-	=  \verb|true| \leftrightarrow (\verb|false| \vee \neg\verb|false|) \\
-	=  \verb|true| \leftrightarrow (\verb|false| \vee \verb|true|) \\
-	=  \verb|true| \leftrightarrow \verb|true| \\
-	=  \verb|true| \\
-	\end{array}
-\]
-
-	An expression with variables cannot be evaluated since the
-	equations in the truth table only define the meaning of the
-	connectives with constant arguments.  In order to evaluate it,
-	the variables in an expression should first be instantiated
-	with constant values. Given an assignment $\sigma$ of truth
-	values to variables, and an expression $e$, $\sigma(e)$
-	denotes the expression in which variables have been replaced
-	by their value assigned in $\sigma$. For example, if
-	$\sigma=\{\verb|rain|:=\verb|false|\}$, then 
-\[
-	\sigma(\verb|rain| \wedge \neg\verb|rain|) = \verb|false| \wedge \neg\verb|false|
-\]
-
-\subsection{Equational Reasoning}
-
-	Using truth tables we can thus simplify expressions with
-	constant values. However, in program transformation we will
-	generally want to transform expressions that cannot be
-	evaluated completely. Otherwise, the problem wouldn't be very
-	interesting.  For example, we could reason that the expression
-	$\neg(\verb|a| \wedge \verb|b|) \leftrightarrow (\neg\verb|a|
-	\vee \neg\verb|b|)$ evaluates to \verb|true| for any
-	assignment of constants to variables. Thus, when we encounter
-	this expression in a program we would like to replace it with
-	the equivalent, but much simpler expression \verb|true|.
-
-	In general, we can replace an expression $e$ by an expression
-	$e'$, if they are equivalent, i.e., if for any asssignment
-	$\sigma$, the value of $\sigma(e)$ is equal to the value of
-	$\sigma(e')$. In the case of Boolean expressions we can decide
-	whether or not two expressions are equivalent by enumerating
-	all possible assignments of constants to the variables in the
-	expressions, and evaluating the expressions with respect to
-	these assignments.  For most languages, however, this approach
-	does work since there will be infinitly many assignments to
-	test. Also a test is not a method for \emph{obtaining} an
-	equivalent expression.
-
-	Instead of testing the equivalence of expressions by
-	exhaustive evaluation, we can reason symbolically about
-	equivalence using general equations which are valid with
-	respect to evaluation. An equation $e_1 = e_2$ is valid, if
-	for any assignment $\sigma$, we have $\sigma(e_1) =
-	\sigma(e_2)$.  For example, the following idempotence law for
-	conjunction
-\begin{eqnarray}
-		p \wedge p  =  p
-\end{eqnarray}
-	is valid since $\verb|true| \wedge \verb|true| = \verb|true|$
-	and $\verb|false| \wedge \verb|false| = \verb|false|$.
-	Similarly, the following equations can be shown to be valid.
-\begin{eqnarray}
-	p \wedge (q \wedge r)  =  p \wedge (q \wedge r)
-	\\
-	p \wedge (q \vee r)  =  (p \wedge q) \vee (p \wedge r) 
-	\\
-	p \vee p  =  p 
-	\\
-	\neg \neg p  =  p 
-	\\
-	\neg(p \vee q)  =  \neg p \wedge \neg q
-	\\
-	p \to q  =  \neg p \vee q
-	\\
-	p \leftrightarrow q  =  (p \wedge q) \vee (\neg p \wedge \neg q)
-\end{eqnarray}
-
-	Once a basic set of equations has been established, more
-	complex equalities can be shown by symbolic reasoning
-	according to the laws of \emph{equational logic}, which is the
-	closure of a set of equations with reflexivity, transitivity,
-	symmetry, and congruence:
-\[
-\begin{array}{ll}
-						 \Rightarrow e = e
-	\\
-	e_1 = e_2 \text{ and } e_2 = e_3 	 \Rightarrow e_1 = e_3
-	\\
-	e_1 = e_2 				 \Rightarrow e_2 = e_1
-	\\
-	e_1 = e_2 				 \Rightarrow C[e_1] = C[e_2]
-\end{array}
-\]
-	The last rule states that if two expressions $e_1$ and $e_2$
-	are equivalent, then two expressions $C[e_1]$ and $C[e_2]$,
-	which are the same except for the subexpressions $e_1$ and
-	$e_2$, are also equivalent. For example, to prove that
-	$p\wedge\neg q = \neg(p \to q)$ we reason as follows:
-\begin{eqnarray*}
-		\neg(p \to q)  =  \neg(\neg p \vee q)\\
-			       =  \neg\neg p \wedge \neg q\\
-			       =  p \wedge \neg q
-\end{eqnarray*}
-	Similarly we can now show that $\neg(\verb|a| \wedge \verb|b|)
-	\leftrightarrow (\neg\verb|a| \vee \neg\verb|b|)$ is equal to
-	\verb|true| by using the equations above to simplify the first
-	expression:
-\[
-	\begin{array}{ll}
-	   \neg(\verb|a| \wedge \verb|b|) \leftrightarrow (\neg\verb|a| \vee \neg\verb|b|)\\
-	=  (\neg\verb|a| \vee \neg\verb|b|) \leftrightarrow (\neg\verb|a| \vee \neg\verb|b|)\\
-	=  ((\neg\verb|a| \vee \neg\verb|b|) \wedge (\neg\verb|a| \vee \neg\verb|b|))
-	    \vee (\neg(\neg\verb|a| \vee \neg\verb|b|) \wedge \neg(\neg\verb|a| \vee \neg\verb|b|)\\
-	=  \verb|true| \vee \verb|true|\\
-	=  \verb|true|
-	\end{array}
-\]
- 
-\subsection{Turning Equations into Rewrite Rules}
-
-	Based on the semantics of a language we can reason about the
-	equality of expressions in that language. Using equational
-	logic we can reason about equality of complex expressions
-	using equations over simple expressions. If those basic
-	equations are valid and the reasoning follows the rules of
-	equational logic, the equality over the large expressions is
-	valid as well.
-
-	In automatic program transformation we do not want to reason
-	about equivalence of programs, but rather we want to use our
-	knowledge of the semantics of a language to transform a
-	program. For this purpose, we can turn equations over program
-	expressions into \emph{rewrite rules} which replace an
-	expression matching one side of an equation with the other
-	side of the equation. For example, the following are rewrite
-	rules corresponding to equations above:
-\begin{eqnarray*}
-	p \wedge (q \wedge r)  \rightarrow  p \wedge (q \wedge r)
-	\\
-	p \leftrightarrow q  \rightarrow  (p \wedge q) \vee (\neg p \wedge \neg q)
-\end{eqnarray*}
-	
-	Rewrite rules operationalize equations in the sense that they
-	assign a direction to the transformation described by an
-	equation.  A set of rewrite rules can be applied automatically
-	by reducing each sub-expression that matches the left-hand
-	side of a rule to its right-hand side. The difference between
-	rewriting and equational reasoning is the absence of symmetry
-	in the rewrite relation. That is, given a set of rewrite
-	rules, an expression $e_1$ rewrites to an expression $e_2$, if
-	the expressions are in the relation $e_1\rightarrow^*e_2$, as
-	determined by the following rules:
-\[
-\begin{array}{ll}
-				 \Rightarrow e \rightarrow^* e
-	\\
-	e_1 \rightarrow e_2		 \Rightarrow e_1 \rightarrow^* e_2
-	\\
-	e_1 \rightarrow^* e_2 \text{ and } e_2 \rightarrow^* e_3  \Rightarrow e_1 \rightarrow^* e_3
-	\\
-	e_1 \rightarrow^* e_2 	 \Rightarrow C[e_1] \rightarrow^* C[e_2]
-\end{array}
-\]
-
-	In the rest of this chapter we will formally define the
-	notions underlying term rewriting such as patterns,
-	substitution, pattern matching, rewrite rules, and reduction.
-
-
-</screen>
-
-<screen>
-
-\section{Pattern Matching}
-
-	In the previous section we informally introduced the notions
-	of equations and rewrite rules over program expresssions. We
-	want to use these notions to manipulate terms representing
-	program expressions. In this section we formalize the notions
-	of patterns, substitution, and pattern matching.
-
-\subsection{Terms}
-
-	In Chapter~\ref{Chap:Representation} we introduced the
-	Annotated Term Format for the representation of programs.
-	This format consists basically of terms composed by
-	constructor applications $c(t_1,...,t_n)$. Formally, we define
-	terms as follows.  
-\begin{itemize}
-
-	\item A constant $k$ is a term. Constants can be further
-	distinghuished as
-
-	\begin{itemize}
-
-		\item Integer constant. Example: \verb|1|
-	
-		\item Real constant. Example: \verb|0.1|
-	
-		\item String constant. Example: \verb|"foo"|
-
-	\end{itemize}
-
-	\item A constructor application $c(t_1,...,t_n)$ is a term if
-	$t_1$,...,$t_n$ are terms. Example: \verb|And(Var("a"),True)|.
-	There are some special notations for constructor applications:
-
-	\begin{itemize}
-
-	\item Constant constructor $c$ is equivalent to
-	$c()$. Example: \verb|True|.
-
-	\item List $[t_1,...,t_n]$ is equivalent to
-	$\verb|Cons|(t_1,...,\verb|Cons|(t_n,\verb|Nil|()))$. Example:
-	\verb|[A,B,C]|
-
-	\item Tuple $(t_1,...,t_n)$ is equivalent to
-	$T_n(t_1,...,t_n)$ with $T_n$ a special constructor for tuples
-	of length $n$. Example: \verb|(A,B,C)|
-
-	\end{itemize}
-
-\end{itemize}
-	Nothing else is a term. Because of the equivalences we can
-	reason about terms using just two cases, i.e., a constant $k$
-	or constructor application $c(t_1,...t_n)$.
-
-\subsection{Well-formed Terms}
-
-	A term is well-formed with respect to a signature $\Sigma$ if
-	it can be given a type according to the following rules:
-\begin{itemize}
-
-	\item A constant $k$ is a term of type \texttt{Int},
-	\texttt{Real}, or \texttt{String}, if it is an integer, real,
-	or string constant, respectively.
-
-	\item A constructor application $c(t_1,...,t_n)$ is a term of
-	type $S_0$ if term $t_1$ is of type $S_1$, ..., and $t_n$ is
-	of type $S_n$, and $c : S_1 \texttt{*} ... \texttt{*} S_n \to
-	S_0$ is a constructor declaration in signature $\Sigma$.
-
-\end{itemize}
-	Example terms according to the signature in
-	Figure~\ref{Fig:prop.str} are \verb|And(True,False)|, and
-	\verb|Or(Impl(Var("p"),Var("q")),Var("r"))|. 
-
-	(*** Note: Id = String ***)
-
-	\begin{figure}[t]
-	\inputsource{xmpl/prop.str}
-	\caption{Signature of Boolean expressions}
-	\label{Fig:prop.str}
-	\end{figure}
-
-\subsection{Patterns}
-
-	Equations are statements about sets of terms described by
-	patterns.  The associativity law
-\[
-	e_1 \wedge (e_2 \wedge e_3) = (e_1 \wedge e_2) \wedge e_3
-\]
-	is stated for all expressions matching the \emph{patterns} on
-	the left- or right-hand side, instead of enumerating the
-	associativity law for all possible expressions.  A \emph{term
-	pattern} is a term with variables.  
-	
-	Taking the syntactic extensions of terms into a account, a
-	pattern is formally defined as follows:
-\begin{itemize}
-
-	\item A constant $k$ is a term pattern
-
-	\item A constructor application $c(p_1,...,p_n)$ is a term
-	pattern, if $p_1$ to $p_n$ are term patterns.
-
-	\item A variable $x$ is a term pattern.
-
-\end{itemize}
-	Nothing else is a pattern.
-
-	Example patterns according to the signature in
-	Figure~\ref{Fig:prop.str} are \texttt{And(x, False)}, and
-	\texttt{Or(Impl(Var(p), Var("q")), y)}. Note the difference
-	between \emph{pattern variables} or \emph{meta-variables} such
-	as \verb|x|, \verb|p|, and \verb|q|, and \emph{object
-	variables}, i.e., variables in the object language under
-	consideration, such as \verb|Var("q")|. In particular, note
-	that \verb|p| is a meta-variable of sort \verb|Id|, and that
-	\verb|Var(p)| is a pattern for an object variable.  Pattern
-	variables and constant constructors overlap. The distinction
-	can be made with respect to a signature; any identifier
-	declared as a constructor constant is not a variable. Thus,
-	with respect to the signature in Figure~\ref{Fig:prop.str},
-	\texttt{False} is a constructor, but \texttt{Foo} is a
-	variable.
-
- \subsection{Substitution}
-
-	A pattern can be instantiated by replacing each of its
-	variables with a term. This is formalized by the notion of
-	\emph{substitution}.  A substitution $\sigma$ is a mapping
-	from variables to terms.  A finite mapping for $n$ variables
-	is written as $[x_1 := t_1, ..., x_n := t_n]$. For all other
-	variables such a mapping is the identity.  The application of
-	substitutions can be extended to terms according to the
-	following rules:
-\begin{eqnarray*}
-		[... x := t ...] ( x )  =  t \\
-		\sigma ( k )  =  k \\
-		\sigma(c(t_1,...,t_n))  =  c(\sigma(t_1),...,\sigma(t_n))
-\end{eqnarray*}
-	The application of two substitutions to a term can be reduced
-	to the application of a single substitution according to the
-	substitution lemma:
-\[
-	\sigma([x_1 := t_1 ... x_n := t_n](t)) = 
-	([x_1 := \sigma(t_1) ... x_n := \sigma(t_n)] \union \sigma)(t)) 
-\]
-
- \subsection{Matching}
-	
-	To determine whether an equation or rule applies to a term, we
-	\emph{match} the term against one of the patterns. Pattern
-	matching can be defined in terms of substitution. A pattern
-	$p$ \emph{matches} a term $t$ iff there exists a substitution
-	$\sigma$ such that $\sigma(p)=t$.  For example, the term
-	\verb|Plus(Var("q"),Int("0"))|, matches the pattern
-	\verb|Plus(|e\verb|,Int("0"))| since
-\[ [e := \verb|Var("q")|](\verb|Plus(|e\verb|,Int("0"))|)
-	= \verb|Plus(Var("q"),Int("0"))|
-\]
-
-	To perform pattern matching we have to find the substitution
-	that determines the match. The algorithm in
-	Figure~\ref{Fig:MatchAlgorithm} defines a function
-	\texttt{match($p$,$t$)} which matches a term $t$ against a
-	pattern $p$. If there is such a match the function returns a
-	substitution $\sigma$ such that $\sigma(p)=t$. If there is no
-	match the function fails, i.e., 
-
-	Note that the algorithm can cope with \emph{non-linear}
-	patterns, i.e., patterns which have more than one occurrence
-	of the same variable. All occurrences of a variable in a
-	pattern should match against the same term.
-
-\begin{figure}[t]
-\begin{boxedminipage}{\hsize}
-\begin{alltt}
-match(p : pattern, t : term)
-\{
-   return match(p, t, [])
-\}
-match(p : pattern, t : term, subs : substitution)
-\{
-  if(p == x)
-    \{ 
-       if(subs(p) == x)
-         return [x := t | subs];
-       else if(subs(p) == t)
-         return subs;
-       else
-         return fail;
-    \}
-  else if(p == k and t == k)
-    return subs;
-  else if(p == c(p1,...,pn) and t == c(t1,...,tn))
-    \{
-       for(i := 1 to n) 
-         \{
-            subs := match(pi, ti, subs);
-            if(subs == fail)
-              return fail;
-         \}
-       return subs;
-    \}
-  else 
-    return fail;
-\}
-\end{alltt}
-\end{boxedminipage}
-\caption{Pattern matching algorithm}
-\label{Fig:MatchAlgorithm}
-\end{figure}
-
-
-
-</screen>
-
-<screen>
-
-\section{Term Rewriting}	
-
-\subsection{Rewrite Rules}
-
-	A \emph{rewrite rule} is a pair of term patterns written as
-	$p_1 \verb| -> | p_2$. A \emph{labeled} rewrite rule is a
-	named rule of the form $L \verb| : | p_1 \verb| -> | p_2$. A
-	rule defines a transformation of an expression of the form
-	\verb|p1| to an expression of the form \verb|p2|. As an
-	example, consider the rule
-\begin{verbatim}
-  AA : And(And(x, y), z) -> And(x, And(y, z))
-\end{verbatim}
-	which rewrites a left-associative combination of two
-	conjunctives into a right-associative
-	one. Figure~\ref{Fig:proprewrites} defines more rewrite rules
-	for Boolean expressions corresponding to equations discussed
-	in the previous section.
-
-	A \emph{conditional} rewrite rule is a rule of the from $p_1
-	\verb| -> | p_2 \verb| where | s$, with $s$ a \emph{condition}
-	that has to be satisfied before the rule can be applied.
-
-	\begin{figure}[p]
-	\inputsource{xmpl/prop-laws.str}
-	\caption{Rewrite rules for Boolean expressions}
-	\label{Fig:proprewrites}
-	\end{figure}
-
-\subsection{Reduction}
-
-	A rule $L \verb| : | p_1 \verb| -> | p_2$ \emph{reduces} a
-	term $t$ to $t'$, if $t$ matches $p_1$ with substitution
-	$\sigma$, i.e., $t=\sigma(p_1)$, and $t'=\sigma(p_2)$. We say
-	that $t$ is the \emph{redex} (reducible expression), and $t'$
-	is the \emph{reduct}.  Thus with rule \texttt{AA} above the
-	term 
-\texttt{And(And(Var("a"), False), Var("b"))} 
-	reduces to
-\texttt{And(Var("a"), And(False, Var("b")))}, 
-	since the substitution $[x := \verb|Var("a")|, y :=
-	\verb|False|, z := \verb|Var("b")|]$ defines a match for the
-	left-hand side
-\texttt{And(And(x, y), z)} 
-	of the rule, and instantiates the right-hand side
-\texttt{And(x, And(y, z))} 
-	to the reduct.
-
-	A set of rewrite rules $R$ induces a \emph{one-step rewrite
-	relation} on terms. If $t$ reduces to $t'$ with one of the
-	rules in $R$ then we have $t\to_R{}t'$. In this relation
-	reductions take place at the root of terms. The relation can
-	be extended to the relation $\Rightarrow_R$ which relates two
-	terms with a reductions under the root. The relation is
-	formally defined as follows:
-	
-\[
-	\dfrac{
-		t_1 \rightarrow_R t_2
-	}{
-		t_1 \Rightarrow_R t_2
-	}
-\qquad\qquad
-	\dfrac{
-		t_i \Rightarrow_R t_i' (1 \leq i \leq n)
-	}{
-	   c(t_1,...,t_i,...,t_n) \Rightarrow_R c(t_1,...,t_i',...,t_n)
-	}
-\]
-	For example, with rule \verb|A : P(Z, x) -> x| the term
-\texttt{P(P(Z,S(Z)), S(Z))}
-	reduces to
-\texttt{P(S(Z), S(Z))} 
-	by reducing the first argument of the outermost~\verb|P|.
-
-\subsection{Normalization}
-
-	A term $t$ \emph{rewrites} to a term $t'$ with respect to a
-	set of rewrite rules $R$ if there is a finite sequence of
-	terms $t=t_1,...,t_n=t'$ such that each $t_i$ reduces (under
-	the root) to $t_{i+1}$. This is formalized by the rewrite
-	relation $\Rightarrow_R^*$, defined by the following rules:
-\[
-	\dfrac{}{t \Rightarrow_R^* t}
-	\qquad\qquad
-	\dfrac{t_1 \rightarrow_R t_2}{t_1 \Rightarrow_R^* t_2}
-	\qquad\qquad
-	\dfrac{t_1 \Rightarrow_R^* t_2 \quad t_2 \Rightarrow_R^* t_3}{t_1 \Rightarrow_R^* t_3}
-\]
-\[
-	\dfrac{t_i \Rightarrow_R^* t_i' (1 \leq i \leq n)}{c(t_1,...,t_i,...,t_n) 
-		  \Rightarrow_R^* c(t_1,...,t_i',...,t_n)}
-\]
- 	That is, the reflexive, transitive and congruent closure of
- 	$\rightarrow_R$.
-
-	A term $t$ is in \emph{normal form} with respect to a set of
-	rewrite rules $R$, if there is no term $t'$ not equal to $t$
-	such that $t \Rightarrow_R^* t'$. If the rules in $R$ is
-	unconditional, this is the case if there is no subterm of $t$
-	that matches with one of the left-hand sides of a rule in $R$.
-
-\subsection{Confluence and Termination}
-
-	The normalization relation above allows any order for applying
-	rules to subterms. If a set of rewrite rules is confluent and
-	terminating this is no problem; the order does not matter. In
-	practice, sets of rules are often not confluent or
-	terminating. The order in which the rules are applied is
-	relevant then.
-
-\subsection{Rewriting Strategies}
-  
-	A \emph{rewriting strategy} is an algorithm for determining
-	the application of rules to a term.  A strategy is normalizing
-	if it rewrites all terms to normal form. The \emph{innermost}
-	rewriting strategy is a bottom-up algorithm. It proceeds by
-	first normalizing the subterms of a term. After all subterms
-	are reduced to normal form, the term itself is considered for
-	reduction. The algorithm for innermost rewriting is defined in
-	Figure~\ref{Fig:InnermostRewritingAlgorithm}.
-
-\begin{figure}[t]
-\begin{boxedminipage}{\hsize}
-\begin{alltt}
-innermost(rls : rulelist, t : term)
-\{
-  return innermost(rls, t, []);
-\}
-innermost(rls : rulelist, t : term, subs : substitution)
-\{
-  ts1, ts2 : termlist; c : constructor; 
-  if(t == x)
-    return subs(x);
-  else if(t == k)
-    return t;
-  else if(t == c(ts1))
-    \{
-      for(i := 1 to size(ts1))
-        ts2[i] := innermost(rls, ts1[i]);
-      return reduce(rls, c(ts2), subs);
-    \}
-\}
-reduce(rls : rulelist, t : term, subs : substitution)
-\{
-  for(i := 1 to size(rls))
-    \{
-      (L : p1 -> p2) := rls[i];
-      subs := match(p1, t, []);
-      if(subs != fail)
-        return innermost(rls, p2, subs);
-    \}
-  return t;
-\}
-\end{alltt}
-\end{boxedminipage}
-\caption{Innermost rewriting algorithm}
-\label{Fig:InnermostRewritingAlgorithm}
-\end{figure}
-
-</screen>
 
 </section>
 
