@@ -231,7 +231,7 @@ False
 <prompt>$</prompt>
 </screen>
 
-  The first few commands load the Strateg library, the module with
+  The first few commands load the Stratego library, the module with
   evaluation rules, and define the <code>eval</code>
   strategy. 
 
