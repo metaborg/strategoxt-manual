@@ -7,5 +7,13 @@
   <para>
     How to handle command-line options.
   </para>
+  
+  <para>
+    <code>io-wrap(s)</code>
+    <code>io-wrap(opts, s)</code>
+    <code>io-wrap(opts, usage, about, s)</code>
+    <code>option-wrap(opts, usage, about, announce, s)</code>
+    
+  </para>
 </chapter>
 

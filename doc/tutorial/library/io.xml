@@ -7,5 +7,33 @@
   <para>
     Library strategies for file input and output.
   </para>
+
+  <section>
+    <title>Console I/O</title>
+
+  <para>
+    <code>print</code>
+    <code>printnl</code>
+    <code>debug</code>
+    <code>error</code>
+  </para>
+  </section>
+  
+  <section>
+    <title>File I/O</title>
+  
+  <para>
+    <code>read-text-file</code>
+    <code>read-text-line</code>
+    <code>readdir</code>
+    <code>remove-file</code>
+    <code>rename-file</code>
+    <code>link-file</code>
+    <code>read-from-string</code>
+    <code>ReadFromFile</code>
+    <code>WriteToTextFile</code>
+    <code>WriteToBinaryFile</code>
+  </para>
+  </section>
 </chapter>
 
