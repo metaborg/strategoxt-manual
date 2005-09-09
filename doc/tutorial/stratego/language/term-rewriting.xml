@@ -2,7 +2,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Term Rewriting (*)</title>
+  <title>Term Rewriting</title>
 
 <para>
 
@@ -256,21 +256,38 @@ False
 
 <para>
 
-   extend the rewrite rules above to rewrite a Boolean expression to
-   disjunctive normal form
+   Next we extend the rewrite rules above to rewrite a Boolean
+   expression to disjunctive normal form.
 
-   shows rules which are a bit more complex than the evaluation rules
-   above
+   A Boolean expression is in disjunctive normal form if it conforms
+   to the following signature:
 
-   only use <code>And</code>, <code>Or</code>, and <code>Not</code>
-   such that <code>Not</code> only occurs under <code>And</code>, and
-   <code>And</code> only under <code>Or</code>
-
-   for example, the disjunctive normal form of
 <screen>
+signature
+  sorts Or And NAtom Atom
+  constructors
+    Or   : Or * Or -> Or
+         : And -> Or
+    And  : And * And -> And
+         : NAtom -> And
+    Not  : Atom -> NAtom
+         : Atom -> NAtom
+    Atom : String -> Atom
+</screen>
+
+   We use this signature only to describe what a disjunctive normal
+   form is, not in an the actual Stratego program. This is not
+   necessary, since terms conforming to the DNF signature are also
+   <code>Prop</code> terms as defined before.
+
+   For example, the disjunctive normal form of
+<screen>
+And(Impl(Atom("r"),And(Atom("p"),Atom("q"))),ATom("p"))
 </screen>
    is
 <screen>
+Or(And(Not(Atom("r")),ATom("p")),
+   And(And(Atom("p"),Atom("q")),ATom("p")))
 </screen>
 
 </para>
@@ -297,17 +314,23 @@ rules
   E : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
 </screen>
 
-  The first two rules rewrite implication <code>Impl</code> and
+  The first two rules rewrite implication (<code>Impl</code>) and
   equivalence (<code>Eq</code>) to combinations of <code>And</code>,
   <code>Or</code>, and <code>Not</code>.
-  
+
+  The third rule removes double negation.
+
+  The fifth and sixth rules implement the well known DeMorgan laws.
+
+  The last two rules define distribution of conjunction over
+  disjunction.
 
 </para>
 
 <para>
 
-  transformation to DNF can now be achieved by rewriting with the
-  combined set of rewrite rules
+  We turn this set of rewrite rules into a compilable Stratego program in the
+  same way as before:
 
 <screen>
 module prop-dnf
@@ -317,17 +340,70 @@ strategies
   dnf = innermost(E)
 </screen>
 
-  compilation
+  compile it in the usual way
 
 <screen>
+$ strc -i prop-dnf.str -la stratego-lib
 </screen>
 
-  application
+  so that we can use it to transform terms:
 
 <screen>
+<prompt>$</prompt> cat test3.prop
+And(Impl(Atom("r"),And(Atom("p"),Atom("q"))),ATom("p"))
+<prompt>$</prompt> ./prop-dnf -i test3.prop
+Or(And(Not(Atom("r")),ATom("p")),And(And(Atom("p"),Atom("q")),ATom("p")))
 </screen>
 
   </para>
+
+</section>
+
+<section>
+  <title>Summary</title>
+
+<para>
+
+  We have seen how to define simple transformations on terms using
+  unconditional term rewrite rules. Using the <code>innermost</code>
+  strategy, rules are applied exhaustively to all subterms of the
+  subject term.
+
+  The implementation of a rewrite system in Stratego has the following
+  form:
+
+<screen>
+module mod
+imports liblib
+signature
+  sorts A B C
+  constructors
+    Foo : A * B -> C
+rules
+  R : p1 -> p2
+  R : p3 -> p4
+strategies
+  main = io-wrap(rewr)
+  rewr = innermost(R)
+</screen>
+
+  The ingredients of such a program can be divided over several modules. Thus,
+  a set of rules can be used in multiple rewrite systems.
+
+</para>
+
+<para>
+
+  Compiling the module by means of the command
+
+<screen>
+$ strc -i mod.str -la stratego-lib
+</screen>
+
+  produces an executable <code>mod</code> that can be used to
+  transform terms.
+
+</para>
 
 </section>
 
