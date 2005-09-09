@@ -10,13 +10,22 @@
    structured representation for programs derived from a formal
    definition of the syntax of a programming language.
 
-   Transforming programs then requires tranformation of terms. There
-   are various ways such transformations could be defined.
+   Transforming programs then requires tranformation of terms. 
 
-   In this chapter we consider the paradigm of <emphasis>term
-   rewriting</emphasis> for specifying program transformations.  In
-   term rewriting a term is transformed by repeated application of
-   <emphasis>rewrite rules</emphasis>.
+   In this chapter we show how to implement term transformations using
+   <emphasis>term rewriting</emphasis> in Stratego. In term rewriting
+   a term is transformed by repeated application of <emphasis>rewrite
+   rules</emphasis>.
+
+</para>
+
+<section>
+  <title>Evaluating Boolean Expressions</title>
+
+<para>
+
+   To see how this works we take as example the language of
+   propositional formulae, also known as Boolean expressions:
 
 <screen>
 module prop
@@ -29,9 +38,193 @@ signature
     Not   : Prop -> Prop
     And   : Prop * Prop -> Prop
     Or    : Prop * Prop -> Prop
+    Impl  : Prop * Prop -> Prop
+    Eq    : Prop * Prop -> Prop
 </screen>
 
-      example terms in this language
+   Given this signature we can write terms such as
+   <code>And(Impl(True,False),False)</code>, and
+   <code>And(Atom("p"),False))</code>. Atoms are also known as
+   proposition letters; they are the variables in propositional
+   formulae. That is, the truth value of an atom should be provided in
+   order to fully evaluate an expression. Here we will evaluate
+   expressions as far as possible, a transformation also known as
+   <emphasis>constant folding</emphasis>.  We will do this using
+   <emphasis>rewrite rules</emphasis> that define how to simplify a
+   single operator application.
+
+</para>
+
+<para>
+
+   A <emphasis>term pattern</emphasis> is a term with <emphasis>meta
+   variables</emphasis>, which are identifiers that are not declared
+   as (nullary) constructors. For example, <code>And(x, True)</code>
+   is a term pattern with variable <code>x</code>. Variables in term
+   patterns are sometimes called <emphasis>meta</emphasis> variables,
+   to distinguish them from variables in the source language being
+   processed. For example, while atoms in the proposition expressions
+   are variables from the point of view of the language, they are not
+   variables from the perspective of a Stratego program.
+
+</para>
+
+<para>
+
+   A term pattern <code>p</code> <emphasis>matches</emphasis> with a
+   term <code>t</code>, if there is a
+   <emphasis>substitution</emphasis> that replaces the variables in
+   <code>p</code> such that it becomes equal to <code>t</code>. For
+   example, the pattern <code>And(x, True)</code> matches the term
+   <code>And(Impl(True,Atom("p")),True)</code> because replacing the
+   variable <code>x</code> in the pattern by
+   <code>Impl(True,Atom("p"))</code> makes the pattern equal to the
+   term. Note that <code>And(Atom("x"),True)</code> does
+   <emphasis>not</emphasis> match the term
+   <code>And(Impl(True,Atom("p")),True)</code>, since the subterms
+   <code>Atom("x")</code> and <code>Impl(True,Atom("p"))</code> do not
+   match.
+
+</para>
+
+<para>
+
+   An <emphasis>unconditional rewrite rule</emphasis> has the form
+   <code>L : p1 -> p2</code>, where <code>L</code> is the name of the
+   rule, <code>p1</code> is the left-hand side and <code>p2</code> the
+   right-hand side term pattern. 
+
+   A rewrite rule <code>L : p1 -> p2</code> applies to a term
+   <code>t</code> when the pattern <code>p1</code> matches
+   <code>t</code>. The result is the instantiation of <code>p2</code>
+   with the variable bindings found during matching.
+
+   For example, the rewrite rule
+
+<screen>
+E : Eq(x, False) -> Not(x)
+</screen>
+
+    rewrites the term <code>Eq(Atom("q"),False)</code> to
+    <code>Not(Atom("q"))</code>, since the variable <code>x</code> is
+    bound to the subterm <code>Atom("q")</code>.
+   
+</para>
+
+<para>
+
+   Now we can create similar evaluation rules for all constructors of
+   sort <code>Prop</code>:
+
+<screen>
+module prop-eval-rules
+imports prop
+rules
+  E : Not(True)      -> False       
+  E : Not(False)     -> True
+  E : And(True, x)   -> x        
+  E : And(x, True)   -> x   
+  E : And(False, x)  -> False     
+  E : And(x, False)  -> False
+  E : Or(True, x)    -> True     
+  E : Or(x, True)    -> True  
+  E : Or(False, x)   -> x     
+  E : Or(x, False)   -> x
+  E : Impl(True, x)  -> x 
+  E : Impl(x, True)  -> True      
+  E : Impl(False, x) -> True
+  E : Eq(False, x)   -> Not(x)
+  E : Eq(x, False)   -> Not(x)      
+  E : Eq(True, x)    -> x
+  E : Eq(x, True)    -> x
+</screen>
+
+   Note that all rules have the same name, which is allowed in
+   Stratego.
+
+</para>
+
+<para>
+
+  Next we want to <emphasis>normalize</emphasis> terms with respect to
+  a collection of rewrite rules. This entails applying all rules to
+  all subterms until no more rules can be applied.
+
+  The following module defines a rewrite system based on the rules for
+  propositions above:
+
+<screen>
+module prop-eval
+imports liblib prop-eval-rules
+strategies
+  main = io-wrap(innermost(E))
+</screen>
+
+  The module imports the Stratego Library (<code>liblib</code>) and
+  the module with the evaluation rules, and then defines the
+  <code>main</code> strategy to apply <code>innermost(E)</code> to the
+  input term. (See the discussion of <code>io-wrap</code> in <xref
+  linkend="identity-with-io"/>.)
+
+  The <code>innermost</code> strategy from the library exhaustively
+  applies its argument transformation to the term it is applied to,
+  starting with `inner' subterms.
+
+</para>
+
+<para>
+
+  We can now compile the program as discussed in <xref
+  linkend="running-stratego-programs"/>:
+
+<screen>
+$ strc -i prop-eval.str -la stratego-lib
+</screen>
+
+   This results in an executable <code>prop-eval</code> that can be
+   used to evaluate Boolean expressions. For example, here are some
+   applications of the program:
+
+<screen>
+$ cat test1.prop
+And(Impl(True,And(False,True)),True)
+$ ./prop-eval -i test1.prop
+False
+$ cat test2.prop
+And(Impl(True,And(Atom("p"),Atom("q"))),ATom("p"))
+$ ./prop-eval -i test2.prop
+And(And(Atom("p"),Atom("q")),ATom("p"))
+</screen>
+
+   extend
+
+</para>
+
+</section>
+
+<section>
+  <title>Extending a Rewrite System</title>
+
+<para>
+
+<screen>
+module 
+imports prop-simplify
+rules
+  E : Not(Not(x))    -> x
+  E : Not(And(x, y)) -> Or(Not(x), Not(y))
+  E : Not(Or(x, y))  -> And(Not(x), Not(y))
+</screen>
+
+
+
+<screen>
+module prop-dnf
+imports prop
+rules
+  E : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
+  E : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
+</screen>
 
 <screen>
 module prop-laws
@@ -54,6 +247,11 @@ rules
 </screen>
 
   </para>
+
+</section>
+
+<section>
+  <title>Notes</title>
 
 <screen>
 
@@ -715,5 +913,6 @@ reduce(rls : rulelist, t : term, subs : substitution)
 
 </screen>
 
+</section>
 
 </chapter>
