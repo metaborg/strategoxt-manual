@@ -4,7 +4,170 @@
 
   <title>Hashtables and Sets</title>
   
+  <section>
+  <title>
+    Hashtables
+  </title>
   <para>
-    How to use hashtables
+	The rewriting paradigm of Stratego is functional in nature, which is
+	somewhat contradictory to the imperative nature of hashtables. 
+	Normally, this doesn't present any practical problems, but remember
+	that changes to hashtables "stick", i.e. they are changed by
+	side-effect.
   </para>
+  
+  <para>
+	The Stratego hashtable API is pretty straightforward. Hashtables
+	are created by <code>new-hastable</code> and destroyed by
+	<code>hashtable-destroy</code>. 
+  </para>
+
+<screen>
+<prompt>stratego></prompt> import lib	
+<prompt>stratego></prompt> new-hashtable => h
+Hashtable(136604296)
+</screen>
+
+  <para>
+    The result <code>Hashtable(136604296)</code> here is a handle
+    to the actual hashtable. Consider it a pointer, if you will. The
+    content of the hashtable must be retrieved with the 
+    <code>hashtable-*</code> strategies, which we introduce here. The
+    strategy <code>hashtable-copy</code> can be used to copy a hashtable.
+  </para>
+    
+  <para>
+    Adding a key with value to the table is done with 
+    <code>hashtable-put(|k,v)</code>, where <code>k</code> is the key,
+    <code>v</code> is the value. Retrieving the value again can be
+    done by <code>hashtable-get(|k)</code>.
+  </para>
+  
+<screen>
+<prompt>stratego></prompt> &lt;hashtable-put(|"one", 1)> h
+Hashtable(136604296)
+<prompt>stratego></prompt> &lt;hashtable-get(|"one")
+1
+</screen>
+ 
+   <para>
+     The contents of the hashtable can be inspected with 
+     <code>hashtable-values</code> and <code>hashtable-keys</code>.
+   </para> 
+
+   <para>
+     Nesting is also supported by the Stratego hashtables. Using
+     <code>hashtable-push(|k,v)</code>, a new "layer" can be added
+     to an existing key (or an initial layer can be added to
+     a non-existing key). Removing a layer for a key can be done
+     with <code>hashtable-pop(|k)</code>.
+   </para>
+
+<screen>
+<prompt>stratego></prompt> &lt;hashtable-push("one",2)> h
+Hashtable(136604296)
+<prompt>stratego></prompt> &lt;hashtable-get("one")> h
+[2,1]
+<prompt>stratego></prompt> &lt;hashtable-pop(|"one")> h
+Hashtable(136604296)
+<prompt>stratego></prompt> &lt;hashtable-get(|"one")> h
+[1]
+<prompt>stratego></prompt> &lt;hashtable-remove(|"one")> h
+Hashtable(136604296)
+<prompt>stratego></prompt> &lt;hashtable-values> h
+[]
+</screen>
+
+  </section>
+
+  <section>
+  <title>
+    Indexed Sets
+  </title>
+  
+  <para>
+	The library provides a rather feature complete implementation of
+	indexed sets, based on hashtables. A lightweight implementation
+	of sets, based on lists, is explained in the <link 
+	linkend="library-lists">Lists</link> chapter.
+  </para>
+  
+  <para>
+    Similar to hashtables, indexed sets are created with the
+    <code>new-iset</code> strategy, copied with 
+    <code>iset-copy</code> and destroyed with <code>iset-destroy</code>.
+  </para>
+
+<screen>
+<prompt>stratego></prompt> imports lib
+<prompt>stratego></prompt> new-iset => i
+IndexedSet(136662256)
+</screen>
+
+   <para>    
+     The resulting term, <code>IndexedSet(136662256)</code>, is a handle
+     to the actual indexed set, which can only be manipulated through
+     the <code>iset-*</code> strategies.
+   </para>
+  
+   <para>
+     Adding a single element to a set is done with 
+     <code>iset-add(|e)</code>, whereas an entire list can be added
+     with the <code>iset-addlist(|es)</code>. Its elements can be
+     returned as a list using <code>iset-elements</code>.
+   </para>
+
+<screen>
+<prompt>stratego></prompt> &lt;iset-addlist(|[1,2,3,4,4])> i
+IndexedSet(136662256)
+<prompt>stratego></prompt> iset-elements
+[1,2,3,4]
+</screen>
+
+    <para>
+      Notice that the result is indeed a set: every value is only
+      represented once.
+    </para>
+    
+    <para>
+     Using <code>iset-get-index(|e)</code>, the index of a given
+     element <code>e</code> can be found. Similarly, 
+     <code>iset-get-elem(|i)</code> is used to get the value for
+     a particular index.
+    </para>
+
+<screen>
+<prompt>stratego></prompt> &lt;iset-get-index(|3)> i
+2
+<prompt>stratego></prompt> &lt;iset-get-elem(|3)> i
+4
+</screen>
+
+    <para>
+      Note that the indexes start at 0.
+    </para>
+
+    <para>
+      The set intersection between two sets can be computed with
+      the <code>iset-isect(|set2)</code> strategy. The
+      strategy <code>iset-union(|set2)</code> calculates the union
+      of two sets, whereas <code>iset-subset(|set2)</code>
+      checks if one set is a subset of another. Equality between
+      two sets is checked by <code>iset-eq(|set2)</code>. These
+      strategies are all used in a similar way:
+    </para>
+    
+<screen>
+<prompt>stratego></prompt> &lt;iset-eq(|set2)> set1
+</screen>
+    
+    <para>
+      A single element can be removed from the set with
+      <code>iset-remove(|e)</code>. <code>iset-clear</code> will
+      remove all elements in a set, thus emptying it.
+    </para>
+    
+  </section>
+  
+  
 </chapter>
