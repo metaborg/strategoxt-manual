@@ -11,8 +11,9 @@
   <para>
     Lists in Stratego are nothing magical, except perhaps for some convenient
     syntactic sugar. As we know, lists are written 
-    <code>[1,2,3]</code>. Assume <code>xs</code> is this list. The code
-    <code>[0|xs]</code> will prepend a 0 to it, yielding [0,1,2,3]. Conversly, 
+    <code>[1,2,3]</code>, but this is just sugar for the term
+    <code>Cons(1,Cons(2,Cons(3,Nil)))</code>. Assume <code>xs</code> is this list.
+    The code <code>[0|xs]</code> will prepend a 0 to it, yielding [0,1,2,3]. Conversely, 
     <code>![0,1,2,3] ; ?[y|ys]</code> will bind <code>y</code> to
     the head of the list, <code>0</code>, and <code>ys</code> to the
     tail of the list, <code>[1,2,3]</code>.
@@ -105,9 +106,25 @@ stratego> &lt;lookup> (2, [(1, "a"), (2, "b"), (3, "c")]) => "b"
     Sets
   </title>
   <para>
-    <code>union</code>, <code>nub</code>
-    <code>set-eq</code>, <code>diff</code>
+    In Stratego, sets are implemented as lists. A set differs from a
+    list in that a given element (value) can only occur once. The
+    strategy <code>nub</code> (also known as <code>make-set</code>)
+    can be use to make a list into a set. It will remove duplicate
+    elements. The normal functions on sets are provided, among
+    them union, intersection, difference and equality:
   </para>
+<screen>
+stratego> &lt;nub> [1,1,2,2,3,4,5,6,6]
+[1,2,3,4,5,6]
+stratego> &lt;union> ([1,2,3],[3,4,5])
+[1,2,3,4,5]
+stratego> &lt;diff> ([1,2,3],[3,4,5])
+[1,2]
+stratego> &lt;isect> ([1,2,3],[3,4,5])
+[3]
+stratego> &lt;set-eq> ([1,2,3],[1,2,3])
+([1,2,3],[1,2,3])
+</screen>
   </section>
   
   <section>
@@ -115,8 +132,22 @@ stratego> &lt;lookup> (2, [(1, "a"), (2, "b"), (3, "c")]) => "b"
     Zipping, joining
   </title>
   <para>
-    <code>cart</code>, <code>join</code>, <code>zip</code>, <code>unzip</code>
+    There are also strategies for combining multiple lists in various
+    non-trivial fashions, such as taking the cartesian product of
+    lists, zipping lists (pairing two lists) and unzipping:
   </para>
+<screen>
+stratego> &lt;zip> ([1,2,3],[4,5,6])
+[(1,4),(2,5),(3,6)]
+stratego> unzip
+([1,2,3],[4,5,6])
+stratego> &lt;cart(id)> ([1,2,3],[4,5,6])
+[(1,4),(1,5),(1,6),(2,4),(2,5),(2,6),(3,4),(3,5),(3,6)]
+stratego> &lt;cart(add)> ([1,2,3],[4,5,6])
+[5,6,7,6,7,8,7,8,9]
+stratego> &lt;join(add)> ([1,2,3],[4,5,6])
+[5,6,7,8,9]
+</screen>  
   </section>
 </chapter>
 
