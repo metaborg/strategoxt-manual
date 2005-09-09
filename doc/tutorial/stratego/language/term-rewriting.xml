@@ -256,27 +256,73 @@ False
 
 <para>
 
+   extend the rewrite rules above to rewrite a Boolean expression to
+   disjunctive normal form
+
+   shows rules which are a bit more complex than the evaluation rules
+   above
+
+   only use <code>And</code>, <code>Or</code>, and <code>Not</code>
+   such that <code>Not</code> only occurs under <code>And</code>, and
+   <code>And</code> only under <code>Or</code>
+
+   for example, the disjunctive normal form of
 <screen>
-module 
-imports prop-simplify
-rules
-  E : Not(Not(x))    -> x
-  E : Not(And(x, y)) -> Or(Not(x), Not(y))
-  E : Not(Or(x, y))  -> And(Not(x), Not(y))
+</screen>
+   is
+<screen>
 </screen>
 
+</para>
+
+<para>
+
+   Module <code>prop-dnf-rules</code> extends the rules defined in
+   <code>prop-eval-rules</code> with rules to achieve disjunctive
+   normal forms:
 
 <screen>
-module prop-dnf
-imports prop
+module prop-dnf-rules
+imports prop-eval-rules
 rules
+  E : Impl(x, y) -> Or(Not(x), y)
+  E : Eq(x, y)   -> And(Impl(x, y), Impl(y, x))
+
+  E : Not(Not(x)) -> x
+
+  E : Not(And(x, y)) -> Or(Not(x), Not(y))
+  E : Not(Or(x, y))  -> And(Not(x), Not(y))
+
   E : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
   E : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
 </screen>
 
-  importing modules in the shell
+  The first two rules rewrite implication <code>Impl</code> and
+  equivalence (<code>Eq</code>) to combinations of <code>And</code>,
+  <code>Or</code>, and <code>Not</code>.
+  
 
-  applying a rule to a term
+</para>
+
+<para>
+
+  transformation to DNF can now be achieved by rewriting with the
+  combined set of rewrite rules
+
+<screen>
+module prop-dnf
+imports liblib prop-dnf-rules
+strategies
+  main = io-wrap(dnf)
+  dnf = innermost(E)
+</screen>
+
+  compilation
+
+<screen>
+</screen>
+
+  application
 
 <screen>
 </screen>
