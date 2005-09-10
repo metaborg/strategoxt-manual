@@ -9,9 +9,9 @@
   <xi:include href="language/compiler-interpreter.xml"/>
   <xi:include href="language/term-rewriting.xml"/>
   <xi:include href="language/in-control.xml"/>
-  <xi:include href="language/build-match.xml"/>
-  <xi:include href="language/definitions.xml"/>
+  <xi:include href="language/rules-and-strategies.xml"/>
   <xi:include href="language/combinators.xml"/>
+  <xi:include href="language/build-match.xml"/>
   <xi:include href="language/traversal.xml"/>
   <xi:include href="language/type-unifying.xml"/>
   <xi:include href="language/concrete-syntax.xml"/>

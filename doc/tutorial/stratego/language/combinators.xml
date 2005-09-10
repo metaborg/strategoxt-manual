@@ -1,32 +1,148 @@
-<chapter
+<chapter xml:id="stratego-strategy-combinators"
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Strategy Combinators (*)</title>
 
-  <para>
+<para>
+               
+   In the previous chapter we saw that pure term rewriting is not
+   adequate for term rewriting because of the lack of control over the
+   application of rules. Approaches for encoding such control within
+   the pure rewriting paradigm lead to functionalized control by means
+   of extra rules and constructors at the expense of traversal
+   overhead and at the loss of the separation of rules and strategies.
+   We need a mechanism that provides such control, but maintains the
+   separation of rules and strategies and keeps traversal overhead to
+   a minimum.  Such a mechanism should allow strategies parameterized
+   with selections from the available rules.
+
+</para>
+
+<para>
+          
+   Also we saw that many transformation problems can be solved by
+   alternative strategies such as a one-pass bottom-up or top-down
+   traversal.  Others can be solved by selecting the rules that are
+   applied in an innermost normalization, rather than all the rules in
+   a specification.  However, no fixed set of such alternative
+   strategies will be sufficient for dealing with all transformation
+   problems.  Rather than providing one or a few fixed rewriting
+   strategies, we need to be able to \emph{compose} strategies from
+   basic building blocks with a few fundamental operators.
+
+</para>
+
+<para>
+         
+   In program transformation, the basic building blocks are single
+   rewrite steps, for example defined by a rewrite rule.  This chapter
+   introduces a set of operators for composing such single step
+   transformations into complex transformations.  By allowing
+   abstraction over the basic transformation, \emph{generic}
+   transformation \emph{strategies} can be defined. The combinators
+   discussed in this chapter cover sequential programming and
+   type-specific traversal. Extensions of this basic framework will be
+   considered in later chapters.
+
+</para>
+
+<para>
+ 
+   We first consider a set of combinators for sequential programming,
+   including sequential composition, deterministic choice, guarded
+   choice, test and negation, and recursion.
+
+</para>
+
+<para>
+ 
+  Rules define one-step transformations 
+
+  Program transformations require many one-step transformations and
+  selection of rules
+
+  Choice; identity, Failure, and Negation
+  
+</para>
+
+<section xml:id="identity">
+  <title>Identity and Failure</title>
+
+  
+<para>
+  Syntax: id 
+
+  Always succeed 
+
+  Some laws 
+    
+</para>
+
+    
+<screen>
+id ; s = s
+
+s ; id = s
+
+id &lt;+ s  = id
+
+s &lt;+ id /=  s
+
+s1 &lt; id + s2 = s1 &lt;+ s2 
+</screen>
 
 
-    Rules define one-step transformations 
+    
+<para>
 
-    Program transformations require many one-step transformations
-	and selection of rules
+Syntax: fail 
 
-    Choice; identity, Failure, and Negation
-  </para>
+Always fail 
 
-<section>
-    <title>Sequential Composition</title>
+Some laws 
+    
+</para>
 
-    <para>
-       of rules
+    
+<screen>
+fail &lt;+ s = s
 
-       example; composition of rules
+s &lt;+ fail =  s
 
-        Using the sequential composition B;A, the term P(S(Z),Z) is
-        reduced to S(Z)
+fail ; s = fail
 
-    </para>
+s ; fail /= fail
+</screen>
+
+</section>
+
+
+<section xml:id="seq">
+   <title>Sequential composition</title>
+    
+<para>
+      
+  The sequential composition <code>s1 ; s2</code> of the strategies
+  <code>s1</code> and <code>s2</code> first applies the strategy
+  <code>s1</code> to the subject term and then <code>s2</code> to the
+  result of that first application.
+    
+</para>
+
+<screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?Plus(e1, e2); !Plus(e2, e1)
+Plus(Int("3"),Var("a"))
+</screen>
+
+<para>
+      
+  The variable bindings are propagated. The strategy fails if either
+  <code>s1</code> or <code>s2</code> fails.
+
+  As an example of the use of sequential composition consider the
+  following rewrite rules.
 
 <screen>
   rules
@@ -34,22 +150,59 @@
     B : P(S(x),y) -> P(x,S(y))
 </screen>
 
+  Using the sequential composition \verb|B;A|, the term
+  \verb|P(S(Z),Z)| is reduced to \verb|S(Z)|,
+
+</para> 
+
 </section>
 
-<section xml:id="leftchoice">
-    <title>Deterministic Choice (left choice)</title>
 
-    <para>
-      The left choice or deterministic choice s1 &lt;+ s2 chooses one
-      of the trans- formations to apply. That is, s1 is first applied,
-      and s2 is only applied if s2 fails. 
-    </para>
+<section xml:id="choice">
+    <title>Choice</title>
 
-    <para>
-      A typical application of the deterministic choice operator is to
-      declare the priority between rules with overlapping left-hand
-      sides.
-    </para>
+<para>
+
+  choosing between actions
+
+  failure
+
+</para>
+
+<section xml:id="stratego-left-choice">
+    <title>Deterministic Choice (Left Choice)</title>
+  
+<para>
+      
+  The left choice or deterministic choice s1 &lt;+ s2 chooses one of
+  the trans- formations to apply. That is, s1 is first applied, and s2
+  is only applied if s2 fails.
+    
+</para>
+  
+<para>
+      
+  A typical application of the deterministic choice operator is to
+  declare the priority between rules with overlapping left-hand sides.
+
+  For example, the following rewrite rules define the \verb|Mem|
+  function:
+
+<screen>
+  rules
+    Mem1 : Mem(x,[]) -> False
+    Mem2 : Mem(x,[x|xs]) -> True
+    Mem3 : Mem(x,[y|ys]) -> Mem(x,ys)
+</screen>
+
+  Rules \verb|Mem2| and \verb|Mem3| have overlapping left-hand sides.
+  Rule \verb|Mem2| only applies if the first argument is equal to head
+  element of the list in the second argument. Rule \verb|Mem3| applies
+  always if the list in the second argument is non-empty.  By ordering
+  the rules as \verb|Mem2 &lt;+ Mem3|, rule \verb|Mem2| is tried
+  before \verb|Mem3|,
+
+</para>
 
 <screen>
 PlusAssoc :
@@ -65,26 +218,103 @@ stratego> PlusAssoc
 command failed
 stratego> PlusAssoc &lt;+ EvalPlus
 Int("17")
-
 </screen>
 
-    <para>
-      A useful application of &lt;+ in combination with id is the
-      reflexive closure of a strategy s. The strategy try(s) tries to
-      apply the strategy s, but if that fails, just succeeds using id.
-    </para>
+<para>
+      
+  A useful application of &lt;+ in combination with id is the
+  reflexive closure of a strategy s. The strategy try(s) tries to
+  apply the strategy s, but if that fails, just succeeds using id.
+    
+</para>
 
-    <screen>try(s) = s &lt;+ id</screen>
+<screen>try(s) = s &lt;+ id</screen>
 
-    <para>
-      Note that the choice is committed once the left-hand side
-      strategy has succeeded, even if the continuation strategy fails.
-    </para>
+<para>
+      
+  Note that the choice is committed once the left-hand side strategy
+  has succeeded, even if the continuation strategy fails.
+    
+</para>
     
 </section>
 
-<section xml:id="choice">
-    <title>Choice</title>
+<section xml:id="stratego-guarded-choice">
+  <title>Guarded Choice</title>
+
+<para>
+
+  Sometimes it is not desirable to backtrack to the alternative
+  specified in a choice. Rather, after passing a guard, the choice
+  should be committed. This can be expressed using the \emph{guarded
+  left choice} operator \verb|s1 &lt; s2 + s3|, which is defined as:
+
+
+  Conditional choice
+
+  Syntax: s1 &lt; s2 + s3 
+
+  First apply s1 if that succeeds apply s2 to the result else
+  apply s3 to the original term
+
+  Do not backtrack to s3 if s2 fails!
+  
+</para>
+
+<screen>
+  ?Call( , )    &lt; complex-transformation-for-call
++ ?BinOp( , , ) &lt; transformation-for-binop
++ other-cases
+</screen>
+
+</section>
+
+<section xml:id="stratego-if-then-else">
+  <title>If Then Else</title>
+
+<para>
+      
+  If Then Else
+
+  Syntax: if s1 then s2 else s3 end 
+
+  Equivalent to: where(s1) &lt; s2 + s3
+
+</para>
+
+  
+<screen>
+foo
+</screen>
+
+<para>
+     
+  If-Then
+
+  Syntax: if s1 then s2 end 
+
+  Equivalent to if s1 then s2 else id end
+</para>
+
+<screen>
+foo
+</screen>
+
+</section>
+
+<section xml:id="stratego-switch">
+  <title>Switch</title>
+
+<para>
+
+  switch construct
+
+</para>
+
+</section>
+
+<section>
+  <title>Non-deterministic Choice</title>
 
     <para>
       The deterministic choice operator prescribes that the left
@@ -107,118 +337,178 @@ Int("17")
       one strategy, and, if that fails, to try the other. The order in
       which this is done is undefined, i.e., arbitrarily chosen by the
       compiler.
+
+        The \texttt{+} operator is needed to model modular composition
+        of rewrite rules.
+
+        Rules with the same label
+
+        Explain implications of the \texttt{+} operator for semantics
+        and implementation and semantics.
+
     </para>
 
 </section>
-
-<section xml:id="conditionalchoice">
-  <title>Conditional choice</title>
-
-  <para>
-      Conditional choice
-
-      Syntax: s1 &lt; s2 + s3 
-
-      First apply s1 if that succeeds apply s2 to the result else
-      apply s3 to the original term
-
-      Do not backtrack to s3 if s2 fails!
-  </para>
-
-  <screen>
-  ?Call( , )    &lt; complex-transformation-for-call
-+ ?BinOp( , , ) &lt; transformation-for-binop
-+ other-cases</screen>
-
-  <para>
-      If Then Else
-
-      Syntax: if s1 then s2 else s3 end 
-
-      Equivalent to: where(s1) &lt; s2 + s3
-  </para>
-
-  <screen>
-foo
-  </screen>
-
-  <para>
-      If-Then
-
-      Syntax: if s1 then s2 end 
-
-      Equivalent to if s1 then s2 else id end
-  </para>
-
-  <screen>
-foo
-  </screen>
-
-</section>
-
-<section xml:id="identity">
-  <title>Identity</title>
-
-  <para>
-Syntax: id 
-
-Always succeed 
-
-Some laws 
-    </para>
-
-    <screen>
-id ; s = s
-
-s ; id = s
-
-id &lt;+ s  = id
-
-s &lt;+ id /=  s
-
-s1 &lt; id + s2 = s1 &lt;+ s2
-    </screen>
-
-</section>
-
-<section xml:id="failure">
-    <title>Failure</title>
-
-    <para>
-Syntax: fail 
-
-Always fail 
-
-Some laws 
-    </para>
-
-    <screen>
-fail &lt;+ s = s
-
-s &lt;+ fail =  s
-
-fail ; s = fail
-
-s ; fail /= fail
-    </screen>
 
 </section>
 
 <section xml:id="negation">
     <title>Negation</title>
 
-    <para>
-Syntax: not(s) 
+<para>
 
-Fail if s succeeds, succeed if s fails 
+  Sometimes it is useful to test a property of a term, rather than
+  transforming it. In these cases the combinators \texttt{test} and
+  \texttt{not} can be used. They test whether a strategy $s$ succeeds
+  or fails to transform a term.
 
-Equivalent to: s &lt; fail + id
 
-    </para>
+  Syntax: not(s) 
 
-    <screen>
-    </screen>
+  Fail if s succeeds, succeed if s fails 
+
+  Equivalent to: s &lt; fail + id
+
+</para>
 
 </section>
+
+<section>
+  <title>Recursion</title>
+
+<para>
+
+   Repeated application of a strategy can be achieved with recursion.
+   There are two styles for doing this; with a recursive definition or
+   using the fixpoint operator \texttt{rec}. A recursive definition is
+   a normal strategy definition with a recursive call in its body. For
+   example, the following defines the strategy \texttt{repeat}, which
+   applies a transformation $s$ until it fails:
+
+<screen>
+  strategies
+    repeat(s) = s; repeat(s) &lt;+ id
+    eval = repeat(A &lt;+ B)
+  rules
+    A : P(Z,x) -> x
+    B : P(S(x),y) -> P(x,S(y))
+</screen>
+
+  Note that sequential composition has higher priority than
+        choice. Therefore, \texttt{$s_1$; $s_2$ &lt;+ $s_3$} should be
+        read as \texttt{($s_1$; $s_2$) &lt;+ $s_3$}.
+
+<screen>
+        \tty{P(S(Z),Z)}
+        \lstep{\tty{\small repeat(A+B)}}{\tty{S(Z)}}
+</screen>
+
+</para>
+
+	
+<para>
+	  
+  Repeated application of a strategy can be achieved with
+  recursion. There are two styles for doing this; with a recursive
+  definition or using the fixpoint operator rec. A recursive
+  definition is a normal strategy definition with a recursive call in
+  its body.
+	
+</para>
+
+<screen>
+try(s) = s &lt;+ id
+
+repeat(s) = try(s; repeat(s))
+
+while(c, s) = if c then s; while(c,s) end
+
+do-while(s, c) = s; if c then do-while(s, c) end
+</screen>
+
+<screen>
+  strategies
+    repeat(s) = s; repeat(s) &lt;+ id
+    eval = repeat(A &lt;+ B)
+  rules
+    A : P(Z,x) -> x
+    B : P(S(x),y) -> P(x,S(y))
+</screen>
+
+  <screen>
+map(s) =
+  ?[] &lt;+ \ [x | xs] -> [&lt;s> x | &lt;map(s)> xs] \
+
+foldr(s1, s2, f) =
+  []; s1 &lt;+ \ [x|xs] -> &lt;s2>(&lt;f> x, &lt;foldr(s1, s2, f)> xs) \
+
+length = foldr(!0, add, !1)
+  </screen>
+
+
+<section xml:id="rec">
+  <title>Fixpoint operator (rec)</title>
+    
+ <para>
+
+   Another way to define recursion is using the fixpoint operator
+   <code>rec x(s)</code>, which recurses on applications of
+   <code>x</code> within <code>s</code>.
+     
+ </para>
+    
+ <para>
+    
+   Originally, the <code>rec</code> operator was the only way to
+   define recursion. It is still in the language in the first place
+   because it is widely used in many existing programs, and in the
+   second place because it can be a nice concise expression of a
+   recursive strategy. An example usage is the definition of repeat
+   with <code>rec</code>:
+    
+  </para>
+
+  <screen>repeat(s) = try(s; repeat(s))</screen>
+
+  <para>
+
+    Iteration Strategies
+
+    Using sequential composition, choice, and recursion a large
+    variety of iteration strategies can be defined. The following
+    module is part of the Stratego Standard Library:
+
+  </para>
+
+<screen>
+  module iteration
+  imports conditional
+  strategies
+    repeat(s, c)       = rec x(s; x &lt;+ c)
+    repeat(s)          = repeat(s, id)
+    repeat1(s, c)      = rec x(s; (x &lt;+ c))
+    repeat1(s)         = repeat1(s, id)
+    repeat-until(s, c) = rec x(s; (c &lt;+ x))
+
+    while(c, s)        = rec x(try(c; s; x))
+    do-while(s, c)     = rec x(s; try(c; x))
+    while-not(c, s)    = rec x(c &lt;+ s; x)
+
+    for(i, c, s)       = i; while-not(c, s)
+</screen>
+
+</section>
+
+</section>
+
+<section>
+  <title>Summary</title>
+
+<para>
+
+</para>
+
+</section>
+
 
 </chapter>

@@ -180,23 +180,25 @@ e is bound to Var("a")
 </section>
     
 <section>
- <title>Combining Match and Build</title>
+ <title>Implementing Rewrite Rules</title>
 
- <para>
-        Using match and build we can now construct rewrite rules by
-        sequentially composing a match and a build. For example, the
-        <code>DAOL</code> rule at the beginning of this chapter can be
-        written as
+<para>
+        
+  Using match and build we can now construct rewrite rules by
+  sequentially composing a match and a build. For example, the
+  <code>DAOL</code> rule at the beginning of this chapter can be
+  written as
+
 <screen>
   DAOL = ?And(Or(x, y), z); !Or(And(x, z), And(y, z))
 </screen>
-        Note that the variables bound in the match are carried over by
-        the sequential composition to the build. In other words,
-        variable bindings are visible at the level of strategies.
-        This should be expressed in the semantics of the language by
-        extending the semantic rules from the previous chapter with
-        environments. For example, the positive rule for sequential
-        composition becomes
+        
+  Note that the variables bound in the match are carried over by the
+  sequential composition to the build. In other words, variable
+  bindings are visible at the level of strategies.  This should be
+  expressed in the semantics of the language by extending the semantic
+  rules from the previous chapter with environments. For example, the
+  positive rule for sequential composition becomes
 
 
 	Basic transformations are combinations of match and build
@@ -219,29 +221,7 @@ e is bound to Var("a")
 
 	Conditional rewrite rules
 
- </para>
-
-<section xml:id="seq">
-   <title>Sequential composition</title>
-    
-    <para>
-      The sequential composition <code>s1 ; s2</code> of the
-      strategies <code>s1</code> and <code>s2</code> first applies the
-      strategy <code>s1</code> to the subject term and then
-      <code>s2</code> to the result of that first application. 
-    </para>
-
-    <screen>
-Plus(Var("a"),Int("3"))
-<prompt>stratego></prompt> ?Plus(e1, e2); !Plus(e2, e1)
-Plus(Int("3"),Var("a"))</screen>
-
-    <para>
-      The variable bindings are propagated. The strategy fails if
-      either <code>s1</code> or <code>s2</code> fails.
-    </para> 
-
-</section>
+</para>
 
 <section>
     <title>Anonymous Rewrite Rule</title>
@@ -260,41 +240,6 @@ Plus(Var("a"),Int("3"))
 Plus(Int("3"),Var("a"))</screen>
 
 </section>
-
-<section xml:id="applymatch">
-    <title>Apply and match</title>
-
-    <para>
-Syntax: 
-   <screen>s => p</screen>
-
-Apply s, then match p 
-
-Equivalent to: s; ?p 
-    </para>
-
-</section>
-
-<section xml:id="buildapply">
-    <title>Build and apply</title>
-
-    <para>
-Build and Apply (Sugar) 
-
-Syntax: &lt;s&gt; p 
-
-Build p, then apply s 
-
-Equivalent to: !p; s 
-
-   <screen>
-<prompt>stratego></prompt> &lt;addS&gt;("1","2") =&gt; x "3"
-<prompt>stratego></prompt> :binding x 
-x is bound to "3"</screen>
-    </para>
-
-</section>
-
 
 <section>
 	<title>Term variable scope</title>
@@ -367,6 +312,43 @@ e3 is not bound to a term</screen>
 </section>
 
 <section>
+  <title>Implicit Variable Scope</title>
+
+<para>
+
+  When using match and build directly in a strategy definition, rather
+  than in the form of a rule, the definition contains free variables.
+  Strictly speaking such variables should be declared using a scope,
+  that is one should write
+
+<screen>
+  Foo = {x : ?Bar(x); !FooBar(x) }
+</screen>
+	
+  However, since declaring all variables at the top of a definition is
+  destracting and does not add much to the definition, such a scope
+  declaration can be left out. Thus, one can write
+
+<screen>
+  Foo = ?Bar(x); !FooBar(x)
+</screen>
+
+  instead. The scope is automatically inserted by the compiler.  This
+  implies that there is no global scope for term variables.  Of
+  course, variables in inner scopes should be declared where
+  necessary. In particular, note that variable scope is \emph{not}
+  inserted for strategy definitions in a let binding, such as
+
+<screen>
+  let  Foo = ?Bar(x); !FooBar(x)  in ... end
+</screen>
+
+</para>
+
+</section>
+
+
+<section>
 	<title>Where</title>
 	
 	<para>
@@ -404,23 +386,84 @@ Plus(Int("14"),Int("3"))
 </section>
       
 <section>
-	<title>Conditional rewrite rule</title>
+  <title>Conditional rewrite rule</title>
 	
-	<para>
-	  Conditional rewrite rule
+<para>
+	  
+  Conditional rewrite rule
 
-Syntax: (p1 -> p2 where s) 
+  Syntax: (p1 -> p2 where s) 
 
-Rewrite rule with condition s 
+  Rewrite rule with condition s 
 
-Equivalent to: (?p1; where(s); !p2) 
+  Equivalent to: (?p1; where(s); !p2) 
 
-   <screen>
+   
+<screen>
 Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> (Plus(Int(i),Int(j)) -&gt; Int(k) where &lt;addS&gt;(i,j) =&gt; k)
-Int("17")</screen>
+Int("17")
+</screen>
 
-	</para>
+  A simple rewrite rule succeeds if the match of the left-hand side
+  succeeds. Sometimes it is useful to place additional requirements on
+  the application of a rule, or to compute some value for use in the
+  right-hand side of the rule. This can be achieved with
+  \emph{conditional rewrite rules}.
+
+</para>
+
+<para>
+        A conditional rule <code>$L$:\ $p_1$ -> $p_2$ where $s$</code> is
+        a simple rule extended with an additional computation $s$
+        which should succeed in order for the rule to apply. A
+        conditional rule can be desugared similarly to an
+        unconditional rule
+
+</para>
+
+<para>
+
+  	\sem{\tty{$L$:\ $p_1$ -> $p_2$ where $s$}}
+	\to
+   	\sem{\tty{$L$ = \{$x_1$,...,$x_n$:\ ?$p_1$; where($s$); !$p_2$\}}}
+
+
+</para>
+
+<para>
+	where $x_1$,...,$x_n$ are the free variables of the patterns
+	$p_1$ and $p_2$, and the strategy expression $s$.  Thus, after
+	the match with $p_1$ succeeds the strategy $s$ is applied to
+	the subject term. Only if the application of $s$ succeeds, is
+	the right-hand side $p_2$ built. Note that since $s$ is
+	applied within a <code>where</code>, the build <code>!$p_2$</code> is
+	applied to the original subject term; only variable bindings
+	computed within $s$ can be used in $p_2$.
+
+</para>
+
+<para>
+
+	As an example, consider the following constant folding rule,
+	which reduces an addition of two integer constants to the
+	constant obtained by computing the addition.
+<screen>
+  Fold : Add(Int(i),Int(j)) -> Int(k)
+         where !(i,j); add; ?k
+</screen>
+	The addition is computed by applying the primitive strategy
+	<code>add</code> to the pair of integers <code>(i,j)</code> and
+	matching the result against the variable <code>k</code>, which is
+	then used in the right-hand side. This rule is desugared to
+<screen>
+  Fold = {i,j,k: ?Add(Int(i),Int(j))
+                 ; where(!(i,j); add; ?k)
+                 ; !Int(k) }
+</screen>
+
+</para>
+
 </section>
     
 <section>
@@ -448,6 +491,9 @@ Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables 
 	$p_2$, which do \emph{not} occur in $p_1$ are bound in context
 	of the anonymous rule.
                 
+</para>
+
+<para>
 	A typical example of the use of an anonymous rule is the
 	reduction of a list of function declarations to the list of
 	names of the functions using the expression
@@ -459,6 +505,10 @@ Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables 
   map({f,xs,e: ?Fdec(f, xs, e); !f})
 </screen>
 
+</para>
+
+<para>
+
 	Another style of anonymous rule \tty{($p_1$ -> $p_2$ where
 	$s$)} does not imply any scope for the variables of the rule,
 	but only provides rule-like syntax. Thus, this notation is
@@ -469,6 +519,9 @@ Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables 
 	\sem{\tty{?$p_1$; where($s$); !$p_2$}}
 \]
 	in which the variables are bound in the surrounding scope.
+</para>
+
+<para>
 
 	Both forms of anonymous rules can of course also be used
 	without condition. In general, an unconditional rule can be
@@ -479,8 +532,6 @@ Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables 
 	\quad \to \quad 
   	\sem{\tty{$p_1$ -> $p_2$ where id}}
 \]
-
-
 
 
    <screen>
@@ -496,6 +547,48 @@ k is bound to "17"</screen>
 
 </section>
    
+
+</section>
+
+
+<section xml:id="applymatch">
+    <title>Apply and match</title>
+
+<section xml:id="applymatch">
+    <title>Apply and match</title>
+
+    <para>
+Syntax: 
+   <screen>s => p</screen>
+
+Apply s, then match p 
+
+Equivalent to: s; ?p 
+    </para>
+
+</section>
+
+<section xml:id="buildapply">
+    <title>Build and apply</title>
+
+    <para>
+Build and Apply (Sugar) 
+
+Syntax: &lt;s&gt; p 
+
+Build p, then apply s 
+
+Equivalent to: !p; s 
+
+   <screen>
+<prompt>stratego></prompt> &lt;addS&gt;("1","2") =&gt; x "3"
+<prompt>stratego></prompt> :binding x 
+x is bound to "3"</screen>
+    </para>
+
+</section>
+
+
 <section>
    <title>Apply</title>
    <para>   
@@ -555,6 +648,8 @@ Applying Strategies in Build
         This abbreviates the conditional rule above.  
 
 </para>
+
+</section>
 
 </section>
 
@@ -661,103 +756,16 @@ Call("foobar", [])
 
 </section>
 
+</section>
+
 <section>
-  <title>Rules Revisited</title>
+  <title>Summary</title>
 
 <para>
-
-\section{Rules Revisited}
-
-	With the machinery developed in the previous section we can
-	formally define the semantics of rewrite rules. That is,
-	rewrite rules can be seen as syntactic abstractions that can
-	be defined by translation to the match and build operators.
-	Using the same approach we can define alternative rule
-	constructs.
-
-\subsection{Rewrite Rules}
-
-	Using match, build, and scope a labeled rewrite rule can be
-	desugared to a strategy definition as follows:
-\[
-  	\sem{\tty{$L$:\ $p_1$ -> $p_2$}}
-	\quad \to \quad
-   	\sem{\tty{$L$ = \{$x_1$,...,$x_n$:\ ?$p_1$; !$p_2$\}}}
-\]
-	where $x_1$,...,$x_n$ are the free variables of the patterns
-	$p_1$ and $p_2$.  For example, using this transformation the
-	rule
-<screen>
-  B : P(S(x),y) -> S(P(x,y))
-</screen>
-	is desugared to
-<screen>
-  B = {x,y: ?P(S(x),y); !S(P(x,y))}
-</screen>
-
-\subsection{Conditional Rewrite Rules}
-
-	A simple rewrite rule succeeds if the match of the left-hand
-	side succeeds. Sometimes it is useful to place additional
-	requirements on the application of a rule, or to compute some
-	value for use in the right-hand side of the rule. This can be
-	achieved with \emph{conditional rewrite rules}.
-
-        A conditional rule <code>$L$:\ $p_1$ -> $p_2$ where $s$</code> is
-        a simple rule extended with an additional computation $s$
-        which should succeed in order for the rule to apply. A
-        conditional rule can be desugared similarly to an
-        unconditional rule
-\[
-  	\sem{\tty{$L$:\ $p_1$ -> $p_2$ where $s$}}
-	\to
-   	\sem{\tty{$L$ = \{$x_1$,...,$x_n$:\ ?$p_1$; where($s$); !$p_2$\}}}
-\]
-	where $x_1$,...,$x_n$ are the free variables of the patterns
-	$p_1$ and $p_2$, and the strategy expression $s$.  Thus, after
-	the match with $p_1$ succeeds the strategy $s$ is applied to
-	the subject term. Only if the application of $s$ succeeds, is
-	the right-hand side $p_2$ built. Note that since $s$ is
-	applied within a <code>where</code>, the build <code>!$p_2$</code> is
-	applied to the original subject term; only variable bindings
-	computed within $s$ can be used in $p_2$.
-
-	As an example, consider the following constant folding rule,
-	which reduces an addition of two integer constants to the
-	constant obtained by computing the addition.
-<screen>
-  Fold : Add(Int(i),Int(j)) -> Int(k)
-         where !(i,j); add; ?k
-</screen>
-	The addition is computed by applying the primitive strategy
-	<code>add</code> to the pair of integers <code>(i,j)</code> and
-	matching the result against the variable <code>k</code>, which is
-	then used in the right-hand side. This rule is desugared to
-<screen>
-  Fold = {i,j,k: ?Add(Int(i),Int(j))
-                 ; where(!(i,j); add; ?k)
-                 ; !Int(k) }
-</screen>
-
-\subsection{Parameterized Rules}
-
-	Definitions of strategy operators can be parameterized with a
-	list of argument strategies. Since rules are desugared to
-	strategy definitions, rules can have parameters as well, the
-	general form of a labeled rule is
-\[
-  	\tty{$L$($x_1$,...,$x_n$|$y_1$,...,$y_m$):\ $p_1$ -> $p_2$ where $s$}
-\]
-	where both the parameter lists and the condition are optional.
-	Parameterized rules are desugared according to the rules
-	established above, where the rule parameters become parameters
-	of the strategy definition.
-
 
 </para>
 
 </section>
 
-</section>
 
 </chapter>

@@ -1,0 +1,282 @@
+<chapter 
+  xml:id="rules-and-strategies"
+  xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Rules and Strategies (*)</title>
+
+<para>
+
+  the anatomy of Stratego programs
+
+  in ... we saw that programs can be divided into modules
+
+  in ... we introduced signatures for describing format of terms
+
+  in ... we saw that a program should contain a main definition
+
+  in ... we saw rewrite rules and their application by means of the 
+  innermost strategy
+
+  in ... we saw that programs can use other strategies as well
+
+  throughout we have not been very clear about the nature and role of
+  rules and strategies
+
+  In this chapter we will take a closer look at what rules and
+  strategies are, and their definitions
+
+</para>
+
+
+
+<section>
+  <title>What is a Strategy?</title>
+
+<para>
+
+  strategies are the central notion in Stratego programs
+
+  strategy expressions define a computation on the current term
+
+  may have side effects
+
+  may perform input/output operations
+
+</para>
+
+<para>
+
+  transformation on the `current' term
+
+  current term is implicit in a strategy expression
+
+</para>
+
+</section>
+
+
+<section>
+  <title>Strategy Definitions</title>
+
+<para>
+
+  a strategy definition names a strategy expression such that it can
+  be invoked at several points in the program
+
+  somewhat of a crossover between a function definition in functional
+  programming languages, and a method definition in object-oriented
+  programming languages
+
+  the current term is implicit
+
+</para>
+
+<section>
+  <title>Simple Strategy Definition and Call</title>
+
+<para>
+        
+  Given a set of rules and primitives as basic transformations, more
+  complex transformations can be composed using a set of strategy
+  combinators. For example, if $s_1$ and $s_2$ are two strategy
+  expressions, then $(s_1;s_2)$ is a strategy expression as well.
+  These combinators are the subject of this and the next two
+  chapters. In order to reuse common strategy compositions, they can
+  be named and parameterized using strategy definitions. A strategy
+  definition of the form
+
+<screen>
+\texttt{$f$($x_1$,...,$x_n$ | $y_1$,..., $y_m$) = $s$}
+</screen>
+
+  introduces a user-defined operator \verb|f| with $n$ strategy
+  arguments and $m$ term arguments. Such a user-defined strategy
+  operator can be called as \texttt{$f$($s_1,...,s_n$|$t_1,...,t_m$)}
+  by providing it $n$ argument strategies and $m$ argument terms. The
+  meaning of such a call is the body $s$ of the definition in which
+  the actual arguments have been substituted for the formal arguments.
+
+  Strategy arguments and term arguments can be left out of calls and
+  definitions.  That is, a call \texttt{$f$(|)} without strategy and
+  term arguments can be written as \texttt{$f$()}, or even just $f$.
+  A call \texttt{$f$($s_1$,..., $s_n$|)} without term arguments can be
+  written as \texttt{$f$($s_1$,..., $s_n$)} The same holds for
+  definitions.
+
+</para>
+
+<para>
+
+  Syntax: f = s 
+
+  Name strategy expression s 
+
+  Syntax: f 
+
+  Invoke (call) named strategy f
+  
+</para>
+
+<screen>
+Plus(Var("a"),Int("3"))
+stratego> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))} 
+stratego> SwapArgs 
+Plus(Int("3"),Var("a"))
+</screen>
+
+</section>
+
+<section>
+   <title>Parameterized Definitions</title>
+
+<para>
+	  
+  Parameterized and Recursive Definitions
+
+  Syntax: f (x1,...,xn|y1,...,ym) = s 
+
+  Strategy definition parameterized with strategies (x1,...,xn) and terms (y1,...,ym)
+
+  Note: definitions may be recursive
+	
+</para>
+
+<screen>
+foo(s) = innermost(s &lt;+ A)
+</screen>
+
+</section>
+
+<section>
+  <title>Local Definitions</title>
+
+<para>
+
+  Strategy definitions at top-level are visible everywhere.  Sometimes
+  it is useful to define a \emph{local} strategy operator.  This can
+  be done using a let expression of the form \texttt{let $d*$ in $s$
+  end}, where $d*$ is a list of definitions.
+
+</para>
+
+</section>
+
+<section>
+  <title>External and Primitive Definitions</title>
+
+<para>
+
+  primitive definitions are used to call strategies implemented in
+  another language
+
+  external definitions are implemented in a separately compiled
+  Stratego program
+
+</para>
+
+<para>
+
+  The strategy combinators introduced in the next sections are
+  impartial to the way atomic transformations are defined.  We could
+  just as well use an implementation in a different language, rather
+  than a rewrite rule, if that is useful.  Thus, \texttt{prim("$f$",
+  $ss$ | $ts$)} represents a call to an \emph{external primitive
+  function} $f$ with strategy arguments $ss$ and term arguments $ts$.
+
+  Note that the `current' term $t$ is not passed automatically as
+  argument.
+
+  This mechanism allows the incorporation of mundane tasks such as
+  arithmetic, I/O, and other tasks not directly related to
+  transformation, but necessary for the integration of transformations
+  with the other parts of a transformation system. For example, the
+  addition of two integer terms is defined via a call to a primitive
+  \texttt{prim("SSL\_addi",x,y)}.
+
+  
+</para>
+
+  <screen>
+  </screen>
+
+</section>
+
+
+</section>
+
+
+<section>
+  <title>What is a Rule?</title>
+
+<para>
+
+  a rule is a special kind of strategy definition
+
+  it is defined as 
+
+  it is invoked just like any other defined strategy
+
+</para>
+
+<section>
+  <title>Named rewrite rules</title>
+
+  <para>
+
+Syntax: f : p1 -> p2 where s 
+
+Name rewrite rule p1 -> p2 where s 
+
+Equivalent to: f = {x1,...,xn: (p1 -> p2 where s)} (with x1,...,xn the variables in p1, p2, and s)
+
+  </para>
+
+  <screen>
+Plus(Var("a"),Int("3")) 
+stratego> SwapArgs : Plus(e1,e2) -> Plus(e2,e1) 
+stratego> SwapArgs 
+Plus(Int("3"),Var("a"))</screen>
+
+</section>
+
+<section>
+  <title>Modules with Reusable Transformation Rules</title>
+
+  <para>
+  </para>
+
+  <screen>
+module Simplification-Rules
+rules
+  EvalPlus :
+    Plus(Int(i),Int(j)) -> Int(k) where &lt;addS>(i,j) => k
+
+  PlusAssoc :
+    Plus(Plus(e1, e2), e3) -> Plus(e1, Plus(e2, e3))
+
+  EvalIf :
+    If(Int("0"), e1, e2) -> e2
+
+  EvalIf :
+    If(Int(i), e1, e2) -> e1 where &lt;not(eq)> (i, "0")</screen>
+
+  <screen>
+stratego> import Simplification-Rules</screen>
+
+</section>
+
+</section>
+
+<section>
+  <title>Summary</title>
+
+<para>
+
+</para>
+
+</section>
+
+
+
+</chapter>
