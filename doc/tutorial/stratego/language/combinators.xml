@@ -1,8 +1,8 @@
-<section
+<chapter
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Composition of Transformation Strategies (*)</title>
+  <title>Strategy Combinators (*)</title>
 
   <para>
 
@@ -221,4 +221,4 @@ Equivalent to: s &lt; fail + id
 
 </section>
 
-</section>
+</chapter>

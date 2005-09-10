@@ -304,7 +304,7 @@ rules( PropConst :- |[ x ]| )
 </section>
 
 <section>
-  <title>Definining and Undefining Dynamic Rules (*)</title>
+    <title>Definining and Undefining Dynamic Rules (*)</title>
   <para>
   </para>
 </section>

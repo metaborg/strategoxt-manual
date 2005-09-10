@@ -2,7 +2,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Introduction (*)</title>
+  <title>Introduction</title>
 
   <para>
 
@@ -37,7 +37,7 @@
 
   </para>
 
-<section>
+<simplesect>
   <title>Transformation by Rewriting</title>
 
   <para>
@@ -82,9 +82,9 @@
 
   </para>
 
-</section>
+</simplesect>
 
-<section>
+<simplesect>
   <title>Transformation Strategies</title>
 
   <para>
@@ -116,9 +116,9 @@
 
   </para>
 
-</section>
+</simplesect>
 
-<section>
+<simplesect>
   <title>Context-Senstive Transformation</title>
 
   <para>
@@ -151,10 +151,10 @@
 
   </para>
 
-</section>
+</simplesect>
 
 
-<section>
+<simplesect>
   <title>Outline</title>
 
   <para>
@@ -203,6 +203,6 @@
         
   </para>
 
-</section>
+</simplesect>
 
 </partintro>

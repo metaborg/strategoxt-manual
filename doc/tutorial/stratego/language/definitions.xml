@@ -1,4 +1,4 @@
-<section
+<chapter
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -204,17 +204,37 @@ Iteration Strategies}
 
 </section>
 
-
 <section>
-  <title></title>
+  <title>Implicit Variable Scope</title>
 
-  <para>
-  </para>
+<para>
 
-  <screen>
-  </screen>
+	When using match and build directly in a strategy definition,
+	rather than in the form of a rule, the definition contains
+	free variables.  Strictly speaking such variables should be
+	declared using a scope, that is one should write
+<screen>
+  Foo = {x : ?Bar(x); !FooBar(x) }
+</screen>
+	However, since declaring all variables at the top of a
+	definition is destracting and does not add much to the
+	definition, such a scope declaration can be left out. Thus,
+	one can write
+<screen>
+  Foo = ?Bar(x); !FooBar(x)
+</screen>
+	instead. The scope is automatically inserted by the compiler.
+	This implies that there is no global scope for term variables.
+	Of course, variables in inner scopes should be declared where
+	necessary. In particular, note that variable scope is
+	\emph{not} inserted for strategy definitions in a let binding,
+	such as
+<screen>
+  let  Foo = ?Bar(x); !FooBar(x)  in ... end
+</screen>
+
+</para>
 
 </section>
 
-
-</section>
+</chapter>

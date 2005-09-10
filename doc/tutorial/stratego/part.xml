@@ -2,31 +2,20 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>The Stratego Language (*)</title>
+  <title>The Stratego Language</title>
   
-  <xi:include href="language/introduction.xml" />
-  
+  <xi:include href="language/introduction.xml"/>
   <xi:include href="language/terms.xml" />
   <xi:include href="language/compiler-interpreter.xml"/>
   <xi:include href="language/term-rewriting.xml"/>
-
   <xi:include href="language/in-control.xml"/>
-
-  <chapter xml:id="stratego-creating-and-analyzing-terms">
-    <title>Creating and Analyzing Terms (*)</title>
-    <xi:include href="language/build-match.xml"/>
-    <xi:include href="language/rules.xml"/>
-  </chapter>
-
-  <chapter xml:id="stratego-basic-strategies">
-    <title>Basic Strategies (*)</title>
-    <xi:include href="language/definitions.xml"/>
-    <xi:include href="language/combinators.xml"/>
-  </chapter>
-  
+  <xi:include href="language/build-match.xml"/>
+  <xi:include href="language/definitions.xml"/>
+  <xi:include href="language/combinators.xml"/>
   <xi:include href="language/traversal.xml"/>
   <xi:include href="language/type-unifying.xml"/>
   <xi:include href="language/concrete-syntax.xml"/>
   <xi:include href="language/dynamic.xml"/>
   <!--xi:include href="language/dynamic-rules.xml"/-->
+
 </part>
