@@ -7,24 +7,27 @@
 
 <para>
 
-  the anatomy of Stratego programs
+  What have we learned about Stratego programs so far?
 
-  in ... we saw that programs can be divided into modules
+  In <xref linkend="stratego-terms"/> we saw that signatures are
+  needed to declare the format of terms.
 
-  in ... we introduced signatures for describing format of terms
+  In <xref linkend="running-stratego-programs"/> we saw that programs
+  can be divided into modules and should contain a <code>main</code>
+  strategy.
 
-  in ... we saw that a program should contain a main definition
+  In <xref linkend="stratego-term-rewriting"/> we saw rewrite rules
+  and their application by means of the innermost strategy.
 
-  in ... we saw rewrite rules and their application by means of the 
-  innermost strategy
+  In <xref linkend="stratego-rewriting-strategies"/> we saw that
+  programs can also use other strategies, such as <code>topdown</code>
+  and <code>bottomup</code>, to control the application of rules.
 
-  in ... we saw that programs can use other strategies as well
+  Throughout we have been vague about the nature and role of rules and
+  strategies.
 
-  throughout we have not been very clear about the nature and role of
-  rules and strategies
-
-  In this chapter we will take a closer look at what rules and
-  strategies are, and their definitions
+  In this chapter we will unveil the anatomy of rules and strategy
+  definitions in Stratego.
 
 </para>
 
