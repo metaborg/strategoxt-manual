@@ -4,9 +4,6 @@
 
  <title>Traversal Strategies (*)</title>
 
-<section>
-  <title>Introduction</title>
-
  <para>
 
         In the previous chapters we saw how strategies can be used to
@@ -111,8 +108,6 @@ Some Apply to as many direct subterms as possible, and at least one
  <para> 
 
  </para>
-
-</section>
 
 <section>
    <title>Congruence Operators</title>

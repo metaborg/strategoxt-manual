@@ -1,13 +1,10 @@
 <chapter 
   xml:id="stratego-creating-and-analyzing-terms"
   xmlns="http://docbook.org/ns/docbook"
-  xmlns:xi="http://www.w3.org/2003/XInclude">
+   xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Creating and Analyzing Terms (*)</title>
 
-<section>
-  <title>Basic Actions of Transformation</title>
-    
 <para>
 
   we have used transformations as basic transformation steps
@@ -36,8 +33,6 @@
   building terms from patterns and matching terms against patterns.
 
 </para>
-
-</section>
 
 <section xml:id="build">
   <title>Building terms</title>
@@ -547,11 +542,10 @@ k is bound to "17"</screen>
 
 </section>
    
-
 </section>
 
 
-<section xml:id="applymatch">
+<section>
     <title>Apply and match</title>
 
 <section xml:id="applymatch">
@@ -653,6 +647,8 @@ Applying Strategies in Build
 
 </section>
 
+<section>
+  <title>Wrap and Project</title>
    
 <section>
    <title>Term Wrap</title>
