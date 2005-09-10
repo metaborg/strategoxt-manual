@@ -4,15 +4,19 @@
 
   <refnamediv>
     <refname>stratego-shell</refname>
-    <refpurpose>an interactive interpreter for Stratego</refpurpose>
+    <refpurpose>interpreters a Stratego program, from a script or interactively</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
-      <command>template</command>
+      <command>stratego-shell</command>
+      <arg>--script <replaceable>file</replaceable></arg>
+      <arg>--prg <replaceable>main@file</replaceable></arg>
+      <arg>--cmd <replaceable>'cmd'</replaceable></arg>
+      <arg>--cmds <replaceable>'cmds'</replaceable></arg>
       <arg>-i <replaceable>file</replaceable></arg>
       <arg>-o <replaceable>file</replaceable></arg>
-      <arg rep="repeat">-X <replaceable>YYYY</replaceable></arg>
+      <arg>-I <replaceable>d</replaceable> | --Include <replaceable>d</replaceable></arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -20,67 +24,111 @@
     <title>Description</title>
 
     <para>
-      The template utility is used to 
+      The Stratego Shell is a bimodal interpreter for Stratego. It can
+      work either in <emphasis>interactive</emphasis> or 
+      <emphasis>script</emphasis> mode. In the interactive mode,
+      strategies can be entered at the command-line of the shell,
+      and will always rewrite the current term. Shell-specific commands
+      can be used to inspect the environment, at any point in time.
     </para>
-  </refsection>
-
-  <refsection>
-    <title>Example</title>
-
+    
     <para>
-      To ...
+      In script mode, the interpreter is provided with a text file
+      containing a Stratego program (with <option>--prg</option>) or
+      Stratego Shell script (with <option>--script</option>). 
     </para>
+    
+    <para>  
+      In either mode, the initial current term can be supplied to
+      the interpreter with the <option>-i</option> option. The 
+      final current term will be written to the optional output
+      (the <option>-o</option> option), or the standard output. 
+      The shell can be applied in a pipe.
+    </para>  
 
-    <screen><prompt>$ </prompt>template -i tree.trm -o tree.tmpl</screen>
   </refsection>
 
   <refsection>
     <title>Options</title>
 
     <variablelist>
-      <title>Input/Output Options</title>
-
+      <title>I/O Options</title>
+      
       <varlistentry>
-        <term><option>-i <replaceable>file</replaceable></option></term>
+        <term><option>--script <replaceable>filename</replaceable></option></term>
         <listitem>
           <para>
-	    Template the abstract syntax tree in
-	    <replaceable>file</replaceable>. 
-	  </para>
+            Interpret the script in <replaceable>filename</replaceable>. Default
+            is to start the interactive interpreter.
+          </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><option>-o <replaceable>file</replaceable></option></term>
+        <term><option>--prg <replaceable>main@file</replaceable></option></term>
         <listitem>
-	  <para>
-	    Write the resulting template term to <replaceable>file</replaceable>.
-	  </para>
-
-	  <para>
-	    The resulting file is ...
-	  </para>
+          <para>
+            Interpret the Stratego program in <replaceable>file</replaceable>,
+            starting with the strategy <replaceable>main</replaceable>.
+          </para>
         </listitem>
       </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <title>Common Options</title>
 
       <varlistentry>
-        <term><option>-X <replaceable>YYY</replaceable></option></term>
+        <term><option>--cmd <replaceable>'cmd'</replaceable></option></term>
         <listitem>
-	  <para>
-	    Use YYY to ...
-	  </para>
-
-	  <para>
-	    The <replaceable>YYY</replaceable> ...
-	  </para>
+          <para>
+            Execute one command, <replaceable>cmd</replaceable>. This can
+            be any single strategy expression or interpreter command. It 
+            can also be a series of expressions and commands, separated
+            by <code>;;</code>. The series <emphasis>must not</emphasis>
+            end in a <code>;;</code>.
+          </para>
         </listitem>
       </varlistentry>
+
+      <varlistentry>
+        <term><option>--cmds <replaceable>'cmds'</replaceable></option></term>
+        <listitem>
+          <para>
+			As with <option>--cmd</option>, execute a series of commands
+			separated by <code>;;</code>. The series
+			<emphasis>must</emphasis>  be terminated by a <code>;;</code>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-I <replaceable>dir</replaceable></option></term>
+        <term><option>--Include <replaceable>dir</replaceable></option></term>
+        
+        <listitem>
+          <para>
+			Add the directory <replaceable>dir</replaceable> to the list
+			of directories to search for modules.
+          </para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
+        
+    <include href="common-io-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <include href="common-debugging-options.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
   </refsection>
+  
+  <refsection>
+    <title>Example</title>
+
+    <para>
+      To interpret the script in <filename>script.str</filename>
+      against the term in <filename>input.trm</filename>, do:
+    </para>
+
+<screen><prompt>$ </prompt>stratego-shell -i tree.trm --script script.str</screen>
+
+  </refsection>
+
 
   <xi:include href="reporting-bugs.xml"/>
   <xi:include href="lgpl-copyright.xml"/>
