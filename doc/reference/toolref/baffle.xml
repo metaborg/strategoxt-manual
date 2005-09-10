@@ -5,7 +5,7 @@
   <refnamediv>
     <refname>baffle</refname>
     <refpurpose>
-      convert between ATerm formats
+      converts between textual and binary ATerm formats
     </refpurpose>
   </refnamediv>
 
@@ -14,6 +14,11 @@
       <command>baffle</command>
       <arg>-i <replaceable>file</replaceable></arg>
       <arg>-o <replaceable>file</replaceable></arg>
+      <arg>-h</arg>
+      <arg>-v</arg>
+      <arg>-c</arg>
+      <arg>-rb | -rt | -rs</arg>
+      <arg>-wb | -wt | -ws</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
   
@@ -21,13 +26,157 @@
     <title>Description</title>
     
     <para>
-      
+      ATerms are expressions according to the grammar given below.
+      These expressions may be stored as compressed binaries (BAF),
+      compressed text files (TAF) or plain text files. The
+      <command>baffle</command> tool is used to convert between
+      these storage formats.
     </para>
     
-    <para>
-    </para> 
+<screen>
+  t  := bt                 -- basic term
+       | bt { t }          -- annotated term
+
+  bt := C                  -- constant
+       | C(t1,...,tn)      -- n-ary constructor
+       | (t1,...,tn)       -- n-ary tuple
+       | [t1,...,tn]       -- list
+       | "ccc"             -- quoted string
+       | int               -- integer
+       | real              -- floating point number
+       | blob              -- binary large object
+</screen>    
+
   </refsection>
 
+  <refsection>
+    <title>Options</title>
+  
+    <variablelist>
+      <title>I/O Options</title>
+      
+      <varlistentry>
+        <term><option>-i <replaceable>filename</replaceable></option></term>
+        <listitem>
+          <para>
+            Input is given in <replaceable>filename</replaceable>. Default
+            is <filename>stdin</filename>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-o <replaceable>filename</replaceable></option></term>
+        <listitem>
+          <para>
+            Output should be written to <replaceable>filename</replaceable>. Default
+            is <filename>stdout</filename>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-c</option></term>
+        <listitem>
+          <para>
+            Check the validity of the input term.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-rb</option></term>
+        <listitem>
+          <para>
+            Read the term as compressed binary (BAF). Default is auto-detect.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-rt</option></term>
+        <listitem>
+          <para>
+            Read the term as plain text. Default is auto-detect.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-rs</option></term>
+        <listitem>
+          <para>
+            Read the term as compressed text (TAF). Default is auto-detect.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-wb</option></term>
+        <listitem>
+          <para>
+            Write the output term as compressed binary (BAF). This is the default.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-ws</option></term>
+        <listitem>
+          <para>
+            Write the output as compressed text (TAF). Default is compressed binary.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-wt</option></term>
+        <listitem>
+          <para>
+            Write the output as plain text. Default is compressed binary.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+    </variablelist>
+
+    <variablelist>
+      <title>Debugging Options</title>
+      
+      <varlistentry>
+        <term><option>-h</option></term>
+        <listitem>
+          <para>
+            Display help screen for command line options.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-v</option></term>
+        <listitem>
+          <para>
+            Display program version.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+  </refsection>
+  
+  <refsection>
+    <title>Examples</title>
+
+    <para>
+      Given a binary compressed (BAF) term in 
+      <filename>input.trm</filename>, converting it to plain text can
+      be done as follows:
+    </para>    
+<screen>
+<prompt>$</prompt> baffle -i input.trm -o output.trm -wt
+</screen>    
+  </refsection>
+    
   <!--include href="reporting-bugs.xml" xmlns="http://www.w3.org/2003/XInclude"/-->
   <!--include href="lgpl-copyright.xml" xmlns="http://www.w3.org/2003/XInclude"/-->
 </refentry>
