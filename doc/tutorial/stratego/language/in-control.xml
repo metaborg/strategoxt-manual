@@ -124,7 +124,7 @@ strategies
 
    Now we can reuse the rules from <code>prop-simplify</code> without
    the and-over-or distribution rules to create a
-   <code>prop-cnf2</code> for normalizing to disjunctive normal form:
+   <code>prop-cnf2</code> for normalizing to conjunctive normal form:
 
 <screen>
 module prop-cnf2
@@ -252,8 +252,8 @@ Or(And(Not(Atom("r")),Dnf(Dnf(ATom("p")))),
   the places to apply the rules. 
 
   In the modular solution we had 5 basic rules and 2 additional rules
-  for DNF and two rules for CNF, 9 in total. In the functionalized
-  version wee needed 13 rules <emphasis>for each
+  for DNF and 2 rules for CNF, 9 in total. In the functionalized
+  version we needed 13 rules <emphasis>for each
   transformation</emphasis>, that is 26 rules in total.
 
 </para>
@@ -312,9 +312,16 @@ COBOL    : 300 - 1200
 <para>
 
   Stratego introduced the paradigm of <emphasis>programmable rewriting
-  strategies</emphasis>, a unifying solution in which application of
-  rules can be carefully controlled, while incurring minimal traversal
-  overhead and preserving separation of rules and strategies.
+  strategies with generic traversals</emphasis>, a unifying solution
+  in which application of rules can be carefully controlled, while
+  incurring minimal traversal overhead and preserving separation of
+  rules and strategies.
+
+</para>
+
+<para>
+
+  The following are the design criteria for strategies in Stratego:
 
     <variablelist>
       <varlistentry>
@@ -397,8 +404,11 @@ COBOL    : 300 - 1200
 
     </variablelist>
 
-  Before we dive into the basics for programming with strategies, we
-  first examine a number of high-level idioms for using them.
+</para>
+
+<para>
+
+  Programmable 
 
 </para>
 
@@ -417,11 +427,7 @@ COBOL    : 300 - 1200
   desired effect.  Although each individual transformation step
   achieves little, the cumulative effect can be significant, since
   each transformation feeds on the results of the ones that came
-  before it. Cascading transformations are the key, for example, to
-  the compilation-by-transformation approach applied in the Glasgow
-  Haskell Compiler. GHC applies a large number of small, almost
-  trivial program transformations throughout programs to achieve
-  large-scale optimization by accumulating small program changes.
+  before it.
 
 </para>
 
@@ -440,28 +446,23 @@ simplify = innermost(R1 &lt;+ ... &lt;+ Rn)
   The argument strategy of <code>innermost</code> is a
   <emphasis>selection</emphasis> of rules. By giving
   <emphasis>different</emphasis> names to rules, we can control the
-  selection used in each transformation.
-
-</para>
-
-<para>
-
-  The normalization of proposition formulae to disjunctive and
-  conjunctive normal form can now be achieved simply by innermost
-  rewriting. However, the rules for both transformations together form
-  a non-terminating rewrite system. It is desirable to develop a large
+  selection used in each transformation. There can be multiple
+  applications of <code>innermost</code> to different sets of rules,
+  such that different transformations can co-exist in the same module
+  without interference. Thus, it is now possible to develop a large
   library of transformation rules that can be called upon when
   necessary, without having to compose a rewrite system by cutting and
-  pasting. By naming the rules, we can now define multiple
-  transformations using different subsets of the rules, without
-  inteference. For example, the following module defines
-  transformation strategies for disjunctive <emphasis>and</emphasis>
-  conjunctive normal form:
+  pasting.
+
+  For example, the following module defines the normalization of
+  proposition formulae to both disjunctive and to conjunctive normal
+  form:
 
 <screen>
 module prop-laws
 imports liblib prop
 rules
+
   DefI : Impl(x, y) -> Or(Not(x), y)
   DefE : Eq(x, y)   -> And(Impl(x, y), Impl(y, x))
 
@@ -475,7 +476,9 @@ rules
 
   DAOL : Or(And(x, y), z) -> And(Or(x, z), Or(y, z))
   DAOR : Or(z, And(x, y)) -> And(Or(z, x), Or(z, y))
+
 strategies
+
   dnf = innermost(DefI &lt;+ DefE &lt;+ DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO)
   cnf = innermost(DefI &lt;+ DefE &lt;+ DOAL &lt;+ DOAR &lt;+ DN &lt;+ DMA &lt;+ DMO)
 
@@ -483,12 +486,19 @@ strategies
   main-cnf = io-wrap(cnf)
 </screen>
 
-  We have even defined two main strategies, which allows us to use one
-  module for deriving multiple programs. Using the <code>--main</code>
-  option of <xref linkend="ref-strc"/> we declare which strategy to
-  invoke as main strategy in a particular program. Using the
-  <code>-o</code> option we can give a different name to each derived
-  program.
+  The rules are named, and for each strategy different selections from
+  the ruleset are made.
+
+</para>
+
+<para>
+
+  The module even defines two main strategies, which allows us to use
+  one module for deriving multiple programs. Using the
+  <code>--main</code> option of <xref linkend="ref-strc"/> we declare
+  which strategy to invoke as main strategy in a particular
+  program. Using the <code>-o</code> option we can give a different
+  name to each derived program.
 
 <screen>
 <prompt>$</prompt> strc -i prop-laws.str -la stratego-lib --main main-dnf -o prop-dnf4
@@ -503,23 +513,25 @@ strategies
 
 <para>
 
-  However, other strategies are possible. For example, the GHC
-  simplifier applies rules in a single traversal over a program tree
-  in which rules are applied both on the way down and on the way up.
-  This is expressed in Stratego by the strategy
+  Cascading transformations can be defined with other strategies as
+  well, and these strategies need not be exhaustive.
+
+  For exmample, the <code>downup</code> strategy applies its argument
+  transformation during a traversal on the way down, and again on the
+  way up.
 
 <screen>
-  simplify  = downup(repeat(R1 + ... + Rn))
+simplify = downup(repeat(R1 &lt;+ ... &lt;+ Rn))
 </screen>
         
   Another example is constant folding of proposition formulae, which
   requires a simple one-pass bottom-up traversal.
   Figure~\ref{Fig:BottomupRepeat} shows a set of rewrite rules
   implementing the thruth tables for the propositional operators. The
-  strategy <code>eval</code> applies these rules in a bottom-up traversal
-  over a term, using the <code>bottomup(s)</code> strategy. At each
-  sub-term, the rules are applied repeatedly until no more rule
-  applies using the <code>repeat(s)</code> strategy.
+  strategy <code>eval</code> applies these rules in a bottom-up
+  traversal over a term, using the <code>bottomup(s)</code>
+  strategy. At each sub-term, the rules are applied repeatedly until
+  no more rule applies using the <code>repeat(s)</code> strategy.
 
 <screen>
 simplify = bottomup(repeat(R1 &lt;+ ... &lt;+ Rn))
