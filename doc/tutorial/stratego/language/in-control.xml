@@ -9,9 +9,9 @@
 
 <para>
 
-  In <xref linkend="term-rewriting"/> we saw how term rewriting can be
-  used to implement transformations on programs represented by means
-  of terms.
+  In <xref linkend="stratego-term-rewriting"/> we saw how term
+  rewriting can be used to implement transformations on programs
+  represented by means of terms.
 
   Term rewriting involves exhaustively applying rules to subterms
   until no more rules apply.
@@ -20,7 +20,7 @@
   order in which subterms are rewritten.
 
   The <code>innermost</code> strategy introduced in <xref
-  linkend="term-rewriting"/> applies rules automatically throughout a
+  linkend="stratego-term-rewriting"/> applies rules automatically throughout a
   term from inner to outer terms, starting with the leaves.
 
   The nice thing about term rewriting is that there is no need to

@@ -500,7 +500,7 @@ $ stratego-shell
 
 <para>
 
-  <link linkend="term-rewriting">Next up</link>: transforming terms
+  <link linkend="stratego-term-rewriting">Next up</link>: transforming terms
   with rewrite rules.
 
 </para>
