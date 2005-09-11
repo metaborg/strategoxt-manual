@@ -7,6 +7,51 @@
 
 <para>
 
+  In the previous chapter we saw that pure term rewriting is not
+  adequate for term rewriting because of the lack of control over the
+  application of rules. Approaches for encoding such control within
+  the pure rewriting paradigm lead to functionalized control by means
+  of extra rules and constructors at the expense of traversal overhead
+  and at the loss of the separation of rules and strategies. We need a
+  mechanism that provides such control, but maintains the separation
+  of rules and strategies and keeps traversal overhead to a
+  minimum. Such a mechanism should allow strategies parameterized with
+  selections from the available rules.
+ 
+</para>
+
+<para>
+
+  Also we saw that many transformation problems can be solved by
+  alternative strategies such as a one-pass bottom-up or top-down
+  traversal. Others can be solved by selecting the rules that are
+  applied in an innermost normalization, rather than all the rules in
+  a specification. However, no fixed set of such alternative
+  strategies will be sufficient for dealing with all transformation
+  problems. Rather than providing one or a few fixed rewriting
+  strategies, we need to be able to <emphasis>compose</emphasis>
+  strategies from basic building blocks with a few fundamental
+  operators.
+
+</para>
+
+<para>
+
+  In program transformation, the basic building blocks are single
+  rewrite steps, for example defined by a rewrite rule. This chapter
+  introduces a set of operators for composing such single step
+  transformations into complex transformations. By allowing
+  abstraction over the basic transformation,
+  <emphasis>generic</emphasis> transformation
+  <emphasis>strategies</emphasis> can be defined. The combinators
+  discussed in this chapter cover sequential programming and
+  type-specific traversal. Extensions of this basic framework will be
+  considered in later chapters.
+
+</para>
+
+<para>
+
   What have we learned about Stratego programs so far?
 
   In <xref linkend="stratego-terms"/> we saw that signatures are
@@ -32,6 +77,70 @@
 </para>
 
 <section>
+  <title>What is a Rule?</title>
+
+<para>
+
+  In <xref linkend="stratego-term-rewriting"/> we introduced rewrite
+  rules in the traditional sense as transformations that are applied
+  throughout a term.
+
+  In <xref linkend="stratego-rewriting-strategies"/> we saw that the
+  application of rewrite rules in Stratego is controlled by
+  <emphasis>strategies</emphasis>.
+
+</para>
+
+<para>
+
+  A <emphasis>named rewrite rule</emphasis> is a declaration of the form
+
+<screen>
+L : p1 -> p2
+</screen>
+
+  where <code>L</code> is the rule name, <code>p1</code> the left-hand
+  side term pattern, and <code>p2</code> the right-hand side term
+  pattern.
+
+  A rule defines a transformation on terms. 
+
+  A rule can be applied <emphasis>through its name</emphasis> to a term.
+
+  It will transform the term if it matches with <code>p1</code>, and
+  will replace the term with <code>p2</code> instantiated with the
+  variables bound during the match to <code>p1</code>.
+
+  The application <emphasis>fails</emphasis> if the term does not
+  match <code>p1</code>.
+
+</para>
+
+<para>
+
+<screen>
+stratego> SwapArgs : Plus(e1,e2) -> Plus(e2,e1)
+stratego> !Plus(Var("a"),Int("3"))
+stratego> SwapArgs 
+Plus(Int("3"),Var("a"))
+</screen>
+
+  Note: rule is applied at the <emphasis>root</emphasis> of a term,
+  not at one of its subterms.
+
+</para>
+
+<para>
+
+  Later we will see that a rule is nothing more than a syntactical
+  convention for a strategy definition.
+
+</para>
+
+</section>
+
+
+<section>
   <title>What is a Strategy?</title>
 
 <para>
@@ -47,18 +156,18 @@
   The function is partial since the application of a strategy may
   fail.
 
-  Since transformations are <emphasis>functions</emphasis>, strategy
-  expressions don't have to explicitly mention the term they are
-  transforming, the so called `current term'.
+  Transformations are <emphasis>functions</emphasis>, and strategy
+  expressions often combine transformations into more complex
+  transformations. Therefore, they don't have to explicitly mention
+  the term they are transforming, the so called `current term'.
 
 </para>
 
 <para>
 
-  for example, 
+  Lets look at some examples.
 
-
-  examples
+  A rule 
 
   rules are strategies
 
@@ -90,6 +199,8 @@
 </para>
 
 </section>
+
+
 
 
 <section>
@@ -288,68 +399,6 @@ print(|x) = SSL_print(|x)
 
 </section>
 
-
-<section>
-  <title>What is a Rule?</title>
-
-<para>
-
-  a rule is a special kind of strategy definition
-
-  it is defined as 
-
-  it is invoked just like any other defined strategy
-
-</para>
-
-<section>
-  <title>Named rewrite rules</title>
-
-  <para>
-
-Syntax: f : p1 -> p2 where s 
-
-Name rewrite rule p1 -> p2 where s 
-
-Equivalent to: f = {x1,...,xn: (p1 -> p2 where s)} (with x1,...,xn the variables in p1, p2, and s)
-
-  </para>
-
-  <screen>
-Plus(Var("a"),Int("3")) 
-stratego> SwapArgs : Plus(e1,e2) -> Plus(e2,e1) 
-stratego> SwapArgs 
-Plus(Int("3"),Var("a"))</screen>
-
-</section>
-
-<section>
-  <title>Modules with Reusable Transformation Rules</title>
-
-  <para>
-  </para>
-
-  <screen>
-module Simplification-Rules
-rules
-  EvalPlus :
-    Plus(Int(i),Int(j)) -> Int(k) where &lt;addS>(i,j) => k
-
-  PlusAssoc :
-    Plus(Plus(e1, e2), e3) -> Plus(e1, Plus(e2, e3))
-
-  EvalIf :
-    If(Int("0"), e1, e2) -> e2
-
-  EvalIf :
-    If(Int(i), e1, e2) -> e1 where &lt;not(eq)> (i, "0")</screen>
-
-  <screen>
-stratego> import Simplification-Rules</screen>
-
-</section>
-
-</section>
 
 <section>
   <title>Summary</title>
