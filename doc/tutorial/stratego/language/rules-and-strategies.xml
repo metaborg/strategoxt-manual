@@ -9,13 +9,21 @@
 
   In the previous chapter we saw that pure term rewriting is not
   adequate for term rewriting because of the lack of control over the
-  application of rules. Approaches for encoding such control within
-  the pure rewriting paradigm lead to functionalized control by means
-  of extra rules and constructors at the expense of traversal overhead
-  and at the loss of the separation of rules and strategies. We need a
-  mechanism that provides such control, but maintains the separation
-  of rules and strategies and keeps traversal overhead to a
-  minimum. Such a mechanism should allow strategies parameterized with
+  application of rules. 
+
+  Attempts to encoding such control within the pure rewriting paradigm
+  lead to functionalized control by means of extra rules and
+  constructors at the expense of traversal overhead and at the loss of
+  the separation of rules and strategies.
+
+  By selecting the appropriate rules for a transformation and the
+  strategy to use in their application, 
+
+  We need a mechanism that provides such control, but maintains the
+  separation of rules and strategies and keeps traversal overhead to a
+  minimum.
+
+  Such a mechanism should allow strategies parameterized with
   selections from the available rules.
  
 </para>
@@ -28,25 +36,11 @@
   applied in an innermost normalization, rather than all the rules in
   a specification. However, no fixed set of such alternative
   strategies will be sufficient for dealing with all transformation
-  problems. Rather than providing one or a few fixed rewriting
-  strategies, we need to be able to <emphasis>compose</emphasis>
-  strategies from basic building blocks with a few fundamental
-  operators.
+  problems. 
 
-</para>
-
-<para>
-
-  In program transformation, the basic building blocks are single
-  rewrite steps, for example defined by a rewrite rule. This chapter
-  introduces a set of operators for composing such single step
-  transformations into complex transformations. By allowing
-  abstraction over the basic transformation,
-  <emphasis>generic</emphasis> transformation
-  <emphasis>strategies</emphasis> can be defined. The combinators
-  discussed in this chapter cover sequential programming and
-  type-specific traversal. Extensions of this basic framework will be
-  considered in later chapters.
+  Rather than providing one or a few fixed rewriting strategies,
+  Stratego allows to <emphasis>compose</emphasis> strategies from
+  basic building blocks with a few fundamental operators.
 
 </para>
 
@@ -81,13 +75,13 @@
 
 <para>
 
-  In <xref linkend="stratego-term-rewriting"/> we introduced rewrite
-  rules in the traditional sense as transformations that are applied
-  throughout a term.
+  In <xref linkend="stratego-term-rewriting"/> rewrite rules were
+  introduced as transformations that are applied throughout a term by
+  the innermost strategy.
 
   In <xref linkend="stratego-rewriting-strategies"/> we saw that the
-  application of rewrite rules in Stratego is controlled by
-  <emphasis>strategies</emphasis>.
+  application of rewrite rules can be controlled by other strategies
+  as well.
 
 </para>
 
