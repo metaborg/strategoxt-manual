@@ -2,21 +2,128 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>I/O (*)</title>
+  <title>I/O</title>
+
+  <para>
+    This chapter explains the strategies available in the
+    library for controlling file and console I/O.
+  </para>
   
   <para>
-    Library strategies for file input and output.
+    The need for traditionally file I/O is somewhat diminished
+    for typical applications of Stratego. Normally, Stratego 
+    programs are designed to worktogether connected by Unix
+    pipes. The programs employ <code>io-wrap</code> (or similar
+    strategies) that automatically take care of the input and
+    output. See the chapter on 
+    <link linkend="library-options">options</link> for details.
+  </para>
+
+  <para>
+    The primitive layer of Stratego I/O inherits its 
+    characteristics from Unix. The basic I/O strategies
+    recognize the special files <code>stdout</code>, 
+    <code>stdin</code> and <code>stderr</code>. On top of
+    this, a collection of more convient strategies have
+    been built.
   </para>
 
   <section>
     <title>Console I/O</title>
 
   <para>
-    <code>print</code>
-    <code>printnl</code>
-    <code>debug</code>
-    <code>error</code>
+    The basic strategies for console I/O <code>print</code>
+    and <code>printnl</code> are used to write terms to
+    <code>stdout</code> or <code>stderr</code> (or any 
+    other opened file). They both take a tuple. The first
+    element of the tuple is the file to write to, the
+    second is a list of terms. Each term in the list be
+    converted to a string, and and these strings will
+    be concatenated together to form the resulting output.
+    The <code>printnl</code> will also append a newline to
+    the end of the resulting string.
   </para>
+
+  <para>
+    The following module should be compiled with
+    <command>strc</command>, as usual.
+  </para>
+    
+<screen>
+module example
+imports lib
+strategies
+
+  main = 
+    &lt;print> (stdout, ["baz"])
+    &lt;printnl> (stdout, [ "foo", 0, "bar" ])
+</screen>
+
+  <para>
+    After compiling this file, running it will give the
+    following result:
+  </para>
+
+<screen>
+<prompt>$</prompt> ./example
+bazfoo0bar
+<prompt>$</prompt>
+</screen>
+
+  <para>
+    Notice how the string <code>baz</code> will be written
+    without a newline (or other space). Also, notice how the
+    terms in the list argument were concatenated.
+  </para>
+  
+  <para>
+    When using these strategies in the in the Stratego Shell,
+    some care must be taken when using the <code>std*</code>
+    files, as the following example shows.
+  </para>
+
+<screen>
+<prompt>stratego></prompt> &lt;printnl> (stdout(), [ "foo", 0, "bar" ])
+foo0bar
+</screen>  
+
+  <para>
+    The shell requires that you put an extra parenthesis after the
+    <code>stdout</code>.
+  </para>
+  
+  <para>
+    The <code>debug</code> and <code>error</code> are convenience
+    wrappers around <code>printnl</code>. They will always write
+    their result to <code>stderr</code>. The <code>error</code>
+    strategy is defined as:
+  </para>
+  
+<screen>
+error =
+  where(&lt;printnl> (stderr, &lt;id>))
+</screen>  
+
+  <para>
+    It is used similarly to the <code>printnl</code> strategy:
+  </para>    
+
+<screen>
+<prompt>stratego></prompt> &lt;error> ["foo", 0, "bar"]
+foo0bar
+</screen>  
+  
+  <para>
+    The <code>debug</code> strategy accepts any term, i.e.
+    not only lists of terms. The term will be written
+    verbatim:
+  </para>
+
+<screen>
+<prompt>stratego></prompt> &lt;debug> [ "foo", 0, "bar" ]
+["foo",0,"bar"]
+</screen>
+
   </section>
   
   <section>
@@ -33,6 +140,16 @@
     <code>ReadFromFile</code>
     <code>WriteToTextFile</code>
     <code>WriteToBinaryFile</code>
+  </para>
+  </section>
+
+  <section>
+    <title>Logging</title>
+    
+  <para>
+    <code>log</code>
+    <code>log(|severity, msg)</code>
+    <code>log(|severity, msg, term)</code>
   </para>
   </section>
 </chapter>
