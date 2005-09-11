@@ -210,15 +210,7 @@ And(And(Atom("p"),Atom("q")),ATom("p"))
 
 <screen>
 <prompt>$</prompt> stratego-shell
-<prompt>stratego></prompt> import lib
-<prompt>stratego></prompt> import prop-eval-rules
-<prompt>stratego></prompt> eval = innermost(E)
-
-<prompt>stratego></prompt> !And(Impl(True(),And(Atom("p"),Atom("q"))),ATom("p"))
-And(Impl(True,And(Atom("p"),Atom("q"))),ATom("p"))
-
-<prompt>stratego></prompt> eval
-And(And(Atom("p"),Atom("q")),ATom("p"))
+<prompt>stratego></prompt> import prop-eval
 
 <prompt>stratego></prompt> !And(Impl(True(),And(False(),True())),True())
 And(Impl(True,And(False,True)),True)
@@ -226,19 +218,23 @@ And(Impl(True,And(False,True)),True)
 <prompt>stratego></prompt> eval
 False
 
+<prompt>stratego></prompt> !And(Impl(True(),And(Atom("p"),Atom("q"))),ATom("p"))
+And(Impl(True,And(Atom("p"),Atom("q"))),ATom("p"))
+
+<prompt>stratego></prompt> eval
+And(And(Atom("p"),Atom("q")),ATom("p"))
+
 <prompt>stratego></prompt> :quit
-False
+And(And(Atom("p"),Atom("q")),ATom("p"))
 <prompt>$</prompt>
 </screen>
 
-  The first few commands load the Stratego library, the module with
-  evaluation rules, and define the <code>eval</code>
-  strategy. 
-
-  (Currently, importing modules based on <code>liblib</code> is not
-  supported by the Stratego Shell.)
-
-  (*** Fix this when stratego-shell supports liblib ***)
+  The first command imports the <code>prop-eval</code> module, which
+  recursively loads the evaluation rules and the library, thus making
+  its definitions available in the shell. The <code>!</code> commands
+  replace the current term with a new term. (This
+  <emphasis>build</emphasis> strategy will be properly introduced in
+  <xref linkend="stratego-creating-and-analyzing-terms"/>.)
 
 </para>
 
