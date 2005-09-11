@@ -93,6 +93,9 @@ L : p1 -> p2
   The application <emphasis>fails</emphasis> if the term does not
   match <code>p1</code>.
 
+  Thus, a rule is a <emphasis>partial function from terms to
+  terms</emphasis>.
+
 </para>
 
 <para>
@@ -115,7 +118,6 @@ L : p1 -> p2
 <screen>
 <prompt>stratego></prompt> !Plus(Var("a"),Int("3"))
 Plus(Var("a"),Int("3"))
-
 <prompt>stratego></prompt> SwapArgs 
 Plus(Int("3"),Var("a"))
 </screen>
@@ -125,24 +127,27 @@ Plus(Int("3"),Var("a"))
 <screen>
 <prompt>stratego></prompt> !Times(Int("4"),Var("x"))
 Times(Int("4"),Var("x"))
-
 <prompt>stratego></prompt> SwapArgs 
 command failed
 </screen>
 
   Furthermore, a rule is applied at the <emphasis>root</emphasis> of a
-  term, not at one of its subterms. Thus the 
+  term, not at one of its subterms. Thus the following application
+  fails even though the term contains a <code>Plus</code> subterm:
  
 <screen>
 <prompt>stratego></prompt> !Times(Plus(Var("a"),Int("3")),Var("x"))
 Times(Plus(Var("a"),Int("3")),Var("x"))
-
 <prompt>stratego></prompt> SwapArgs 
 command failed
+</screen>
+  
+  Likewise, the following application only transforms the outermost
+  occurrence of <code>Plus</code>, not the inner occurrence.
 
+<screen>
 <prompt>stratego></prompt> !Plus(Var("a"),Plus(Var("x"),Int("42")))
 Plus(Var("a"),Plus(Var("x"),Int("42")))
-
 <prompt>stratego></prompt> SwapArgs 
 Plus(Plus(Var("x"),Int("42")),Var("a"))
 </screen>
@@ -159,7 +164,21 @@ Plus(Plus(Var("x"),Int("42")),Var("a"))
 stratego> SwapArgs : Times(e1, e2) -> Times(e2, e1)   
 </screen>
 
-  Now the rule can be applied to both terms with 
+  Now the rule can be applied to both terms with a <code>Plus</code>
+  and a <code>Times</code> constructor, as illustrated by the
+  following applications:
+
+<screen>
+<prompt>stratego></prompt> !Times(Int("4"),Var("x"))
+Times(Int("4"),Var("x"))
+<prompt>stratego></prompt> SwapArgs 
+Times(Var("x"),Int("4"))
+
+<prompt>stratego></prompt> !Plus(Var("a"),Int("3"))
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> SwapArgs 
+Plus(Int("3"),Var("a"))
+</screen>
 
 </para>
 
