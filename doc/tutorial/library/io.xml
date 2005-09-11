@@ -127,20 +127,60 @@ foo0bar
   </section>
   
   <section>
-    <title>File I/O</title>
+    <title>Path and Directory Operations</title>
   
   <para>
-    <code>read-text-file</code>
-    <code>read-text-line</code>
+    The library provides a small set of set of simple 
+    file and directory manipulation operations.
+    
     <code>readdir</code>
     <code>remove-file</code>
     <code>rename-file</code>
     <code>link-file</code>
-    <code>read-from-string</code>
+    <code>is-abspath</code>
+    <code>new-temp-dir</code>
+    <code>isdir</code>
+    <code>isatty</code>
+    <code>isfifo</code>
+    <code>islnk</code>
+    <code>file-exists</code>
+    <code>dirname</code>
+    <code>find-file</code>
+    <code>is-executable</code>
+    <code>is-readable</code>
+    <code>is-writeable</code>
+    <code>get-extension</code>
+    <code>base-filename</code>
+    <code>abspath</code>
+  </para>
+
+  <para>
+    Text I/O
+    <code>read-text-file</code>
+    <code>read-text-line</code>
+  </para>
+
+  </section>
+  
+  <section>
+    <title>Term I/O</title>
+    
+  <para>
+    
+  </para>  
+  <para>
+    ATerm I/O
     <code>ReadFromFile</code>
     <code>WriteToTextFile</code>
     <code>WriteToBinaryFile</code>
   </para>
+
+  <para>
+    string I/O
+    
+    <code>read-from-string</code>
+  </para>
+  
   </section>
 
   <section>
