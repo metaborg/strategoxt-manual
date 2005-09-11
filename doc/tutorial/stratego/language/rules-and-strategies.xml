@@ -7,66 +7,51 @@
 
 <para>
 
-  In the previous chapter we saw that pure term rewriting is not
-  adequate for term rewriting because of the lack of control over the
-  application of rules. 
+  In the <link linkend="stratego-rewriting-strategies">previous
+  chapter</link> we saw that pure term rewriting is not adequate for
+  term rewriting because of the lack of control over the application
+  of rules.
 
   Attempts to encoding such control within the pure rewriting paradigm
   lead to functionalized control by means of extra rules and
   constructors at the expense of traversal overhead and at the loss of
   the separation of rules and strategies.
 
-  By selecting the appropriate rules for a transformation and the
-  strategy to use in their application, 
+  By selecting the appropriate rules and strategy for a
+  transformation, Stratego programmers can control the application of
+  rules, while maintaining the separation of rules and strategies and
+  keeping traversal overhead to a minimum.
 
-  We need a mechanism that provides such control, but maintains the
-  separation of rules and strategies and keeps traversal overhead to a
-  minimum.
-
-  Such a mechanism should allow strategies parameterized with
-  selections from the available rules.
- 
 </para>
 
 <para>
 
-  Also we saw that many transformation problems can be solved by
+  We saw that many transformation problems can be solved by
   alternative strategies such as a one-pass bottom-up or top-down
   traversal. Others can be solved by selecting the rules that are
   applied in an innermost normalization, rather than all the rules in
   a specification. However, no fixed set of such alternative
   strategies will be sufficient for dealing with all transformation
-  problems. 
+  problems.
 
-  Rather than providing one or a few fixed rewriting strategies,
-  Stratego allows to <emphasis>compose</emphasis> strategies from
-  basic building blocks with a few fundamental operators.
+  Rather than providing one or a few fixed collection of rewriting
+  strategies, Stratego allows to <emphasis>compose</emphasis>
+  strategies from basic building blocks with a few fundamental
+  operators.
 
 </para>
 
 <para>
 
-  What have we learned about Stratego programs so far?
+  While we have seen rules and strategies in the previous chapters, we
+  have been vague about what kinds of things they are.
 
-  In <xref linkend="stratego-terms"/> we saw that signatures are
-  needed to declare the format of terms.
+  In this chapter we define the basic notions of rules and strategies,
+  and we will see how new strategies and strategy combinators can be
+  defined.
 
-  In <xref linkend="running-stratego-programs"/> we saw that programs
-  can be divided into modules and should contain a <code>main</code>
-  strategy.
-
-  In <xref linkend="stratego-term-rewriting"/> we saw rewrite rules
-  and their application by means of the innermost strategy.
-
-  In <xref linkend="stratego-rewriting-strategies"/> we saw that
-  programs can also use other strategies, such as <code>topdown</code>
-  and <code>bottomup</code>, to control the application of rules.
-
-  Throughout we have been vague about the nature and role of rules and
-  strategies.
-
-  In this chapter we will unveil the anatomy of rules and strategy
-  definitions in Stratego.
+  The next chapters will then introduce the basic combinators used for
+  composition of strategies.
 
 </para>
 
@@ -112,15 +97,69 @@ L : p1 -> p2
 
 <para>
 
+  Let's look at an example. The <code>SwapArgs</code> rule swaps the
+  subterms of the <code>Plus</code> constructor. Note that it is
+  possible to introduce rules on the fly in the <link
+  linkend="ref-stratego-shell">Stratego Shell</link>.
+
 <screen>
-stratego> SwapArgs : Plus(e1,e2) -> Plus(e2,e1)
-stratego> !Plus(Var("a"),Int("3"))
-stratego> SwapArgs 
+<prompt>stratego></prompt> SwapArgs : Plus(e1,e2) -> Plus(e2,e1)
+</screen>
+
+  Now we create a new term, and apply the <code>SwapArgs</code> rule
+  to it by calling its name at the prompt. (The build <code>!t</code>
+  of a term replaces the current term by <code>t</code>, as will be
+  explained in <xref
+  linkend="stratego-creating-and-analyzing-terms"/>.)
+
+<screen>
+<prompt>stratego></prompt> !Plus(Var("a"),Int("3"))
+Plus(Var("a"),Int("3"))
+
+<prompt>stratego></prompt> SwapArgs 
 Plus(Int("3"),Var("a"))
 </screen>
 
-  Note: rule is applied at the <emphasis>root</emphasis> of a term,
-  not at one of its subterms.
+  fails if applied to term to which it does not match
+
+<screen>
+<prompt>stratego></prompt> !Times(Int("4"),Var("x"))
+Times(Int("4"),Var("x"))
+
+<prompt>stratego></prompt> SwapArgs 
+command failed
+</screen>
+
+  Furthermore, a rule is applied at the <emphasis>root</emphasis> of a
+  term, not at one of its subterms. Thus the 
+ 
+<screen>
+<prompt>stratego></prompt> !Times(Plus(Var("a"),Int("3")),Var("x"))
+Times(Plus(Var("a"),Int("3")),Var("x"))
+
+<prompt>stratego></prompt> SwapArgs 
+command failed
+
+<prompt>stratego></prompt> !Plus(Var("a"),Plus(Var("x"),Int("42")))
+Plus(Var("a"),Plus(Var("x"),Int("42")))
+
+<prompt>stratego></prompt> SwapArgs 
+Plus(Plus(Var("x"),Int("42")),Var("a"))
+</screen>
+
+  Finally, there may be multiple rules with the same name. This has
+  the effect that all rules with that name will be tried in turn, in
+  some undefined order. This means that it only makes sense to define
+  rules with the same name if they are mutually exclusive, that is, do
+  not have overlapping left-hand sides. For example, we can extend the
+  definition of <code>SwapArgs</code> with a rule for the
+  <code>Times</code> constructor.
+
+<screen>
+stratego> SwapArgs : Times(e1, e2) -> Times(e2, e1)   
+</screen>
+
+  Now the rule can be applied to both terms with 
 
 </para>
 
@@ -261,8 +300,8 @@ Plus(Int("3"),Var("a"))
 
 <screen>
 Plus(Var("a"),Int("3"))
-stratego> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))} 
-stratego> SwapArgs 
+<prompt>stratego></prompt> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))} 
+<prompt>stratego></prompt> SwapArgs 
 Plus(Int("3"),Var("a"))
 </screen>
 
