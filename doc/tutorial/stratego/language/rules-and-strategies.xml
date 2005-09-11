@@ -176,11 +176,23 @@ Plus(Int("3"),Var("a"))
 
   Note: definitions may be recursive
 	
+        
+  The list of term arguments of a strategy combinator is optional and
+  the \texttt{|} can be left out if no term arguments are
+  present. Similarly, if the list of strategy arguments is also empty
+  the parentheses may be omitted.
+
 </para>
 
 <screen>
 foo(s) = innermost(s &lt;+ A)
 </screen>
+
+<para>
+
+  overloading of definitions with different number of arguments
+
+</para>
 
 </section>
 
@@ -190,28 +202,32 @@ foo(s) = innermost(s &lt;+ A)
 <para>
 
   Strategy definitions at top-level are visible everywhere.  Sometimes
-  it is useful to define a <emphasis>local</emphasis> strategy operator.  This can
-  be done using a let expression of the form <code>let $d*$ in $s$
-  end</code>, where $d*$ is a list of definitions.
+  it is useful to define a <emphasis>local</emphasis> strategy
+  operator.  This can be done using a let expression of the form
+  <code>let $d*$ in $s$ end</code>, where $d*$ is a list of
+  definitions.
+
+<screen>
+let foo = 
+ in ... foo ...
+end
+</screen>
 
 </para>
 
 </section>
 
 <section>
-  <title>External and Primitive Definitions</title>
+  <title>Calling Primitives</title>
 
 <para>
 
   primitive definitions are used to call strategies implemented in
   another language
 
-  external definitions are implemented in a separately compiled
-  Stratego program
-
-</para>
-
-<para>
+<screen>
+print(|x) = SSL_print(|x)
+</screen>
 
   The strategy combinators introduced in the next sections are
   impartial to the way atomic transformations are defined.  We could
@@ -231,14 +247,44 @@ foo(s) = innermost(s &lt;+ A)
   addition of two integer terms is defined via a call to a primitive
   <code>prim("SSL\_addi",x,y)</code>.
 
-  
-</para>
+  primitive function should take ATerms as arguments
 
-  <screen>
-  </screen>
+  not possible to use `unboxed' values
+
+  requires writing wrapper function in C
+
+</para>
 
 </section>
 
+<section>
+  <title>External Definitions</title>
+
+<para>
+
+  external definitions are implemented in a separately compiled
+  Stratego program
+
+  compiling Stratego program as library
+
+</para>
+
+</section>
+
+<section>
+  <title>Extending Definitions</title>
+
+<para>
+
+  existing definitions can be extended
+
+  multiple definitions are possible
+
+  semantics: non-deterministic choice of bodies
+
+</para>
+
+</section>
 
 </section>
 
