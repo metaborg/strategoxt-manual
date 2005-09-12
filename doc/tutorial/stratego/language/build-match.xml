@@ -188,6 +188,13 @@ e is bound to Var("a")
   DAOL = ?And(Or(x, y), z); !Or(And(x, z), And(y, z))
 </screen>
         
+<screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))} 
+<prompt>stratego></prompt> SwapArgs 
+Plus(Int("3"),Var("a"))
+</screen>
+
   Note that the variables bound in the match are carried over by the
   sequential composition to the build. In other words, variable
   bindings are visible at the level of strategies.  This should be

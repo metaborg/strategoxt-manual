@@ -329,12 +329,15 @@ in:  And(Atom("p"),Not(Atom("q")))
 And(Atom("p"),Not(Atom("q")))
 </screen>
 
-  <code>in:</code> shows terms to which rule is applied,
-  <code>out:</code> indicates when this was successful and what the
-  result of applying the rule was.
+  This session nicely shows how innermost traverses the term it
+  transforms.  The <code>in:</code> lines show terms to which it
+  attempts to apply a rule, the <code>out:</code> lines indicate when
+  this was successful and what the result of applying the rule was.
+  Thus, <code>innermost</code> performs a post-order traversal
+  applying rules after transforming the subterms of a term.
 
-  note: when applying <code>debug</code> to a string constant, the
-  quotes are not printed
+  (Note that when applying <code>debug</code> to a string constant,
+  the quotes are not printed.)
 
 </para>
 
@@ -346,29 +349,15 @@ And(Atom("p"),Not(Atom("q")))
 
 <para>
 
-  The last example above shows a shortcoming of the Stratego Shell;
-  the entire expression needs to fit on a line. 
+  Stratego programs are about defining transformations in the form of
+  rules and strategy expressions that combine them.
 
+  Just defining strategy <emphasis>expressions</emphasis> does not
+  scale, however.
 
-  introduce definitions for large expressions for reuse
-
-<screen>
-stratego> dnf-rules = (DefI &lt;+ DefE &lt;+ DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO)
-stratego> innermost(debug(!"in:  "); dnf-rules; debug(!"out: "))
-
-</screen>
-
-  Strategy <emphasis>definitions</emphasis> introduce new strategy
-  operators.
-
-  a strategy definition names a strategy expression such that it can
-  be invoked at several points in the program
-
-  somewhat of a crossover between a function definition in functional
-  programming languages, and a method definition in object-oriented
-  programming languages
-
-  the current term is implicit
+  Strategy <emphasis>definitions</emphasis> are the abstraction
+  mechanism of Stratego and allow naming and parameterization of
+  strategy expresssions for reuse.
 
 </para>
 
@@ -376,54 +365,56 @@ stratego> innermost(debug(!"in:  "); dnf-rules; debug(!"out: "))
   <title>Simple Strategy Definition and Call</title>
 
 <para>
-        
-  Given a set of rules and primitives as basic transformations, more
-  complex transformations can be composed using a set of strategy
-  combinators. For example, if $s_1$ and $s_2$ are two strategy
-  expressions, then $(s_1;s_2)$ is a strategy expression as well.
-  These combinators are the subject of this and the next two
-  chapters. In order to reuse common strategy compositions, they can
-  be named and parameterized using strategy definitions. A strategy
-  definition of the form
 
+  A simple strategy definition names a strategy expression. For
+  instance, the following module define a combination of rules
+  (<code>dnf-rules</code>), and some strategies based on it:
+        
 <screen>
-<code>$f$($x_1$,...,$x_n$ | $y_1$,..., $y_m$) = $s$</code>
+module dnf-strategies
+strategies
+
+  dnf-rules = 
+    DefI &lt;+ DefE &lt;+ DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO
+
+  dnf = 
+    innermost(dnf-rules)
+
+  dnf-debug = 
+    innermost(debug(!"in:  "); dnf-rules; debug(!"out: "))
+
+  main =
+    io-wrap(dnf)
 </screen>
 
-  introduces a user-defined operator \verb|f| with $n$ strategy
-  arguments and $m$ term arguments. Such a user-defined strategy
-  operator can be called as <code>$f$($s_1,...,s_n$|$t_1,...,t_m$)</code>
-  by providing it $n$ argument strategies and $m$ argument terms. The
-  meaning of such a call is the body $s$ of the definition in which
-  the actual arguments have been substituted for the formal arguments.
-
-  Strategy arguments and term arguments can be left out of calls and
-  definitions.  That is, a call <code>$f$(|)</code> without strategy and
-  term arguments can be written as <code>$f$()</code>, or even just $f$.
-  A call <code>$f$($s_1$,..., $s_n$|)</code> without term arguments can be
-  written as <code>$f$($s_1$,..., $s_n$)</code> The same holds for
-  definitions.
+  Note how <code>dnf-rules</code> is used in the definition of
+  <code>dnf</code>, and <code>dnf</code> itself in the definition of
+  <code>main</code>.
 
 </para>
 
 <para>
 
-  Syntax: f = s 
-
-  Name strategy expression s 
-
-  Syntax: f 
-
-  Invoke (call) named strategy f
-  
-</para>
+  In general, a definition of the form
 
 <screen>
-Plus(Var("a"),Int("3"))
-<prompt>stratego></prompt> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))} 
-<prompt>stratego></prompt> SwapArgs 
-Plus(Int("3"),Var("a"))
+f = s
 </screen>
+
+  introduces a new transformation <code>f</code>, which can be invoked
+  by calling <code>f</code> in a strategy expression, with the effect
+  of executing strategy expression <code>s</code>.
+  
+  The expression should have no free variables. That is, all strategie
+  called in <code>s</code> should be defined strategies.
+
+  Simple strategy definitions just introduce names for strategy
+  expressions.
+
+  Still such strategies have an argument, namely the implicit current
+  term.
+
+</para>
 
 </section>
 
@@ -431,28 +422,87 @@ Plus(Int("3"),Var("a"))
    <title>Parameterized Definitions</title>
 
 <para>
-	  
-  Parameterized and Recursive Definitions
-
-  Syntax: f (x1,...,xn|y1,...,ym) = s 
-
-  Strategy definition parameterized with strategies (x1,...,xn) and terms (y1,...,ym)
-
-  Note: definitions may be recursive
-	
-        
-  The list of term arguments of a strategy combinator is optional and
-  the \texttt{|} can be left out if no term arguments are
-  present. Similarly, if the list of strategy arguments is also empty
-  the parentheses may be omitted.
+  
+  Strategy definitions with strategy and/or term parameters can be
+  used to define transformation <emphasis>schemas</emphasis> that can
+  instantiated for various situations.
 
 </para>
 
+<para>
+	  
+  A parameterized strategy definition of the form
+
 <screen>
-foo(s) = innermost(s &lt;+ A)
+f(x1,...,xn | y1,..., ym) = s
 </screen>
 
+  introduces a user-defined operator <code>f</code> with
+  <code>n</code> <emphasis>strategy arguments</emphasis> and
+  <code>m</code> <emphasis>term arguments</emphasis>. Such a
+  user-defined strategy operator can be called as
+  <code>f(s1,...,sn|t1,...,tm)</code> by providing it <code>n</code>
+  argument strategies and <code>m</code> argument terms. The meaning
+  of such a call is the body <code>s</code> of the definition in which
+  the actual arguments have been substituted for the formal arguments.
+
+  Strategy arguments and term arguments can be left out of calls and
+  definitions.  That is, a call <code>f(|)</code> without strategy and
+  term arguments can be written as <code>f()</code>, or even just
+  <code>f</code>.  A call <code>f(s1,..., sn|)</code> without term
+  arguments can be written as <code>f(s1,...,sn)</code> The same holds
+  for definitions.
+
+</para>
+
 <para>
+
+  As we will see in the coming chapters, strategies such as
+  <code>innermost</code>, <code>topdown</code>, and
+  <code>bottomup</code> are not <emphasis>not built into the
+  language</emphasis>, but are defined using strategy definitions in
+  the language itself using more basic combinators, as illustrated by
+  the following definitions (without going into the exact meaning of
+  these definitions):
+
+<screen>
+strategies
+  try(s)      = s &lt;+ id
+  repeat(s)   = try(s; repeat(s))
+  topdown(s)  = s; all(topdown(s))
+  bottomup(s) = all(bottomup(s)); s
+</screen>
+
+  Such parameterized strategy operators are invoked by providing
+  arguments for the parameters. Specifically, strategy arguments are
+  instantiated by means of strategy expressions. Wherever the argument
+  is invoked in the body of the definition, the strategy expression is
+  invoked.
+
+  For example, in the previous chapter we saw the following
+  instantiations of the <code>topdown</code>, <code>try</code>, and
+  <code>repeat</code> strategies:
+
+<screen>
+module prop-desugar
+// ...
+strategies
+
+  desugar = 
+    topdown(try(DefI &lt;+ DefE))
+
+  impl-nf = 
+    topdown(repeat(DefN &lt;+ DefA2 &lt;+ DefO1 &lt;+ DefE))
+</screen>
+
+</para>
+
+<para>
+
+  There can be multiple definitions with the same name but
+  <emphasis>different</emphasis> number of parameters. Such
+  definitions introduce <emphasis>different</emphasis> strategy
+  operators.
 
   overloading of definitions with different number of arguments
 
