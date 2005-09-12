@@ -478,11 +478,11 @@ rules
   DMA  : Not(And(x, y)) -> Or(Not(x), Not(y))
   DMO  : Not(Or(x, y))  -> And(Not(x), Not(y))
 
-  DOAL : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
-  DOAR : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
+  DAOL : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
+  DAOR : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
 
-  DAOL : Or(And(x, y), z) -> And(Or(x, z), Or(y, z))
-  DAOR : Or(z, And(x, y)) -> And(Or(z, x), Or(z, y))
+  DOAL : Or(And(x, y), z) -> And(Or(x, z), Or(y, z))
+  DOAR : Or(z, And(x, y)) -> And(Or(z, x), Or(z, y))
 
 strategies
 

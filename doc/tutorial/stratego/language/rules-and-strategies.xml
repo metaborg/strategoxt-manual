@@ -9,8 +9,8 @@
 
   In the <link linkend="stratego-rewriting-strategies">previous
   chapter</link> we saw that pure term rewriting is not adequate for
-  term rewriting because of the lack of control over the application
-  of rules.
+  program transformation because of the lack of control over the
+  application of rules.
 
   Attempts to encoding such control within the pure rewriting paradigm
   lead to functionalized control by means of extra rules and
@@ -28,15 +28,15 @@
 
   We saw that many transformation problems can be solved by
   alternative strategies such as a one-pass bottom-up or top-down
-  traversal. Others can be solved by selecting the rules that are
+  traversals. Others can be solved by selecting the rules that are
   applied in an innermost normalization, rather than all the rules in
   a specification. However, no fixed set of such alternative
   strategies will be sufficient for dealing with all transformation
   problems.
 
   Rather than providing one or a few fixed collection of rewriting
-  strategies, Stratego allows to <emphasis>compose</emphasis>
-  strategies from basic building blocks with a few fundamental
+  strategies, Stratego supports the <emphasis>composition</emphasis>
+  of strategies from basic building blocks with a few fundamental
   operators.
 
 </para>
@@ -60,13 +60,6 @@
 
 <para>
 
-  In <xref linkend="stratego-term-rewriting"/> rewrite rules were
-  introduced as transformations that are applied throughout a term by
-  the innermost strategy.
-
-  In <xref linkend="stratego-rewriting-strategies"/> we saw that the
-  application of rewrite rules can be controlled by other strategies
-  as well.
 
 </para>
 
@@ -84,7 +77,8 @@ L : p1 -> p2
 
   A rule defines a transformation on terms. 
 
-  A rule can be applied <emphasis>through its name</emphasis> to a term.
+  A rule can be applied <emphasis>through its name</emphasis> to a
+  term.
 
   It will transform the term if it matches with <code>p1</code>, and
   will replace the term with <code>p2</code> instantiated with the
@@ -93,8 +87,8 @@ L : p1 -> p2
   The application <emphasis>fails</emphasis> if the term does not
   match <code>p1</code>.
 
-  Thus, a rule is a <emphasis>partial function from terms to
-  terms</emphasis>.
+  Thus, a <emphasis>transformation</emphasis> is a <emphasis>partial
+  function from terms to terms</emphasis>
 
 </para>
 
@@ -122,7 +116,10 @@ Plus(Var("a"),Int("3"))
 Plus(Int("3"),Var("a"))
 </screen>
 
-  fails if applied to term to which it does not match
+  The application of <code>SwapArgs</code> fails when applied to a
+  term to which the left-hand side does not match. For example, since
+  the pattern <code>Plus(e1,e2)</code> does not match with a term
+  constructed with <code>Times</code> the following application fails:
 
 <screen>
 <prompt>stratego></prompt> !Times(Int("4"),Var("x"))
@@ -131,9 +128,10 @@ Times(Int("4"),Var("x"))
 command failed
 </screen>
 
-  Furthermore, a rule is applied at the <emphasis>root</emphasis> of a
-  term, not at one of its subterms. Thus the following application
-  fails even though the term contains a <code>Plus</code> subterm:
+  A rule is applied at the <emphasis>root</emphasis> of a term, not at
+  one of its subterms. Thus, the following application fails even
+  though the term <emphasis>contains</emphasis> a <code>Plus</code>
+  subterm:
  
 <screen>
 <prompt>stratego></prompt> !Times(Plus(Var("a"),Int("3")),Var("x"))
@@ -143,7 +141,7 @@ command failed
 </screen>
   
   Likewise, the following application only transforms the outermost
-  occurrence of <code>Plus</code>, not the inner occurrence.
+  occurrence of <code>Plus</code>, not the inner occurrence:
 
 <screen>
 <prompt>stratego></prompt> !Plus(Var("a"),Plus(Var("x"),Int("42")))
@@ -153,20 +151,21 @@ Plus(Plus(Var("x"),Int("42")),Var("a"))
 </screen>
 
   Finally, there may be multiple rules with the same name. This has
-  the effect that all rules with that name will be tried in turn, in
-  some undefined order. This means that it only makes sense to define
-  rules with the same name if they are mutually exclusive, that is, do
-  not have overlapping left-hand sides. For example, we can extend the
+  the effect that all rules with that name will be tried in turn until
+  one succeeds, or all fail. The rules are tried in some undefined
+  order. This means that it only makes sense to define rules with the
+  same name if they are mutually exclusive, that is, do not have
+  overlapping left-hand sides. For example, we can extend the
   definition of <code>SwapArgs</code> with a rule for the
-  <code>Times</code> constructor.
+  <code>Times</code> constructor, as follows:
 
 <screen>
-stratego> SwapArgs : Times(e1, e2) -> Times(e2, e1)   
+<prompt>stratego></prompt> SwapArgs : Times(e1, e2) -> Times(e2, e1)   
 </screen>
 
-  Now the rule can be applied to both terms with a <code>Plus</code>
-  and a <code>Times</code> constructor, as illustrated by the
-  following applications:
+  Now the rule can be applied to terms with a <code>Plus</code>
+  <emphasis>and</emphasis> a <code>Times</code> constructor, as
+  illustrated by the following applications:
 
 <screen>
 <prompt>stratego></prompt> !Times(Int("4"),Var("x"))
@@ -197,68 +196,170 @@ Plus(Int("3"),Var("a"))
 
 <para>
 
-  Strategies are the central notion in Stratego programs. High time we
-  got to know what they are.
+  A rule defines a transformation, that is, a partial function from
+  terms to terms.
 
-  A strategy expression defines a transformation, that is, a partial
-  function from terms to terms. 
+  A <emphasis>strategy expression</emphasis> is a combination of one
+  or more transformations into a new transformation.
 
-  A transformation is a function since it maps terms to terms.
+  So, a strategy expression also defines a transformation, i.e., a
+  partial function from terms to terms.
 
-  The function is partial since the application of a strategy may
-  fail.
-
-  Transformations are <emphasis>functions</emphasis>, and strategy
-  expressions often combine transformations into more complex
-  transformations. Therefore, they don't have to explicitly mention
-  the term they are transforming, the so called `current term'.
+  Strategy <emphasis>operators</emphasis> are functions from
+  transformations to transformations.
 
 </para>
 
 <para>
 
-  Lets look at some examples.
+  In the <link linkend="stratego-rewriting-strategies">previous
+  chapter</link> we saw some examples of strategy expressions.
 
-  A rule 
+  Lets examine these examples in the light of our new definition.
 
-  rules are strategies
+  First of all, <emphasis>rule names</emphasis> are basic strategy
+  expressions. If we import module <code>prop-laws</code>, we have at
+  our disposal all rules it defines as basic strategies:
 
-  combinations of rules
+<screen>
+<prompt>stratego></prompt> import prop-laws
+<prompt>stratego></prompt> !Impl(True(), Atom("p"))
+Impl(True, Atom("p"))
+<prompt>stratego></prompt> DefI
+Or(Not(True),Atom("p"))
+</screen>
 
-  innermost(E)
+  Next, given a collection of rules we can create more complex
+  transformations by means of strategy operators. For example, the
+  <code>innermost</code> strategy creates from a collection of rules a
+  new transformation that exhaustively applies those rules.
+
+<screen>
+<prompt>stratego></prompt> !Eq(Atom("p"), Atom("q"))
+Eq(Atom("p"),Atom("q"))
+
+<prompt>stratego></prompt> innermost(DefI &lt;+ DefE &lt;+ DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO)
+
+Or(Or(And(Not(Atom("p")),Not(Atom("q"))),
+      And(Not(Atom("p")),Atom("p"))),
+   Or(And(Atom("q"),Not(Atom("q"))),
+      And(Atom("q"),Atom("p"))))
+</screen>
+
+  (Exercise: add rules to this composition that remove tautologies or
+  false propositions.)
+
+  Here we see that the rules are first combined using the choice
+  operator <code>&lt;+</code> into a composite transformation, which
+  is the argument of the <code>innermost</code> strategy.
 
 </para>
 
 <para>
 
-  Stratego allows programs to have side effects such as performing
-  input/output operations.
+   The <code>innermost</code> strategy always succeeds (but may not
+   terminate), but this is not the case for all strategies.
+
+   For example <code>bottomup(DefI)</code> will not succeed, since it
+   attempts to apply rule <code>DefI</code> to all subterms, which is
+   clearly not possible.
+
+   Thus, strategies extend the property of rules that they are
+   <emphasis>partial</emphasis> functions from terms to terms.
 
 </para>
 
 <para>
 
-  transformation on the `current' term
+  Observe that in the composition <code>innermost(...)</code>, the
+  term to which the transformation is applied is never mentioned.
 
-  current term is implicit in a strategy expression
+  The `current term', to which a transformation is applied is
+  often implicit in the definition of a strategy.
+
+  That is, there is no variable that is bound to the current term and
+  then passed to an argument strategy.
+
+  Thus, a strategy operator such as <code>innermost</code> is a
+  function from transformations to transformations.
 
 </para>
 
 <para>
 
-  combinators for strategies
+  While strategies are functions, they are not necessarily
+  <emphasis>pure</emphasis> functions.  Strategies in Stratego may
+  have side effects such as performing input/output operations.
+
+  This is of course necessary in the implementation of basic tool
+  interaction such as provided by <code>io-wrap</code>, but is also
+  useful for debugging. For example, the <code>debug</code> strategy
+  prints the current term, but does not transform it. We can use it to
+  visualize the way that <code>innermost</code> transforms a term.
+
+<screen>
+<prompt>stratego></prompt> !Not(Impl(Atom("p"), Atom("q")))
+Not(Impl(Atom("p"),Atom("q")))
+<prompt>stratego></prompt> innermost(debug(!"in:  "); (DefI &lt;+ DefE &lt;+ DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO); debug(!"out: "))
+in:  p
+in:  Atom("p")
+in:  q
+in:  Atom("q")
+in:  Impl(Atom("p"),Atom("q"))
+out: Or(Not(Atom("p")),Atom("q"))
+in:  p
+in:  Atom("p")
+in:  Not(Atom("p"))
+in:  q
+in:  Atom("q")
+in:  Or(Not(Atom("p")),Atom("q"))
+in:  Not(Or(Not(Atom("p")),Atom("q")))
+out: And(Not(Not(Atom("p"))),Not(Atom("q")))
+in:  p
+in:  Atom("p")
+in:  Not(Atom("p"))
+in:  Not(Not(Atom("p")))
+out: Atom("p")
+in:  p
+in:  Atom("p")
+in:  q
+in:  Atom("q")
+in:  Not(Atom("q"))
+in:  And(Atom("p"),Not(Atom("q")))
+And(Atom("p"),Not(Atom("q")))
+</screen>
+
+  <code>in:</code> shows terms to which rule is applied,
+  <code>out:</code> indicates when this was successful and what the
+  result of applying the rule was.
+
+  note: when applying <code>debug</code> to a string constant, the
+  quotes are not printed
 
 </para>
 
 </section>
 
 
-
-
 <section>
   <title>Strategy Definitions</title>
 
 <para>
+
+  The last example above shows a shortcoming of the Stratego Shell;
+  the entire expression needs to fit on a line. 
+
+
+  introduce definitions for large expressions for reuse
+
+<screen>
+stratego> dnf-rules = (DefI &lt;+ DefE &lt;+ DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO)
+stratego> innermost(debug(!"in:  "); dnf-rules; debug(!"out: "))
+
+</screen>
+
+  Strategy <emphasis>definitions</emphasis> introduce new strategy
+  operators.
 
   a strategy definition names a strategy expression such that it can
   be invoked at several points in the program
