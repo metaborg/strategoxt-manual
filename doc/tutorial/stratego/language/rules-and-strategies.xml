@@ -505,8 +505,6 @@ strategies
   definitions introduce <emphasis>different</emphasis> strategy
   operators.
 
-  overloading of definitions with different number of arguments
-
 </para>
 
 </section>
@@ -519,12 +517,16 @@ strategies
   Strategy definitions at top-level are visible everywhere.  Sometimes
   it is useful to define a <emphasis>local</emphasis> strategy
   operator.  This can be done using a let expression of the form
-  <code>let $d*$ in $s$ end</code>, where $d*$ is a list of
+  <code>let d* in s end</code>, where <code>d*</code> is a list of
   definitions.
 
+  For example, in the following strategy expression, the definition of
+  <code>dnf-rules</code> is only visible in the instantiation of
+  <code>innermost</code>:
+
 <screen>
-let foo = 
- in ... foo ...
+let dnf-rules = DefI &lt;+ DefE &lt;+ DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO
+ in innermost(dnf-rules)
 end
 </screen>
 
@@ -537,40 +539,62 @@ end
 
 <para>
 
-  primitive definitions are used to call strategies implemented in
-  another language
+  Stratego provides combinators for composing transformations and
+  basic operators for analyzing, creating and traversing
+  terms. However, it does not provide built-in support for other types
+  of computation such as input/output and process control. In order to
+  make such functionality available to Stratego programmers, the
+  language provides access to user-definable
+  <emphasis>primitive</emphasis> strategies through the
+  <code>prim</code> construct. For example, the following call to
+  <code>prim</code> invokes the <code>SSL_printnl</code> function from
+  the native code of the C library:
 
 <screen>
-print(|x) = SSL_print(|x)
+<prompt>stratego></prompt>prim("SSL_printnl", stdout(), ["foo", "bar"])
+foobar
+""
 </screen>
 
-  The strategy combinators introduced in the next sections are
-  impartial to the way atomic transformations are defined.  We could
-  just as well use an implementation in a different language, rather
-  than a rewrite rule, if that is useful.  Thus, <code>prim("$f$",
-  $ss$ | $ts$)</code> represents a call to an <emphasis>external
-  primitive function</emphasis> $f$ with strategy arguments $ss$ and
-  term arguments $ts$.
+  In general, a call <code>prim("f", s* | t*)</code> represents a call
+  to a <emphasis>primitive function</emphasis> <code>f</code> with
+  strategy arguments <code>s*</code> and term arguments
+  <code>t*</code>.
 
-  Note that the `current' term $t$ is not passed automatically as
+  Note that the `current' term is not passed automatically as
   argument.
 
   This mechanism allows the incorporation of mundane tasks such as
   arithmetic, I/O, and other tasks not directly related to
   transformation, but necessary for the integration of transformations
-  with the other parts of a transformation system. For example, the
-  addition of two integer terms is defined via a call to a primitive
-  <code>prim("SSL\_addi",x,y)</code>.
-
-  primitive function should take ATerms as arguments
-
-  not possible to use `unboxed' values
-
-  requires writing wrapper function in C
+  with the other parts of a transformation system.
 
 </para>
 
+<para>
+ 
+  Primitive functions should take ATerms as arguments. It is not
+  possible to use `unboxed' values, i.e., raw native types.  This
+  requires writing a wrapper function in C.  For example, the addition
+  of two integers is defined via a call to a primitive
+  <code>prim("SSL_addi",x,y)</code>, where the argument should
+  represent integer ATerms, not C integers.
+
+</para>
+
+<para>
+
+  The Stratego Library provides all the primitives for I/O,
+  arithmetic, string processing, and process control that are usually
+  needed in Stratego programs. However, it is possible to add new
+  primitives to a program as well. That requires linking with the
+  compiled program a library that implements the function.  See the
+  documentation of <xref linkend="ref-strc"/> for instructions.
+ 
+</para>
+
 </section>
+
 
 <section>
   <title>External Definitions</title>
@@ -585,6 +609,22 @@ print(|x) = SSL_print(|x)
 </para>
 
 </section>
+
+
+<section>
+  <title>Dynamic Calls</title>
+
+<para>
+
+  external definitions are implemented in a separately compiled
+  Stratego program
+
+  compiling Stratego program as library
+
+</para>
+
+</section>
+
 
 <section>
   <title>Extending Definitions</title>
