@@ -479,9 +479,10 @@ strategies
   is invoked in the body of the definition, the strategy expression is
   invoked.
 
-  For example, in the previous chapter we saw the following
-  instantiations of the <code>topdown</code>, <code>try</code>, and
-  <code>repeat</code> strategies:
+  For example, in the <link
+  linkend="stratego-rewriting-strategies">previous chapter</link> we
+  saw the following instantiations of the <code>topdown</code>,
+  <code>try</code>, and <code>repeat</code> strategies:
 
 <screen>
 module prop-desugar
