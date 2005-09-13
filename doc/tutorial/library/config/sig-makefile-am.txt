@@ -1,0 +1,42 @@
+include $(top_srcdir)/Makefile.xt
+include $(wildcard *.dep)
+
+treegrammars =					\
+  Aspect-Stratego.rtg
+
+rtg_nfs = $(subst .rtg,.rtg-nf,$(treegrammars))
+sigs = $(subst .rtg,.str,$(treegrammars))
+
+autogensignatures =				\
+  $(treegrammars)				\
+  $(rtg_nfs)					\
+  $(sigs)
+
+signatures = $(autogensignatures)
+
+CLEANFILES	= $(wildcard *.atree)
+BOOTCLEANFILES	= $(autogensignatures) $(wildcard *.rtree)
+pkgdata_DATA    = $(signatures:.str=.rtree) Aspect-Stratego.rtg
+EXTRA_DIST      = \
+  $(wildcard *.rtg-script) \
+  $(wildcard *.str) \
+  $(wildcard *.rtree) \
+  $(pkgdata_DATA)
+
+Aspect-Stratego.def: 
+	rm -f Aspect-Stratego.def
+	ln -s ../syn/Aspect-Stratego.def .
+
+$(autogensignatures) : Aspect-Stratego.def
+
+%.rtg : %.def
+	$(STRATEGO_REGULAR)/bin/sdf2rtg -i $< -m $* -o $@
+
+%.str : %.rtg
+	$(STRATEGO_REGULAR)/bin/rtg2sig -i $< -o $@
+
+%.rtg : %.rtg-script Stratego-Sugar.rtg
+	$(STRATEGO_REGULAR)/bin/rtg-script -i $< -o $@
+
+clean:
+	rm -f *.str *.rtg *.rtg-nf *.rtree

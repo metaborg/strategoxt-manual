@@ -19,6 +19,10 @@
       <filename>project.spec</filename>, <filename>bootstrap</filename>,
       <filename>Makefile.am</filename>.
     </para>
+
+<screen><xi:include href="config/bootstrap.txt" parse="text"/></screen>
+<screen><xi:include href="config/src-makefile-am.txt" parse="text"/></screen>
+<screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
     
     <para>
       Suggested project layout.
@@ -40,15 +44,22 @@
     <para>
       Building parse tables
     </para>
-    
+
+<screen><xi:include href="config/syn-makefile-am.txt" parse="text"/></screen>
+
     <para>
       Building signatures
     </para>
+
+<screen><xi:include href="config/sig-makefile-am.txt" parse="text"/></screen>
     
     <para>
       Building Stratego programs; <code>bin_PROGRAMS</code> in 
       <filename>Makefile.am</filename>.
     </para>
+
+<screen><xi:include href="config/src2-makefile-am.txt" parse="text"/></screen>
+    
   </section>
   
   <section>
@@ -56,5 +67,7 @@
     
     <para>
     </para>
+<screen><xi:include href="config/xtc-makefile-am.txt" parse="text"/></screen>
+
   </section>
 </chapter>

@@ -1,0 +1,25 @@
+include $(top_srcdir)/Makefile.xt
+include $(wildcard *.dep)
+
+DEFS = \
+  Aspect-Stratego.def
+
+TBLS = \
+  Aspect-Stratego.tbl
+
+sdfdata_DATA = \
+  $(TBLS) \
+  $(DEFS) \
+  $(wildcard *.sdf)
+
+EXTRA_DIST     = $(DEFS) $(wildcard *.sdf)
+CLEANFILES     = $(wildcard *.tbl) $(TESTS)
+
+BOOTCLEANFILES	= $(wildcard *.def)   		
+
+SDFINCLUDES     = -I ${STRATEGO_FRONT}/share/sdf/stratego-front  
+
+SDF2RTG_FLAGS  = --main $*
+PGEN_FLAGS	= -m $*
+
+
