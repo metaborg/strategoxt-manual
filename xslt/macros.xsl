@@ -47,9 +47,26 @@
 
   <xsl:template match="db:nexttoeachother">
     <informaltable frame='none'>
-      <tgroup cols='2' align='center' colsep='1' rowsep='1'>
+      <tgroup cols='2' colsep='1' rowsep='1'>
+	<xsl:attribute name="align">
+	  <xsl:choose>
+	    <xsl:when test="@align">
+	      <xsl:value-of select="@align"/>
+	    </xsl:when>
+	    <xsl:otherwise>center</xsl:otherwise>
+	  </xsl:choose>
+	</xsl:attribute>
         <tbody>
           <row>
+	    <xsl:attribute name="valign">
+	      <xsl:choose>
+		<xsl:when test="@valign">
+		  <xsl:value-of select="@valign"/>
+		</xsl:when>
+		<xsl:otherwise>middle</xsl:otherwise>
+	      </xsl:choose>
+	    </xsl:attribute>
+
             <xsl:apply-templates/>
           </row>
         </tbody>
