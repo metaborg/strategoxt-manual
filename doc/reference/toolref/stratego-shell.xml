@@ -29,7 +29,7 @@
       <emphasis>script</emphasis> mode. In the interactive mode,
       strategies can be entered at the command-line of the shell,
       and will always rewrite the current term. Shell-specific commands
-      can be used to inspect the environment, at any point in time.
+      can be used to inspect the environment at any point in time.
     </para>
     
     <para>
