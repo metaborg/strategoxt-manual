@@ -593,6 +593,18 @@ foobar
  
 </para>
 
+<formalpara>
+  <title>Implementing Primitives</title>
+
+<para>
+
+  TODO: explain how to implement primitives in C and use their
+  implementation in a Stratego program
+
+</para>
+
+</formalpara>
+
 </section>
 
 
@@ -601,10 +613,40 @@ foobar
 
 <para>
 
-  external definitions are implemented in a separately compiled
-  Stratego program
+  The <link linkend="ref-strc">Stratego Compiler</link> is a
+  <emphasis>whole program compiler</emphasis>. That is, the compiler
+  includes all definitions from imported modules (transitively) into
+  the program defined by the main module (the one being compiled).
 
-  compiling Stratego program as library
+  This is the reason that the compiler takes its time to compile a
+  program.
+
+  To reduce the compilation effort and the size of the resulting
+  programs it is possible to create separately compiled
+  <emphasis>libraries</emphasis> of Stratego definitions.
+
+  The strategies that such a library provides are declared as
+  <emphasis>external</emphasis> definitions. A declaration of the form
+
+<screen>
+external f(s1 ... sn | x1 ... xm)
+</screen>
+
+  states that there is an externally defined strategy operator
+  <code>f</code> with <code>n</code> strategy arguments and
+  <code>m</code> term arguments. When compiling a program with
+  external definitions a library should be provided that implements
+  these definitions.
+
+</para>
+
+<para>
+
+  The Stratego Library is provided as a separately compiled library.
+
+  The <code>libstrateglib</code> module that we have been using in the
+  example programs contains external definitions for all strategies in
+  the library, as illustrated by the following excerpt:
 
 <screen>
 module libstrategolib
@@ -617,7 +659,104 @@ strategies
   // ...
 </screen>
 
+  When compiling a program using the library we used the <code>-la
+  stratego-lib</code> option to provide the implementation of those
+  definitions.
+
 </para>
+
+<formalpara>
+  <title>Creating Libraries</title>
+
+<para>
+
+  It is possible to create your own Stratego libraries as
+  well. Currently that exposes you to a bit of C compilation giberish;
+  in the future this may be incorporated in the Stratego compiler.
+
+  Lets create a library for the rules and strategy definitions in the
+  <code>prop-laws</code> module. We do this using the
+  <code>--library</code> option to indicate that a library is being
+  built, and the <code>-c</code> option to indicate that we are only
+  interested in the generated C code.
+
+<screen>
+$ strc -i prop-laws.str -c -o libproplib.rtree --library
+[ strc | info ] Compiling 'proplib.str'
+[ strc | info ] Front-end succeeded         : [user/system] = [4.71s/0.77s]
+[ strc | info ] Abstract syntax in 'libproplib.rtree'
+[ strc | info ] Concrete syntax in 'libproplib.str'
+[ strc | info ] Export of externals succeeded : [user/system] = [2.02s/0.11s]
+[ strc | info ] Back-end succeeded          : [user/system] = [6.66s/0.19s]
+[ strc | info ] Compilation succeeded       : [user/system] = [13.4s/1.08s]
+$ rm libproplib.str
+</screen>
+
+  The result is of this compilation is a module
+  <code>libproplib</code> that contains the external definitions of
+  the module <emphasis>and</emphasis> those inherited from
+  <code>libstrategolib</code>. (This module comes in to versions; one
+  in concrete syntax <code>libproplib.str</code> and one in abstract
+  syntax <code>libproplib.rtree</code>; for some obscure reason you
+  should throw away the <code>.str</code> file.)
+
+  Furthermore, the Stratego Compiler produces a C program
+  <code>libproplib.c</code> with the implementation of the
+  library. This C program should be turned into an object library
+  using <code>libtool</code>, as follows:
+
+<screen>
+<prompt>$</prompt> libtool --mode=compile gcc -g -O -c libproplib.c -o libproplib.o -I &lt;path/to/aterm-stratego/include>
+...
+<prompt>$</prompt> libtool --mode=link gcc -g -O -o libproplib.la libproplib.lo
+...
+</screen>
+
+  The result is a shared library <code>libproplib.la</code> that can
+  be used in other Stratego programs.
+  
+  (TODO: the production of the shared library should really be
+  incorporated into strc.)
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>Using Libraries</title>
+
+<para>
+
+  Programmers that want to use your library can now import the module
+  with external definitions, instead of the original module.
+
+<screen>
+module dnf-tool
+imports libproplib
+strategies
+  main = main-dnf
+</screen>
+
+  This program can be compiled in the usual way, adding the new
+  library to the libraries that should be linked against:
+
+<screen>
+<prompt>$</prompt> strc -i dnf-tool.str -la stratego-lib -la ./libproplib.la
+
+<prompt>$</prompt> cat test3.prop
+And(Impl(Atom("r"),And(Atom("p"),Atom("q"))),ATom("p"))
+
+<prompt>$</prompt> ./dnf-tool -i test3.prop
+Or(And(Not(Atom("r")),ATom("p")),And(And(Atom("p"),Atom("q")),ATom("p")))
+</screen>
+
+  To correctly deploy programs based on shared libraries requires some
+  additional effort. <xref linkend="stratego-building"/> explains how
+  to create deployable packages for your Stratego programs.
+
+</para>
+
+</formalpara>
 
 </section>
 
