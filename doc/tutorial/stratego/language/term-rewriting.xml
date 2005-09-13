@@ -155,17 +155,17 @@ rules
 
 <screen>
 module prop-eval
-imports liblib prop-eval-rules
+imports libstrategolib prop-eval-rules
 strategies
   main = io-wrap(eval)
   eval = innermost(E)
 </screen>
 
-  The module imports the Stratego Library (<code>liblib</code>) and
-  the module with the evaluation rules, and then defines the
-  <code>main</code> strategy to apply <code>innermost(E)</code> to the
-  input term. (See the discussion of <code>io-wrap</code> in <xref
-  linkend="identity-with-io"/>.)
+  The module imports the Stratego Library
+  (<code>libstrategolib</code>) and the module with the evaluation
+  rules, and then defines the <code>main</code> strategy to apply
+  <code>innermost(E)</code> to the input term. (See the discussion of
+  <code>io-wrap</code> in <xref linkend="identity-with-io"/>.)
 
   The <code>innermost</code> strategy from the library exhaustively
   applies its argument transformation to the term it is applied to,
@@ -330,7 +330,7 @@ rules
 
 <screen>
 module prop-dnf
-imports liblib prop-dnf-rules
+imports libstrategolib prop-dnf-rules
 strategies
   main = io-wrap(dnf)
   dnf = innermost(E)
@@ -370,7 +370,7 @@ Or(And(Not(Atom("r")),ATom("p")),And(And(Atom("p"),Atom("q")),ATom("p")))
 
 <screen>
 module mod
-imports liblib
+imports libstrategolib
 signature
   sorts A B C
   constructors

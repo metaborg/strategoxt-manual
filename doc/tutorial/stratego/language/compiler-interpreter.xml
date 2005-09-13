@@ -165,20 +165,20 @@ $ ./identity foo bar
 
 <screen>
 module identity-io
-imports liblib
+imports libstrategolib
 strategies
   main = io-wrap(id)
 </screen>
 
     The program looks similar to the previous one, but there are a
     couple of differences. First, instead of importing module
-    <code>list-cons</code>, this module imports <code>liblib</code>,
-    which is the interface to the separately compiled Stratego
-    library. This library provides a host of useful strategies that
-    are needed in implementing program transformations. <xref
-    linkend="stratego-library"/> gives an overview of the Stratego
-    library, and we will every now and then use some useful strategies
-    from the library before we get there.
+    <code>list-cons</code>, this module imports
+    <code>libstrategolib</code>, which is the interface to the
+    separately compiled Stratego library. This library provides a host
+    of useful strategies that are needed in implementing program
+    transformations. <xref linkend="stratego-library"/> gives an
+    overview of the Stratego library, and we will every now and then
+    use some useful strategies from the library before we get there.
 
 </para>
 
@@ -194,9 +194,9 @@ strategies
 $ strc -i identity-io.str -la stratego-lib
 </screen>
 
-    What the relation is between <code>liblib</code> and
+    What the relation is between <code>libstrategolib</code> and
     <code>stratego-lib</code> will become clear later; knowing that it
-    is needed to compile programs using <code>liblib</code> suffices
+    is needed to compile programs using <code>libstrategolib</code> suffices
     for now.
 
 </para>
@@ -440,7 +440,7 @@ stratego>
 
 <screen>
 module mod0
-imports liblib mod1 mod2
+imports libstrategolib mod1 mod2
 signature
   sorts A B C
   constructors
@@ -457,7 +457,7 @@ strategies
 
   However, the <code>io-wrap</code> strategy can be used to handle the
   input and output of a Stratego program. This strategy is defined in
-  the <code>liblib</code> module, which provides an interface to the
+  the <code>libstrategolib</code> module, which provides an interface to the
   Stratego Library.
 
   The main module of a Stratego program should have a

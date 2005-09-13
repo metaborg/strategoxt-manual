@@ -606,6 +606,17 @@ foobar
 
   compiling Stratego program as library
 
+<screen>
+module libstrategolib
+// ...
+strategies
+  // ...
+  external io-wrap(s)
+  external bottomup(s)
+  external topdown(s)
+  // ...
+</screen>
+
 </para>
 
 </section>

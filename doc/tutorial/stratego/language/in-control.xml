@@ -174,7 +174,7 @@ strategies
 
 <screen>
 module prop-dnf3
-imports liblib prop
+imports libstrategolib prop
 signature
   constructors
     Dnf  : Prop -> Prop
@@ -467,7 +467,7 @@ simplify = innermost(R1 &lt;+ ... &lt;+ Rn)
 
 <screen>
 module prop-laws
-imports liblib prop
+imports libstrategolib prop
 rules
 
   DefI : Impl(x, y) -> Or(Not(x), y)
@@ -546,7 +546,7 @@ simplify = bottomup(repeat(R1 &lt;+ ... &lt;+ Rn))
 
 <screen>
 module prop-eval2
-imports liblib prop
+imports libstrategolib prop
 rules
   Eval : Not(True)      -> False       
   Eval : Not(False)     -> True
@@ -611,7 +611,7 @@ simplify = topdown(try(R1 &lt;+ ... &lt;+ Rn))
 
 <screen>
 module prop-desugar
-imports prop liblib
+imports prop libstrategolib
 
 rules
 
