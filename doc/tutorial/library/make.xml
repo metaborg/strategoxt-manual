@@ -11,4 +11,50 @@
 
   </para>
 
+  <section>
+    <title>Setting up your Project</title>
+    
+    <para>
+      The basic files: <filename>configure.ac</filename>,
+      <filename>project.spec</filename>, <filename>bootstrap</filename>,
+      <filename>Makefile.am</filename>.
+    </para>
+    
+    <para>
+      Suggested project layout.
+
+    </para>
+<screen>
+  syn
+  sig
+  src/xtc
+  src/lib
+  test
+  doc
+</screen>
+  </section>
+  
+  <section>
+    <title>Building Stand-alone Applications</title>
+
+    <para>
+      Building parse tables
+    </para>
+    
+    <para>
+      Building signatures
+    </para>
+    
+    <para>
+      Building Stratego programs; <code>bin_PROGRAMS</code> in 
+      <filename>Makefile.am</filename>.
+    </para>
+  </section>
+  
+  <section>
+    <title>Building XTC components</title>
+    
+    <para>
+    </para>
+  </section>
 </chapter>
