@@ -171,7 +171,7 @@
     <para>
       We can easily imagine an abstract syntax tree as a graphical
       structure. For example, the tree at the right is a simple
-      abstract syntax tree for the expression <code>a + n *
+      abstract syntax tree for the expression <code>(a + n) *
       1</code>. This representation corresponds closely to the
       representation of trees in computer memory. However, drawing
       pictures is not a very effective way of specifying tree

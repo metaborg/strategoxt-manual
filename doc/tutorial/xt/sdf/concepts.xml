@@ -146,24 +146,23 @@
     
     <para>
       Parse trees contain all the details of a program including
-      literals, whitespace, and comments.  This is usually not
+      literals, whitespace, and comments. This is usually not
       necessary for performing transformations.  A parse tree is
       reduced to an <emphasis>abstract syntax tree</emphasis> by
       eliminating irrelevant information such as literal symbols and
-      layout.  Furthermore, instead of using sort names as node
-      labels, <emphasis>constructors</emphasis> encode the production
-      from which a node is derived. For this purpose, the productions
-      in a syntax definition are extended with <emphasis>constructor
+      layout. Furthermore, instead of using sort names as node labels,
+      <emphasis>constructors</emphasis> encode the production from
+      which a node is derived. For this purpose, the productions in a
+      syntax definition are extended with <emphasis>constructor
       annotations</emphasis>.  <xref linkend="Fig-test1-acub"/> shows
       the extension of the syntax definition from <xref
       linkend="Fig-Expressions-NoCons.sdf"/> with constructor
-      annotations and the abstract syntax tree for the string
-      <code>(a+n)*1</code>. Note that some identifiers are used as
-      sort names <emphasis>and</emphasis> and as constructors. This
+      annotations and the abstract syntax tree for the same good old
+      string <code>(a+n)*1</code>. Note that some identifiers are used
+      as sort names <emphasis>and</emphasis> and as constructors. This
       does not lead to a conflict since sort names and constructors
       are derived from separate name spaces.
     </para>
-    
     
     <figure xml:id="Fig-test1-acub">
       <title>

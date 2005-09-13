@@ -88,16 +88,18 @@
 	</para>
       </formalpara>
 
+    <para>
+      bracket annotations
+    </para>
+
   <formalpara>
     <title><link linkend="ref-implode-asfix"><code>
        implode-asfix -i file.asfix -o file.trm
     </code></link></title>
 
     <para>
-
       <code>implode-asfix</code> transforms an AsFix parse tree to an
       abstract syntax tree.
-
     </para>
 
   </formalpara>
