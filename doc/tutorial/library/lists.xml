@@ -43,10 +43,6 @@
 9
 <prompt>stratego></prompt> &lt;reverse> [1,2,3,4,5]
 [5,4,3,2,1]
-<prompt>stratego></prompt> &lt;map(inc)> [1,2,3,4]
-[2,3,4,5]
-<prompt>stratego></prompt> &lt;filter(?2)> [1,2,3,2]
-[2,2]
 </screen>
 
   <para>
@@ -144,18 +140,36 @@
 </screen>
 
   <para>
-    Two lists can be paired using <code>zip</code>. The inverse
-    function is <code>unzip</code>.
+    Two lists can be paired using <code>zip(s)</code>. It takes
+    a tuple of two lists, and will successively pick out the head
+    of the lists and pair them into a tuple, and apply
+    <code>s</code> to the tuple. <code>zip</code> is equivalent
+    to <code>zip(id)</code>.
   </para>
   
 <screen>
 <prompt>stratego></prompt> &lt;zip> ([1,2,3],[4,5,6])
 [(1,4),(2,5),(3,6)]
-<prompt>stratego></prompt> unzip
-([1,2,3],[4,5,6])
-</screen>  
-  </section>
+<prompt>stratego></prompt> &lt;zip(add)> ([1,2,3],[4,5,6])
+[5,6,7]
+</screen>
 
+   <para>
+    The inverse function of <code>zip</code> is <code>unzip</code>.
+   </para>
+   
+<screen>
+<prompt>stratego></prompt> &lt;unzip> [(1,4),(2,5),(3,6)]
+([1,2,3],[4,5,6])
+</screen>
+
+   <para>
+     There is also <code>unzip(s)</code> which like <code>unzip</code>
+     takes a list of two-element tuples , and applies <code>s</code>
+     to each tuple before unzipping them into two lists.
+   </para>
+  </section>
+     
   <section>
   <title>  
     Lightweight sets
@@ -180,6 +194,126 @@
 <prompt>stratego></prompt> &lt;set-eq> ([1,2,3],[1,2,3])
 ([1,2,3],[1,2,3])
 </screen>
+  </section>
+
+  <section>
+    <title>Transforming Lists</title>
+    
+  <para>
+	Elementwise transformation of a list is normally done with the
+	<code>map(s)</code> strategy. It must be applied to a list. 
+	When used, it will apply the strategy <code>s</code> to each
+	element in the list, as shown here. 
+  </para>
+      
+<screen>  
+<prompt>stratego></prompt> &lt;map(inc)> [1,2,3,4]
+[2,3,4,5]
+</screen>  
+
+  <para>
+    <code>mapconcat(s)</code> is another variant of the
+    elementwise strategy application, equivalent to
+    <code>map(s) ; concat</code>. It takes a strategy
+    <code>s</code> which will be applied to each element.
+    The strategy <code>s</code> must always result in a list,
+    thus giving a list of lists, which will be concatenated.
+    A slightly more convoluted version of the above mapping.
+  </para>   	
+
+  <para>
+    Both <code>map</code> and <code>mapconcat</code> return
+    a list if equal length to the input. If we want to remove
+    elements from the list, we can use <code>filter(s)</code>.
+    The <code>filter</code> strategy will apply <code>s</code>
+    to each element of a list, and keep whichever elements
+    it succeeds on:
+  </para>
+<screen>
+<prompt>stratego></prompt> &lt;filter(?2 ; !6)> [1,2,3,2]
+[6,6]
+</screen>
+
+<screen>
+<prompt>stratego></prompt> &lt;mapconcat(\ x -> [ &lt;inc> x ] \)> [1,2,3,4]
+</screen>
+
+  </section>
+  
+  <section>
+    <title>Folding from the Left and Right</title>
+  
+  <para>
+    List folding is a somewhat flexible technique primarily intended
+    for reducing a list of elements to a single value. Think of it
+    as applying an operator between any two elements in the list,
+    e.g. going from <code>[1,2,3,4]</code> to the result of
+    <code>1 + 2 + 3 + 4</code>. If the operator is not commutative,
+    that is <code>x &lt;op> y</code> is not the same as 
+    <code>y &lt;op> x</code>, folding from the left will not be
+    the same as folding from the right, hence the need for both
+    <code>foldl</code> and <code>foldr</code>. 
+  </para>
+  
+  <para>
+    The <code>foldr(init, oper)</code> strategy takes a list of
+    elements and starts folding them from the right. It starts
+    after the rightmost element of the list. This means that
+    if we use the <code>+</code> operator with 
+    <code>foldr</code> on the list <code>[1,2,3,4]</code>,
+    we get the expression <code>1 + 2 + 3 + 4 + </code>, which
+    obviously has a dangling <code>+</code>. The strategy
+    argument <code>init</code> is used to supply the missing
+    argument on the right hand side of the last plus. If the
+    <code>init</code> supplied is <code>id</code>, 
+    <code>[]</code> will be supplied by default. We can see
+    this from the this trial run:
+  </para>
+<screen>
+<prompt>stratego></prompt> &lt;foldr>(id, debug)
+(4,[])
+(3,(4,[]))
+(2,(3,(4,[])))
+(1,(2,(3,(4,[]))))
+(1,(2,(3,(4,[]))))
+</screen>
+
+  <para>
+    With this in mind, it should be obvious how we can sum a list
+    of numbers using <code>foldr</code>:
+  </para>
+<screen>
+<prompt>stratego></prompt> &lt;foldr(!0, add)> [1,2,3,4]
+10
+</screen>      
+
+  <para>
+   The related strategy <code>foldl(s)</code> works similarly to
+   <code>foldr</code>. It takes a two-element tuple with a list
+   and a single element, i.e. <code>([x | xs], elem)</code>. The
+   folding will start in the left end of the list. The first
+   application is <code>s</code> on <code>(elem, x)</code>, as
+   we can see from the following trial run:
+  </para>
+
+<screen>
+<prompt>stratego></prompt> &lt;foldl(debug)> ([1,2,3,4], 0)
+(1,0)
+(2,(1,0))
+(3,(2,(1,0)))
+(4,(3,(2,(1,0))))
+(4,(3,(2,(1,0))))
+</screen>
+
+  <para>
+    Again, summing the elements of the list is be pretty easy:
+  </para>
+
+<screen>
+<prompt>stratego></prompt> &lt;foldl(add)> ([1,2,3,4], 0)
+10
+</screen>
+  
   </section>
   
 </chapter>
