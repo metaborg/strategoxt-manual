@@ -1,5 +1,5 @@
 AC_PREREQ([2.58])
-AC_INIT([aspect-stratego],[0.1],[stratego-bugs@cs.uu.nl])
+AC_INIT([ogetarts],[0.1],[ogetarts-bugs@ogetarts.org])
 AM_INIT_AUTOMAKE
 
 # set the prefix immediately to the default prefix
@@ -28,15 +28,13 @@ AC_PROG_LIBTOOL
 
 ### OUTPUT #############################
 AC_CONFIG_FILES([
-  aspect-stratego.spec
+  ogetarts.spec
   Makefile
   syn/Makefile
+  sig/Makefile
   src/Makefile
   src/xtc/Makefile
   src/front/Makefile
-  sig/Makefile
-  tests/Makefile
-  tests/parser/Makefile
 ])
 AC_OUTPUT
 

@@ -1,16 +1,14 @@
 include $(top_srcdir)/Makefile.xt
 #include $(wildcard *.dep)
 
-libexec_PROGRAMS = weave-aspects aspect-pack-stratego aspect-normalize-spec
+libexec_PROGRAMS = ogetarts-pre ogetarts-post
 
 LDADD += $(SSL_LIBS)
 
-STRINCLUDES    = -I $(XTC)/share/xtc -I $(STRATEGO_FRONT)/share/stratego-front -I ../../sig
+STRINCLUDES    = -I $(XTC)/share/xtc -I ../../sig
 
 SCFLAGS        = --main io-$* -O 2 --dr new
 
 EXTRA_DIST     = $(wildcard *.str) $(wildcard *.meta) $(wildcard *.syn) 
 CLEANFILES     = $(wildcard *.dep) $(wildcard *.tmp) $(wildcard *.c) $(wildcard *.o)
 BOOTCLEANFILES = $(wildcard *.c) 
-
-weave-aspects.c: weave-advice.str weave-pointcuts.str weave-helpers.str weave-rule-generators.str

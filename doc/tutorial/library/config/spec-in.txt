@@ -1,10 +1,10 @@
-Summary: aspect-stratego
+Summary: ogetarts
 Name: @PACKAGE_TARNAME@
 Version: @PACKAGE_VERSION@
 Release: 1
 License: LGPL
-Group: Development/Languages/Stratego
-URL: http://www.stratego-language.org/Stratego/AspectStratego
+Group: Development/Tools/Ogetarts
+URL: http://www.ogetarts.org/Ogetarts
 Source: @PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz
 BuildRoot: %{_tmppath}/%{name}-@PACKAGE_VERSION@-buildroot
 Requires: aterm >= 2.2

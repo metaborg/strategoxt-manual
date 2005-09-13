@@ -1,7 +1,7 @@
 include $(top_srcdir)/Makefile.xt
 include $(wildcard *.dep)
 
-bin_PROGRAMS = aspect-strc
+bin_PROGRAMS = ogetarts
 
 LDADD += $(SSL_LIBS)
 

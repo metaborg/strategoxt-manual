@@ -5,36 +5,72 @@
   <title>Building and Deploying Stratego Programs</title>
   
   <para>
-    
-    TODO: explain the standard automake/autoconf/autoxt approach to
-    creating deployable packages
-
+    The Stratego build system is based on the GNU autotools, that is
+    to say, automake, autoconf and libtool. In addition, we have a
+    tool called autoxt. If you are familiar with the autotools, setting
+    a project for Stratego should be rather easy. If this is unfamiliar
+    ground to you, don't fear. We will walk through it slowly in
+    this chapter.
   </para>
 
   <section>
     <title>Setting up your Project</title>
     
     <para>
-      The basic files: <filename>configure.ac</filename>,
-      <filename>project.spec</filename>, <filename>bootstrap</filename>,
-      <filename>Makefile.am</filename>.
+      After creating your project directory, let's call it 
+      <filename>ogetarts</filename>, the first thing you should do
+      is populate it with the basic build system files, namely
+      <filename>configure.ac</filename>, <filename>project.spec.in</filename>,
+      <filename>bootstrap</filename> and <filename>Makefile.am</filename>.
+      Additionally, you may want to add <filename>ChangeLog</filename>,
+      <filename>AUTHORS</filename>, <filename>NEWS</filename> and
+      <filename>README</filename>, but these are not essential.
+      We will walk through the contents of each of the build system
+      configuration files
     </para>
 
 <screen><xi:include href="config/bootstrap.txt" parse="text"/></screen>
-<screen><xi:include href="config/src-makefile-am.txt" parse="text"/></screen>
-<screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
-    
-    <para>
-      Suggested project layout.
 
+  <para>
+    Explain bootstrap.txt
+  </para>
+  
+<screen><xi:include href="config/src-makefile-am.txt" parse="text"/></screen>
+
+  <para>
+    Explain Makefile.am
+  </para>
+  
+<screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
+  
+  <para>
+    Explain the project.spec.in
+  </para>  
+  
+    <para>
+      For a normal Stratego project, with XTC components, and some stand-alone
+      applications, we suggest the project layout given below. Directories end
+      in <filename>/</filename>. We will discuss the 
+      <filename>Makefile.am</filename> files for the 
+      <filename>src/</filename> hierarchy below.
     </para>
+    
 <screen>
-  syn
-  sig
-  src/xtc
-  src/lib
-  test
-  doc
+  bootstrap
+  configure.ac
+  Makefile.am
+  syn/
+      Makefile.am
+  sig/
+      Makefile.am
+  src/
+      Makefile.am      
+  src/xtc/
+          Makefile.am
+  src/lib/
+          Makefile.am
+  test/
+  doc/
 </screen>
   </section>
   
