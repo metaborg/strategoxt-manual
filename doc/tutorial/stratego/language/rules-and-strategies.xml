@@ -534,6 +534,25 @@ end
 
 </section>
 
+
+<section>
+  <title>Extending Definitions</title>
+
+<para>
+
+  existing definitions can be extended
+
+  multiple definitions are possible
+
+  semantics: non-deterministic choice of bodies
+
+</para>
+
+</section>
+
+</section>
+
+
 <section>
   <title>Calling Primitives</title>
 
@@ -766,35 +785,43 @@ Or(And(Not(Atom("r")),ATom("p")),And(And(Atom("p"),Atom("q")),ATom("p")))
 
 <para>
 
-  call strategy by name
+  Strategies can be called dynamically by name, i.e., where the name
+  of the strategy is specified as a string. Such calls can be made
+  using the <code>call</code> structuct, which has the form:
 
 <screen>
 call(f | s1, ..., sn | t1, ..., tn)
 </screen>
 
-<screen>
-CALL_DYNAMIC = foo(id)
-</screen>
+  where <code>f</code> is the name (a string) of the strategy to be
+  called, followed by a list of strategy arguments, and a list of term
+  arguments.
 
 </para>
-
-</section>
-
-
-<section>
-  <title>Extending Definitions</title>
 
 <para>
 
-  existing definitions can be extended
-
-  multiple definitions are possible
-
-  semantics: non-deterministic choice of bodies
+  Dynamic calls allow the name of the strategy to be computed at
+  run-time. This is a rather recent feature of Stratego that was
+  motivated by the need for call-backs from a separately compiled
+  Stratego library combined with the computation of dynamic rule
+  names. Otherwise, there is not yet much experience with the feature.
 
 </para>
 
-</section>
+<para>
+
+  In the current version of Stratego it is necessary to 'register' a
+  strategy to be able to call it dynamically. Make a dummy strategy
+  <code>DYNAMIC-CALLS</code> with static calls to the strategies you
+  want to call dynamically.
+
+<screen>
+DYNAMICAL-CALLS = foo(id)
+</screen>
+
+  
+</para>
 
 </section>
 
