@@ -4,19 +4,77 @@
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <para>
-    Outline
+    The design goal of the Stratego Library is for it to be a collection of
+    strategies, rules and data types that is well suited for manipulation
+    of programs. In the previous part of this tutorial, we introduced you
+    to many of the specific features in the library for doing program
+    manipulation. The library also contains the familiar set of 
+    abstract data types, such as lists, strings, hashtables, sets, etc.
+    You will also find strategies for doing console, file I/O, process
+    manipulation, directory traversal and pathname computation, and more.
+    This chapter will complete your Stratego education, by introducing you
+    to the most important parts of the Stratego library not already
+    discussed.
+  </para>
+
+  <tip> 
+    <title>Online Library Documentation</title>
+     
+  <para>
+	The Stratego library grows continually. If you want to follow the
+	progress, you should consult the latest version of the 
+	<link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">library documentation</link>.
   </para>
   
   <para>
-    API Documentation for the Stratego library can be found <link
-    xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">here</link>.
+    Beware that the online documentation will display strategies on the
+    form <code>apply-and-fail(Strategy s, ATerm name, ATerm in-term, ATerm out)</code>,
+    whereas we adopt the more conventional format in this manual:
+    <code>apply-and-fail(s | name, in-term, out)</code>
+   </para>
+  </tip>
+
+  <section>
+    <title>Anatomy of the Stratego Library</title>
+      
+  <para>
+    The organization of the Stratego library should present few novelties.
+    At the coarsest level of organization, it consists of a set of
+    packages. Each package consists of a set of modules. One module
+    maps to one <code>.str</code> file, and contains definitions for
+    strategies, rules, constructors and overlays. All available packages
+    in the library is listed below.
+  </para>
+
+<screen>  
+collection/hash-table
+collection/list
+collection/set
+collection/tuple
+lang
+strategy
+strategy/general
+strategy/pack
+strategy/traversal
+system/io
+system/posix
+term
+util
+util/config
+</screen>
+
+  <para>
+    As an example, the <code>collection/list</code> package consists of
+    the modules <code>common</code>, <code>cons</code>, <code>filter</code>,
+    <code>index</code>, <code>integer</code>, <code>lookup</code>,
+    <code>set</code>, <code>sort</code>, <code>zip</code>. Inside the 
+    <code>sort</code> module, we find the <code>qsort</code> strategy,
+    for sorting lists.
   </para>
   
   <para>
-    Old library layout vs new library layout.
+    In the remainder of this part, we will focus on lists, hashtables,
+    I/O, option parsing and unit testing.
   </para>
-  
-  <para>
-    <code>foo(Strategy s, ATerm t)</code> vs <code>foo(s|t)</code>
-  </para>
+  </section>  
 </partintro>
