@@ -2,7 +2,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
   
-  <title>Unit Testing with parse-unit</title>
+  <title>Unit Testing of Syntax Definitions</title>
   
   <para>
     <command>Parse-unit</command> is a tool, part of Stratego/XT, for

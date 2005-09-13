@@ -1,0 +1,77 @@
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>From Concepts to Pratice: Generating a Parser</title>
+  
+  <para>
+    Before we dive into the details of SDF, let's try to ...
+  </para>
+  
+  <formalpara>
+    <title><link linkend="ref-sdf2table"><code>
+      sdf2table -i m.def -o m.tbl -m M
+    </code></link></title>
+    
+    <para>
+      <code>Sdf2table</code> is the parser generator for SDF. It takes
+      a complete syntax definition <code>m.def</code> (as produced by
+      <code>pack-sdf</code>), and produces a parse table
+      <code>m.tbl</code> in ATerm format. By default a parse table is
+      generated for module <code>Main</code>; this can be overridden
+      using the <code>-m</code> option.
+    </para>
+  </formalpara>
+  
+  <formalpara>
+    <title><link linkend="ref-sglr"><code>
+      sglr -p m.tbl -i file.m -o file.asfix -2
+    </code></link></title>
+    
+    <para>
+      <code>sglr</code> is the parser for SDF. It takes as
+      arguments a parse table <code>m.tbl</code> and an input file
+      <code>file.m</code>, presumably in the language described by
+      <code>m.def</code>. The parser produces a parse tree in the
+      AsFix format. If option <code>-2</code> is produced, the
+      tree is in the specific AsFix2 format, which is what
+      Stratego/XT tools use.  The AsFix2 format is a complete and
+      faithful representation of the derivation constructed by the
+      parser. It includes all details of the input file, including
+      whitespace, comments, and is self documenting as it uses the
+      complete productions of the syntax definition to encode node
+      labels.
+    </para>
+  </formalpara>
+  
+  <para>
+    bracket annotations
+  </para>
+  
+  <formalpara>
+    <title><link linkend="ref-implode-asfix"><code>
+      implode-asfix -i file.asfix -o file.trm
+    </code></link></title>
+    
+    <para>
+      <code>implode-asfix</code> transforms an AsFix parse tree to an
+      abstract syntax tree.
+    </para>
+    
+  </formalpara>
+  
+  
+  <formalpara>
+    <title><link linkend="ref-asfix-yield"><code>
+      asfix-yield -i file.asfix -o file.txt
+    </code></link></title>
+    
+    <para>
+      <code>asfix-yield</code> is an unparser for AsFix files, i.e.,
+      it produces the exact text from which the parse tree was
+      derived.
+    </para>
+    
+  </formalpara>
+</section>
+  
