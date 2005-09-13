@@ -7,15 +7,16 @@
   <para>
     The Annotated Term Format, or <emphasis>ATerms</emphasis> for
     short, is heavily used in Stratego/XT. It used for the structured
-    representation of programs (and data). Program representations are
-    exchanged between transformation tools in the ATerm format and the
-    data-structures of Stratego itself are ATerms.
+    representation of programs (and also data in general). Program
+    representations are exchanged between transformation tools in the
+    ATerm format and the data-structures of the Stratego language
+    itself are ATerms.
   </para>
 
   <para>
     Before we start with the more interesting tools of XT, we need to
-    take a closer look at the ATerm format. This chapter explains the
-    ATerm format and some tools that operate on ATerms.
+    take a closer look at the ATerm format. This chapter introduces
+    the ATerm format and some tools that operate on ATerms.
   </para>
   
   <section>
@@ -263,30 +264,40 @@ Let(
     <title>Exchange Format</title>
 
     <para>
-      
-
       Maximal sharing can make a big difference in the amount of bytes
-      needed for representing programs. 
-
-When exporting a term
-      using the textual exchange format, this compression is
-      lost. Therefore, the ATerm Library also provides a binary
-      exchange format that preserves maximal sharing.
+      needed for representing programs.  Therefore, we would like to
+      preserve this maximal sharing when an ATerm is exchanged between
+      two programs. When exporting a term using the textual exchange
+      format, this compression is lost. Therefore, the ATerm Library
+      also provides a binary exchange format that preserves maximal
+      sharing.
     </para>
 
+    <para>
+      Actually, there are three different formats:
+    </para>
 
     <variablelist>
-      <varlistentry>
-	<term>Binary ATerm Format (BAF)</term>
-	<listitem> 
-	  <para> 
-	  </para>
-	</listitem>
-      </varlistentry>
       <varlistentry>
 	<term>Textual ATerm Format</term>
 	<listitem> 
 	  <para> 
+	    In the textual ATerm format the ATerm is written as plain
+	    text, without sharing. This format is very inefficient for
+	    the exchange of large programs, but it is readable for
+	    humans.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Binary ATerm Format</term>
+	<listitem> 
+	  <para> 
+	    The binary ATerm format, also known as BAF, is an
+	    extremely efficient binary encoding of an ATerm. It
+	    preserves maximal sharing and uses all kinds of tricks to
+	    represent an ATerm in as few bytes as possible.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -294,13 +305,22 @@ When exporting a term
       <varlistentry>
 	<term>Shared Textual ATerm Format</term>
 	<listitem>
-	  <para> 
+	  <para>
+	    In the shared, textual, format the ATerm is written as
+	    plain text, but maximal sharing is encoded in the text.
 	  </para>
 	</listitem>
       </varlistentry>
     </variablelist>
+
+    <para>
+      The tool <xref linkend="ref-baffle"/> can be used to convert an
+      ATerm from one format to another. Baffle, and other tools that
+      operate on ATerms, automatically detect the format of an input
+      ATerm.
+    </para>
   </section>
-  
+
   <section>
     <title>ATerm Library</title>
 
@@ -319,12 +339,8 @@ When exporting a term
       The implementation of the Stratego transformation language is
       based on the C implementation of the library. The library
       provides term input and output, and an API for constructing and
-      inspecting terms. Garbage collection is based on B\"ohms
+      inspecting terms. Garbage collection is based on Boehms
       conservative garbage collection algorithm.
-    </para>
-
-    <para>
-      See <xref linkend="ref-aterms"/> for more information on ATerms.
     </para>
   </section>
 </chapter>
