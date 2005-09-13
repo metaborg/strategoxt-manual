@@ -161,7 +161,9 @@
       string <code>(a+n)*1</code>. Note that some identifiers are used
       as sort names <emphasis>and</emphasis> and as constructors. This
       does not lead to a conflict since sort names and constructors
-      are derived from separate name spaces.
+      are derived from separate name spaces. Some productions do not
+      have a constructor annotation, which means that these
+      productions do not create a node in a the abstract syntax tree.
     </para>
     
     <figure xml:id="Fig-test1-acub">
@@ -169,9 +171,9 @@
 	Context-free productions with constructor annotations and an
 	abstract syntax tree.
       </title>
-      <nexttoeachother>
+      <nexttoeachother align="left">
 	<entry><showfile root="." file="xmpl/Expressions-Cons.sdf"/></entry>
-	<entry><pngobject fileref="xmpl/test1-acub.png" align="center"/></entry>
+	<entry><pngobject fileref="abstract-syntax-tree.png" align="center"/></entry>
       </nexttoeachother>
     </figure>
   </section>

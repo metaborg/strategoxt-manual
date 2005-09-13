@@ -46,7 +46,7 @@
   <xi:include href="concepts.xml" />
 
   <section>
-    <title>Pratical: Generating and Using a Parser</title>
+    <title>From Concepts to Pratice: Generating a Parser</title>
 
     <para>
       Before we dive into the details of SDF, let's try to ...

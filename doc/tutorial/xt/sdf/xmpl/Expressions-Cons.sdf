@@ -7,4 +7,4 @@ Exp "+" Exp -> Exp  {cons("Plus")}
 Exp "-" Exp -> Exp  {cons("Minus")}
 Exp "=" Exp -> Exp  {cons("Eq")}
 Exp ">" Exp -> Exp  {cons("Gt")}
-"(" Exp ")" -> Exp  {cons("Bracket")}
+"(" Exp ")" -> Exp
