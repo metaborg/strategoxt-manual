@@ -121,43 +121,45 @@
       
       <para>
 	Recognition of a string only leads to its grammatical
-	category, not to any other information.  A context-free
-	grammar not only describes a mapping from strings to sorts,
-	but actually assigns structure to strings.  A context-free
-	grammar can be considered as a declaration of a set of trees
-	of one level deep. For example, the following trees correspond
-	to productions from the syntax definition in <xref
-	linkend="Fig-Expressions-NoCons.sdf"/>:
+	category, not to any other information. However, a
+	context-free grammar not only describes a mapping from strings
+	to sorts, but actually assigns structure to strings.  A
+	context-free grammar can be considered as a declaration of a
+	set of trees of one level deep. For example, the following
+	trees correspond to productions from the syntax definition in
+	<xref linkend="Fig-Expressions-NoCons.sdf"/>:
 
 	<informalfigure pgwide="1">
 	  <pngobject fileref="Plus.png" align="center"/>
+	</informalfigure>
+      </para>
+
+      <para>
+	<informalfigure pgwide="0">
+	  <pngobject fileref="PlusTimes.png" align="right"/>
 	</informalfigure>
 
 	Such one-level trees can be composed into larger trees by
 	fusing trees such that the symbol at a leaf of one tree
 	matches with the root symbol of another, as is illustrated in
 	the fusion of the plus and times productions on the right.
-
-	<informalfigure pgwide="0">
-	  <pngobject fileref="PlusTimes.png" align="right"/>
-	</informalfigure>
 	
 	The fusion process can continue as long as the tree has
 	non-terminal leaves. A tree composed in this fashion is a
 	parse tree if all leaves are terminal symbols. <xref
 	linkend="Fig-ParseTree"/> shows a parse tree for the
-	expression <code>(a+n)*1</code>. This illustrates the direct
-	correspondence between a string and its grammatical
+	expression <code>(a+n)*1</code>, for which we showed a
+	reduction sequence earlier in <xref
+	linkend="Fig-Expressions-NoCons.sdf"/>. This illustrates the
+	direct correspondence between a string and its grammatical
 	structure. The string underlying a parse tree can be obtained
-	by concatening the symbols at its leaves.
+	by concatening the symbols at its leaves, also known as the
+	yield.
       </para>
       
-
       <figure xml:id="Fig-ParseTree">
-	<title>
-	  Parse tree
-	</title>
-	<pngobject fileref="xmpl/test1-ntt.png" align="center"/>
+	<title>Parse tree</title>
+	<pngobject fileref="parse-tree.png" align="left"/>
       </figure>
       
       <para>
@@ -179,49 +181,8 @@
 	The recognition of strings described by a syntax definition,
 	and the corresponding construction of parse trees can be done
 	automatically by a parser, which can be generated from the
-	productions of a syntax definition. We will not be concerned
-	with the implementation of parsers in this book. The
-	implementation of a parser and parser generator for SDF is
-	explained in [Vis97.thesis].
+	productions of a syntax definition.
       </para>
-
-      <formalpara>
-	<title><link linkend="ref-sglr"><code>
-	  sglr -p m.tbl -i file.m -o file.asfix -2
-	</code></link></title>
-	
-	<para>
-	  <code>sglr</code> is the parser for SDF. It takes as
-	  arguments a parse table <code>m.tbl</code> and an input file
-	  <code>file.m</code>, presumably in the language described by
-	  <code>m.def</code>. The parser produces a parse tree in the
-	  AsFix format. If option <code>-2</code> is produced, the
-	  tree is in the specific AsFix2 format, which is what
-	  Stratego/XT tools use.  The AsFix2 format is a complete and
-	  faithful representation of the derivation constructed by the
-	  parser. It includes all details of the input file, including
-	  whitespace, comments, and is self documenting as it uses the
-	  complete productions of the syntax definition to encode node
-	  labels.
-	</para>
-      </formalpara>
-
-  <formalpara>
-    <title><link linkend="ref-asfix-yield"><code>
-       asfix-yield -i file.asfix -o file.txt
-    </code></link></title>
-
-    <para>
-
-      <code>asfix-yield</code> is an unparser for AsFix files, i.e.,
-      it produces the exact text from which the parse tree was
-      derived.
-
-    </para>
-
-  </formalpara>
-
-
     </section>
     
     <section>
@@ -247,21 +208,7 @@
 	names and constructors are derived from separate name spaces.
       </para>
 
-  <formalpara>
-    <title><link linkend="ref-implode-asfix"><code>
-       implode-asfix -i file.asfix -o file.trm
-    </code></link></title>
-
-    <para>
-
-      <code>implode-asfix</code> transforms an AsFix parse tree to an
-      abstract syntax tree.
-
-    </para>
-
-  </formalpara>
-
-      
+     
       <figure xml:id="Fig-test1-acub">
 	<title>
 	  Context-free productions with constructor annotations and an
@@ -296,6 +243,58 @@
 	  using the <code>-m</code> option.
       </para>
     </formalpara>
+
+      <formalpara>
+	<title><link linkend="ref-sglr"><code>
+	  sglr -p m.tbl -i file.m -o file.asfix -2
+	</code></link></title>
+	
+	<para>
+	  <code>sglr</code> is the parser for SDF. It takes as
+	  arguments a parse table <code>m.tbl</code> and an input file
+	  <code>file.m</code>, presumably in the language described by
+	  <code>m.def</code>. The parser produces a parse tree in the
+	  AsFix format. If option <code>-2</code> is produced, the
+	  tree is in the specific AsFix2 format, which is what
+	  Stratego/XT tools use.  The AsFix2 format is a complete and
+	  faithful representation of the derivation constructed by the
+	  parser. It includes all details of the input file, including
+	  whitespace, comments, and is self documenting as it uses the
+	  complete productions of the syntax definition to encode node
+	  labels.
+	</para>
+      </formalpara>
+
+  <formalpara>
+    <title><link linkend="ref-implode-asfix"><code>
+       implode-asfix -i file.asfix -o file.trm
+    </code></link></title>
+
+    <para>
+
+      <code>implode-asfix</code> transforms an AsFix parse tree to an
+      abstract syntax tree.
+
+    </para>
+
+  </formalpara>
+
+
+  <formalpara>
+    <title><link linkend="ref-asfix-yield"><code>
+       asfix-yield -i file.asfix -o file.txt
+    </code></link></title>
+
+    <para>
+
+      <code>asfix-yield</code> is an unparser for AsFix files, i.e.,
+      it produces the exact text from which the parse tree was
+      derived.
+
+    </para>
+
+  </formalpara>
+
   </section>
   
   <section>
