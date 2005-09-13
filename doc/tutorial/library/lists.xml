@@ -172,7 +172,7 @@
      
   <section>
   <title>  
-    Lightweight sets
+    Lightweight Sets
   </title>
   <para>
     In Stratego, lightweight sets are implemented as lists. A set differs
