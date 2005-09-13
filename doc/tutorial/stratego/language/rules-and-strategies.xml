@@ -551,7 +551,7 @@ end
   the native code of the C library:
 
 <screen>
-<prompt>stratego></prompt>prim("SSL_printnl", stdout(), ["foo", "bar"])
+<prompt>stratego></prompt> prim("SSL_printnl", stdout(), ["foo", "bar"])
 foobar
 ""
 </screen>
@@ -681,7 +681,7 @@ strategies
   interested in the generated C code.
 
 <screen>
-$ strc -i prop-laws.str -c -o libproplib.rtree --library
+<prompt>$</prompt> strc -i prop-laws.str -c -o libproplib.rtree --library
 [ strc | info ] Compiling 'proplib.str'
 [ strc | info ] Front-end succeeded         : [user/system] = [4.71s/0.77s]
 [ strc | info ] Abstract syntax in 'libproplib.rtree'
@@ -689,7 +689,7 @@ $ strc -i prop-laws.str -c -o libproplib.rtree --library
 [ strc | info ] Export of externals succeeded : [user/system] = [2.02s/0.11s]
 [ strc | info ] Back-end succeeded          : [user/system] = [6.66s/0.19s]
 [ strc | info ] Compilation succeeded       : [user/system] = [13.4s/1.08s]
-$ rm libproplib.str
+<prompt>$</prompt> rm libproplib.str
 </screen>
 
   The result is of this compilation is a module
@@ -766,10 +766,15 @@ Or(And(Not(Atom("r")),ATom("p")),And(And(Atom("p"),Atom("q")),ATom("p")))
 
 <para>
 
-  external definitions are implemented in a separately compiled
-  Stratego program
+  call strategy by name
 
-  compiling Stratego program as library
+<screen>
+call(f | s1, ..., sn | t1, ..., tn)
+</screen>
+
+<screen>
+CALL_DYNAMIC = foo(id)
+</screen>
 
 </para>
 
