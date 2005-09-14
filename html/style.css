@@ -98,16 +98,22 @@ td pre.screen, td pre.programlisting
                                Notes, warnings etc:
  ***************************************************************************/
 
-.note,.warning
+.note,.warning,.tip
 {
     border: 1px solid #6185a0;
     padding: 0px 1em;
     background: #fffff5;
 }
 
-div.note,div.warning
+div.note,div.warning,div.tip
 {
     font-style: italic;
+}
+
+div.tip h3
+{
+    color: blue;
+    font-size: 100%;
 }
 
 div.warning h3
