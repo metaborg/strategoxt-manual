@@ -6,23 +6,37 @@
    <title>Strings</title>
    
    <section>
-     <title></title>
+     <title>Basic String Operations</title>
  
      <para>
       <code>concat-strings</code>
       <code>conc-strings</code>
 
+      <code>strlen</code>
+      <code>string-length</code>
+
       <code>string-tokenize(|sepchars)</code>
       <code>string-tokenize-keep-all(|sepchars)</code>
       <code>string-tokenize-keep-empty(|sepchars)</code>
-
+     </para>
+   </section>
+   
+   <section>
+     <title>Sorting Strings</title>
+  
+     <para>   
       <code>string-sort-desc</code>
       <code>string-gt</code>
       <code>string-lt</code>
       <code>string-starts-with(|s)</code>
-      <code>strlen</code>
-      <code>string-length</code>
 
+     </para>
+  </section>
+
+  <section>
+    <title>Strings and Terms</title>
+    
+    <para>
       <code>implode-string</code>
       <code>explode-string</code>
       <code>string-as-chars</code>
@@ -31,11 +45,21 @@
 
       <code>write-to-string</code>
       <code>read-from-string</code>
-
-
+    </para>
+  </section>   
+  
+  <section>
+    <title>Strings and Numbers</title>
+    
+    <para>
+      Converting numbers to strings.
       <code>int-to-string</code>
       <code>real-to-string</code>
+    </para>
 
+    <para>
+      Converting strings to numbers.
+      
       <code>hex-string-to-int</code>
       <code>dec-string-to-int</code>
       <code>oct-string-to-int</code>
