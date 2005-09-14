@@ -5,6 +5,7 @@
   <title>The Stratego Library</title>
   
   <xi:include href="intro.xml"/>
+  <xi:include href="arithmetic.xml"/>
   <xi:include href="lists.xml"/>
   <xi:include href="strings.xml"/>
   <xi:include href="hashtables.xml"/>

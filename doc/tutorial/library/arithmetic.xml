@@ -1,0 +1,98 @@
+<chapter
+   xml:id="library-arithmetic"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+   
+   <title>Arithmetic Operations</title>
+   
+   <section>
+     <title>Basic Operations</title>
+ 
+     <para>
+       Stratego does not have the normal mathematical syntax for the
+       arithmetic operators <code>+</code>, <code>-</code>, <code>/</code>
+       and <code>*</code>. The syntax for these operators are reserved
+       for other purposes. Instead, the library provides the operators
+       as the strategies <code>add</code>, <code>subt</code>, 
+       <code>div</code> and <code>mul</code>. Further, there are two
+       convenience functions for integer increment, <code>inc</code>
+       and decrement, <code>dec</code>.
+     </para>
+       
+     <para>
+       There is a distinction between real numbers and integer numbers
+       throughout the library. Arithmetic strategies which work on real
+       numbers end in an <code>r</code>, e.g. <code>addr</code>,
+       and strategies working on integers end in an <code>i</code>, e.g.
+       <code>subti</code>. For each arithmetic operator, there is also
+       a type-promoting variant, e.g. <code>mul</code>, which will
+       type-promote from integer to real, when necessary. Additionally, the
+       arithmetic operations also work on strings containing integers, e.g
+       <code>divS</code>. All these variants are shown below.
+     </para>
+
+<screen>
+<prompt>stratego></prompt>&lt;addr> (1.5, 1.5)
+3.000000000000000e+00
+<prompt>stratego></prompt>&lt;subti> (5, 2)
+3
+<prompt>stratego></prompt>&lt;mul> (1.5, 2)
+3.000000000000000e+00
+<prompt>stratego></prompt>&lt;divS> ("9", "3")
+"3"
+<prompt>stratego></prompt>&lt;inc> 2
+3
+</screen>
+ 
+   </section>
+
+   <section>
+     <title>Number comparisons</title>
+     
+     <para>
+       <code>max</code>
+       <code>maxS</code>
+       
+       <code>min</code>
+       <code>minS</code>
+
+       <code>lt</code>
+       <code>ltS</code>
+       
+       <code>leq</code>
+       <code>leqS</code>
+       
+       <code>gt</code>
+       <code>gti</code>
+       <code>gtr</code>
+       <code>gtS</code>
+
+       <code>even</code>
+       <code>neg</code>
+       <code>pos</code>
+     </para>
+   </section>
+
+   <section>
+     <title>Other Operations</title>
+     
+     <para>
+       <code>mod</code>
+       <code>gcd</code>
+       <code>log2</code>
+     </para>
+   </section>
+
+   <section>
+     <title>Random Numbers</title>
+     
+     <para>
+       Initializing the random number generator. 
+       <code>set-random-seed</code>
+       
+       Getting a random number.       
+       <code>next-random</code>
+     </para>
+   </section>
+      
+</chapter>
