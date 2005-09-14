@@ -1,0 +1,9 @@
+module Expression
+imports
+  Lexical Operators
+
+exports
+  context-free start-symbols Exp
+  context-free syntax
+    Id        -> Exp {cons("Var")}
+    IntConst  -> Exp {cons("Int")}

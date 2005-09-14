@@ -2,27 +2,117 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>From Concepts to Pratice: Generating a Parser</title>
+  <title>From Concepts to Practice: Generating a Parser</title>
   
   <para>
-    Before we dive into the details of SDF, let's try to ...
+    In the next section we will take a closer look at the various
+    features of the SDF language, but before that it is useful to know
+    your tools, so that you can immediately experiment with the
+    various SDF features you will learn about. You don't need to fully
+    understand the SDF fragments we use to explain the tools: we will
+    come back to that later.
+  </para>
+
+  <para>
+    One of the nice things about SDF and the tools for it, is that the
+    concepts that we have discussed directly translate to
+    practice. For example, SDF supports all context-free grammars; the
+    parser produces complete parse trees, which can even be yielded;
+    parse trees can be converted to abstract syntax trees.
   </para>
   
-  <formalpara>
-    <title><link linkend="ref-sdf2table"><code>
-      sdf2table -i m.def -o m.tbl -m M
-    </code></link></title>
-    
+  <section>
+    <title>From Modules to Definition</title>
+
     <para>
-      <code>Sdf2table</code> is the parser generator for SDF. It takes
-      a complete syntax definition <code>m.def</code> (as produced by
-      <code>pack-sdf</code>), and produces a parse table
-      <code>m.tbl</code> in ATerm format. By default a parse table is
-      generated for module <code>Main</code>; this can be overridden
-      using the <code>-m</code> option.
+      In SDF, you can split a syntax definition over multiple
+      modules. So, a complete syntax definition consists a set of
+      modules. SDF modules are stored in files with the extension
+      <filename>.sdf</filename>. <xref linkend="Fig-Modules"/> shows
+      two SDF modules for a small language of expressions. The module
+      Lexical defines the identifiers and integer literals of the
+      language. This module is imported by the module Expression.
     </para>
-  </formalpara>
-  
+
+    <figure xml:id="Fig-Modules">
+      <title>
+	SDF modules for a small language of artithemetic expressions.
+      </title>
+
+      <informaltable frame="void">
+	<col width="0*"/>
+	<col width="1*"/>
+	<tbody align='left'>
+	    <tr valign="top">
+	      <td>
+		<programlisting><xi:include parse="text" href="practice/Expression.sdf"/></programlisting>
+	      </td>
+	      <td rowspan="2">
+		<programlisting><xi:include parse="text" href="practice/Operators.sdf"/></programlisting>
+	      </td>
+	    </tr>
+	    <tr valign="top">
+	      <td>
+		<programlisting><xi:include parse="text" href="practice/Lexical.sdf"/></programlisting>
+	      </td>
+	    </tr>
+	</tbody>
+      </informaltable>
+    </figure>
+
+    <para>
+      Before you can invoke the parser generator to create a parser
+      for this expression language, the modules that constitute a
+      complete syntax definition have to be collected into a single
+      file, usually called a <emphasis>definition</emphasis>. This
+      file has the extension <filename>.def</filename>. Collecting SDF
+      modules into a <filename>.def</filename> file is the job of the
+      tool <link linkend="ref-pack-sdf">pack-sdf</link>.
+
+      <screen><prompt>$</prompt> pack-sdf -i Expression.sdf -o Expression.def</screen>
+      
+      Pack-sdf collects all modules imported by the SDF module
+      specified using the <code>-i</code> parameter. This results in a
+      combined syntax definition, which is written to the file
+      specified with the <code>-o</code> parameter. Modules are looked
+      for in the current directory and any of the include directories
+      indicated with the <code>-I dir</code> arguments.
+    </para>
+
+    <tip>
+      <title>Standard options for input and output</title>
+      <para>
+	All tools in Stratego/XT use the <code>-i</code> and
+	<code>-o</code> options for input and output. Also, most tools
+	read from the standard input or write to standard output if no
+	input or output is specified.
+      </para>
+    </tip>
+  </section>
+
+  <section>
+    <title>Generating a Parser</title>
+
+    <formalpara>
+      <title><link linkend="ref-sdf2table"><code>
+	sdf2table -i m.def -o m.tbl -m M
+      </code></link></title>
+      
+      <para>
+	<code>Sdf2table</code> is the parser generator for SDF. It takes
+	a complete syntax definition <code>m.def</code> (as produced by
+	<code>pack-sdf</code>), and produces a parse table
+	<code>m.tbl</code> in ATerm format. By default a parse table is
+	generated for module <code>Main</code>; this can be overridden
+	using the <code>-m</code> option.
+      </para>
+    </formalpara>
+  </section>
+
+  <section>
+    <title>Invoking the Parser</title>
+
+
   <formalpara>
     <title><link linkend="ref-sglr"><code>
       sglr -p m.tbl -i file.m -o file.asfix -2
@@ -43,11 +133,7 @@
       labels.
     </para>
   </formalpara>
-  
-  <para>
-    bracket annotations
-  </para>
-  
+
   <formalpara>
     <title><link linkend="ref-implode-asfix"><code>
       implode-asfix -i file.asfix -o file.trm
@@ -59,8 +145,18 @@
     </para>
     
   </formalpara>
-  
-  
+
+    <formalpara>
+      <title><link linkend="ref-sglri"><code>
+	sglri -p m.tbl -i file.m -o file.asfix
+      </code></link></title>
+      
+      <para>
+	<code>Sglri</code> is a convenience composition of
+	<code>sglr</code> and <code>implode-asfix</code>.
+      </para>
+    </formalpara>
+
   <formalpara>
     <title><link linkend="ref-asfix-yield"><code>
       asfix-yield -i file.asfix -o file.txt
@@ -73,5 +169,6 @@
     </para>
     
   </formalpara>
+  </section>
 </section>
   

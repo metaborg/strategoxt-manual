@@ -19,43 +19,12 @@
     <para>
       Renamings
     </para>
-  </section>
-  
-  <section>
-    <title>Generating a Parser</title>
-    
-    
-    <para>
-      sglri, options
-    </para>
-    
-      <formalpara>
-	<title><link linkend="ref-pack-sdf"><code>
-	  pack-sdf -i m.sdf -o m.def -I dir
-	</code></link></title>
-	
-	<para>
-	  An SDF syntax definition consists of a set of
-	  modules. <code>pack-sdf</code> collects all modules imported
-	  by module <code>m</code> in file <code>m.sdf</code> and
-	  creates a combined syntax definition in file
-	  <code>m.def</code>. Modules are looked for in the current
-	  directory and any of the include directories indicated with
-	  the <code>-I dir</code> arguments.
-	</para>
-      </formalpara>
 
-      <formalpara>
-	<title><link linkend="ref-sglri"><code>
-	  sglri -p m.tbl -i file.m -o file.asfix
-	</code></link></title>
-	
-	<para>
-	  <code>Sglri</code> is a convenience composition of
-	  <code>sglr</code> and <code>implode-asfix</code>.
-	</para>
-      </formalpara>
-    </section>
+    <para>
+      Hierarchical names
+    </para>
+  </section>
+
 
     <section>
       <title>Lexical Syntax</title>
@@ -178,6 +147,10 @@ function fact(n, x) =
 </screen>
 
       </para>
+
+  <para>
+    bracket annotations
+  </para>
 
       <figure xml:id="Fig-RegularExpressions">
 	<title>

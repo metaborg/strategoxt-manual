@@ -88,6 +88,11 @@ pre.screen, pre.programlisting
     /* font-size: 90%; */
 }
 
+td pre.screen, td pre.programlisting
+{
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
 
 /***************************************************************************
                                Notes, warnings etc:
