@@ -262,11 +262,27 @@ P(Z,S(Z))
   <title>Choosing between Transformations</title>
 
 <para>
+
+  The typical use of left choice is to create a composite strategy
+  trying one from several possible transformations. If the strategies
+  that are composed are mutually exclusive, that is, don't succeed for
+  the same terms, their sum is a transformation that
+  (deterministically) covers a larger set of terms. 
+
+  For example, consider the following two rewrite rules:
       
 <screen>
 <prompt>stratego></prompt> PlusAssoc : Plus(Plus(e1, e2), e3) -> Plus(e1, Plus(e2, e3))
 <prompt>stratego></prompt> PlusZero  : Plus(Int("0"),e) -> e
+</screen>
 
+  These rules are mutually exclusive, since there is no term that
+  matches the left-hand sides of both rules. Combining the rules with
+  left choice into <code>PlusAssoc &lt;+ PlusZero</code> creates a
+  strategy that transforms terms matching both rules as illustrated by
+  the following applications:
+
+<screen>
 <prompt>stratego></prompt> !Plus(Int("0"),Int("3"))
 Plus(Int("0"),Int("3"))
 
@@ -274,6 +290,14 @@ Plus(Int("0"),Int("3"))
 command failed
 <prompt>stratego></prompt> PlusAssoc &lt;+ PlusZero
 Int("3")
+
+<prompt>stratego></prompt> !Plus(Plus(Var("x"),Int("42")),Int("3"))
+Plus(Plus(Var("x"),Int("42")),Int("3"))
+
+<prompt>stratego></prompt> PlusZero
+command failed
+<prompt>stratego></prompt> PlusAssoc &lt;+ PlusZero
+Plus(Var("x"),Plus(Int("42"),Int("3")))
 </screen>
 
 </para>
@@ -281,28 +305,50 @@ Int("3")
 </formalpara>
 
 <formalpara>
-  <title>Priority between Overlapping Rules</title>
+  <title>Ordering Overlapping Rules</title>
 
 <para>
 
-  A typical application of the deterministic choice operator is to
-  declare the priority between rules with overlapping left-hand sides.
+  When two rules or strategies are mutually exlusive the order of
+  applying them does not matter. 
 
-  For example, the following rewrite rules define the \verb|Mem|
-  function:
+  In cases where strategies are overlapping, that is, succeed for the
+  same terms, the order becomes crucial to determining the semantics
+  of the composition.
+
+  For example, consider the following rewrite rules reducing
+  applications of <code>Mem</code>:
 
 <screen>
-Mem1 : Mem(x,[]) -> False
-Mem2 : Mem(x,[x|xs]) -> True
-Mem3 : Mem(x,[y|ys]) -> Mem(x,ys)
+<prompt>stratego></prompt> Mem1 : Mem(x,[]) -> False()
+<prompt>stratego></prompt> Mem2 : Mem(x,[x|xs]) -> True()
+<prompt>stratego></prompt> Mem3 : Mem(x,[y|ys]) -> Mem(x,ys)
 </screen>
 
-  Rules \verb|Mem2| and \verb|Mem3| have overlapping left-hand sides.
-  Rule \verb|Mem2| only applies if the first argument is equal to head
-  element of the list in the second argument. Rule \verb|Mem3| applies
-  always if the list in the second argument is non-empty.  By ordering
-  the rules as \verb|Mem2 &lt;+ Mem3|, rule \verb|Mem2| is tried
-  before \verb|Mem3|,
+  Rules <code>Mem2</code> and <code>Mem3</code> have overlapping
+  left-hand sides.  Rule <code>Mem2</code> only applies if the first
+  argument is equal to head element of the list in the second
+  argument. Rule <code>Mem3</code> applies always if the list in the
+  second argument is non-empty.  
+
+<screen>
+<prompt>stratego></prompt> !Mem(1, [1,2,3])
+Mem(1, [1,2,3])
+<prompt>stratego></prompt> Mem2
+True
+<prompt>stratego></prompt> !Mem(1, [1,2,3])
+Mem(1,[1,2,3])
+<prompt>stratego></prompt>Mem3
+Mem(1,[2,3])
+</screen>
+
+  In such situations, depending on the order of the rules, differents
+  results are produced. (The rules form a non-confluent rewriting
+  system.)
+
+  By ordering the rules as <code>Mem2 &lt;+ Mem3</code>, rule
+  <code>Mem2</code> is tried before <code>Mem3</code>, and we have a
+  deterministic transformation strategy.
 
 </para>
 
@@ -313,13 +359,17 @@ Mem3 : Mem(x,[y|ys]) -> Mem(x,ys)
 
 <para>
       
-  A useful application of &lt;+ in combination with id is the
-  reflexive closure of a strategy s. The strategy try(s) tries to
-  apply the strategy s, but if that fails, just succeeds using id.
+  A useful application of <code>&lt;+</code> in combination with
+  <code>id</code> is the reflexive closure of a strategy
+  <code>s</code>:
     
 <screen>
 try(s) = s &lt;+ id
 </screen>
+
+  The user-defined strategy combinator <code>try</code> tries to apply
+  its argument strategy <code>s</code>, but if that fails, just
+  succeeds using <code>id</code>.
 
 </para>
 
@@ -336,7 +386,8 @@ try(s) = s &lt;+ id
   Sometimes it is not desirable to backtrack to the alternative
   specified in a choice. Rather, after passing a guard, the choice
   should be committed. This can be expressed using the \emph{guarded
-  left choice} operator \verb|s1 &lt; s2 + s3|, which is defined as:
+  left choice} operator <code>s1 &lt; s2 + s3</code>, which is defined
+  as:
 
 
   Conditional choice
