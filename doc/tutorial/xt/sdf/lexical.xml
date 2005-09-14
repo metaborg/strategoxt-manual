@@ -2,7 +2,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-    <title>SDF: Lexical Syntax</title>
+    <title>Lexical Syntax</title>
     
     <para>
       So far we have looked at syntax of expressions and statements,
