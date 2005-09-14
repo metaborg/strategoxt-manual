@@ -96,6 +96,22 @@
 	<title>Don't split keywords and identifiers</title>
 	<para/>
       </example>
+
+      <warning>
+	<title>Follow Restrictions require exact symbols</title>
+	<para>
+	  Abstract is not possible: symbol must occur in the
+	  production as specified in the follow restriction.
+	</para>
+
+	<para>
+	  As opposed to reject productions, where abstraction is
+	  possible. So, you can abstract over keywords for rejecting
+	  them as identifiers, but you cannot abstract over a follow
+	  restriction for keywords.
+	</para>
+      </warning>
+	
     </section>
     
     <section>
