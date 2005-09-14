@@ -25,7 +25,7 @@
     <title>From Modules to Definition</title>
 
     <para>
-      In SDF, you can split a syntax definition over multiple
+      In SDF, you can split a syntax definition into multiple
       modules. So, a complete syntax definition consists a set of
       modules. SDF modules are stored in files with the extension
       <filename>.sdf</filename>. <xref linkend="Fig-Modules"/> shows
@@ -79,6 +79,12 @@
       indicated with the <code>-I dir</code> arguments.
     </para>
 
+    <para>
+      Pack-sdf does not analyse the contents of an SDF module to
+      report possible errors (except for syntactical ones). The parser
+      generator, discussed next, performs this analysis.
+    </para>
+
     <tip>
       <title>Standard options for input and output</title>
       <para>
@@ -93,30 +99,61 @@
   <section>
     <title>Generating a Parser</title>
 
-    <formalpara>
-      <title><link linkend="ref-sdf2table"><code>
-	sdf2table -i m.def -o m.tbl -m M
-      </code></link></title>
-      
-      <para>
-	<code>Sdf2table</code> is the parser generator for SDF. It takes
-	a complete syntax definition <code>m.def</code> (as produced by
-	<code>pack-sdf</code>), and produces a parse table
-	<code>m.tbl</code> in ATerm format. By default a parse table is
-	generated for module <code>Main</code>; this can be overridden
-	using the <code>-m</code> option.
-      </para>
-    </formalpara>
+    <para>
+      From the <code>.def</code> definition file (as produced by
+      <code>pack-sdf</code>), the <emphasis>parser
+      generator</emphasis> <xref linkend="ref-sdf2table"/> will
+      construct a parse table. This parse table can later on be handed
+      off to the actual parser.
+    </para>
+
+    <screen><prompt>$</prompt> sdf2table -i Expression.def -o Expression.tbl -m Expression</screen>
+
+    <para>
+      The <code>-m</code> option is used to specify the module for
+      which to generate a parse table. The default module is
+      <code>Main</code>, so if the syntax definition has a different
+      main module (in this case <code>Expression</code>), then you
+      need to specify this option.
+    </para>
+
+    <para>
+      The parse table is stored in a file with extension
+      <code>.tbl</code>. If all you plan on doing with your grammar is
+      parsing, the resulting <code>.tbl</code> file is all you need to
+      deploy. <xref linkend="ref-sdf2table"/> could be thought of as a
+      parse-generator; however, unlike many other parsing systems, it
+      does not construct an parser program, but a compact data
+      representation of the parse table.
+    </para>
+
+    <para>
+      Sdf2table analyzes the SDF syntax definition to detect possible
+      errors, such as undefined symbols, symbols for which no
+      productions exists, deprecated features, etc. It is a good idea
+      to try to fix these problems, although <code>sdf2table</code>
+      will usually still happily generated a parse table for you.
+    </para>
   </section>
 
   <section>
     <title>Invoking the Parser</title>
 
+    <para>
+      The parser (sglr) takes as input the parse table to use, which
+      represents the grammar you want it to parse, and a file in the
+      language described by the grammar.
+    </para>
 
+    <para>
+      This tool is is the actual parser. By giving it a .tbl file
+      describing your grammar and a file with a text in that grammar's
+      language, sglr will construct a parse tree.
+    </para>
+      
   <formalpara>
-    <title><link linkend="ref-sglr"><code>
-      sglr -p m.tbl -i file.m -o file.asfix -2
-    </code></link></title>
+    <title><link linkend="ref-sglr"><code> sglr -p m.tbl -i file.m -o
+    file.asfix -2 </code></link></title>
     
     <para>
       <code>sglr</code> is the parser for SDF. It takes as
