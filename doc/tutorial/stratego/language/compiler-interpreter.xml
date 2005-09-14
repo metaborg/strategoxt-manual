@@ -15,7 +15,7 @@
  </para>
 
 <section>
-  <title>The Identity Transformation</title>
+  <title>Compiling Stratego Programs</title>
 
 <para>
 
@@ -58,7 +58,7 @@ strategies
    <code>strc</code> as follows:
 
 <screen>
-$ strc -i identity.str
+<prompt>$</prompt> strc -i identity.str
 [ strc | info ] Compiling 'identity.str'
 [ strc | info ] Front-end succeeded         : [user/system] = [0.59s/0.56s]
 [ strc | info ] Back-end succeeded          : [user/system] = [0.46s/0.16s]
@@ -86,7 +86,7 @@ $ strc -i identity.str
    to see what the compiler has done:
 
 <screen>
-$ ls -l identity*
+<prompt>$</prompt> ls -l identity*
 -rwxrwxr-x  1 7182 Sep  7 14:54 identity*
 -rw-------  1 1362 Sep  7 14:54 identity.c
 -rw-rw-r--  1  200 Sep  7 14:54 identity.dep
@@ -136,7 +136,7 @@ identity : identity.str
    happens:
 
 <screen>
-$ ./identity foo bar
+<prompt>$</prompt> ./identity foo bar
 ["./identity","foo","bar"]
 </screen>
 
@@ -153,7 +153,7 @@ $ ./identity foo bar
 </section>
 
 <section xml:id="identity-with-io">
-  <title>The Identity Transformation with I/O</title>
+  <title>Basic Input and Output</title>
 
 <para>
 
@@ -191,7 +191,7 @@ strategies
     <code>-la</code> option:
 
 <screen>
-$ strc -i identity-io.str -la stratego-lib
+<prompt>$</prompt> strc -i identity-io.str -la stratego-lib
 </screen>
 
     What the relation is between <code>libstrategolib</code> and
@@ -208,7 +208,7 @@ $ strc -i identity-io.str -la stratego-lib
     by the <code>io-wrap</code> strategy:
 
 <screen>
-$ ./identity-io --help
+<prompt>$</prompt> ./identity-io --help
 Options:
    -i f|--input f   Read input from f
    -o f|--output f  Write output to f
@@ -231,9 +231,9 @@ Options:
    an ATerm we can apply the program to it:
 
 <screen>
-$ echo "Foo(Bar())" > foo-bar.trm
-$ ./identity-io -i foo-bar.trm -o foo-bar2.trm
-$ cat foo-bar2.trm
+<prompt>$</prompt> echo "Foo(Bar())" > foo-bar.trm
+<prompt>$</prompt> ./identity-io -i foo-bar.trm -o foo-bar2.trm
+<prompt>$</prompt> cat foo-bar2.trm
 Foo(Bar)
 </screen>
 
@@ -243,7 +243,7 @@ Foo(Bar)
    pipe:
 
 <screen>
-$ echo "Foo(Bar())" | ./identity-io 
+<prompt>$</prompt> echo "Foo(Bar())" | ./identity-io 
 Foo(Bar)
 </screen>
 
@@ -254,7 +254,7 @@ Foo(Bar)
    protests and fails:
 
 <screen>
-$ echo "+ foo bar" | ./identity-io
+<prompt>$</prompt> echo "+ foo bar" | ./identity-io
 readFromTextFile: parse error at line 0, col 0
 not a valid term
 ./identity: rewriting failed
@@ -263,6 +263,58 @@ not a valid term
    So we have written a program to check if a file represents an ATerm.
 
 </para>
+</section>
+
+<section>
+    <title>Combining Transformations</title>
+    
+<para>
+  
+  A Stratego program based on <code>io-wrap</code> defines a
+  transformation from terms to terms. Such transformations can be
+  combined into more complex transformations, by creating a chain of
+  tool invocations.
+
+  For example, if we have a Stratego program <code>trafo-a</code>
+  applying some undefined <code>transformation-a</code> to the input
+  term of the program
+
+<screen>
+module trafo-a
+imports libstrategolib
+strategies
+  main = io-wrap(transformation-a)
+  transformation-a = ...
+</screen>
+
+  and we have another similar program <code>trafo-b</code> applying a
+  <code>transformation-b</code>
+
+<screen>
+module tool-b
+imports libstrategolib
+strategies
+  main = io-wrap(transformation-b)
+  transformation-b = ...
+</screen>
+
+   then we can combine the transformations to transform an
+   <code>input</code> file to an <code>output</code> file using a Unix
+   pipe, as in
+
+<screen>
+<prompt>$</prompt> tool-a -i input | tool-b -o output
+</screen>
+
+   or using an <code>intermediate</code> file:
+
+<screen>
+<prompt>$</prompt> tool-a -i input -o intermediate
+<prompt>$</prompt> tool-b -i intermediate -o output
+</screen>
+
+</para>
+
 </section>
 
 <section xml:id="stratego-shell">
@@ -294,7 +346,7 @@ not a valid term
   basics of using it:
   
 <screen>
-$ stratego-shell
+<prompt>$</prompt> stratego-shell
 <prompt>stratego></prompt> :show
 ()
 <prompt>stratego></prompt> !Foo(Bar())
@@ -307,7 +359,7 @@ command failed
 Foo(Bar)
 <prompt>stratego></prompt> :quit
 Foo(Bar)
-$
+<prompt>$</prompt>
 </screen>
 
   The shell is invoked by calling the command
@@ -378,7 +430,7 @@ command failed
    what commands are available in the shell:
 
 <screen>
-$ stratego-shell
+<prompt>$</prompt> stratego-shell
 <prompt>stratego></prompt> :help
 
 Rewriting
@@ -472,7 +524,7 @@ strategies
   the Stratego Compiler <code>strc</code>.
 
 <screen>
-$ strc -i mod0 -la stratego-lib
+<prompt>$</prompt> strc -i mod0 -la stratego-lib
 </screen>
 
   The resulting executable applies the <code>main</code> strategy to
@@ -490,7 +542,7 @@ $ strc -i mod0 -la stratego-lib
   interactively.
 
 <screen>
-$ stratego-shell
+<prompt>$</prompt> stratego-shell
 <prompt>stratego></prompt> id
 ()
 <prompt>stratego></prompt> 

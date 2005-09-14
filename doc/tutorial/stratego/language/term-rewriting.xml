@@ -179,7 +179,7 @@ strategies
   linkend="running-stratego-programs"/>:
 
 <screen>
-$ strc -i prop-eval.str -la stratego-lib
+<prompt>$</prompt> strc -i prop-eval.str -la stratego-lib
 </screen>
 
    This results in an executable <code>prop-eval</code> that can be
@@ -339,7 +339,7 @@ strategies
   compile it in the usual way
 
 <screen>
-$ strc -i prop-dnf.str -la stratego-lib
+<prompt>$</prompt> strc -i prop-dnf.str -la stratego-lib
 </screen>
 
   so that we can use it to transform terms:
@@ -393,7 +393,7 @@ strategies
   Compiling the module by means of the command
 
 <screen>
-$ strc -i mod.str -la stratego-lib
+<prompt>$</prompt> strc -i mod.str -la stratego-lib
 </screen>
 
   produces an executable <code>mod</code> that can be used to

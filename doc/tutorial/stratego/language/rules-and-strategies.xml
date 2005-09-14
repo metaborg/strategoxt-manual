@@ -3,7 +3,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Rules and Strategies (*)</title>
+  <title>Rules and Strategies</title>
 
 <para>
 
@@ -372,6 +372,7 @@ And(Atom("p"),Not(Atom("q")))
         
 <screen>
 module dnf-strategies
+imports libstrategolib prop-dnf-rules
 strategies
 
   dnf-rules = 
@@ -540,11 +541,23 @@ end
 
 <para>
 
-  existing definitions can be extended
+  As we saw in <xref linkend="stratego-term-rewriting"/>, a Stratego
+  program can introduce several rules with the same name. It is even
+  possible to extend rules across modules. This is also possible for
+  strategy definitions. If two strategy definitions have the same name
+  and the same number of parameters, they effectively define a single
+  strategy that tries to apply the bodies of the definitions in some
+  undefined order. Thus, a definition of the form
 
-  multiple definitions are possible
+<screen>
+strategies
+  f = s1
+  f = s2
+</screen>
 
-  semantics: non-deterministic choice of bodies
+  entails that a call to <code>f</code> has the effect of first trying
+  to apply <code>s1</code>, and if that fails applies <code>s2</code>,
+  or the other way around.
 
 </para>
 
@@ -601,6 +614,9 @@ foobar
 
 </para>
 
+<formalpara>
+  <title>Implementing Primitives</title>
+
 <para>
 
   The Stratego Library provides all the primitives for I/O,
@@ -610,16 +626,6 @@ foobar
   compiled program a library that implements the function.  See the
   documentation of <xref linkend="ref-strc"/> for instructions.
  
-</para>
-
-<formalpara>
-  <title>Implementing Primitives</title>
-
-<para>
-
-  TODO: explain how to implement primitives in C and use their
-  implementation in a Stratego program
-
 </para>
 
 </formalpara>
@@ -683,6 +689,35 @@ strategies
   definitions.
 
 </para>
+
+<formalpara>
+  <title>External Definitions cannot be Extended</title>
+
+<para>
+
+  Unlike definitions imported in the normal way, external definitions
+  cannot be extended. If we try to compile a module extending an
+  external definition, such as 
+
+<screen>
+module wrong
+imports libstrategolib
+strategies
+  bottomup(s) = fail
+</screen>
+
+  compilation fails:
+
+<screen>
+<prompt>$</prompt> strc -i wrong.str
+[ strc | info ] Compiling 'wrong.str'
+error: redefining external definition: bottomup/1-0
+[ strc | error ] Compilation failed (3.66 secs)
+</screen>
+
+</para>
+
+</formalpara>
 
 <formalpara>
   <title>Creating Libraries</title>
@@ -787,15 +822,15 @@ Or(And(Not(Atom("r")),ATom("p")),And(And(Atom("p"),Atom("q")),ATom("p")))
 
   Strategies can be called dynamically by name, i.e., where the name
   of the strategy is specified as a string. Such calls can be made
-  using the <code>call</code> structuct, which has the form:
+  using the <code>call</code> construct, which has the form:
 
 <screen>
 call(f | s1, ..., sn | t1, ..., tn)
 </screen>
 
-  where <code>f</code> is the name (a string) of the strategy to be
-  called, followed by a list of strategy arguments, and a list of term
-  arguments.
+  where <code>f</code> is a term that should evaluate to a string,
+  which indicates the name of the strategy to be called, followed by a
+  list of strategy arguments, and a list of term arguments.
 
 </para>
 
@@ -812,24 +847,46 @@ call(f | s1, ..., sn | t1, ..., tn)
 <para>
 
   In the current version of Stratego it is necessary to 'register' a
-  strategy to be able to call it dynamically. Make a dummy strategy
-  <code>DYNAMIC-CALLS</code> with static calls to the strategies you
-  want to call dynamically.
+  strategy to be able to call it dynamically. (In order to avoid
+  deletion in case it is not called explicitly somewhere in the
+  program.) Strategies are registered by means of a dummy strategy
+  definition <code>DYNAMIC-CALLS</code> with calls to the strategies
+  that should called dynamically.
 
 <screen>
 DYNAMICAL-CALLS = foo(id)
 </screen>
 
-  
 </para>
 
 </section>
-
 
 <section>
   <title>Summary</title>
 
 <para>
+
+  We have learned that rules and strategies define
+  <emphasis>transformations</emphasis>, that is, functions from terms
+  to terms that can fail, i.e., partial functions. Rule and strategy
+  definitions introduce names for transformations. Parameterized
+  strategy definitions introduce new strategy
+  <emphasis>operators</emphasis>, functions that construct
+  transformations from transformations.
+
+</para>
+
+<para>
+
+  Primitive strategies are transformations that are implemented in
+  some language other than Stratego (usually C), and are called
+  through the <code>prim</code> construct.
+
+  External definitions define an interface to a separately compiled
+  library of Stratego definitions.
+
+  Dynamic calls allow the name of the strategy to be called to be
+  computed as a string.
 
 </para>
 

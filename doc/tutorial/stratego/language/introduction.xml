@@ -37,7 +37,7 @@
 
   </para>
 
-<simplesect>
+<formalpara>
   <title>Transformation by Rewriting</title>
 
   <para>
@@ -72,6 +72,11 @@
 
   </para>
 
+</formalpara>
+
+<formalpara>
+  <title>Limitations of Pure Rewriting</title>
+
   <para>
 
     However, there are two limitations to the application of standard
@@ -82,9 +87,9 @@
 
   </para>
 
-</simplesect>
+</formalpara>
 
-<simplesect>
+<formalpara>
   <title>Transformation Strategies</title>
 
   <para>
@@ -103,6 +108,8 @@
 
   </para>
 
+</formalpara>
+
   <para>
 
     Stratego solves the problem of control over the application of
@@ -116,9 +123,7 @@
 
   </para>
 
-</simplesect>
-
-<simplesect>
+<formalpara>
   <title>Context-Senstive Transformation</title>
 
   <para>
@@ -141,20 +146,9 @@
 
   </para>
 
-  <para>
+</formalpara>
 
-    Stratego achieves context-sensitive rewriting by the extension of
-    rewriting strategies with scoped dynamic rewrite rules. Dynamic
-    rules are otherwise normal rewrite rules that are defined at
-    run-time and that inherit information from their definition
-    context.
-
-  </para>
-
-</simplesect>
-
-
-<simplesect>
+<formalpara>
   <title>Outline</title>
 
   <para>
@@ -173,6 +167,8 @@
      rewrite rules and introduces strategies for achieving this.
 
   </para>
+
+</formalpara>
 
   <para>
 
@@ -202,7 +198,5 @@
      expressing context-sensitive transformations.     
         
   </para>
-
-</simplesect>
 
 </partintro>

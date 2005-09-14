@@ -5,49 +5,15 @@
   <title>Strategy Combinators (*)</title>
 
 <para>
-               
-   In the previous chapter we saw that pure term rewriting is not
-   adequate for term rewriting because of the lack of control over the
-   application of rules. Approaches for encoding such control within
-   the pure rewriting paradigm lead to functionalized control by means
-   of extra rules and constructors at the expense of traversal
-   overhead and at the loss of the separation of rules and strategies.
-   We need a mechanism that provides such control, but maintains the
-   separation of rules and strategies and keeps traversal overhead to
-   a minimum.  Such a mechanism should allow strategies parameterized
-   with selections from the available rules.
 
-</para>
+  We have seen the use of strategies to combine rules into complex
+  transformations.
 
-<para>
-          
-   Also we saw that many transformation problems can be solved by
-   alternative strategies such as a one-pass bottom-up or top-down
-   traversal.  Others can be solved by selecting the rules that are
-   applied in an innermost normalization, rather than all the rules in
-   a specification.  However, no fixed set of such alternative
-   strategies will be sufficient for dealing with all transformation
-   problems.  Rather than providing one or a few fixed rewriting
-   strategies, we need to be able to \emph{compose} strategies from
-   basic building blocks with a few fundamental operators.
-
-</para>
-
-<para>
-         
-   In program transformation, the basic building blocks are single
-   rewrite steps, for example defined by a rewrite rule.  This chapter
-   introduces a set of operators for composing such single step
-   transformations into complex transformations.  By allowing
-   abstraction over the basic transformation, \emph{generic}
-   transformation \emph{strategies} can be defined. The combinators
-   discussed in this chapter cover sequential programming and
-   type-specific traversal. Extensions of this basic framework will be
-   considered in later chapters.
-
-</para>
-
-<para>
+  Rather than providing a fixed set of high-level strategy operators
+  such as <code>bottomup</code>, <code>topdown</code>, and
+  <code>innermost</code>, Stratego provides a small set of basic
+  combinators, that can be used to create a wide variety of
+  strategies.
  
    We first consider a set of combinators for sequential programming,
    including sequential composition, deterministic choice, guarded

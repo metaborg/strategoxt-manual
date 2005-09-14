@@ -198,6 +198,10 @@
 
   </para>
 
+<screen>
+TODO: picture of tree vs dag representation
+</screen>
+
   <para>
 
     When writing a term to a file in order to exchange it with another
