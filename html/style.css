@@ -186,7 +186,8 @@ div.variablelist dd
 
 div.informaltable table
 {
-  border: 1px solid #6185a0;
+  border-style: solid;
+  border-color: #6185a0;
   width: 100%;
 }
 
