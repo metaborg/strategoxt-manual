@@ -45,6 +45,9 @@
 
   <xi:include href="concepts.xml" />
   <xi:include href="practice.xml" />
-  <xi:include href="language.xml" />
+  <xi:include href="modules.xml" />
+  <xi:include href="lexical.xml" />
+  <xi:include href="context-free.xml" />
+  <xi:include href="disambiguation.xml" />
   <xi:include href="parse-unit/section.xml"/>
 </chapter>

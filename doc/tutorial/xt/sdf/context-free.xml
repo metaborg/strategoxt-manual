@@ -1,0 +1,51 @@
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+    <title>SDF: Context-free Syntax</title>
+
+    <section>
+      <title>Regular Expressions</title>
+      
+      <para>
+	Programming languages usually contain all kinds of list
+	constructs. Specification of lists with plain context-free
+	grammars requires several productions for each list construct.
+	SDF provides a bunch of regular expression operators abbreviating
+	common patterns. The operators <code>A*</code> and
+	<code>A+</code> denote lists of zero (one) or more
+	<code>A</code>s.  The <code>{A lit}*</code> and <code>{A
+	lit}+</code> operators denote lists of zero (one) or more
+	<code>A</code>s separated by <code>lit</code>.
+      </para>
+      
+      <para>
+	<xref linkend="Fig-RegularExpressions"/> illustrates the use of
+	these operators in the extension of the expression language with
+	statements and function declarations. Lists are used in numerous
+	places, such as for the sequential composition of statements
+	(<code>Seq</code>), the declarations in a let binding, and the
+	formal and actual arguments of a function (<code>FunDec</code>
+	and <code>Call</code>). An example function definition in this
+	language is:
+
+<screen>
+function fact(n, x) =
+  if n > 0 then fact(n - 1, n * x) else x
+</screen>
+
+      </para>
+
+  <para>
+    bracket annotations
+  </para>
+
+      <figure xml:id="Fig-RegularExpressions">
+	<title>
+	  Syntax definition with regular expressions.
+	</title>
+	<showfile root="." file="xmpl/Statements.sdf"/>
+      </figure>
+    </section>
+  </section>
+  
