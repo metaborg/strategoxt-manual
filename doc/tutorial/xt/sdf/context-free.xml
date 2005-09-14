@@ -33,7 +33,6 @@
 function fact(n, x) =
   if n > 0 then fact(n - 1, n * x) else x
 </screen>
-
       </para>
 
   <para>

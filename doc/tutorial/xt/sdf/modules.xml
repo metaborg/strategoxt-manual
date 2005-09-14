@@ -3,13 +3,70 @@
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>SDF: The Modular Syntax Definition Formalism</title>
-  
+
   <para>
-    Hierarchical names
-  </para>    
-  
-  <para>
-    Renamings
+    Modules, imports, exports, hiddens.
   </para>
+  
+  <para>
+    Hierarchical names foe modules
+  </para>
+
+  <para>
+    Comments
+  </para>
+
+  <section>
+    <title>Symbols and Regular Expressions</title>
+
+    <section>
+      <title>Declaring Non-terminals</title>
+      <para/>
+    </section>
+  </section>
+
+  <section>
+    <title>Start Symbols</title>
+    <para/>
+
+    <para>
+      Not just plain sorts (non-terminals).
+    </para>
+  </section>
+
+  <section>
+    <title>Ambiguities</title>
+    <para>
+      Explain that SDF and SGLR support ambiguities.
+    </para>
+
+    <para>
+      Disambiguation later.
+    </para>
+  </section>
+
+  <section>
+    <title>Renaming Symbols</title>
+    <para>
+      Import module and rename symbols in the imported definition.
+    </para>
+
+    <para>
+      Not very common, but heavily used for combining syntax
+      definitions of different language. See concrete object syntax.
+    </para>
+  </section>
+
+  <section>
+    <title>Parameterized Modules</title>
+    <para>
+      Modules can have formal parameters.
+    </para>
+
+    <example>
+      <title>Parameterized Module for Regular Expressions</title>
+      <para/>
+    </example>
+  </section>
 </section>
 
