@@ -140,72 +140,120 @@
     <title>Invoking the Parser</title>
 
     <para>
-      The parser (sglr) takes as input the parse table to use, which
-      represents the grammar you want it to parse, and a file in the
-      language described by the grammar.
+      Now we have a parse table, we can invoke the actual parser with
+      this parse table to parse a source program. The parser is called
+      <xref linkend="ref-sglr"/> and produces a
+      <emphasis>complete</emphasis> parse tree in the so-called AsFix
+      format. Usually, we are not really interested in the parse tree
+      and want to work on an abstract syntax tree. For this, there is
+      the somewhat easier to use tool <xref linkend="ref-sglri"/>,
+      which indirectly just invokes <code>sglr</code>.
     </para>
 
+<screen>
+<prompt>$</prompt> cat mul.exp
+(a + n) * 1
+<prompt>$</prompt> sglri -p Expression.tbl -i mul.exp
+Times(Plus(Var("a"),Var("n")),Int("1"))
+</screen>
+
     <para>
-      This tool is is the actual parser. By giving it a .tbl file
-      describing your grammar and a file with a text in that grammar's
-      language, sglr will construct a parse tree.
+      For small experiments, it is useful that sglri can also read the
+      source file from standard input. Example:
     </para>
-      
-  <formalpara>
-    <title><link linkend="ref-sglr"><code> sglr -p m.tbl -i file.m -o
-    file.asfix -2 </code></link></title>
+
+<screen>
+<prompt>$</prompt> echo "(a + n) * 1" | sglri -p Expression.tbl
+Times(Plus(Var("a"),Var("n")),Int("1"))
+</screen>
+
+    <formalpara>
+      <title>Heuristic Filters</title>
+      <para>
+	As we will discuss later, SGLR uses disambiguation filters to
+	select the desired derivations if their are multiple
+	possibilities. Most of these filters are based on
+	specifications in the original syntax definition, such a
+	associativity, priorities, follow restrictions, reject, avoid
+	and prefer productions. However, unfortunately there are some
+	filters that select based on heuristics. Sometimes these
+	heuristics are applicable to your situation, but sometimes
+	they are not. Also, the heuristic filters make it less clear
+	when and why there are ambiguities in a syntax
+	definition. Therefore, we strongly advice you to use the
+	option <code>--no-heuristic-filters</code> of
+	<code>sglri</code>.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title>Start Symbols</title>
+
+      <para>
+	If the original syntax definition contained multiple start
+	symbols, then you can optionally specify the desired start
+	symbol with the <code>-s</code> option. For example, if we add
+	<code>Id</code> to <code>start-symbols</code>
+         ...
+      </para>
+    </formalpara>
+
+
+    <formalpara>
+      <title>Working with Parse Trees</title>
+
+      <para>
+	If you need a parse tree, then you can use <xref
+	linkend="ref-sglr"/> itself. These parse trees contain a lot
+	of information, so they are huge. Usually, you really don't
+	want to see them. Still, the structure of the parse tree is
+	quite interesting, since you can exactly inspect how the
+	productions from the syntax definition have been applied to
+	the input.
+      </para>
+    </formalpara>
+
+    <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | pp-aterm
+parsetree( ... )
+</screen>
     
     <para>
-      <code>sglr</code> is the parser for SDF. It takes as
-      arguments a parse table <code>m.tbl</code> and an input file
-      <code>file.m</code>, presumably in the language described by
-      <code>m.def</code>. The parser produces a parse tree in the
-      AsFix format. If option <code>-2</code> is produced, the
-      tree is in the specific AsFix2 format, which is what
-      Stratego/XT tools use.  The AsFix2 format is a complete and
+      Note that we passed the option <code>-2</code> to sglr. This
+      specified the variant, AsFix2, of the AsFix parse tree format
+      that should be used. The Stratego/XT tools use this variant at
+      the moment. All variants of the AsFix format are complete and
       faithful representation of the derivation constructed by the
       parser. It includes all details of the input file, including
       whitespace, comments, and is self documenting as it uses the
       complete productions of the syntax definition to encode node
-      labels.
+      labels. The <code>AsFix2</code> variant preserves all the
+      structure of the derivation. In the other variant, the structure
+      of the lexical parts of a parse tree are not preserved.
     </para>
-  </formalpara>
 
-  <formalpara>
-    <title><link linkend="ref-implode-asfix"><code>
-      implode-asfix -i file.asfix -o file.trm
-    </code></link></title>
-    
     <para>
-      <code>implode-asfix</code> transforms an AsFix parse tree to an
-      abstract syntax tree.
+      The parse tree can be imploded to an abstract syntax tree
+      using the tool <xref linkend="ref-implode-asfix"/>. The
+      combination of <code>sglr</code> and
+      <code>implode-asfix</code> has the same effect as directly
+      invoking <code>sglri</code>.
     </para>
-    
-  </formalpara>
 
-    <formalpara>
-      <title><link linkend="ref-sglri"><code>
-	sglri -p m.tbl -i file.m -o file.asfix
-      </code></link></title>
-      
+      <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p
+      Expression.tbl -2 | implode-asfix
+      Times(Plus(Var("a"),Var("n")),Int("1"))</screen>
+
       <para>
-	<code>Sglri</code> is a convenience composition of
-	<code>sglr</code> and <code>implode-asfix</code>.
+        The parse tree can also be yielded back to the original source
+        file using the tool <xref
+        linkend="ref-asfix-yield"/>. Applying this shows that
+        whitespace and comments are present in the parse tree, since
+        the source is reproduced in exactly the same way as it was!
       </para>
-    </formalpara>
 
-  <formalpara>
-    <title><link linkend="ref-asfix-yield"><code>
-      asfix-yield -i file.asfix -o file.txt
-    </code></link></title>
-    
-    <para>
-      <code>asfix-yield</code> is an unparser for AsFix files, i.e.,
-      it produces the exact text from which the parse tree was
-      derived.
-    </para>
-    
-  </formalpara>
+      <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | asfix-yield
+(a + n) * 1</screen>
+
   </section>
 </section>
-  
+
