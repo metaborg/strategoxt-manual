@@ -270,4 +270,3 @@ Times(Plus(Var("a"),Var("n")),Int("1"))</screen>
 
   </section>
 </section>
-
