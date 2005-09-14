@@ -182,7 +182,8 @@ Times(Plus(Var("a"),Var("n")),Int("1"))
 	when and why there are ambiguities in a syntax
 	definition. Therefore, we strongly advice you to use the
 	option <code>--no-heuristic-filters</code> of
-	<code>sglri</code>.
+	<code>sglri</code>. The support for heuristic filters will be
+	removed in the future.
       </para>
     </formalpara>
 
@@ -193,11 +194,24 @@ Times(Plus(Var("a"),Var("n")),Int("1"))
 	If the original syntax definition contained multiple start
 	symbols, then you can optionally specify the desired start
 	symbol with the <code>-s</code> option. For example, if we add
-	<code>Id</code> to <code>start-symbols</code>
-         ...
+	<code>Id</code> to the <code>start-symbols</code> of our
+	expression language, then a single identifier is suddenly an
+	ambiguous input (we will come back to ambiguities later) :
       </para>
     </formalpara>
 
+<screen><prompt>$</prompt> echo "a" | sglri -p Expression.tbl --no-heuristic-filters
+amb([Var("a"),"a"])
+</screen>
+
+    <para>
+      By specifying a start symbol, we can instruct the parser to give
+      us the expression alternative, which is the first term in the
+      list of two alternatives.
+    </para>
+
+<screen><prompt>$</prompt> echo "a" | sglri -p Expression.tbl --no-heuristic-filters -s Exp 
+Var("a")</screen>
 
     <formalpara>
       <title>Working with Parse Trees</title>
@@ -239,16 +253,16 @@ parsetree( ... )
       invoking <code>sglri</code>.
     </para>
 
-      <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p
-      Expression.tbl -2 | implode-asfix
-      Times(Plus(Var("a"),Var("n")),Int("1"))</screen>
+<screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | implode-asfix
+Times(Plus(Var("a"),Var("n")),Int("1"))</screen>
 
       <para>
         The parse tree can also be yielded back to the original source
         file using the tool <xref
-        linkend="ref-asfix-yield"/>. Applying this shows that
-        whitespace and comments are present in the parse tree, since
-        the source is reproduced in exactly the same way as it was!
+        linkend="ref-asfix-yield"/>. Applying this tool shows that
+        whitespace and comments are indeed present in the parse tree,
+        since the source is reproduced in exactly the same way as it
+        was!
       </para>
 
       <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | asfix-yield
