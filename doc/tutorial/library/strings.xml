@@ -1,0 +1,48 @@
+<chapter
+   xml:id="library-strings"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+   
+   <title>Strings</title>
+   
+   <section>
+     <title></title>
+ 
+     <para>
+      <code>concat-strings</code>
+      <code>conc-strings</code>
+
+      <code>string-tokenize(|sepchars)</code>
+      <code>string-tokenize-keep-all(|sepchars)</code>
+      <code>string-tokenize-keep-empty(|sepchars)</code>
+
+      <code>string-sort-desc</code>
+      <code>string-gt</code>
+      <code>string-lt</code>
+      <code>string-starts-with(|s)</code>
+      <code>strlen</code>
+      <code>string-length</code>
+
+      <code>implode-string</code>
+      <code>explode-string</code>
+      <code>string-as-chars</code>
+      <code>is-string</code>
+      <code>is-char</code>
+
+      <code>write-to-string</code>
+      <code>read-from-string</code>
+
+
+      <code>int-to-string</code>
+      <code>real-to-string</code>
+
+      <code>hex-string-to-int</code>
+      <code>dec-string-to-int</code>
+      <code>oct-string-to-int</code>
+      <code>bin-string-to-int</code>
+      <code>generic-string-to-int</code>
+     </para>
+ 
+   </section>
+   
+</chapter>

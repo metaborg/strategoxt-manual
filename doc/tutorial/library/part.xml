@@ -6,6 +6,7 @@
   
   <xi:include href="intro.xml"/>
   <xi:include href="lists.xml"/>
+  <xi:include href="strings.xml"/>
   <xi:include href="hashtables.xml"/>
   <xi:include href="io.xml"/>
   <xi:include href="options.xml"/>
