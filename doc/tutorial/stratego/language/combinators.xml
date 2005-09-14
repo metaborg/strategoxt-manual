@@ -14,75 +14,34 @@
   <code>innermost</code>, Stratego provides a small set of basic
   combinators, that can be used to create a wide variety of
   strategies.
- 
-   We first consider a set of combinators for sequential programming,
-   including sequential composition, deterministic choice, guarded
-   choice, test and negation, and recursion.
 
-</para>
+  In <xref linkend="stratego-strategy-combinators"/> until <xref
+  linkend="stratego-type-unifying-strategies"/> we will introduce these
+  combinators.
 
-<para>
- 
-  Rules define one-step transformations 
+  In this chapter we start with a set of combinators for sequential
+  composition and choice of strategies.
 
-  Program transformations require many one-step transformations and
-  selection of rules
-
-  Choice; identity, Failure, and Negation
-  
 </para>
 
 <section xml:id="identity">
   <title>Identity and Failure</title>
 
-  
-<para>
-  Syntax: id 
-
-  Always succeed 
-
-  Some laws 
-    
-</para>
-
-    
-<screen>
-id ; s = s
-
-s ; id = s
-
-id &lt;+ s  = id
-
-s &lt;+ id /=  s
-
-s1 &lt; id + s2 = s1 &lt;+ s2 
-</screen>
-
-
-    
 <para>
 
-Syntax: fail 
+  The most basic operations in Stratego are <code>id</code> and
+  <code>fail</code>. 
 
-Always fail 
+  The identity strategy <code>id</code> always succeeds and behaves as
+  the identity function on terms.
 
-Some laws 
-    
+  The failure strategy <code>fail</code> always fails.
+
+  The operations have no side effects.
+
 </para>
-
-    
-<screen>
-fail &lt;+ s = s
-
-s &lt;+ fail =  s
-
-fail ; s = fail
-
-s ; fail /= fail
-</screen>
 
 </section>
-
 
 <section xml:id="seq">
    <title>Sequential composition</title>
@@ -92,46 +51,111 @@ s ; fail /= fail
   The sequential composition <code>s1 ; s2</code> of the strategies
   <code>s1</code> and <code>s2</code> first applies the strategy
   <code>s1</code> to the subject term and then <code>s2</code> to the
-  result of that first application.
+  result of that first application. The strategy fails if either
+  <code>s1</code> or <code>s2</code> fails.
     
 </para>
 
+<formalpara>
+  <title>Properties</title>
+
+<para>
+
+  Sequential composition is associative.  Identity is a left and right
+  unit for sequential composition; since <code>id</code> always
+  succeeds and leaves the term alone, it has no additional effect to
+  the strategy that it is composed with. Failure is a left zero for
+  sequential composition; since <code>fail</code> always fails the
+  next strategy will never be reached.
+
 <screen>
-Plus(Var("a"),Int("3"))
-<prompt>stratego></prompt> ?Plus(e1, e2); !Plus(e2, e1)
-Plus(Int("3"),Var("a"))
+(s1; s2) ; s3 = s1; (s2; s3)
+
+id; s = s
+
+s; id = s
+
+fail; s = fail
 </screen>
+
+  However, not for all strategies <code>s</code> we have that failure
+  is a right zero for sequential composition:
+
+<screen>
+s ; fail = fail   (is not a law)
+</screen>
+
+  Although the composition <code>s; fail</code> will always fail, the
+  execution of <code>s</code> may have side effects that are not
+  performed by <code>fail</code>. For example, consider printing a
+  term in <code>s</code>.
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>Examples</title>
 
 <para>
       
-  The variable bindings are propagated. The strategy fails if either
-  <code>s1</code> or <code>s2</code> fails.
-
   As an example of the use of sequential composition consider the
   following rewrite rules.
 
 <screen>
-  rules
-    A : P(Z,x) -> x
-    B : P(S(x),y) -> P(x,S(y))
+<prompt>stratego></prompt> A : P(Z,x) -> x
+<prompt>stratego></prompt> B : P(S(x),y) -> P(x,S(y))
 </screen>
 
-  Using the sequential composition \verb|B;A|, the term
-  \verb|P(S(Z),Z)| is reduced to \verb|S(Z)|,
+  The following session shows the effect of first applying
+  <code>B</code> and then <code>A</code>:
+
+<screen>
+<prompt>stratego></prompt> !P(S(Z()), Z())
+P(S(Z),Z)
+<prompt>stratego></prompt> B
+P(Z,S(Z))
+<prompt>stratego></prompt> A
+S(Z)
+</screen>
+
+  Using the sequential composition of the two rules, this effect can
+  be achieved `in one step':
+
+<screen>
+<prompt>stratego></prompt> !P(S(Z()),Z())
+P(S(Z),Z)
+<prompt>stratego></prompt> B; A
+S(Z)
+</screen>
+
+   The following session shows that the application of a composition
+   fails if the second strategy in the composition fails to apply to
+   the result of the first:
+
+<screen>
+<prompt>stratego></prompt> !P(S(Z()),Z())
+P(S(Z),Z)
+<prompt>stratego></prompt> B; B
+command failed
+</screen>
 
 </para> 
 
-</section>
+</formalpara>
 
+</section>
 
 <section xml:id="choice">
     <title>Choice</title>
 
 <para>
 
-  choosing between actions
-
-  failure
+  Choosing between rules to apply is achieved using one of several
+  <emphasis>choice</emphasis> combinators, all of which are based on
+  the guarded choice combinator. The common approach is that failure
+  to apply one strategy leads to backtracking to an alternative
+  strategy.
 
 </para>
 
@@ -140,14 +164,127 @@ Plus(Int("3"),Var("a"))
   
 <para>
       
-  The left choice or deterministic choice s1 &lt;+ s2 chooses one of
-  the trans- formations to apply. That is, s1 is first applied, and s2
-  is only applied if s2 fails.
+  The left choice or deterministic choice <code>s1 &lt;+ s2</code>
+  tries to apply <code>s1</code> and <code>s2</code> in that
+  order. That is, it first tries to apply <code>s1</code>, and if that
+  succeeds the choice succeeds. However, if the application of
+  <code>s1</code> fails, <code>s2</code> is applied to <emphasis>the
+  original term</emphasis>.
     
 </para>
-  
+
+<formalpara>
+  <title>Properties</title>
+
+<para>
+
+  Left choice is associative. Identity is a left zero for left choice;
+  since <code>id</code> always succeeds, the alternative strategy will
+  never be tried. Failure is a left and right unit for left choice;
+  since <code>fail</code> always fails, the choice will always
+  backtrack to the alternative strategy, and use of <code>fail</code>
+  as alternative strategy is pointless.
+
+<screen>
+(s1 &lt;+ s2) &lt;+ s3 = s1 &lt;+ (s2 &lt;+ s3)
+
+id &lt;+ s  = id
+
+fail &lt;+ s = s
+
+s &lt;+ fail = s
+</screen>
+
+  However, identity is not a right zero for left choice. That is, 
+  not for all strategies <code>s</code> we have that
+
+<screen>
+s &lt;+ id =  s    (is not a law)
+</screen>
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>Local Backtracking</title>
+
+<para>
+
+  The left choice combinator is a <emphasis>local
+  backtracking</emphasis> combinator.  That is, the choice is
+  committed once the left-hand side strategy has succeeded, even if
+  the continuation strategy fails. This is expressed by the fact that
+  the property
+
+<screen>
+(s1 &lt;+ s2); s3 = (s1; s3) &lt;+ (s2; s3)    (is not a law)
+</screen>
+
+  does <emphasis>not</emphasis> hold for all <code>s1</code>,
+  <code>s2</code>, and <code>s3</code>.
+
+  The difference is illustrated by the following applications:
+
+<screen>
+<prompt>stratego></prompt> !P(S(Z()),Z())
+P(S(Z),Z)
+<prompt>stratego></prompt> (B &lt;+ id); B
+command failed
+
+<prompt>stratego></prompt> !P(S(Z()),Z())
+P(S(Z),Z)
+<prompt>stratego></prompt> (B &lt;+ id)
+P(Z,S(Z))
+<prompt>stratego></prompt> B
+command failed
+
+<prompt>stratego></prompt> (B; B) &lt;+ (id; B)
+P(Z,S(Z))
+</screen>
+
+  In the application of <code>(B &lt;+ id); B</code>, the first
+  application of <code>B</code> succeeds after which the choice is
+  committed. The subsequent application of <code>B</code> then fails.
+
+  This equivalent to first applying <code>(B &lt;+ id)</code> and then
+  applying <code>B</code> to the result.
+
+  The application of <code>(B; B) &lt;+ (id; B)</code>, however, is
+  successful; the application of <code>B; B</code> fails, after which
+  the choice backtracks to <code>id; B</code>, which succeeds.
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>Choosing between Transformations</title>
+
 <para>
       
+<screen>
+<prompt>stratego></prompt> PlusAssoc : Plus(Plus(e1, e2), e3) -> Plus(e1, Plus(e2, e3))
+<prompt>stratego></prompt> PlusZero  : Plus(Int("0"),e) -> e
+
+<prompt>stratego></prompt> !Plus(Int("0"),Int("3"))
+Plus(Int("0"),Int("3"))
+
+<prompt>stratego></prompt> PlusAssoc
+command failed
+<prompt>stratego></prompt> PlusAssoc &lt;+ PlusZero
+Int("3")
+</screen>
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>Priority between Overlapping Rules</title>
+
+<para>
+
   A typical application of the deterministic choice operator is to
   declare the priority between rules with overlapping left-hand sides.
 
@@ -155,10 +292,9 @@ Plus(Int("3"),Var("a"))
   function:
 
 <screen>
-  rules
-    Mem1 : Mem(x,[]) -> False
-    Mem2 : Mem(x,[x|xs]) -> True
-    Mem3 : Mem(x,[y|ys]) -> Mem(x,ys)
+Mem1 : Mem(x,[]) -> False
+Mem2 : Mem(x,[x|xs]) -> True
+Mem3 : Mem(x,[y|ys]) -> Mem(x,ys)
 </screen>
 
   Rules \verb|Mem2| and \verb|Mem3| have overlapping left-hand sides.
@@ -170,21 +306,10 @@ Plus(Int("3"),Var("a"))
 
 </para>
 
-<screen>
-PlusAssoc :
-  Plus(Plus(e1, e2), e3) -> Plus(e1, Plus(e2, e3))
+</formalpara>
 
-EvalPlus :
-  Plus(Int(i),Int(j)) -> Int(k) where &lt;addS>(i,j) => k
-</screen>
-
-<screen>
-Plus(Int("14"),Int("3"))
-stratego> PlusAssoc
-command failed
-stratego> PlusAssoc &lt;+ EvalPlus
-Int("17")
-</screen>
+<formalpara>
+  <title>Try</title>
 
 <para>
       
@@ -192,18 +317,16 @@ Int("17")
   reflexive closure of a strategy s. The strategy try(s) tries to
   apply the strategy s, but if that fails, just succeeds using id.
     
+<screen>
+try(s) = s &lt;+ id
+</screen>
+
 </para>
 
-<screen>try(s) = s &lt;+ id</screen>
-
-<para>
-      
-  Note that the choice is committed once the left-hand side strategy
-  has succeeded, even if the continuation strategy fails.
-    
-</para>
+</formalpara>
     
 </section>
+
 
 <section xml:id="stratego-guarded-choice">
   <title>Guarded Choice</title>
@@ -225,6 +348,11 @@ Int("17")
 
   Do not backtrack to s3 if s2 fails!
   
+<screen>
+s1 &lt; id + s2 = s1 &lt;+ s2 
+</screen>
+
+
 </para>
 
 <screen>

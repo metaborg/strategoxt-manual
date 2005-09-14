@@ -178,6 +178,25 @@ e is bound to Var("a")
  <title>Implementing Rewrite Rules</title>
 
 <para>
+
+  combining match and build
+
+  passing variable bindings
+
+<screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?Plus(e1, e2); !Plus(e2, e1)
+Plus(Int("3"),Var("a"))
+</screen>
+
+  The variable bindings are propagated. The strategy fails if either
+  <code>s1</code> or <code>s2</code> fails.
+
+
+</para>
+
+
+<para>
         
   Using match and build we can now construct rewrite rules by
   sequentially composing a match and a build. For example, the
