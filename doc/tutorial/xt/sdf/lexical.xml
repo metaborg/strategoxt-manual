@@ -70,7 +70,13 @@
 
     <example>
       <title>Lexical syntax for floating point literals</title>
-      <para/>
+      <para>
+	Very complex regular expressions, without a clear structure.
+      </para>
+
+      <para>
+	Reject integer literals
+      </para>
     </example>
   </section>
   
@@ -92,8 +98,17 @@
       of keywords as identifiers.
     </para>
 
+    <para>
+      Explain why longest match on layout is often necessary.
+    </para>
+
     <example>
       <title>Lexical Syntax of Comments in Java</title>
+      <para/>
+    </example>
+
+    <example>
+      <title>Balanced Block Comments</title>
       <para/>
     </example>
     

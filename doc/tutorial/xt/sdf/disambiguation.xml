@@ -12,7 +12,7 @@
       derivations, as shown in <xref linkend="Fig-ambiguities"/>.
     </para>
     
-    <figure xml:id="Fig-ambiguities">
+    <example xml:id="Fig-ambiguities">
       <title>
 	Parses for the string <code>a+b*c</code>
       </title>
@@ -24,9 +24,8 @@
 	    <pngobject fileref="xmpl/test4-acub.png" align="center"/>
 	  </entry>
 	</nexttoeachother>
-    </figure>
-    
-    
+    </example>
+
     <section>
       <title>Associativity</title>
       
@@ -66,27 +65,35 @@
       <title>Priorities</title>
 
       <example>
-	<title>Example: Expressions</title>
+	<title>Expressions</title>
 	<para/>
       </example>
 
       <example>
-	<title>Example: Preventing Cycles</title>
+	<title>Preventing Cycles</title>
 	<para/>
       </example>
+
+      <warning>
+	<title>Hedged Symbols</title>
+	<para/>
+	<para>
+	  Solution: introduce an auxiliary non-terminal
+	</para>
+      </warning>
     </section>
-    
+
     <section>
       <title>Follow Restrictions</title>
       <para/>
 
       <example>
-	<title>Example: ++</title>
+	<title>Reject split of ++</title>
 	<para/>
       </example>
       
       <example>
-	<title>Example: Don't split keywords and identifiers</title>
+	<title>Don't split keywords and identifiers</title>
 	<para/>
       </example>
     </section>
@@ -96,12 +103,17 @@
       <para/>
       
       <example>
-	<title>Example: Reserved Keywords</title>
+	<title>Reserved Keywords</title>
 	<para/>
       </example>
       
       <example>
-	<title>Example: No New Array</title>
+	<title>No New Array</title>
+	<para/>
+      </example>
+
+      <example>
+	<title>Hexidecimal floating point literals</title>
 	<para/>
       </example>
     </section>
@@ -111,7 +123,7 @@
       <para/>
 
       <example>
-	<title>Example: Dangling Else</title>
+	<title>Dangling Else</title>
 	<para/>
       </example>
 
