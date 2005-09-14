@@ -2,7 +2,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>SDF: The Syntax Definition Formalism</title>
+  <title>SDF: The Modular Syntax Definition Formalism</title>
   
   <para>
     Note: there is already a lot of explanation in the TIL syntax
@@ -13,62 +13,56 @@
     <title>Modules</title>
     
     <para>
-      Little bit about SDF, refer to SDF maual for more details.
-    </para>
+      Hierarchical names
+    </para>    
     
     <para>
       Renamings
     </para>
-
-    <para>
-      Hierarchical names
-    </para>
   </section>
 
-
-    <section>
-      <title>Lexical Syntax</title>
-      
-      <para>
-	So far we have looked at syntax of expressions and statements,
-	but not at the definition of lexical items such as identifiers
-	and constants. In most syntax definition formalisms these are
-	defined separately to generate a scanner which divides a
-	string into tokens before the parser recognizes the
-	context-free structure.
-      </para>
-      
-      <para>
-	In SDF the definition of lexical and context-free syntax are
-	integrated in the same formalism, and are specified using the
-	same means, i.e., context-free productions, regular
-	expressions, etc. Productions for lexical items are introduced
-	using the keywords <code>lexical syntax</code>. The only
-	difference between lexical and context-free syntax is that
-	layout (whitespace, comments) can occur between the strings
-	corresponding to sorts in the left-hand of a context-free
-	production, or, conversely, <emphasis>no</emphasis> layout is
-	allowed between the tokens of a lexeme. The occurrence of
-	layout is indicated by injecting <code>LAYOUT?</code>, i.e.,
-	optional layout, between every two symbols of a context-free
-	production. To avoid cluttering syntax definitions, this is
-	done automatically by the SDF parser generator.
-      </para>
-
-      <para>
-	In order to define the syntax at the level of characters, SDF
-	provides character classes <code>[...]</code>, which generate
-	one character from the set. Letters and digits can be written
-	as themselves, all other characters should be escaped using a
-	slash, e.g. <code>\_</code>. Characters can also be indicated
-	by their decimal ASCII\footnote{These codes could also be
-	interpreted in a different character encoding.} code, e.g.,
-	<code>\13</code> for linefeed. Some often used non-printable
-	characters have more mnemonic names, e.g., <code>\n</code> for
-	newline, <code>\ </code> for space and <code>\t</code> for
-	tab.
-      </para>
-      
+  <section>
+    <title>Lexical Syntax</title>
+    
+    <para>
+      So far we have looked at syntax of expressions and statements,
+      but not at the definition of lexical items such as identifiers
+      and constants. In most syntax definition formalisms these are
+      defined separately to generate a scanner which divides a string
+      into tokens before the parser recognizes the context-free
+      structure.
+    </para>
+    
+    <para>
+      In SDF the definition of lexical and context-free syntax are
+      integrated in the same formalism, and are specified using the
+      same means, i.e., context-free productions, regular expressions,
+      etc. Productions for lexical items are introduced using the
+      keywords <code>lexical syntax</code>. The only difference
+      between lexical and context-free syntax is that layout
+      (whitespace, comments) can occur between the strings
+      corresponding to sorts in the left-hand of a context-free
+      production, or, conversely, <emphasis>no</emphasis> layout is
+      allowed between the tokens of a lexeme. The occurrence of layout
+      is indicated by injecting <code>LAYOUT?</code>, i.e., optional
+      layout, between every two symbols of a context-free
+      production. To avoid cluttering syntax definitions, this is done
+      automatically by the SDF parser generator.
+    </para>
+    
+    <para>
+      In order to define the syntax at the level of characters, SDF
+      provides character classes <code>[...]</code>, which generate
+      one character from the set. Letters and digits can be written as
+      themselves, all other characters should be escaped using a
+      slash, e.g. <code>\_</code>. Characters can also be indicated by
+      their decimal ASCII\footnote{These codes could also be
+      interpreted in a different character encoding.} code, e.g.,
+      <code>\13</code> for linefeed. Some often used non-printable
+      characters have more mnemonic names, e.g., <code>\n</code> for
+      newline, <code>\ </code> for space and <code>\t</code> for tab.
+    </para>
+    
       <para>
 	The definition of lexical syntax with a context-free grammar,
 	gives rise to ambiguities that cannot be resolved with the
@@ -216,6 +210,11 @@ function fact(n, x) =
 	</title>
 	<showfile root="." file="xmpl/Expressions.sdf"/>
       </figure>
+
+
+      <para>
+	Associativity in Group
+      </para>
     </section>
     
     <section>
@@ -228,8 +227,8 @@ function fact(n, x) =
       <para/>
       
       <section>
-	  <title>Example: Don't split Identifiers</title>
-	  <para/>
+	<title>Example: Don't split keywords and identifiers</title>
+	<para/>
       </section>
       
       <section>
