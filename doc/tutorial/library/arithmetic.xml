@@ -50,26 +50,55 @@
      <title>Number comparisons</title>
      
      <para>
-       <code>max</code>
-       <code>maxS</code>
-       
-       <code>min</code>
-       <code>minS</code>
+       The strategies found in the library for comparing two numbers correspond
+       to the usual mathematical operators for less-than (<code>lt</code>), 
+       less-than-equal (<code>leq</code>), equal (<code>eq</code>), 
+       greater-than (<code>gt</code>), greather-than-equal (<code>geq</code>).
+       As with the arithmetic strategies, each of these operators comes in 
+       an integer variant, suffixed with <code>i</code>, a real variant,
+       suffixed by <code>r</code>, a string variant, suffixed by
+       <code>S</code> and a type promoting variant without suffix.
+     </para>
 
-       <code>lt</code>
-       <code>ltS</code>
-       
-       <code>leq</code>
-       <code>leqS</code>
-       
-       <code>gt</code>
-       <code>gti</code>
-       <code>gtr</code>
-       <code>gtS</code>
+<screen>
+lt, ltr, lti, ltS
+gt, gtr, gti, gtS
+leq, leqr, leqi, leqS
+geq, geqr, geqi, geqS
+</screen>
 
-       <code>even</code>
-       <code>neg</code>
-       <code>pos</code>
+     <para>
+       A few examples:     
+     </para>
+     
+<screen>
+<prompt>stratego></prompt> &lt;lt> (1.0, 2)
+(1.000000000000000e+00,2)
+<prompt>stratego></prompt> &lt;geqS> ("2", "2")
+("2","2")
+<prompt>stratego></prompt> &lt;gtr> (0.9, 1.0)
+command failed
+</screen>
+
+     <para>
+       The maximum and minimum of a two-element tuple of numbers can be
+       found with the <code>max</code> and <code>min</code> strategies,
+       respectively. There are also string variants of these,
+       <code>maxS</code> and <code>minS</code>.
+     </para>
+<screen>
+<prompt>stratego></prompt> &lt;max> (0.9, 1.0)
+1.0
+<prompt>stratego></prompt> &lt;min> (99, 22)
+22
+<prompt>stratego></prompt> &lt;minS> ("99", "22")
+"22"
+</screen>            
+
+     <para>
+       Some other properties of numbers, such as whether a number 
+       is even, negative or positive, can be be tested with the strategies
+       <code>even</code>, <code>neg</code> and <code>pos</code>, respectively.
      </para>
    </section>
 
@@ -77,22 +106,50 @@
      <title>Other Operations</title>
      
      <para>
-       <code>mod</code>
-       <code>gcd</code>
-       <code>log2</code>
+       The modulus (remainder) of a dividing and integer by another is
+       provided by the <code>mod</code> strategy. <code>gcd</code> gives
+       the greatest common divisor of two numbers. Both <code>mod</code>
+       and <code>gcd</code> work on a two-element tuple of numbers. The
+       <code>log2</code> strategy can be used to find the binary logarithm
+       of a number. It will only succeed if the provided number is an
+       integer and has an integer binary logarithm.
      </para>
+<screen>
+<prompt>stratego></prompt> &lt;mod> (412,123)
+43
+<prompt>stratego></prompt> &lt;gcd> (412,123)
+1
+<prompt>stratego></prompt> &lt;log2> 16
+4
+</screen>     
    </section>
 
    <section>
      <title>Random Numbers</title>
      
      <para>
-       Initializing the random number generator. 
-       <code>set-random-seed</code>
-       
-       Getting a random number.       
-       <code>next-random</code>
+       The library provides a strategy for generating random numbers, called
+       <code>next-random</code>. The algorithm powering this random generator
+       requires an initial "seed" to be provided. This seed is just an 
+       first random number, and you can pick any integer you want, as long
+       as it's mostly random. A popular choice (though not actually random)
+       is the number of seconds since epoch, provided by <code>time</code>.
+       The seed is initialized by the <code>set-random-seed</code> strategy. 
+       The following code shows the normal idiom for getting a random number
+       in Stratego:
      </para>
+     
+<screen>
+<prompt>stratego></prompt> time ; set-random-seed
+[]
+<prompt>stratego></prompt> next-random     
+1543988747
+</screen>
+
+    <para>
+      The random number generator needs only be initialized with a seed
+      once for every program invocation.
+    </para>
    </section>
       
 </chapter>

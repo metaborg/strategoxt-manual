@@ -130,13 +130,26 @@ foo0bar
     <title>Path and Directory Operations</title>
   
   <para>
-    The library provides a small set of set of simple 
-    file and directory manipulation operations.
-    
-    <code>readdir</code>
-    <code>remove-file</code>
-    <code>rename-file</code>
-    <code>link-file</code>
+    The library provides a small set of simple file and directory
+    manipulation operations. Assume the directory 
+    <dirname>/tmp</dirname> only contains the files 
+    <filename>foo</filename>, <filename>bar</filename>,
+    <filename>baz</filename>.
+  </para>
+  
+<screen>
+<prompt>stratego></prompt> &lt;readdir> "/tmp"
+["foo","bar","baz"]
+<prompt>stratego></prompt> &lt;rename-file> ("/tmp/foo", "/tmp/bax")
+"/tmp/bax"
+<prompt>stratego></prompt> &lt;remove-file> "/tmp/baz"
+[]
+<prompt>stratego></prompt> &lt;link-file> ("/tmp/bar", "/tmp/foo")
+"/tmp/foo"
+<prompt>stratego></prompt> &lt;link-file> ("/tmp/bar", "/tmp/foo")
+"/tmp/foo"
+</screen>
+
     <code>is-abspath</code>
     <code>new-temp-dir</code>
     <code>isdir</code>
