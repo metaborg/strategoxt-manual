@@ -135,7 +135,8 @@ foo0bar
     manipulation operations. Assume the directory 
     <code>/tmp</code> only contains the files 
     <filename>foo</filename>, <filename>bar</filename>,
-    <filename>baz</filename>.
+    <filename>baz</filename>. Elementary directory operations
+    can be done as illustrated below:
   </para>
   
 <screen>
@@ -149,26 +150,82 @@ foo0bar
 "/tmp/foo"
 <prompt>stratego></prompt> &lt;link-file> ("/tmp/bar", "/tmp/foo")
 "/tmp/foo"
+<prompt>stratego></prompt> &lt;new-temp-dir> "/tmp"
+"/tmp/StrategoXTnsGplS"
 </screen>
  
   <para>
-    <code>is-abspath</code>
-    <code>new-temp-dir</code>
-    <code>isdir</code>
-    <code>isatty</code>
-    <code>isfifo</code>
-    <code>islnk</code>
-    <code>file-exists</code>
-    <code>dirname</code>
-    <code>find-file</code>
-    <code>is-executable</code>
-    <code>is-readable</code>
-    <code>is-writeable</code>
-    <code>get-extension</code>
-    <code>base-filename</code>
-    <code>abspath</code>
+    The library contains a family of strategies which must be applied
+    to a <code>File</code>, and will return information about it.
+    these include <code>isdir</code>, <code>isatty</code>, 
+    <code>isfifo</code> and <code>islnk</code> which are predicates
+    checking if a file is a directory, TTY, FIFO or a symbolic
+    link, respectively. To obtain a <code>File</code> object in the
+    first place, we should call <code>file-exists</code> followed
+    by <code>filemode</code>. Thus, checking if <filename>/etc</filename>
+    is a directory is done as follows:
+  </para>
+
+<screen>    
+<prompt>stratego></prompt> &lt;file-exists ; filemode ; isdir> "/etc"
+</screen>
+
+  
+  <para>
+    The library also has another family of strategies for getting
+    information about files. These must be applied to a string 
+    containing the filename. The family includes 
+    <code>is-executable</code>, <code>is-readable</code> and
+    <code>is-writeable</code>.
+  </para>
+
+<screen>    
+<prompt>stratego></prompt> &lt;is-executable> "/bin/bash"
+"/bin/bash"
+</screen>
+
+  <para>
+    Finally, the directory strategies also include the usual suspects
+    for dealing with paths. 
+  </para>  
+
+<screen>
+<prompt>stratego></prompt> &lt;is-abspath> "../foo"
+command failed
+<prompt>stratego></prompt> &lt;dirname> "/foo/bar/baz"
+"/foo/bar"
+<prompt>stratego></prompt> &lt;base-filename> "/foo/bar/baz"
+"baz"
+<prompt>stratego></prompt> &lt;get-extension "/tmp/foo.trm"
+"trm"
+<prompt>stratego></prompt> &lt;abspath> "../foo"
+/home/karltk/source/oss/stratego/strategoxt-manual/trunk/../foo
+</screen>
+
+  <para>
+    There is also a few strategies for finding files. We shall describe
+    <code>find-file(s)</code>. The other variants of <code>find-file</code>
+    are described in the library documentation. The strategy 
+    <code>find-file(s)</code> finds one file with a specific file extension
+    in a list of directories. It takes a two-element tuple. The first element
+    is a file name as a string, then second element is a list of paths, i.e.
+    <code>(f, [d*])</code>. The extension of <filename>f</filename> will be
+    replaced by what is produced by <code>s</code>, and the directories
+    given in <code>[d*]</code>. Consider the code below.
+  </para>
+  
+<screen>    
+<prompt>stratego></prompt> &lt;find-file(!"rtree")> ("file.str", ["."])
+</screen>
+  
+  <para>
+    This snippet will consider the filename <filename>file.str</filename>,
+    replace its extension with <filename>rtree</filename> and look through
+    the directories in the list <code>["."]</code>. Effectively, it will
+    search for <filename>file.rtree</filename> in the current directory.
   </para>
   </section>
+
   
   <section>
     <title>File and Text I/O</title>
@@ -276,10 +333,30 @@ Foo(Bar)
     <title>Logging</title>
     
   <para>
-    <code>log</code>
-    <code>log(|severity, msg)</code>
-    <code>log(|severity, msg, term)</code>
+    The strategies for logging are used pervasively throughout the Stratego
+    toolchain. They are easy to use in your own applications, too. The 
+    logging system is built on top of the
+    <code>log(|severity, msg)</code> and <code>log(|severity, msg, term)</code>
+    strategies. It is possible to use these directory, as the following
+    example demonstrates.
   </para>
+
+<screen>
+<prompt>stratego></prompt> import util/log
+<prompt>stratego></prompt> log(|Error(), "my error")
+</screen>    
+  
+  <para>
+    However, it is preferrable to use the high-level wrapper strategies
+    <code>fatal-err-msg(|msg)</code>, <code>err-msg(|msg)</code>, 
+    <code>warn-msg(|msg)</code> and <code>notice-msg(|msg)</code>.
+    Except for <code>fatal-err-msg</code>, these strategies will
+    return with the current term untouched, and write the message
+    as a side effect. The <code>fatal-err-msg</code> strategy will
+    also terminate the program with error code <code>1</code>, after
+    writing the message.
+  </para>
+    
   </section>
 </chapter>
 
