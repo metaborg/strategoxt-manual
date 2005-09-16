@@ -10,7 +10,8 @@
     tool called autoxt. If you are familiar with the autotools, setting
     a project for Stratego should be rather easy. If this is unfamiliar
     ground to you, don't fear. We will walk through it slowly in
-    this chapter.
+    this chapter, but a full treatise is beyond the scope of this
+    tutorial.
   </para>
 
   <section>
@@ -25,34 +26,13 @@
       Additionally, you may want to add <filename>ChangeLog</filename>,
       <filename>AUTHORS</filename>, <filename>NEWS</filename> and
       <filename>README</filename>, but these are not essential.
-      We will walk through the contents of each of the build system
-      configuration files
     </para>
 
-<screen><xi:include href="config/bootstrap.txt" parse="text"/></screen>
-
-  <para>
-    Explain bootstrap.txt
-  </para>
-  
-<screen><xi:include href="config/src-makefile-am.txt" parse="text"/></screen>
-
-  <para>
-    Explain Makefile.am
-  </para>
-  
-<screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
-  
-  <para>
-    Explain the project.spec.in
-  </para>  
-  
     <para>
       For a normal Stratego project, with XTC components, and some stand-alone
       applications, we suggest the project layout given below. Directories end
-      in <filename>/</filename>. We will discuss the 
-      <filename>Makefile.am</filename> files for the 
-      <filename>src/</filename> hierarchy below.
+      in <filename>/</filename>. We will discuss the all the components of
+      this hierarchy below.
     </para>
     
 <screen>
@@ -72,6 +52,84 @@
   test/
   doc/
 </screen>
+
+    <para>
+      The build system is kickstarted by the <filename>bootstrap</filename>
+      script. This script is responsible for generating a 
+      <filename>configure</filename> script when run. Generation is
+      a very important aspect of autotool-based build systems. The
+      <filename>configure</filename> script is generated from a
+      <filename>configure.ac</filename> declaration by the
+      <command>autoreconf</command> tool. The 
+      <filename>Makefile</filename>s are generated from
+      <filename>Makefile.in</filename> files by the
+      <filename>configure</filename> script, and
+      <filename>Makefile.in</filename> files are generated from
+      <filename>Makefile.am</filename> files by
+      <command>automake</command>. Simple, huh? Generally, the
+      idea is that complicated scripts and makefiles can be generated
+      from high-level declarations using tools.
+    </para>
+    
+<screen><xi:include href="config/bootstrap.txt" parse="text"/></screen>
+
+  <para>
+    The <filename>bootstrap</filename> script should be an
+    <command>sh</command> (or <command>bash</command>) shell script that
+    takes care of running <command>autoxt</command> and
+    <command>autoreconf</command>, as shown above. Note that we
+    rely on resonably recent versions of <command>autoconf</command> and
+    <command>automake</command>, but that configuring which versions
+    to apply is distribution-specific.
+  </para>
+  
+  
+  <para>
+    Assume we are in a palindromic mood and want to name our project
+    Ogetarts. The following file will then provide a reasonable starting
+    point.
+  </para>
+
+<screen><xi:include href="config/configure-ac.txt" parse="text"/></screen>
+  
+  <para>
+    Most of this is standard boilerplate. The important lines are
+    <code>XT_PKG_ATERM</code>, <code>XT_PKG_SDF</code> and
+    <code>XT_PKG_STRATEGOXT</code>. These are actually macro invocations
+    which will extend to shell script code that looks for the ATerm
+    library, the SDF tools and Stratego/XT, respectively. At the end,
+    the invocation of the <code>AC_CONFIG_FILES</code> macro lists other
+    important files of the build system, particularly the
+    <filename>Makefile</filename>s. We must provide these, but remember
+    that these are also generated from <filename>.in</filename> files
+    which in turn come from <filename>.am</filename> files. Hence, we
+    need to provide some <filename>Makefile.am</filename> files. The
+    <filename>Makefile.am</filename> for the root of the project
+    should look like:
+  </para>
+  
+<screen><xi:include href="config/src-makefile-am.txt" parse="text"/></screen>
+
+  <para>
+    Again, most of this is boilerplate. The important point here is
+    that <code>SUBDIRS = src</code> will eventually result in rules 
+    which <command>make</command> to delve into the <filename>src/</filename>
+    directory. We will explain below how the
+    <filename>Makefile.am</filename> for source directories should
+    look like. Let's finish up the root build system first, closing
+    with the <filename>ogetarts.spec.in</filename> file.
+  </para>
+  
+<screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
+  
+  <para>
+    This file is not strictly necessary. It's a so-called
+    <filename>.spec</filename>-file, which is a package descriptor for
+    rpm-based distributions. When you provide it, the Stratego/XT build
+    system can automatically make a <filename>.rpm</filename> package
+    file for your project.
+  </para>  
+  
   </section>
   
   <section>
