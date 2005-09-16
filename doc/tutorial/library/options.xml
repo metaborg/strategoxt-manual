@@ -3,10 +3,10 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Command-line Options</title>
+  <title>Command-line Options (*)</title>
   
   <para>
-    How to handle command-line options.
+    The How to handle command-line options.
   </para>
   
   <para>

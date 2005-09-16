@@ -2,7 +2,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
   
-  <title>Building and Deploying Stratego Programs</title>
+  <title>Building and Deploying Stratego Programs (*)</title>
   
   <para>
     The Stratego build system is based on the GNU autotools, that is
