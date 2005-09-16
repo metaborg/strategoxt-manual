@@ -23,9 +23,10 @@
     The primitive layer of Stratego I/O inherits its 
     characteristics from Unix. The basic I/O strategies
     recognize the special files <code>stdout</code>, 
-    <code>stdin</code> and <code>stderr</code>. On top of
-    this, a collection of more convient strategies have
-    been built.
+    <code>stdin</code> and <code>stderr</code>. Streams are
+    opened by <code>fopen</code> and closed with
+    <code>fclose</code> On top of this, a collection of
+    more convient strategies have been built.
   </para>
 
   <section>
@@ -167,12 +168,67 @@ foo0bar
     <code>base-filename</code>
     <code>abspath</code>
   </para>
+  </section>
+  
+  <section>
+    <title>File and Text I/O</title>
 
-  <para>
-    Text I/O
-    <code>read-text-file</code>
-    <code>read-text-line</code>
-  </para>
+    <para>
+      Opening a file is done with the <code>fopen</code> strategy. It takes
+      a two-element tuple, the first element is the filename as a string,
+      the second is the open mode, which is also a string. The most important
+      modes are read (<code>r</code>); write ("w") which opens and empty file
+      for writing, truncating any existing file with the same name; and 
+      append (<code>a</code>) which appends to the file if it already exists.
+      After all file operations stream have been finished, it should be closed
+      with <code>fclose</code>, which will flush and close the file. Explicit
+      flushing can also be done with <code>fflush</code>.
+    </para>
+    
+    <para>
+      It should be pointed out that reading and writing text files with Stratego
+      is rather rare. Normally, text files are read with a parser generated from
+      an SDF description and written using a pretty-printer defined in the
+      Box formalism. In rare cases, this may turn out be too heavy handed,
+      especially if the file format is simplistic and line-based. In this
+      instance, we can come up with an easier solution using  
+      <code>read-text-file</code> and <code>read-text-line</code>.
+    </para>
+
+    <para>
+      Assume the file <filename>/tmp/foo</filename> contains the following
+      lines:
+    </para>
+
+<screen>
+one
+two
+three
+</screen>
+
+    <para>
+      We can read this file in one big chunk into a string with the
+      <code>read-text-file</code> strategy, which must be applied to
+      a filename:
+    </para>    
+    
+<screen>
+stratego> &lt;read-text-file> "/tmp/foo"
+"one\ntwo\nthree\n"
+</screen>
+
+   <para>
+     Alternatively, for example if the file is large, we can read it
+     line by line. In this scenario, we must open the file and get
+     a handle to a stream.
+   </para>
+
+<screen>      
+<prompt>stratego></prompt> &lt;fopen> ("foo.txt", "r") => inp
+Stream(136788400)
+<prompt>stratego></prompt> &lt;read-text-line> inp
+"one"
+</screen>
 
   </section>
   
@@ -180,19 +236,38 @@ foo0bar
     <title>Term I/O</title>
     
   <para>
-    
-  </para>  
-  <para>
-    ATerm I/O
-    <code>ReadFromFile</code>
-    <code>WriteToTextFile</code>
-    <code>WriteToBinaryFile</code>
+    The primary form of file I/O you will be using in Stratego is
+    reading and writing terms. As explained earlier, the terms
+    are stored on disk as either binary, compressed text or
+    plain text ATerms. Reading a term, no matter which storage
+    format, is done with the <code>ReadFromFile</code> strategy.
+    It is applied to a filename.
   </para>
 
+<screen>
+<prompt>stratego></prompt> &lt;ReadFromFile> "/tmp/foo.trm"
+Foo(Bar)
+</screen>
+
   <para>
-    string I/O
-    
-    <code>read-from-string</code>
+    To write a term to file, you can use <code>WriteToTextFile</code>
+    or <code>WriteToBinaryFile</code>. The binary format is
+    approximately eight times more space-efficient on average. Both
+    strategies take a two-element tuple where the first element is
+    the filename and second is the term to write. Writing the current
+    term requires a minor twist, which is shown here:
+  </para>  
+
+<screen>
+<prompt>stratego></prompt> &lt;WriteToBinaryFile> ("/tmp/bar.trm", &lt;id>)
+Foo(Bar)
+</screen>  
+
+  <para>
+    It is also possible to read and write terms from and to strings,
+    using <code>read-from-string</code> and <code>write-to-string</code>.
+    The chapter on <link linkend="library-strings">strings</link>
+    contains explanation of how these strategies work.
   </para>
   
   </section>
