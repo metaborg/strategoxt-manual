@@ -175,6 +175,7 @@ ogetarts/
     <title>Building XTC components</title>
     
     <para>
+      <code>io-wrap</code>
     </para>
     
 <screen><xi:include href="config/xtc-makefile-am.txt" parse="text"/></screen>

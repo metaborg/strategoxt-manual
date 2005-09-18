@@ -15,8 +15,7 @@
     programs are designed to worktogether connected by Unix
     pipes. The programs employ <code>io-wrap</code> (or similar
     strategies) that automatically take care of the input and
-    output. See the chapter on 
-    <link linkend="library-options">options</link> for details.
+    output. See <link linkend="library-options"/> for details.
   </para>
 
   <para>
