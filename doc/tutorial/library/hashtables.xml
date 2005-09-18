@@ -88,7 +88,7 @@ Hashtable(136604296)
   <para>
 	The library provides a rather feature complete implementation of
 	indexed sets, based on hashtables. A lightweight implementation
-	of sets, based on lists, is explained in <link 
+	of sets, based on lists, is explained in <xref 
 	linkend="library-lists"/>.
   </para>
   

@@ -15,7 +15,7 @@
     programs are designed to worktogether connected by Unix
     pipes. The programs employ <code>io-wrap</code> (or similar
     strategies) that automatically take care of the input and
-    output. See <link linkend="library-options"/> for details.
+    output. See <xref linkend="library-options"/> for details.
   </para>
 
   <para>
@@ -322,8 +322,8 @@ Foo(Bar)
   <para>
     It is also possible to read and write terms from and to strings,
     using <code>read-from-string</code> and <code>write-to-string</code>.
-    The chapter on <link linkend="library-strings">strings</link>
-    contains explanation of how these strategies work.
+    <xref linkend="library-strings"/> contains explanation of how these
+    strategies work.
   </para>
   
   </section>

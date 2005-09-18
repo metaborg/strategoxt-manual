@@ -103,8 +103,79 @@ ogetarts/
     <code>XT_PKG_ATERM</code>, <code>XT_PKG_SDF</code> and
     <code>XT_PKG_STRATEGOXT</code>. These are actually macro invocations
     which will extend to shell script code that looks for the ATerm
-    library, the SDF tools and Stratego/XT, respectively. At the end,
-    the invocation of the <code>AC_CONFIG_FILES</code> macro lists other
+    library, the SDF tools and Stratego/XT, respectively. These macros
+    are provided by the <command>autoxt</command> tool. It provides
+    the following macros.
+    
+  </para>
+
+  <variablelist>
+    <varlistentry>
+      <term><code>XT_USE_XT_PACKAGES</code></term>
+      <listitem>
+       <para>
+         Adds configuration options to configure the package with the location
+         of the ATerm library, SDF and StrategoXT.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><code>XT_PKG_ATERM</code></term>
+     <listitem>
+       <para>
+         Checks if the ATerm library is installed at the specified prefix of the
+         ATerm library.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><code>XT_PKG_SDF</code></term>
+     <listitem>
+       <para>
+         Checks if the SDF packages are installed at the specified prefix of SDF.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><code>XT_PKG_STRATEGOXT</code></term>
+     <listitem>
+       <para>
+         Checks if StrategoXT is installed at the specified prefix of StrategoXT.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><code>XT_TERM_DEFINE</code></term>
+     <listitem>
+       <para>
+         Defines some Stratego strategies that will return the values (as strings) of
+         various Autoconf variables: <code>PACKAGE_NAME_TERM()</code>,
+         <code>PACKAGE_TARNAME_TERM()</code>,
+         <code>PACKAGE_VERSION_TERM()</code>,
+         <code>PACKAGE_BUGREPORT_TERM()</code>,
+         and <code>SVN_REVISION_TERM()</code>.
+         These strategies can be used in any Stratego program in this package.
+         Checks if StrategoXT is installed at the specified prefix of StrategoXT.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><code>XT_PRE_RELEASE</code></term>
+     <listitem>
+       <para>
+         Adds the suffix <code>pre${SVN_REVISION}</code> to the
+         <code>PACKAGE_VERSION</code> and <code>VERSION</code> variables. This is a
+         naming convention for unstable packages that we are using in our release
+         management system.
+       </para>
+     </listitem>
+   </varlistentry>
+
+  </variablelist>
+
+  <para>
+    At the end of the <filename>configure.ac</filename> above, the invocation
+     of the <code>AC_CONFIG_FILES</code> macro lists other
     important files of the build system, particularly the
     <filename>Makefile</filename>s. We must provide these, but remember
     that these are generated from <filename>.in</filename> files
@@ -191,4 +262,91 @@ ogetarts/
      
   </section>
   
+  <section>
+    <title>AutoXT</title>
+    
+<screen>
+Auto XT
+Stratego -- Strategies for Program Transformation
+The autoxt package provides Autoconf and Automake support for packages constructed with the XT toolset. The package provides the autoxt tool which should be run as part of the Autoconf/Automake bootstrapping process, prior to running autoconf. A typical bootstrap script looks like:
+
+#! /bin/sh
+
+autoxt
+autoreconf -if
+
+The toplevel Makefile.am should declare:
+
+
+Autoconf
+
+Autoxt installs a set of m4 macros autoxt.m4 with support for package configuration switches. By just including the macro call XT_USE_XT_PACKAGES a configure.ac file can be parameterized with switches for all the StrategoXT packages:
+
+AC_INIT([java-front],[0.6],[stratego-bugs@cs.uu.nl])
+AM_INIT_AUTOMAKE
+
+XT_USE_XT_PACKAGES
+XT_PKG_ATERM
+XT_PKG_SDF
+XT_PKG_STRATEGOXT
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_CONFIG_FILES([Makefile syn/Makefile])
+AC_OUTPUT
+
+Available Macros
+
+
+Automake
+
+Furthermore, autoxt installs Makefile.xt, a collection of automake rules for compiling Stratego programs and applying other XT tools, such as signature generation. Using this makefile, a makefile reduces to a declaration of programs to be compiled. The makefile automatically takes care of distributing the generated C code. The specification will only be compiled when it is newer than the C code. This means that packages using autoxt can be built using only the Stratego Run-Time System (srts).
+
+include $(top_srcdir)/Makefile.xt
+include $(wildcard *.dep)
+
+bin_PROGRAMS    = xtc
+pkgdata_DATA    = xtc-lib.rtree xtc-rep.rtree xtc-proc.rtree
+SCFLAGS         = --main $*
+STRINCLUDES     = -I $(XTC)/share/xtc
+EXTRA_DIST      = $(pkgdata_DATA) $(wildcard *.str) $(wildcard *.meta)
+CLEANFILES      = $(wildcard *.dep)
+BOOTCLEANFILES  = xtc.c
+
+Explanation of the example
+
+    * include $(top_srcdir)/Makefile.xt
+      Instructs the Stratego compiler to compile the Stratego files.
+
+    * include $(wildcard *.dep)
+      The Stratego compiler generates .dep files which contain information about file dependencies. When these .dep files are included a rebuild is forced when a dependent file changes.
+
+    * bin_PROGRAMS
+      Specifies the resulting binaries from the compilation.
+
+    * pkgdata_DATA
+      Are the files that will be placed in $prefix/share/pkg, see: How to Use Separate Compilation
+
+    * SCFLAGS
+      Contains compiler flags passed to the Stratego compiler.
+
+    * STRINCLUDES
+      Are the additional includes necessary for a succesful compilation.
+
+    * EXTRA_DIST
+      Specifies which auxilary files have to be included in the distribution.
+
+    * CLEANFILES
+      Deletes these files when the make clean command is issued.
+
+    * BOOTCLEANFILES
+      In addition to files specified in CLEANFILES, deletes these files when the make bootclean command is issued.
+
+See also:
+
+    * How to Use Separate Compilation
+</screen>
+
+  
+  </section>
 </chapter>
