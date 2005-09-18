@@ -18,7 +18,8 @@ Provides: %{name} = %{version}
 %setup -q
 
 %build
-CFLAGS="-D__NO_CTYPE" ./configure --prefix=%{_prefix} --with-strategoxt=%{_prefix} --with-aterm=%{_prefix} --with-sdf=%{_prefix}
+CFLAGS="-D__NO_CTYPE" ./configure --prefix=%{_prefix} --with-strategoxt=%{_prefix} \
+       --with-aterm=%{_prefix} --with-sdf=%{_prefix}
 make
 
 %install

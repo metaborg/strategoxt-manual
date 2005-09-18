@@ -104,9 +104,9 @@ ogetarts/
     <code>XT_PKG_STRATEGOXT</code>. These are actually macro invocations
     which will extend to shell script code that looks for the ATerm
     library, the SDF tools and Stratego/XT, respectively. These macros
-    are provided by the <command>autoxt</command> tool. It provides
-    the following macros.
-    
+    are provided by the <command>autoxt</command> tool, via a macro
+    file called <filename>autoxt.m4</filename>. It provides the
+    following macros.
   </para>
 
   <variablelist>
@@ -196,7 +196,6 @@ ogetarts/
     look like. Let's finish up the root build system first, closing
     with the <filename>ogetarts.spec.in</filename> file.
   </para>
-  
 <screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
   
   <para>
@@ -220,6 +219,107 @@ ogetarts/
   
   <section>
     <title>Building Stand-alone Applications</title>
+
+
+  <variablelist>
+    <varlistentry>
+      <term>include $(top_srcdir)/Makefile.xt</term>
+      <listitem>
+        <para>
+          Instructs the Stratego compiler to compile the Stratego files.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>include $(wildcard *.dep)</term>
+      <listitem>
+        <para>
+          The Stratego compiler generates <filename>.dep</filename> files which
+          contain information about module dependencies. When these
+          <filename>.dep</filename> files are included, a rebuild
+          is forced when a dependent file changes.
+        </para>
+      </listitem>
+    </varlistentry>
+    
+    <varlistentry>
+      <term>bin_PROGRAMS</term>
+      <listitem>
+        <para>
+          Specifies the resulting binaries from the compilation.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>pkgdata_DATA</term>
+      <listitem>
+        <para>
+          Are the files that will be placed in
+          <filename>$prefix/share/pkg</filename>, see: How to Use
+          Separate Compilation
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>SCFLAGS</term>
+      <listitem>
+        <para>
+          Contains compiler flags passed to the Stratego compiler.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>STRINCLUDES</term>
+      <listitem>
+        <para>
+          Are the additional includes necessary for a succesful compilation.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>EXTRA_DIST</term>
+      <listitem>
+        <para>
+          Specifies which auxilary files have to be included in the distribution.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>CLEANDIST</term>
+      <listitem>
+        <para>
+          Deletes these files when the make clean command is issued.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>BOOTCLEANFILES</term>
+      <listitem>
+        <para>
+          In addition to files specified in <code>CLEANFILES</code>, deletes
+          these files when the make bootclean command is issued.
+        </para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+
+  <para>
+    <command>autoxt</command> installs <filename>Makefile.xt</filename>, a
+    collection of Automake rules for compiling Stratego programs and applying
+    other XT tools, such as signature generation. Using this makefile, a makefile
+    reduces to a declaration of programs to be compiled. The makefile automatically
+    takes care of distributing the generated C code. The specification will only be
+    compiled when it is newer than the C code. This means that packages using
+    <command>autoxt</command> can be built using only the Stratego Run-Time
+    System (srts).
+  </para>
 
     <para>
       Building parse tables
@@ -256,97 +356,47 @@ ogetarts/
   <section>
      <title>Building Your Own library (*)</title>
      
-     <para>Organizing your Library</para>
+     <para>Organizing your Library
+     - putting it into <filename>src/lib/</filename>
+     - dividing a library into packages
+     - importing packages
+     </para>
+
      <para>Supporing Separate Compilation</para>
-     <para>Building and Using Shared Libraries</para>
-     
-  </section>
-  
-  <section>
-    <title>AutoXT</title>
-    
+
 <screen>
-Auto XT
-Stratego -- Strategies for Program Transformation
-The autoxt package provides Autoconf and Automake support for packages constructed with the XT toolset. The package provides the autoxt tool which should be run as part of the Autoconf/Automake bootstrapping process, prior to running autoconf. A typical bootstrap script looks like:
+  pkglib_LTLIBRARIES   = libogetarts.la 
+  pkgdata_DATA         = libogetarts.rtree
 
-#! /bin/sh
+  liblibmod_la_SOURCES = libogetarts.c
+  AM_CPPFLAGS          = -I$(SRTS)/include -I$(ATERM)/include
 
-autoxt
-autoreconf -if
+  libmod.c : 
+   $(STRC)/bin/strc -c --library -i ./ogetarts.str -o libogetarts.rtree
+</screen>
+     
 
-The toplevel Makefile.am should declare:
+     <para>
+       The build system can be told to create a separate library from your
+       <filename>.str</filename> files. This is done using Libtool, which
+       takes care of creating both static and shared libraries. On most
+       platforms, the the linker prefers shared libraries over static
+       libraries, given the choice. This means that linking to your
+       Stratego library will be done dynamically, unless you or your
+       library user take steps to enable static linking.
+     </para>
 
+     <para>
+       If your prefer static over dynamic libraries, you can enforce static
+       linking by passing the <code>-static</code> option to the
+       <command>configure</command> of your package via the
+       <code>LDFLAGS</code> variable: 
+     </para>     
 
-Autoconf
-
-Autoxt installs a set of m4 macros autoxt.m4 with support for package configuration switches. By just including the macro call XT_USE_XT_PACKAGES a configure.ac file can be parameterized with switches for all the StrategoXT packages:
-
-AC_INIT([java-front],[0.6],[stratego-bugs@cs.uu.nl])
-AM_INIT_AUTOMAKE
-
-XT_USE_XT_PACKAGES
-XT_PKG_ATERM
-XT_PKG_SDF
-XT_PKG_STRATEGOXT
-
-AC_PROG_CC
-AC_PROG_INSTALL
-AC_CONFIG_FILES([Makefile syn/Makefile])
-AC_OUTPUT
-
-Available Macros
-
-
-Automake
-
-Furthermore, autoxt installs Makefile.xt, a collection of automake rules for compiling Stratego programs and applying other XT tools, such as signature generation. Using this makefile, a makefile reduces to a declaration of programs to be compiled. The makefile automatically takes care of distributing the generated C code. The specification will only be compiled when it is newer than the C code. This means that packages using autoxt can be built using only the Stratego Run-Time System (srts).
-
-include $(top_srcdir)/Makefile.xt
-include $(wildcard *.dep)
-
-bin_PROGRAMS    = xtc
-pkgdata_DATA    = xtc-lib.rtree xtc-rep.rtree xtc-proc.rtree
-SCFLAGS         = --main $*
-STRINCLUDES     = -I $(XTC)/share/xtc
-EXTRA_DIST      = $(pkgdata_DATA) $(wildcard *.str) $(wildcard *.meta)
-CLEANFILES      = $(wildcard *.dep)
-BOOTCLEANFILES  = xtc.c
-
-Explanation of the example
-
-    * include $(top_srcdir)/Makefile.xt
-      Instructs the Stratego compiler to compile the Stratego files.
-
-    * include $(wildcard *.dep)
-      The Stratego compiler generates .dep files which contain information about file dependencies. When these .dep files are included a rebuild is forced when a dependent file changes.
-
-    * bin_PROGRAMS
-      Specifies the resulting binaries from the compilation.
-
-    * pkgdata_DATA
-      Are the files that will be placed in $prefix/share/pkg, see: How to Use Separate Compilation
-
-    * SCFLAGS
-      Contains compiler flags passed to the Stratego compiler.
-
-    * STRINCLUDES
-      Are the additional includes necessary for a succesful compilation.
-
-    * EXTRA_DIST
-      Specifies which auxilary files have to be included in the distribution.
-
-    * CLEANFILES
-      Deletes these files when the make clean command is issued.
-
-    * BOOTCLEANFILES
-      In addition to files specified in CLEANFILES, deletes these files when the make bootclean command is issued.
-
-See also:
-
-    * How to Use Separate Compilation
+<screen>
+<prompt>$</prompt> ./configure ... LDFLAGS=-static
 </screen>
 
-  
   </section>
+
 </chapter>
