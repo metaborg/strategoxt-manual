@@ -5,12 +5,13 @@
   <title>Building and Deploying Stratego Programs (*)</title>
   
   <para>
-    The Stratego build system is based on the GNU autotools, that is
-    to say, automake, autoconf and libtool. In addition, we have a
-    tool called autoxt. If you are familiar with the autotools, setting
-    a project for Stratego should be rather easy. If this is unfamiliar
-    ground to you, don't fear. We will walk through it slowly in
-    this chapter, but a full treatise is beyond the scope of this
+    The Stratego build system is based on the GNU Autotools, that is
+    to say, <command>automake</command>, <command>autoconf</command> and
+    <command>libtool</command>. In addition, Stratego provides a
+    tool called <command>autoxt</command>. If you are familiar with the 
+    Autotools, setting up a project for Stratego should be rather easy. If
+    this is unfamiliar ground to you, don't fear. We will walk through it
+    slowly in this chapter, but a full treatise is beyond the scope of this
     tutorial.
   </para>
 
@@ -29,13 +30,14 @@
     </para>
 
     <para>
-      For a normal Stratego project, with XTC components, and some stand-alone
-      applications, we suggest the project layout given below. Directories end
-      in <filename>/</filename>. We will discuss the all the components of
-      this hierarchy below.
+      For a normal Stratego project, with XTC components and some stand-alone
+      applications, we suggest the project layout given below (directories end
+      in <filename>/</filename>). We will discuss the all the components of
+      this hierarchy in turn.
     </para>
     
 <screen>
+ogetarts/
   bootstrap
   configure.ac
   Makefile.am
@@ -56,10 +58,12 @@
     <para>
       The build system is kickstarted by the <filename>bootstrap</filename>
       script. This script is responsible for generating a 
-      <filename>configure</filename> script when run. Generation is
-      a very important aspect of autotool-based build systems. The
-      <filename>configure</filename> script is generated from a
-      <filename>configure.ac</filename> declaration by the
+      <filename>configure</filename> script. When run, the
+      <filename>configure</filename> script will autodetect the
+      Stratego compiler and other tools required to build your project.
+	  The concept of generation is very central to autotool-based build
+	  systems. The <filename>configure</filename> script is generated
+	  from a <filename>configure.ac</filename> declaration by the
       <command>autoreconf</command> tool. The 
       <filename>Makefile</filename>s are generated from
       <filename>Makefile.in</filename> files by the
@@ -68,7 +72,8 @@
       <filename>Makefile.am</filename> files by
       <command>automake</command>. Simple, huh? Generally, the
       idea is that complicated scripts and makefiles can be generated
-      from high-level declarations using tools.
+      from high-level declarations using tools. Let's start with
+      the <filename>bootstrap</filename> script.
     </para>
     
 <screen><xi:include href="config/bootstrap.txt" parse="text"/></screen>
@@ -79,15 +84,16 @@
     takes care of running <command>autoxt</command> and
     <command>autoreconf</command>, as shown above. Note that we
     rely on resonably recent versions of <command>autoconf</command> and
-    <command>automake</command>, but that configuring which versions
-    to apply is distribution-specific.
+    <command>automake</command>. Unfortunatley, ensuring that the correct
+    version of these tools is executed is distribution-specific, hence
+    the <code>if</code>-statements above.
   </para>
   
   
   <para>
     Assume we are in a palindromic mood and want to name our project
     Ogetarts. The following file will then provide a reasonable starting
-    point.
+    point for the <filename>configure.ac</filename> file.
   </para>
 
 <screen><xi:include href="config/configure-ac.txt" parse="text"/></screen>
@@ -101,7 +107,7 @@
     the invocation of the <code>AC_CONFIG_FILES</code> macro lists other
     important files of the build system, particularly the
     <filename>Makefile</filename>s. We must provide these, but remember
-    that these are also generated from <filename>.in</filename> files
+    that these are generated from <filename>.in</filename> files
     which in turn come from <filename>.am</filename> files. Hence, we
     need to provide some <filename>Makefile.am</filename> files. The
     <filename>Makefile.am</filename> for the root of the project
@@ -130,6 +136,15 @@
     file for your project.
   </para>  
   
+  <para>
+    The content of the <filename>Makefile.am</filename> files depends
+    on whether you are building stand-alone Stratego applications, 
+    XTC components or a Stratego library. We will discuss each variant
+    separately, but you are of course free to mix several of these
+    in your project, like we do in this project: In
+    <filename>src/lib</filename> lives the library parts of Ogetarts,
+    and in <filename>src/xtc</filename> live the XTC components.
+  </para>
   </section>
   
   <section>
@@ -161,7 +176,18 @@
     
     <para>
     </para>
+    
 <screen><xi:include href="config/xtc-makefile-am.txt" parse="text"/></screen>
 
   </section>
+  
+  <section>
+     <title>Building Your Own library (*)</title>
+     
+     <para>Organizing your Library</para>
+     <para>Supporing Separate Compilation</para>
+     <para>Building and Using Shared Libraries</para>
+     
+  </section>
+  
 </chapter>
