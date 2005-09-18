@@ -4,25 +4,25 @@
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <para>
-    The design goal of the Stratego Library is for it to be a collection of
-    strategies, rules and data types that is well suited for manipulation
-    of programs. In the previous part of this tutorial, we introduced you
-    to many of the specific features in the library for doing program
-    manipulation. The library also contains the familiar set of 
-    abstract data types, such as lists, strings, hashtables, sets, etc.
-    You will also find strategies for doing console, file I/O, process
-    manipulation, directory traversal and pathname computation, and more.
-    This chapter will complete your Stratego education, by introducing you
-    to the most important parts of the Stratego library not already
-    discussed.
+    The Stratego Library was design with one goal in mind: it should contain
+    be a good collection of strategies, rules and data types for
+    manipulatingprograms. In the previous part of this tutorial, we have
+    already introduced you some of the specific features in the library for
+    doing program manipulation. However, the library also contains
+    abstract data types which are found in almost any library, such as
+    lists, strings, hashtables, sets, file and console I/O, directory
+    manipulation and more. In this chapter, we aim to complete your 
+    basic Stratego education by introducing you to how these
+    bread-and-butter data types have been implemented for Stratego.
   </para>
 
   <tip> 
     <title>Online Library Documentation</title>
      
   <para>
-	The Stratego library grows continually. If you want to follow the
-	progress, you should consult the latest version of the 
+	Stratego and its library is a work in progress. New material is added to
+	the library on a weekly basis. If you want to follow the progress, you
+	should consult the latest version of the 
 	<link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">library documentation</link>.
   </para>
   
@@ -38,11 +38,13 @@
     <title>Anatomy of the Stratego Library</title>
       
   <para>
-    The organization of the Stratego library should present few novelties.
-    At the coarsest level of organization, it consists of a set of
-    packages. Each package consists of a set of modules. One module
-    maps to one <code>.str</code> file, and contains definitions for
-    strategies, rules, constructors and overlays. All available packages
+    The organization of the Stratego library is hierarchical.
+    At the coarsest level of organization, it is divided into packages
+    packages, whose named as on a path-like form, e.g.
+    <code>collection/list</code>. Each package in turn consists of one
+    or several modules. A module is a leaf in the hierarchy. It maps
+    to one Stratego (<code>.str</code> )file, and contains definitions for
+    strategies, rules, constructors and overlays. The available packages
     in the library is listed below.
   </para>
 
@@ -73,8 +75,10 @@ util/config
   </para>
   
   <para>
-    In the remainder of this part, we will focus on lists, hashtables,
-    I/O, option parsing and unit testing.
+    In the remainder of this part of the tutorial, we will present the
+    most important parts of the library, and show their typical usage
+    patterns and idioms. If anything seems unclear, you are encouraged
+    to consult the online documentation for further details.
   </para>
   </section>  
 </partintro>

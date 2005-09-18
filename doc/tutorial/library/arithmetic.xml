@@ -11,25 +11,39 @@
      <para>
        Stratego does not have the normal mathematical syntax for the
        arithmetic operators <code>+</code>, <code>-</code>, <code>/</code>
-       and <code>*</code>. The syntax for these operators are reserved
-       for other purposes. Instead, the library provides the operators
-       as the strategies <code>add</code>, <code>subt</code>, 
-       <code>div</code> and <code>mul</code>. Further, there are two
-       convenience functions for integer increment, <code>inc</code>
+       and <code>*</code>. These operators are used for other purposes.
+	   Instead, the library provides the operators
+       as the strategies, namely <code>add</code>, <code>subt</code>, 
+       <code>div</code> and <code>mul</code>. Further, there is
+       convenience strategy for integer increment, <code>inc</code>
        and decrement, <code>dec</code>.
      </para>
        
      <para>
-       There is a distinction between real numbers and integer numbers
-       throughout the library. Arithmetic strategies which work on real
-       numbers end in an <code>r</code>, e.g. <code>addr</code>,
-       and strategies working on integers end in an <code>i</code>, e.g.
-       <code>subti</code>. For each arithmetic operator, there is also
-       a type-promoting variant, e.g. <code>mul</code>, which will
-       type-promote from integer to real, when necessary. Additionally, the
-       arithmetic operations also work on strings containing integers, e.g
-       <code>divS</code>. All these variants are shown below.
-     </para>
+       The runtime maintains a distinction between real numbers and
+       integer numbers, they are different primitive types (though both
+       are considered terms). The library also maintains this distinction,
+       by providing a family of strategies for arithmetic operations.
+	   Arithmetic strategies which work on real numbers end in an 
+	   <code>r</code>, e.g. <code>addr</code>, and strategies working on
+	   integers end in an <code>i</code>, e.g. <code>subti</code>. For
+	   each arithmetic operator, there is also a type-promoting variant,
+	   e.g. <code>mul</code>, which will type-promote from integer to real,
+	   when necessary. Finally, there are convenience strategies for
+	   working on strings containing numbers. For each arithmetic operation,
+	   there is a string variant, e.g <code>divS</code>.
+	</para>
+
+<screen>
+add, addr, addi, addS
+div, divr, divi, divS
+mul, mulr, muli, mulS
+subt, subtr, subti, subtS
+</screen>
+
+	<para>
+	   Examples of some of these strategies in action:
+    </para>
 
 <screen>
 <prompt>stratego></prompt>&lt;addr> (1.5, 1.5)
@@ -55,9 +69,10 @@
        less-than-equal (<code>leq</code>), equal (<code>eq</code>), 
        greater-than (<code>gt</code>), greather-than-equal (<code>geq</code>).
        As with the arithmetic strategies, each of these operators comes in 
-       an integer variant, suffixed with <code>i</code>, a real variant,
-       suffixed by <code>r</code>, a string variant, suffixed by
-       <code>S</code> and a type promoting variant without suffix.
+       an integer variant, suffixed with <code>i</code>, a real variant
+       (suffixed by <code>r</code>), a string variant (suffixed by
+       <code>S</code>) and a type promoting variant without suffix. The
+       full matrix of comparison functions thus looks like:
      </para>
 
 <screen>
@@ -106,7 +121,7 @@ command failed
      <title>Other Operations</title>
      
      <para>
-       The modulus (remainder) of a dividing and integer by another is
+       The modulus (remainder) of dividing an integer by another is
        provided by the <code>mod</code> strategy. <code>gcd</code> gives
        the greatest common divisor of two numbers. Both <code>mod</code>
        and <code>gcd</code> work on a two-element tuple of numbers. The
@@ -130,13 +145,13 @@ command failed
      <para>
        The library provides a strategy for generating random numbers, called
        <code>next-random</code>. The algorithm powering this random generator
-       requires an initial "seed" to be provided. This seed is just an 
-       first random number, and you can pick any integer you want, as long
-       as it's mostly random. A popular choice (though not actually random)
-       is the number of seconds since epoch, provided by <code>time</code>.
-       The seed is initialized by the <code>set-random-seed</code> strategy. 
-       The following code shows the normal idiom for getting a random number
-       in Stratego:
+       requires an initial "seed" to be provided. This seed is just a 
+       first random number. You can pick any integer you want, but it's
+       advisable to pick an at least mostly random number. A popular choice
+       (though not actually random) is the number of seconds since epoch,
+       provided by <code>time</code>. The seed is initialized by the
+       <code>set-random-seed</code> strategy. The following code shows the
+       normal idiom for getting a random number in Stratego:
      </para>
      
 <screen>
