@@ -601,7 +601,7 @@ Build p, then apply s
 Equivalent to: !p; s 
 
    <screen>
-<prompt>stratego></prompt> &lt;addS&gt;("1","2") =&gt; x "3"
+<prompt>stratego></prompt> &lt;addS&gt;("1","2") =&gt; x
 <prompt>stratego></prompt> :binding x 
 x is bound to "3"</screen>
     </para>
