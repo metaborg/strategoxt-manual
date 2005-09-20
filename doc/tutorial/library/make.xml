@@ -410,11 +410,26 @@ ogetarts/
       The grammar declaration (Syntax Definition Formalism) can also be
       used to derive Stratego signatures and regular tree grammars. The
       input for the tools are the <filename>.def</filename> files
-      constructed above.
+      constructed above, as the following <filename>Makefile.am</filename>
+      shows.
     </para>
 
 <screen><xi:include href="config/sig-makefile-am.txt" parse="text"/></screen>
 
+    <para>
+      This file should be placed as <filename>sig/Makefile.am</filename>.
+      The <code>sdfdata_DATA</code> declaration is the important part. It
+      tells the build system to build a Stratego signature 
+      (<filename>Ogetarts.str</filename>) and a regular tree grammar
+      (<filename>Ogetarts.rtg</filename>) from the
+      <filename>Ogetarts.def</filename>. A minor trick is employed: The
+      <filename>Ogetarts.def</filename> is symlinked from the
+      <filename>syn/</filename> directory, hence it is important that the
+      <filename>syn/</filename> is built before the
+      <filename>sig/</filename> directory. We already took care to say
+      this in the root <filename>Makefile.am</filename>.
+    </para>
+    
   </section>
   
   <section>
@@ -474,12 +489,12 @@ ogetarts/
 
      <para>
        The build system can be told to create a separate library from your
-       <filename>.str</filename> files. This is done using Libtool, which
-       takes care of creating both static and shared libraries. On most
-       platforms, the the linker prefers shared libraries over static
-       libraries, given the choice. This means that linking to your
-       Stratego library will be done dynamically, unless you or your
-       library user take steps to enable static linking.
+       <filename>.str</filename> files. This is done using
+       <command>libtool</command>, which takes care of creating both static
+       and shared libraries. On most platforms, the the linker prefers shared
+       libraries over static libraries, given the choice. This means that
+       linking to your Stratego library will be done dynamically, unless you
+       or your library user take steps to enable static linking.
      </para>
 
      <para>

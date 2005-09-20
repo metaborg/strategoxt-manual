@@ -1,42 +1,12 @@
 include $(top_srcdir)/Makefile.xt
 include $(wildcard *.dep)
 
-treegrammars =					\
-  Ogetarts.rtg
+pkgdata_DATA   = Ogetarts.rtg Ogetarts.str
 
-rtg_nfs = $(subst .rtg,.rtg-nf,$(treegrammars))
-sigs = $(subst .rtg,.str,$(treegrammars))
+EXTRA_DIST     = $(pkgdata_DATA)
+BOOTCLEANFILES = $(pkgdata_DATA) Ogetarts.def
 
-autogensignatures =				\
-  $(treegrammars)				\
-  $(rtg_nfs)					\
-  $(sigs)
+SDF2RTG_FLAGS  = --main Ogetarts
 
-signatures = $(autogensignatures)
-
-CLEANFILES	= $(wildcard *.atree)
-BOOTCLEANFILES	= $(autogensignatures) $(wildcard *.rtree)
-pkgdata_DATA    = $(signatures:.str=.rtree) Ogetarts.rtg
-EXTRA_DIST      = \
-  $(wildcard *.rtg-script) \
-  $(wildcard *.str) \
-  $(wildcard *.rtree) \
-  $(pkgdata_DATA)
-
-Ogetarts.def: 
-	rm -f Ogetarts.def
-	ln -s ../syn/Ogetarts.def .
-
-$(autogensignatures) : Ogetarts.def
-
-%.rtg : %.def
-	$(STRATEGO_REGULAR)/bin/sdf2rtg -i $< -m $* -o $@
-
-%.str : %.rtg
-	$(STRATEGO_REGULAR)/bin/rtg2sig -i $< -o $@
-
-%.rtg : %.rtg-script
-	$(STRATEGO_REGULAR)/bin/rtg-script -i $< -o $@
-
-clean:
-	rm -f *.str *.rtg *.rtg-nf *.rtree
+Ogetarts.def : 
+	$(LN_S) $(top_srcdir)/syn/Ogetarts.def $@
