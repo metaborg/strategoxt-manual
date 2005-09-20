@@ -321,20 +321,56 @@ ogetarts/
     System (srts).
   </para>
 
-    <para>
-      Building parse tables
-    </para>
+  </section>
+  
+  <section>
+    <title>Building Parse Tables</title>
 
+    <para>
+      In <xref linkend="tutorial-sdf"/> we introduced you to the Syntax
+      Definition Formalism for specifying grammars, and showed you how
+      to use <command>pack-sdf</command> and <command>sdf2table</command>
+      to construct parse tables out of these definitions. Not surprisingly,
+      the build system is equipped to do this for you. Consider the
+      <filename>Makefile.am</filename> provided below.
+    </para>
+    
 <screen><xi:include href="config/syn-makefile-am.txt" parse="text"/></screen>
 
     <para>
-      Building signatures
+      This file should be placed in <filename>syn/</filename>. 
+      The important declaration in this file is <code>sdfdata_DATA</code>. 
+      This declaration states which files are requested as part of the build
+      process. They will be installed as part of a <code>make install</code>.
+      For convenience, we have split them into <filename>.def</filename>
+      and <filename>.tbl</filename> files, in the <code>DEFS</code> and
+      <code>TBLS</code> declaration, respectively. The build system
+      knows how to generate <filename>.def</filename> files from
+      <filename>.sdf</filename> using <command>pack-sdf</command>,
+      and <filename>.tbl</filename> files from <filename>.def</filename>
+      files using <command>sdf2table</command>.
+    </para>
+    
+  </section>
+  
+  <section>
+    <title>Building Signatures</title>
+
+    <para>
+      The grammar declaration (Syntax Definition Formalism) can also be
+      used to derive Stratego signatures and regular tree grammars. The
+      input for 
     </para>
 
 <screen><xi:include href="config/sig-makefile-am.txt" parse="text"/></screen>
+
+  </section>
+  
+  <section>
+    <title>Building Stand-alone Stratego Programs</title>
     
     <para>
-      Building Stratego programs; <code>bin_PROGRAMS</code> in 
+      <code>bin_PROGRAMS</code> in 
       <filename>Makefile.am</filename>.
     </para>
 
@@ -346,11 +382,32 @@ ogetarts/
     <title>Building XTC components</title>
     
     <para>
-      <code>io-wrap</code>
+      <xref linkend="tutorial-xt"/> of this tutorial discusses the XTC
+      component architecture for Stratego. These components live in a
+      repository, where they must be registered (i.e. deployed) before
+      they can be used. The Stratego build system will take care of
+      all these details for you, if you let it. The easiest way to
+      delegate this responsibility to the build system is by using
+      the <filename>Makefile.am</filename> file provided here.
     </para>
     
 <screen><xi:include href="config/xtc-makefile-am.txt" parse="text"/></screen>
 
+    <para>
+      This <filename>Makefile.am</filename> should be placed in your
+      <filename>src/xtc/</filename> directory. As we can see, it
+      is mostly like the <filename>Makefile.am</filename> we use for
+      building stand-alone Stratego programs. The only difference
+      is using <code>libexec_PROGRAMS</code> for XTC components
+      instead of <code>bin_PROGRAMS</code>.
+    </para>
+    
+    <para>
+      The <filename>Makefile</filename> generated from this
+      <filename>Makefile.am</filename> will register all the
+      XTC components listed in <code>libexec_PROGRAMS</code>
+      when you run <code>make install</code>.
+    </para>
   </section>
   
   <section>
