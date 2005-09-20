@@ -220,6 +220,21 @@ ogetarts/
   <section>
     <title>Building Stand-alone Applications</title>
 
+    <para>
+      In <xref linkend="running-stratego-programs"/>, we showed how to
+      compile stand-alone Stratego programs using the <command>strc</command>
+      compiler. This process is automated by the build system, provided you
+      supply a suitable <filename>Makefile.am</filename>. Take the 
+      one provided below as a starting point.
+    </para>
+
+<screen><xi:include href="config/src2-makefile-am.txt" parse="text"/></screen>
+    
+    <para>
+      This file should be placed in <filename>src/prg/</filename>. The
+      following list explains the various parts occurring in the file.
+    </para>
+
 
   <variablelist>
     <varlistentry>
@@ -247,7 +262,19 @@ ogetarts/
       <term>bin_PROGRAMS</term>
       <listitem>
         <para>
-          Specifies the resulting binaries from the compilation.
+          A list of stand-alone Stratego programs that should be compiled. For
+          each entry, a corresponding <filename>.str</filename> file must
+          exist.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>libexec_PROGRAMS</term>
+      <listitem>
+        <para>
+          A list of XTC components to compiler. For each entry, a corresponding
+          <filename>.str</filename> file must exist.
         </para>
       </listitem>
     </varlistentry>
@@ -256,9 +283,12 @@ ogetarts/
       <term>pkgdata_DATA</term>
       <listitem>
         <para>
-          Are the files that will be placed in
-          <filename>$prefix/share/pkg</filename>, see: How to Use
-          Separate Compilation
+          A list of files that will be placed in
+          <filename>$prefix/share/pkg</filename>. This typically includes
+          parse tables, regular tree grammars, signatures and source code
+          for libraries. Including signatures and source code with your
+          program is useful when you want other projects to extend and
+          compile against yours.
         </para>
       </listitem>
     </varlistentry>
@@ -267,7 +297,10 @@ ogetarts/
       <term>SCFLAGS</term>
       <listitem>
         <para>
-          Contains compiler flags passed to the Stratego compiler.
+          Contains compiler flags passed to the Stratego compiler. Typical
+          flags are <code>--main</code> and <code>--dr</code>. It is
+          recommended that include files are passed via the
+          <code>STRINCLUDES</code> variable.
         </para>
       </listitem>
     </varlistentry>
@@ -276,7 +309,9 @@ ogetarts/
       <term>STRINCLUDES</term>
       <listitem>
         <para>
-          Are the additional includes necessary for a succesful compilation.
+          A list of additional includes necessary for a succesful compilation,
+          on the form <code>-I &lt;dir></code>. They will be passed unchanged
+          to the <command>strc</command> compiler.
         </para>
       </listitem>
     </varlistentry>
@@ -285,7 +320,8 @@ ogetarts/
       <term>EXTRA_DIST</term>
       <listitem>
         <para>
-          Specifies which auxilary files have to be included in the distribution.
+          Specifies which auxilary files have to be included in the distribution,
+          when doing a <code>make install</code>.
         </para>
       </listitem>
     </varlistentry>
@@ -294,7 +330,8 @@ ogetarts/
       <term>CLEANDIST</term>
       <listitem>
         <para>
-          Deletes these files when the make clean command is issued.
+          Files to be deletes these files when the <code>make clean</code>
+          command is issued.
         </para>
       </listitem>
     </varlistentry>
@@ -303,13 +340,26 @@ ogetarts/
       <term>BOOTCLEANFILES</term>
       <listitem>
         <para>
-          In addition to files specified in <code>CLEANFILES</code>, deletes
-          these files when the make bootclean command is issued.
+          Files to be deleted when <code>make bootclean</code> is issued. In
+          addtion, the files specified in <code>CLEANFILES</code> will also
+          be deleted.
         </para>
       </listitem>
     </varlistentry>
   </variablelist>
 
+  <para>
+    As we can see from the list above, the <code>bin_PROGRAMS</code> is
+    a list of the stand-alone programs that should be compiled in this
+    directory. For each program, a corresponding <filename>.str</filename>
+    must exist, in this case, a <filename>ogetarts.str</filename> file. For
+    each program the compiler will be passed the <code>LDADD</code>,
+    <code>STRINCLUDES</code> and <code>SCFLAGS</code> variables. The
+    <code>LDADD</code> variable is used to add additional shared
+    libraries that should be linked as part of the compilation process.
+    <code>STRINCLUDES</code> and <code>SCFLAGS</code> were explained above.
+  </para>
+  
   <para>
     <command>autoxt</command> installs <filename>Makefile.xt</filename>, a
     collection of Automake rules for compiling Stratego programs and applying
@@ -359,23 +409,12 @@ ogetarts/
     <para>
       The grammar declaration (Syntax Definition Formalism) can also be
       used to derive Stratego signatures and regular tree grammars. The
-      input for 
+      input for the tools are the <filename>.def</filename> files
+      constructed above.
     </para>
 
 <screen><xi:include href="config/sig-makefile-am.txt" parse="text"/></screen>
 
-  </section>
-  
-  <section>
-    <title>Building Stand-alone Stratego Programs</title>
-    
-    <para>
-      <code>bin_PROGRAMS</code> in 
-      <filename>Makefile.am</filename>.
-    </para>
-
-<screen><xi:include href="config/src2-makefile-am.txt" parse="text"/></screen>
-    
   </section>
   
   <section>
