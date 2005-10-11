@@ -76,9 +76,28 @@ Description:
   </para>
   
   <para>
-    Adding options
+    It is of course possible to add more command line options to
+    your program. 
   </para>
-  
+
+<screen>
+    ArgOption(
+      "-p"
+    , where(&lt;extend-config> ("-p", [&lt;id>]))
+    , !"-p file   Use pretty-print table in file"
+    )
+
+    Option(
+      "-c", 
+    , &lt;set-config> (Conservative(), "on"),
+    , !"-c               Conservative pretty-printing (only for"
+    )
+</screen>  
+<screen>
+  get-config-p =
+    &lt;get-config> "-p" &lt;+ ![]
+</screen>
+
   <para>
     <code>option-wrap(opts, usage, about, announce, s)</code>
   </para>

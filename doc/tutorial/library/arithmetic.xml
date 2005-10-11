@@ -9,8 +9,8 @@
      <title>Basic Operations</title>
  
      <para>
-       Stratego does not have the normal mathematical syntax for the
-       arithmetic operators <code>+</code>, <code>-</code>, <code>/</code>
+       Stratego does not have the normal mathematical syntax for 
+       arithmetic operators, such as <code>+</code>, <code>-</code>, <code>/</code>
        and <code>*</code>. These operators are used for other purposes.
 	   Instead, the library provides the operators
        as the strategies, namely <code>add</code>, <code>subt</code>, 
@@ -20,11 +20,12 @@
      </para>
        
      <para>
-       The runtime maintains a distinction between real numbers and
-       integer numbers, they are different primitive types (though both
-       are considered terms). The library also maintains this distinction,
-       by providing a family of strategies for arithmetic operations.
-	   Arithmetic strategies which work on real numbers end in an 
+       While the Stratego language operates exclusively on terms, there
+       are different kinds of primitive terms. The runtime maintains a
+       distinction between real numbers and integer numbers. The library
+       mirrors this distinction by providing a family of strategies for
+       arithmetic operations. Arithmetic strategies which work on real
+       numbers end in an 
 	   <code>r</code>, e.g. <code>addr</code>, and strategies working on
 	   integers end in an <code>i</code>, e.g. <code>subti</code>. For
 	   each arithmetic operator, there is also a type-promoting variant,
@@ -34,30 +35,40 @@
 	   there is a string variant, e.g <code>divS</code>.
 	</para>
 
+	<para>
+	   The full set of arithmetic operations in Stratego:
+    </para>
+    	   
 <screen>
-add, addr, addi, addS
-div, divr, divi, divS
-mul, mulr, muli, mulS
+add,  addr,  addi,  addS
+div,  divr,  divi,  divS
+mul,  mulr,  muli,  mulS
 subt, subtr, subti, subtS
 </screen>
 
 	<para>
-	   Examples of some of these strategies in action:
+	   Using these strategies is straightforward.
     </para>
 
 <screen>
-<prompt>stratego></prompt>&lt;addr> (1.5, 1.5)
+<prompt>stratego></prompt> &lt;addr> (1.5, 1.5)
 3.000000000000000e+00
-<prompt>stratego></prompt>&lt;subti> (5, 2)
+<prompt>stratego></prompt> &lt;subti> (5, 2)
 3
-<prompt>stratego></prompt>&lt;mul> (1.5, 2)
+<prompt>stratego></prompt> &lt;mul> (1.5, 2)
 3.000000000000000e+00
-<prompt>stratego></prompt>&lt;divS> ("9", "3")
+<prompt>stratego></prompt> &lt;divS> ("9", "3")
 "3"
-<prompt>stratego></prompt>&lt;inc> 2
+<prompt>stratego></prompt> &lt;inc> 2
 3
 </screen>
  
+   <para>
+     As we can see, the <code>mul</code> operator can be applied to a pair
+     which have different terms (real and integer). In this case, type
+     promotion from integer to real with happen automatically.
+   </para>
+   
    </section>
 
    <section>
@@ -76,8 +87,8 @@ subt, subtr, subti, subtS
      </para>
 
 <screen>
-lt, ltr, lti, ltS
-gt, gtr, gti, gtS
+lt,  ltr,  lti,  ltS
+gt,  gtr,  gti,  gtS
 leq, leqr, leqi, leqS
 geq, geqr, geqi, geqS
 </screen>
@@ -98,8 +109,9 @@ command failed
      <para>
        The maximum and minimum of a two-element tuple of numbers can be
        found with the <code>max</code> and <code>min</code> strategies,
-       respectively. There are also string variants of these,
-       <code>maxS</code> and <code>minS</code>.
+       respectively. These do not distinguish between real and integers.
+       However, they do distinguish between numbers and strings; 
+       <code>maxS</code> and <code>minS</code> are applicable to strings.
      </para>
 <screen>
 <prompt>stratego></prompt> &lt;max> (0.9, 1.0)
@@ -124,10 +136,10 @@ command failed
        The modulus (remainder) of dividing an integer by another is
        provided by the <code>mod</code> strategy. <code>gcd</code> gives
        the greatest common divisor of two numbers. Both <code>mod</code>
-       and <code>gcd</code> work on a two-element tuple of numbers. The
+       and <code>gcd</code> work on a two-element tuple of integers. The
        <code>log2</code> strategy can be used to find the binary logarithm
        of a number. It will only succeed if the provided number is an
-       integer and has an integer binary logarithm.
+       integer and that number has an integer binary logarithm.
      </para>
 <screen>
 <prompt>stratego></prompt> &lt;mod> (412,123)
@@ -147,8 +159,8 @@ command failed
        <code>next-random</code>. The algorithm powering this random generator
        requires an initial "seed" to be provided. This seed is just a 
        first random number. You can pick any integer you want, but it's
-       advisable to pick an at least mostly random number. A popular choice
-       (though not actually random) is the number of seconds since epoch,
+       advisable to pick a different seed on each program execution. A popular
+       choice (though not actually random) is the number of seconds since epoch,
        provided by <code>time</code>. The seed is initialized by the
        <code>set-random-seed</code> strategy. The following code shows the
        normal idiom for getting a random number in Stratego:
