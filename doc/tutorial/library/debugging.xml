@@ -4,9 +4,43 @@
 
   <title>Debugging Techniques for Stratego/XT</title>
 
+  <para>
+    Even in Stratego/XT, it is not entirely uncommon for developers
+    to produce erroneous code from time to time. This chapter will
+    walk you through the tools and techniques available for hunting
+    down bugs, and tips for how to avoid them in the first place.
+  </para>
+  
 <section>
   <title>Debugging Stratego</title>
-  <para></para>
+  
+  <para>
+    Both the Stratego language paradigm and its syntax are rather
+    different from most other languages. Knowing how to use its
+    unique features properly, in the way we have described in
+    this manual, goes a long way towards avoiding future maintenance
+    problems. 
+  </para>
+ 
+  <para>
+    One important practical aspect of using language constructs is
+    expressing them in a readable manner. The intention behind the
+    code should be apparent for readers of the code. Judicious use
+    of whitespaces is vital in making Stratego code readable, partly
+    because its language constructs are less block-oriented than
+    most Algol-derivates.
+  </para>
+
+<screen>
+ - rules
+ - strategies
+ 
+ - inline rules
+ - concrete syntax
+ - higher-order strategies
+ - terms
+</screen>
+ 
 <screen>
  - formatting Stratego code for readability
  - documenting types
