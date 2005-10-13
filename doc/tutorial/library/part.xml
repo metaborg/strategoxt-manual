@@ -15,4 +15,5 @@
   <xi:include href="xtc/chapter.xml" />
   <xi:include href="make.xml" />
   <xi:include href="building.xml" />
+  <xi:include href="debugging.xml" />
 </part>

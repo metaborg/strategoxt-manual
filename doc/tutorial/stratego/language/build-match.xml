@@ -5,7 +5,7 @@
 
   <title>Creating and Analyzing Terms (*)</title>
 
-<para>
+  <para>
 
   we have used transformations as basic transformation steps
 
@@ -677,19 +677,20 @@ Applying Strategies in Build
   <title>Wrap and Project</title>
    
 <section>
-   <title>Term Wrap</title>
-   <para>   
-        One often write rules of the form
-\verb|\ x -> Foo(Bar(x))\|,
-        i.e., wrapping a term pattern around a term. Using rule syntax
-        this is quite verbose. The syntactic abstraction of \emph{term
-        wraps}, allows the concise specification of such little
-        transformations.
 
-        A term wrap is a build expression <code>!$p[$&lt;$s$>$]$</code> containing a
-        strategy application <code>&lt;$s$></code> that is not applied to a term.
-        Using a new variable $x$, such an expression is desugared
-        as
+  <title>Term Wrap</title>
+  <para>   
+    
+    One often write rules of the form <code>\ x -> Foo(Bar(x))\</code>,
+    i.e. wrapping a term pattern around a term. Using rule syntax
+    this is quite verbose. The syntactic abstraction of
+    <emphasis>term wraps</emphasis>, allows the concise specification
+    of such little transformations.
+
+    A term wrap is a build expression <code>!$p[$&lt;$s$>$]$</code> containing a
+    strategy application <code>&lt;$s$></code> that is not applied to a term.
+    Using a new variable $x$, such an expression is desugared
+    as
 \[
         \sem{\ \tty{!$p[$&lt;$s$>$]$}\ }
         \quad\to\quad
@@ -700,12 +701,10 @@ Applying Strategies in Build
         is applied.
 
         Using this abstraction one can now write <code>!Foo(Bar(&lt;id>))</code>,
-        for the strategy
-<code>\{x: id => x; !Foo(Bar(x))\</code>},
+        for the strategy <code>\{x: id => x; !Foo(Bar(x))\</code>},
         which after simplification is equivalent to
-<code>\{x: ?x; !Foo(Bar(x))\</code>},
-        i.e., exactly the original anonymous rule
-<code>\bs x -> Foo(Bar(x))\bs</code>.
+        <code>\{x: ?x; !Foo(Bar(x))\</code>}, i.e., exactly the original
+        anonymous rule <code>\bs x -> Foo(Bar(x))\bs</code>.
 
 
 Syntax: !p[&lt;s&gt;] 
@@ -731,26 +730,30 @@ Call("foobar", [])</screen>
 </section>
    
 <section>
-   <title>Term Project</title>
-   <para>   
 
-        Term projections are the match dual of term wraps. A match
-        expression <code>?$p[$&lt;$s$>$]$</code> is desugared as
+  <title>Term Project</title>
+
+  <para>   
+    Term projections are the match dual of term wraps. A match
+    expression <code>?$p[$&lt;$s$>$]$</code> is desugared as
 \[
         \sem{\ \tty{?$p[$&lt;$s$>$]$}\ }
         \quad\to\quad
         \sem{\ \tty{\{$x$:\ ?$p[x]$; &lt;$s$>$x$\}}\ }
 \]
-        That is, after the pattern <code>$p[x]$</code> matches, it is
-        reduced to the subterm bound to $x$ to which $s$ is applied.
-        Term projections can be used to \emph{project} a subterm from
-        a term pattern. For example, the expression
-        <code>?And(&lt;id>,x)</code> matches terms of the form
-        <code>And(t1,t2)</code> and reduces them to the first subterm
-        <code>t1</code>. Another example is the strategy
+
+    That is, after the pattern <code>$p[x]$</code> matches, it is
+    reduced to the subterm bound to $x$ to which $s$ is applied.
+    Term projections can be used to \emph{project} a subterm from
+    a term pattern. For example, the expression
+    <code>?And(&lt;id>,x)</code> matches terms of the form
+    <code>And(t1,t2)</code> and reduces them to the first subterm
+    <code>t1</code>. Another example is the strategy
+
 <screen>
   map(?FunDec(&lt;id>,_,_))
 </screen>
+
         which reduces a list of function declarations to a list of the
         names of the functions, i.e., the first arguments of the
         <code>FunDec</code> constructor.
@@ -766,15 +769,17 @@ Strategy application in pattern match
 Equivalent to: {x: ?p[x]; &lt;s&gt;x} for some fresh variable x
 </para>
 
-   <screen>
+<screen>
 [1,2,3]
 <prompt>stratego></prompt> ?[ |&lt;id&gt;]
-[2,3]</screen>
+[2,3]
+</screen>
 
-   <screen>
+<screen>
 Call("foobar", [])
 <prompt>stratego></prompt> ?Call(&lt;id&gt;, [])
-"foobar"</screen>
+"foobar"
+</screen>
 
 </section>
 

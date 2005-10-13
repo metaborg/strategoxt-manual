@@ -1,0 +1,51 @@
+<chapter
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Debugging Techniques for Stratego/XT</title>
+
+<section>
+  <title>Debugging Stratego</title>
+  <para></para>
+<screen>
+ - formatting Stratego code for readability
+ - documenting types
+  - arity of tuples, lists
+ - help from the libary 
+  - log
+  - debug
+ - common pitfalls
+  - combinator precedence
+  - strategy overloading
+  - variable scoping
+   - explicit scoping
+   - in local rules, map/filter
+</screen>
+</section>
+
+<section>
+  <title>Debugging XT compositions</title>
+  <para></para>
+<screen>
+ - checking component registration
+ - checking configuration file accesses
+  - strace
+ - xtc shell?
+</screen>
+</section>
+
+<section>
+  <title>Debugging SDF definitions</title>
+  <para></para>
+<screen>
+ - SDF tools
+  - sdfchecker
+  - sdf2parenthesize
+ - concrete syntax
+  - correct .meta file
+  - reserved metavariables
+  - ambiguities
+</screen>
+</section>
+
+</chapter>
