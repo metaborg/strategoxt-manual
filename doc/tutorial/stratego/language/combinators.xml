@@ -526,31 +526,101 @@ restore-always(s, r) = s &lt; r + (r; fail)
 
 <para>
       
-  If Then Else
+  The guarded choice combinator is similar to the traditional
+  if-then-else construct of programming languages. The difference is
+  that the `then' branch applies to the result of the application of
+  the condition.
 
-  Syntax: if s1 then s2 else s3 end 
+  Stratego's <code>if s1 then s2 else s3 end</code> construct is more
+  like the traditional construct since both branches apply to the
+  original term. The condition strategy is only used to test if it
+  succeeds or fails, but it's transformation effect is
+  undone. However, the condition strategy <code>s1</code> is still
+  applied to the current term.
 
-  Equivalent to: where(s1) &lt; s2 + s3
+  The <code>if s1 then s2 end</code> strategy is similar; if the
+  condition fails, the strategy succeeds.
 
 </para>
 
-  
-<screen>
-foo
-</screen>
+<formalpara>
+   <title>Properties</title>
 
 <para>
-     
-  If-Then
 
-  Syntax: if s1 then s2 end 
+  The <code>if-then-else-end</code> strategy is just syntactic sugar
+  for a combination of guarded choice and the <code>where</code>
+  combinator:
+   
+<screen>
+if s1 then s2 else s3 end  =  where(s1) &lt; s2 + s3
+</screen>
 
-  Equivalent to if s1 then s2 else id end
-</para>
+  The strategy <code>where(s)</code> succeeds if <code>s</code>
+  succeeds, but returns the original subject term. The implementation
+  of the <code>where</code> combinator will be discussed in <xref
+  linkend="stratego-creating-and-analyzing-terms"/>. 
+
+  The following laws show that the branches are selected by success or
+  failure of the condition:
 
 <screen>
-foo
+if id   then s2 else s3 end  =  s2
+
+if fail then s2 else s3 end  =  s3
 </screen>
+
+</para>
+
+</formalpara>
+
+<para>
+
+  The <code>if-then-end</code> strategy is an abbreviation for the
+  <code>if-then-else-end</code> with the identity strategy as right
+  branch:
+
+<screen>
+if s1 then s2 end  =  where(s1) &lt; s2 + id
+</screen>
+
+</para>
+
+<formalpara>
+   <title>Examples</title>
+
+<para>
+
+  The <emphasis>inclusive or</emphasis> <code>or(s1, s2)</code>
+  succeeds if one of the strategies <code>s1</code> or <code>s2</code>
+  succeeds, but guarantees that both are applied, in the order
+  <code>s1</code> first, then <code>s2</code>:
+
+<screen>
+or(s1, s2) = 
+  if s1 then try(where(s2)) else where(s2) end
+</screen>
+
+  This ensures that any side effects are always performed, in contrast
+  to <code>s1 &lt;+ s2</code>, where <code>s2</code> is only executed
+  if <code>s1</code> fails. (Thus, left choice implements a short
+  circuit Boolean or.)
+
+</para>
+
+</formalpara>
+
+<para>
+
+  Similarly, the following <code>and(s1, s2)</code> combinator is the
+  non-short circuit version of Boolean conjunction:
+
+<screen>
+and(s1, s2) = 
+  if s1 then where(s2) else where(s2); fail end
+</screen>
+
+</para>
 
 </section>
 
