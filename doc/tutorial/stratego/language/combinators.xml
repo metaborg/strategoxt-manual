@@ -103,7 +103,7 @@ s ; fail = fail   (is not a law)
   following rewrite rules.
 
 <screen>
-<prompt>stratego></prompt> A : P(Z,x) -> x
+<prompt>stratego></prompt> A : P(Z(),x) -> x
 <prompt>stratego></prompt> B : P(S(x),y) -> P(x,S(y))
 </screen>
 
@@ -201,6 +201,10 @@ s &lt;+ fail = s
 <screen>
 s &lt;+ id =  s    (is not a law)
 </screen>
+
+  The expression <code>s &lt;+ id</code> always succeeds, even
+  (especially) in the case that <code>s</code> fails, in which case
+  the right-hand side of the equation fails of course.
 
 </para>
 
@@ -327,9 +331,9 @@ Plus(Var("x"),Plus(Int("42"),Int("3")))
 
   Rules <code>Mem2</code> and <code>Mem3</code> have overlapping
   left-hand sides.  Rule <code>Mem2</code> only applies if the first
-  argument is equal to head element of the list in the second
+  argument is equal to the head element of the list in the second
   argument. Rule <code>Mem3</code> applies always if the list in the
-  second argument is non-empty.  
+  second argument is non-empty.
 
 <screen>
 <prompt>stratego></prompt> !Mem(1, [1,2,3])
@@ -384,10 +388,10 @@ try(s) = s &lt;+ id
 <para>
 
   Sometimes it is not desirable to backtrack to the alternative
-  specified in a choice. Rather, after passing a guard, the choice
-  should be committed. This can be expressed using the
-  <emphasis>guarded left choice</emphasis> operator <code>s1 &lt; s2 +
-  s3</code>.
+  specified in a choice. Rather, after passing a
+  <emphasis>guard</emphasis>, the choice should be committed. This can
+  be expressed using the <emphasis>guarded left choice</emphasis>
+  operator <code>s1 &lt; s2 + s3</code>.
 
   If <code>s1</code> succeeds <code>s2</code> is applied, else
   <code>s3</code> is applied. If <code>s2</code> fails, the complete
@@ -407,7 +411,8 @@ try(s) = s &lt;+ id
 s1 &lt;+ s2 = s1 &lt; id + s2
 </screen>
 
-  The 
+  The following laws make clear that the `branches' of the choice are
+  selected by the success or failure of the guard:
 
 <screen>
 id &lt; s2 + s3  = s2
@@ -415,63 +420,104 @@ id &lt; s2 + s3  = s2
 fail &lt; s2 + s3 = s3
 </screen>
 
+  If the right branch always fails, the construct reduces to the
+  sequential composition of the guard and the left branch.
+
 <screen>
 s1 &lt; s2 + fail = s1; s2
 </screen>
 
-  guarded choice is not associative
+  Guarded choice is not associative:
 
 <screen>
 (s1 &lt; s2 + s3) &lt; s4 + s5 = s1 &lt; s2 + (s3 &lt; s4 + s5)    (not a law)
 </screen>
 
-   however, sequential composition distributes over guarded choice
+   To see why consider the possible traces of these expressions. For example,
+   when <code>s1</code> and <code>s2</code> succeed subsequently, the left-hand
+   side expression calls <code>s4</code>, while the right-hand side expression does
+   not.
+
+</para>
+
+</formalpara>
+
+<para>
+
+   However, sequential composition distributes over guarded choice
+   from left <emphasis>and</emphasis> right:
 
 <screen>
-(s1 &lt; s2 + s3) ; s4 = s1 &lt; (s2; s4) + (s3; s4)
-</screen>
+(s1 &lt; s2 + s3); s4 = s1 &lt; (s2; s4) + (s3; s4)
 
-<screen>
 s0; (s1 &lt; s2 + s3) = (s0; s1) &lt; s2 + s3
 </screen>
 
 </para>
 
-</formalpara>
 
-<formalpara xml:id="negation">
-    <title>Negation</title>
+<formalpara>
+    <title>Examples</title>
 
 <para>
 
-  Sometimes it is useful to test a property of a term, rather than
-  transforming it. In these cases the combinators \texttt{test} and
-  \texttt{not} can be used. They test whether a strategy $s$ succeeds
-  or fails to transform a term.
+  The guarded left choice operator is most useful for the
+  implementation of higher-level control-flow strategies.
+
+  For example, the <emphasis>negation</emphasis> <code>not(s)</code>
+  of a strategy <code>s</code>, succeeds if <code>s</code> fails, and
+  fails when it succeeds:
 
 <screen>
 not(s) = s &lt; fail + id
 </screen>
 
-</para>
-
-</formalpara>
-
-<formalpara>
-  <title>Examples</title>
-
-<para>
+  Since failure discards the effect of a (succesful) transformation,
+  this has the effect of testing whether <code>s</code> succeeds. So
+  we have the following laws for <code>not</code>:
 
 <screen>
-  test1 &lt; case1
-+ test2 &lt; case2
-+ other-cases
+not(id) = fail
+not(fail) = id
+</screen>
+
+  However, side effects performed by <code>s</code> are not undone, of
+  course.  Therefore, the following equation does
+  <emphasis>not</emphasis> hold:
+
+<screen>
+not(not(s)) = s   (not a law)
 </screen>
 
 </para>
 
 </formalpara>
 
+<para>
+
+  Another example of the use of guarded choice is the
+  <code>restore-always</code> combinator:
+
+<screen>
+restore-always(s, r) = s &lt; r + (r; fail)
+</screen>
+
+  It applies a `restore' strategy <code>r</code> after applying a
+  strategy <code>s</code>, even if <code>s</code> fails, and preserves
+  the success/failure behaviour of <code>s</code>. Since
+  <code>fail</code> discards the transformation effect of
+  <code>r</code>, this is mostly useful for ensuring that some
+  side-effecting operation is done (or undone) after applying
+  <code>s</code>.
+
+</para>
+
+<para>
+
+  For other applications of guarded choice, Stratego provides
+  syntactic sugar.
+
+</para>
 
 </section>
 
