@@ -1,5 +1,6 @@
 <partintro
   xmlns="http://docbook.org/ns/docbook"
+  xmlns:xl="http://www.w3.org/1999/xlink"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Introduction</title>
@@ -10,7 +11,9 @@
   <para>
 
      This manual is being written for and with Stratego 0.16; You are
-     advised to installed the latest milestone for this release.
+     advised to install the latest milestone for this release. See the
+     download page at <link
+     xl:href="http://www.stratego-language.org">stratego-language.org</link>
 
   </para>
 

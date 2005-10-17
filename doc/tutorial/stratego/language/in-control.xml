@@ -232,7 +232,7 @@ Or(And(Not(Atom("r")),Dnf(Dnf(ATom("p")))),
   then simultaneously rewrite one subterm to DNF and the other to CNF.
 
 <screen>
-  Foo(Dnf(...), Cnf(...))
+  E : DC(x) -> (Dnf(x), Cnf(x))
 </screen>
 
 </para>
@@ -414,7 +414,7 @@ COBOL    : 300 - 1200
 <para>
 
   In the next chapters we will examine the language constructs that
-  Stratego provide for programming with strategies, starting with the
+  Stratego provides for programming with strategies, starting with the
   low-level actions of building and matching terms. To get a feeling
   for the purpose of these constructs, we first look at a couple of
   typical idioms of strategic rewriting.
