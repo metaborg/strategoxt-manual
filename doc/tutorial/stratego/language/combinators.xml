@@ -629,9 +629,57 @@ and(s1, s2) =
 
 <para>
 
+  The <code>switch</code> construct is an n-ary branching construct
+  similar to its counter parts in other programming languages, but
+  with a few twists, and of course it is defined in terms of guarded
+  choice.
+
+  The <code>switch</code> construct has the following form:
+
+<screen>
+  switch s0
+    case s1 : s1'
+    case s2 : s2'
+    ...
+    otherwise sn
+  end
+</screen>
+
+  What it does is apply 
   switch construct
 
 </para>
+
+<formalpara>
+  <title>Properties</title>
+
+<para>
+
+  properties of switch construct
+
+<screen>
+  {x : where(s0 => x);
+       if <s1> x then s1' else 
+       if <s2> x then s2' else 
+       ...
+       else sn
+       end end}
+</screen>
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>Examples</title>
+
+<para>
+
+  examples switch construct
+
+</para>
+
+</formalpara>
 
 </section>
 
@@ -672,6 +720,28 @@ and(s1, s2) =
   implementation and semantics.
 
 </para>
+
+<formalpara>
+  <title>Properties</title>
+
+<para>
+
+  properties of non-deterministic choice
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>Examples</title>
+
+<para>
+
+  examples of non-deterministic choice
+
+</para>
+
+</formalpara>
 
 </section>
 
