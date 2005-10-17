@@ -367,7 +367,7 @@ And(Atom("p"),Not(Atom("q")))
 <para>
 
   A simple strategy definition names a strategy expression. For
-  instance, the following module define a combination of rules
+  instance, the following module defines a combination of rules
   (<code>dnf-rules</code>), and some strategies based on it:
         
 <screen>
@@ -460,7 +460,7 @@ f(x1,...,xn | y1,..., ym) = s
 
   As we will see in the coming chapters, strategies such as
   <code>innermost</code>, <code>topdown</code>, and
-  <code>bottomup</code> are not <emphasis>not built into the
+  <code>bottomup</code> are <emphasis>not built into the
   language</emphasis>, but are defined using strategy definitions in
   the language itself using more basic combinators, as illustrated by
   the following definitions (without going into the exact meaning of
@@ -502,7 +502,7 @@ strategies
 <para>
 
   There can be multiple definitions with the same name but
-  <emphasis>different</emphasis> number of parameters. Such
+  <emphasis>different</emphasis> numbers of parameters. Such
   definitions introduce <emphasis>different</emphasis> strategy
   operators.
 
@@ -531,6 +531,10 @@ let dnf-rules = DefI &lt;+ DefE &lt;+ DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ D
 end
 </screen>
 
+  The current version of Stratego does not support hidden strategy
+  definitions at the module level. Such a feature is under
+  consideration for a future version.
+
 </para>
 
 </section>
@@ -557,7 +561,20 @@ strategies
 
   entails that a call to <code>f</code> has the effect of first trying
   to apply <code>s1</code>, and if that fails applies <code>s2</code>,
-  or the other way around.
+  or the other way around. Thus, the definition above is either
+  translated to
+
+<screen>
+strategies
+  f = s1 &lt;+ s2
+</screen>
+
+   or to 
+
+<screen>
+strategies
+  f = s2 &lt;+ s1
+</screen>
 
 </para>
 
@@ -596,6 +613,10 @@ foobar
   Note that the `current' term is not passed automatically as
   argument.
 
+</para>
+
+<para>
+ 
   This mechanism allows the incorporation of mundane tasks such as
   arithmetic, I/O, and other tasks not directly related to
   transformation, but necessary for the integration of transformations

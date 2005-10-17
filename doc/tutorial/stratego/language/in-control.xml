@@ -690,7 +690,7 @@ And(... big expression ..., False)
 <para>
 
   Cascading transformations apply a number of rules one after another
-  to an entire program. But in some cases this is not appropriate. For
+  to an entire tree. But in some cases this is not appropriate. For
   instance, two transformations may be inverses of one another, so
   that repeatedly applying one and then the other would lead to
   non-termination. To remedy this difficulty, Stratego supports the
