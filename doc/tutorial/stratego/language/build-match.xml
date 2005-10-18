@@ -91,48 +91,38 @@ Var("b")
 <section xml:id="match">
   <title>Matching terms</title>
 
-    <para>
+  <para>
 
-        The match operation <code>?$p$</code> \index{match <code>?$p$</code>}
-        matches the subject term against the term pattern
-        <code>p</code>. This involves checking that the subject term
-        corresponds to the pattern and binding the variables in
-        <code>t</code> to the corresponding subterms of the subject term.
-        For example, <code>?And(Or(x, y), z)</code> matches the subject
-        term against the pattern <code>And(Or(x, y), z)</code> and binds
-        the variables <code>x</code>, <code>y</code> and <code>z</code>.  Matching
-        is defined formally using the following rules.  A strategy
-        $\match(p)$ applies to a term $t$ if there is a substitution
-        that extends the current environemnt $\env$ and makes $p$
-        equal to term.  A match fails if there is no such
-        substitution.
+    Pattern matching allows the analysis of terms. The simplest case
+    is matching against a literal term.
 
-Syntax: ?t 
+    The match operation <code>?t</code> matches the subject term
+    against the term <code>t</code>.
 
-Match current term against term t 
+  </para>
 
-Succeed if equal, fail if unequal 
-
-    </para>
-
-    <screen>
-Plus(Var("a"),Int("3")) 
-stratego> ?Plus(Var("a"),Int("3")) 
-stratego> ?Plus(Int("3"),Var("b")) 
+<screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> ?Plus(Int("3"),Var("b"))
 command failed
-    </screen>
+</screen>
 
+  <para>
 
-    <para>
-      The match strategy <code>?<replaceable>x</replaceable></code>
-      compares the current term (<replaceable>t</replaceable>) to
-      variable <replaceable>x</replaceable>. It binds variable
-      <replaceable>x</replaceable> to term
-      <replaceable>t</replaceable> in the environment. A variable can
-      only be bound once, or to the same term.
-    </para>
+    Matching against a term <emphasis>pattern</emphasis> with
+    variables binds those variables to (parts of) the current term.
+
+    The match strategy <code>?<replaceable>x</replaceable></code>
+    compares the current term (<replaceable>t</replaceable>) to
+    variable <replaceable>x</replaceable>. It binds variable
+    <replaceable>x</replaceable> to term <replaceable>t</replaceable>
+    in the environment. A variable can only be bound once, or to the
+    same term.
+    
+  </para>
   
-    <screen>
+<screen>
 Plus(Var("a"),Int("3"))
 <prompt>stratego></prompt> ?e
 <prompt>stratego></prompt> :binding e
@@ -142,16 +132,20 @@ e is bound to Plus(Var("a"),Int("3"))
 command failed
 </screen>
 
-    <para>
-      The match strategy <code>?<replaceable>p</replaceable></code>
-      compares the current term to a pattern
-      <replaceable>p</replaceable>. It will bind the variables the
-      variables in pattern <replaceable>p</replaceable> in the
-      environment. The wildcard <code>_</code> in a match will match
-      any term.
-    </para>
+  <para>
 
-    <screen>
+    The general case is matching against an arbitrary term pattern.
+
+    The match strategy <code>?<replaceable>p</replaceable></code>
+    compares the current term to a pattern
+    <replaceable>p</replaceable>. It will add bindings for the
+    variables in pattern <replaceable>p</replaceable> to the
+    environment. The wildcard <code>_</code> in a match will match any
+    term.
+
+  </para>
+
+<screen>
 Plus(Var("a"),Int("3"))
 <prompt>stratego></prompt> ?Plus(e,_)
 <prompt>stratego></prompt> :binding e
@@ -159,20 +153,14 @@ e is bound to Var("a")
 Plus(Var("a"),Int("3"))
 </screen>
 
-    <para>
-      If a variable in a term pattern is already bound to a term, then
-      the variable in the pattern will be replaced with this value. If
-      variables in term are not yet bound, then these variables will
-      be bound to the actual values in the current term to which the
-      pattern is applied.
-    </para>
-  
-    <para>
-      Patterns may be non-linear. Multiple occurences of the same
-      varaible can occur and each occurence matches the same term.
-    </para>
+  <para>
+      
+    Patterns may be non-linear. Multiple occurences of the same
+    variable can occur and each occurence matches the same term.
     
-    <screen>
+  </para>
+    
+<screen>
 Plus(Var("a"),Int("3"))
 <prompt>stratego></prompt> ?Plus(e,e)
 command failed
