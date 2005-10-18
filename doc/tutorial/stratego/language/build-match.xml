@@ -5,76 +5,86 @@
 
   <title>Creating and Analyzing Terms (*)</title>
 
-  <para>
+<para>
 
-  we have used transformations as basic transformation steps
+  In previous chapters we have presented rewrite rules as basic
+  transformation steps.
 
-  Rules are not really atomic transformation actions. To see this,
-  consider what happens when the rewrite rule
+  However, rules are not really atomic transformation actions. To see
+  this, consider what happens when the rewrite rule
 
 <screen>
-  DAOL : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
+DAOL : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
 </screen>
 
   is applied.  First it matches the subject term against the pattern
-  <code>And(Or(x, y), z)</code> in the left-hand side. This means that a
-  substitution for the variables <code>x</code>, <code>y</code>, and
-  <code>z</code> is sought, that makes the pattern equal to the subject
-  term. If the match fails, the rule fails. If the match succeeds, the
-  pattern <code>Or(And(x, z), And(y, z))</code> on the right-hand side is
-  instantiated with the bindings found during the match of the
-  left-hand side. The instantiated term then replaces the original
-  subject term. Furthermore, the rule limits the scope of the
-  variables occurring in the rule. That is, the variables <code>x</code>,
-  <code>y</code>, <code>z</code> are local to this rule. After the rule is
-  applied the bindings to these variables are invisible again.
+  <code>And(Or(x, y), z)</code> in the left-hand side. This means that
+  a substitution for the variables <code>x</code>, <code>y</code>, and
+  <code>z</code> is sought, that makes the pattern equal to the
+  subject term. If the match fails, the rule fails. If the match
+  succeeds, the pattern <code>Or(And(x, z), And(y, z))</code> on the
+  right-hand side is instantiated with the bindings found during the
+  match of the left-hand side. The instantiated term then replaces the
+  original subject term. Furthermore, the rule limits the scope of the
+  variables occurring in the rule. That is, the variables
+  <code>x</code>, <code>y</code>, <code>z</code> are local to this
+  rule. After the rule is applied the bindings to these variables are
+  invisible again.
 
-  The atomic actions of program transformation in Stratego are
-  building terms from patterns and matching terms against patterns.
+</para>
+
+<para>
+
+  Thus, rather than considering rules as the atomic actions of
+  transformation programs, Stratego provides their constituents, that
+  is building terms from patterns and matching terms against patterns,
+  as atomic actions, and makes these available to the programmer.
+
+  In this chapter, you will learn these basic actions and their use in
+  the composition of more complex operations such as various flavours
+  of rewrite rules.
 
 </para>
 
 <section xml:id="build">
   <title>Building terms</title>
     
-    <para>
+  <para>
 
-        The build operation <code>!p</code> replaces the subject term with
-        the instantiation of the pattern~<code>p</code> using the bindings
-        from the environment to the variables occurring in <code>p</code>.
-        For example, the strategy <code>!Or(And(x, z), And(y, z))</code>
-        replaces the subject term with the instantiation of
-        <code>Or(And(x, z), And(y, z))</code> using bindings to variables
-        <code>x</code>, <code>y</code> and <code>z</code>. 
+    The build operation <code>!p</code> replaces the subject term with
+    the instantiation of the pattern <code>p</code> using the bindings
+    from the environment to the variables occurring in <code>p</code>.
+    For example, the strategy <code>!Or(And(x, z), And(y, z))</code>
+    replaces the subject term with the instantiation of
+    <code>Or(And(x, z), And(y, z))</code> using bindings to variables
+    <code>x</code>, <code>y</code> and <code>z</code>.
 
+  </para>
 
-      Building a term will replace the current term by the term that
-      is build. The syntax for building a term is
-      <code>!<replaceable>t</replaceable></code>, where
-      <replaceable>t</replaceable> can be any term.
-    </para>
-
-    <screen>
+<screen>
 <prompt>stratego></prompt> !Int("10")
 Int("10")
 <prompt>stratego></prompt> !Plus(Var("a"), Int("10"))
-Plus(Var("a"), Int("10"))</screen>
+Plus(Var("a"), Int("10"))
+</screen>
 
-    <para>
-      It is possible to build terms with variables. We call this
-      building a term pattern. A pattern is a term with
-      <emphasis>meta-variables</emphasis>. The current term is
-      replaced by an instantiation of pattern
-      <replaceable>p</replaceable>.
-    </para>
+  <para>
+    
+    It is possible to build terms with variables. We call this
+    building a term pattern. A pattern is a term with
+    <emphasis>meta-variables</emphasis>. The current term is replaced
+    by an instantiation of pattern <replaceable>p</replaceable>.
 
-    <screen>
+  </para>
+
+<screen>
 <prompt>stratego></prompt> :binding e
 e is bound to Var("b")
 <prompt>stratego></prompt> !Plus(Var("a"),e)
 Plus(Var("a"),Var("b"))
 <prompt>stratego></prompt> !e
-Var("b")</screen>
+Var("b")
+</screen>
 
 </section>
 
@@ -696,10 +706,9 @@ Applying Strategies in Build
         \quad\to\quad
         \sem{\ \tty{\{$x$:\ $s$ => $x$; !$p[x]$\}}\ }
 \]
-    
-    In other words, the strategy $s$ is applied to the
-    <emphasis>current subject term</emphasis>, i.e., the term to which
-    the build is applied.
+        In other words, the strategy $s$ is applied to the
+        \emph{current subject term}, i.e., the term to which the build
+        is applied.
 
         Using this abstraction one can now write <code>!Foo(Bar(&lt;id>))</code>,
         for the strategy <code>\{x: id => x; !Foo(Bar(x))\</code>},
