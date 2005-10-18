@@ -176,10 +176,16 @@ e is bound to Var("a")
  <title>Implementing Rewrite Rules</title>
 
 <para>
+ 
+  Match and build are first-class citizens in Stratego, which means
+  that they can be used and combined just like any other strategy
+  expressions.
 
-  combining match and build
+  In particular, we can implement rewrite rules using these
+  operations, since a rewrite rule is basically a match followed by a
+  build.
 
-  passing variable bindings
+  For example, consider the following combination of match and build:
 
 <screen>
 Plus(Var("a"),Int("3"))
@@ -187,104 +193,69 @@ Plus(Var("a"),Int("3"))
 Plus(Int("3"),Var("a"))
 </screen>
 
-  The variable bindings are propagated. The strategy fails if either
-  <code>s1</code> or <code>s2</code> fails.
+  This combination first recognizes a term, binds variables to the
+  pattern in the match, and then replaces the current term with the
+  instantiation of the build pattern.
 
+  Note that the variable bindings are propagated from the match to the
+  build.
 
 </para>
 
-
 <para>
-        
-  Using match and build we can now construct rewrite rules by
-  sequentially composing a match and a build. For example, the
-  <code>DAOL</code> rule at the beginning of this chapter can be
-  written as
 
-<screen>
-  DAOL = ?And(Or(x, y), z); !Or(And(x, z), And(y, z))
-</screen>
-        
-<screen>
-Plus(Var("a"),Int("3"))
-<prompt>stratego></prompt> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))} 
-<prompt>stratego></prompt> SwapArgs 
-Plus(Int("3"),Var("a"))
-</screen>
-
-  Note that the variables bound in the match are carried over by the
-  sequential composition to the build. In other words, variable
-  bindings are visible at the level of strategies.  This should be
-  expressed in the semantics of the language by extending the semantic
-  rules from the previous chapter with environments. For example, the
-  positive rule for sequential composition becomes
-
-
-	Basic transformations are combinations of match and build
-
-	Combination requires
-
-	Sequential composition of transformations
-
-	Restricting the scope of term variables
-
-	Syntactic abstractions (sugar) for typical combinations
-
-	Rewrite rules
-
-	Apply and match
-
-	Build and apply
-
-	Where
-
-	Conditional rewrite rules
+  Stratego provides syntactic sugar for various combinations of match
+  and build. We'll explore these in the rest of this chapter.
 
 </para>
 
 <section>
-    <title>Anonymous Rewrite Rule</title>
+  <title>Anonymous Rewrite Rule</title>
 
-    <para>
-      Syntax: (p1 -> p2) 
+  <para>
 
-      Match p1, then build p2 
+    An <emphasis>anonymous rewrite rule</emphasis> <code>(p1 ->
+    p2)</code> transforms a term matching <code>p1</code> into an
+    instantiation of <code>p2</code>.
 
-      Equivalent to: ?p1; !p2 
-    </para>
+    Such a rule is equivalent to the sequence <code>?p1; !p2</code>.
 
-    <screen>
+  </para>
+
+<screen>
 Plus(Var("a"),Int("3")) 
 <prompt>stratego></prompt> (Plus(e1, e2) -> Plus(e2, e1)) 
-Plus(Int("3"),Var("a"))</screen>
+Plus(Int("3"),Var("a"))
+</screen>
 
 </section>
 
 <section>
-	<title>Term variable scope</title>
-	
-	<para>
-	  Term variable scope
+  <title>Term variable scope</title>
 
-        Once a variable is bound it cannot be rebound to a different
-        term. To use a variable name more than once we introduce
-        variable scopes.  A scope $\{x_1,\ldots,x_n:s\}$ locally
-        undefines the variables $\vec{x}$. That is, the binding to a
-        variable $x_i$ outside the scope $\scope{\vec{x}}{s}$ is not
-        visible inside it, nor is the binding to $x_i$ inside the
-        scope visible outside it. For example, in the following
-        definition, the scope of the variables <code>x</code>, <code>y</code>, and
-        <code>z</code> is restricted to the match and build sequence:
+  <para>
+
+    Once a variable is bound it cannot be rebound to a different
+    term. To use a variable name more than once we introduce variable
+    scopes.  A scope $\{x_1,\ldots,x_n:s\}$ locally undefines the
+    variables $\vec{x}$. That is, the binding to a variable $x_i$
+    outside the scope $\scope{\vec{x}}{s}$ is not visible inside it,
+    nor is the binding to $x_i$ inside the scope visible outside
+    it. For example, in the following definition, the scope of the
+    variables <code>x</code>, <code>y</code>, and <code>z</code> is
+    restricted to the match and build sequence:
+
 <screen>
   DAOL = {x, y, z: ?And(Or(x, y), z); !Or(And(x, z), And(y, z))}
 </screen>
-        In the strategy expression
+
+    In the strategy expression
+
 <screen>
    {x, y : ?x; {x : ?F(x, y)}; !G(x, y)}
 </screen>
-        the inner <code>x</code> shadows the outer <code>x</code>.
-
-
+        
+    the inner <code>x</code> shadows the outer <code>x</code>.
 
 Syntax: {x1,...,xn:s} 
 
@@ -292,14 +263,23 @@ Restrict scope of variables x1,...,xn to s
 
    <screen>
 Plus(Var("a"),Int("3"))
-<prompt>stratego></prompt> (Plus(e1,e2) -&gt; Plus(e2,e1))
+<prompt>stratego></prompt> (Plus(e1,e2) ->; Plus(e2,e1))
 Plus(Int("3"),Var("a"))
 <prompt>stratego></prompt> :binding e1
 e1 is bound to Var("a")
 <prompt>stratego></prompt> {e3,e4 :(Plus(e3,e4) -&gt; Plus(e4,e3))}
 Plus(Var("a"),Int("3"))
 <prompt>stratego></prompt> :binding e3 
-e3 is not bound to a term</screen>
+e3 is not bound to a term
+</screen>
+
+
+<screen>
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))}
+<prompt>stratego></prompt> SwapArgs 
+Plus(Int("3"),Var("a"))
+</screen>
 
 	</para>
 
