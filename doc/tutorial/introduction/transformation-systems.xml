@@ -3,7 +3,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Software Transformation Systems</title>
+  <title>Software Transformation Systems (*)</title>
 
 <section>
   <title>What is Software Transformation?</title>
@@ -56,7 +56,7 @@
 
   <figure xml:id="Fig-Applications">
     <title>
-      Applications of Program Transformation.
+      Applications of Program Transformation. (*)
     </title>
   <screen>
 Compilers 

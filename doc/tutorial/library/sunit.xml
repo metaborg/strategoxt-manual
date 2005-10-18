@@ -25,7 +25,7 @@
       the following output:
     </para>
     
-    <screen>
+<screen>
 test suite: list-zip-test
 nzip0-test
 zip-test1
@@ -33,14 +33,14 @@ zip-test2
 successes: 3
 failures: 0
 (3,0)
-    </screen>
+</screen>
 
     <para>
       An extract from the module shows how a test suite can be set
       up:
     </para>
 
-    <programlisting>
+<programlisting>
 module list-zip-test
 imports list-zip sunit
 strategies
@@ -57,7 +57,7 @@ strategies
         ,!["a","b","c"]
         ,![(0, "a"), (1, "b"), (2, "c")]
         )
-    </programlisting>
+</programlisting>
     
     <para>
       The test-suite strategy takes a string and a strategy. The
@@ -81,13 +81,14 @@ strategies
       operator.
     </para>
 
-    <programlisting>
+<programlisting>
 apply-test(!"test3"
 , ltS
 , !("3","5")
 , !("3","5")
 )
-    </programlisting>
+</programlisting>
+
   </section>
     
   <section>
@@ -103,12 +104,13 @@ apply-test(!"test3"
       certain input.
     </para>
 
-    <programlisting>
+<programlisting>
 apply-and-fail(!"is-double-quote 3"
 , is-double-quoted
 , !"\"fnord"
 )
-    </programlisting>
+</programlisting>
+
   </section>
 
   <section>
@@ -127,14 +129,14 @@ apply-and-fail(!"is-double-quote 3"
       output is correct, or fail if the output is incorrect.
     </para>
       
-    <programlisting>
+<programlisting>
 new-test =
   apply-and-check(!"new test",
     (new, new)
   , !(1, 1)
   , not(eq); (is-string, is-string)
   )
-    </programlisting>
+</programlisting>
   </section>
   
   <section>
@@ -154,7 +156,7 @@ new-test =
       <function>xtc-apply-test</function>, given below.
     </para>
     
-    <programlisting>
+<programlisting>
 xtc-apply-test(|nm, prog, args, inp, outp) =
   xtc-temp-files(
     apply-test(!nm,
@@ -165,7 +167,7 @@ xtc-apply-test(|nm, prog, args, inp, outp) =
     , !outp
     )
   )
-    </programlisting>
+</programlisting>
 
     <para>
       This is a straightforward extension of <function>apply-test</function>. It
@@ -184,7 +186,7 @@ xtc-apply-test(|nm, prog, args, inp, outp) =
       this may be handled.
     </para>      
     
-    <programlisting>
+<programlisting>
 xtc-apply-pp-test(|nm, prog, ssheet, args, inp, outp) =
   xtc-temp-files(
     apply-test(!nm,
@@ -196,7 +198,7 @@ xtc-apply-pp-test(|nm, prog, ssheet, args, inp, outp) =
     , !outp
     )
   )      
-    </programlisting>
+</programlisting>
     
   </section>
       

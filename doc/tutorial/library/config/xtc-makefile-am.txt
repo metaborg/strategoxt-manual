@@ -11,4 +11,4 @@ SCFLAGS        = --main io-$* -O 2 --dr new
 
 EXTRA_DIST     = $(wildcard *.str) $(wildcard *.meta) $(wildcard *.syn) 
 CLEANFILES     = $(wildcard *.dep) $(wildcard *.tmp) $(wildcard *.c) $(wildcard *.o)
-BOOTCLEANFILES = $(wildcard *.c) 
+BOOTCLEANFILES = $(wildcard *.c)

@@ -2,10 +2,10 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
   
-  <title>XML Interoperability</title>
+  <title>XML Interoperability (*)</title>
   
   <para>
-    Hoe to use Stratego components on a platform where XML libraries
+    How to use Stratego components on a platform where XML libraries
     available.
   </para>
 </chapter>

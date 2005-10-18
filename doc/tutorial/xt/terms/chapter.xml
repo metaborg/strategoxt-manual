@@ -2,7 +2,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Annotated Terms</title>
+  <title>Annotated Terms (*)</title>
 
   <para>
     The Annotated Term Format, or <emphasis>ATerms</emphasis> for
@@ -222,7 +222,7 @@ Let(
   </section>  
 
   <section>
-    <title>Maximal Sharing</title>
+    <title>Maximal Sharing (*)</title>
 
     <para>
       An important feature of the implementation is that terms are

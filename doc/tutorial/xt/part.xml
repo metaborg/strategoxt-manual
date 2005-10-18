@@ -3,6 +3,13 @@
       xmlns:xi="http://www.w3.org/2003/XInclude">
   
   <title>The XT Transformation Tools</title>
+
+  <partintro>
+    <para>
+    TODO: short introduction
+    </para>
+  </partintro>
+
   <xi:include href="architecture/chapter.xml" />
   <xi:include href="terms/chapter.xml" />
   <xi:include href="sdf/chapter.xml" />

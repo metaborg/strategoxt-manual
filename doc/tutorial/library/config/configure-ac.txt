@@ -34,4 +34,3 @@ AC_CONFIG_FILES([
   src/front/Makefile
 ])
 AC_OUTPUT
-

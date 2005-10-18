@@ -80,13 +80,13 @@ ogetarts/
 
   <para>
     The <filename>bootstrap</filename> script should be an
-    <command>sh</command> (or <command>bash</command>) shell script that
-    takes care of running <command>autoxt</command> and
-    <command>autoreconf</command>, as shown above. Note that we
-    rely on resonably recent versions of <command>autoconf</command> and
-    <command>automake</command>. Unfortunatley, ensuring that the correct
-    version of these tools is executed is distribution-specific, hence
-    the <code>if</code>-statements above.
+    <command>sh</command> (or <command>bash</command>) shell script
+    that takes care of running <command>autoxt</command> and
+    <command>autoreconf</command>, as shown above. Note that we rely
+    on reasonably recent versions of <command>autoconf</command> and
+    <command>automake</command>. Unfortunately, ensuring that the
+    correct version of these tools is executed is
+    distribution-specific, hence the <code>if</code>-statements above.
   </para>
   
   

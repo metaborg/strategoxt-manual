@@ -2,7 +2,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Debugging Techniques for Stratego/XT</title>
+  <title>Debugging Techniques for Stratego/XT (*)</title>
 
   <para>
     Even in Stratego/XT, it is not entirely uncommon for developers
