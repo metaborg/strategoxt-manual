@@ -630,9 +630,8 @@ and(s1, s2) =
 <para>
 
   The <code>switch</code> construct is an n-ary branching construct
-  similar to its counter parts in other programming languages, but
-  with a few twists, and of course it is defined in terms of guarded
-  choice.
+  similar to its counter parts in other programming languages. It is
+  defined in terms of guarded choice.
 
   The <code>switch</code> construct has the following form:
 
@@ -700,10 +699,9 @@ and(s1, s2) =
 <section>
   <title>Non-deterministic Choice</title>
 
-    
 <para>
       
-  The deterministic choice operator prescribes that the left
+  The deterministic left choice operator prescribes that the left
   alternative should be tried before the right alternative, and that
   the latter is only used if the first fails. There are applications
   where it is not necessary to define the order of the
@@ -713,49 +711,42 @@ and(s1, s2) =
 
 <para>
       
-  The non-deterministic choice operator s1 + s2 chooses one of the two
-  strategies s1 or s2 to apply, such that the one it chooses
-  succeeds. If both strategies fail, then the choice fails as well.
+  The non-deterministic choice operator <code>s1 + s2</code> chooses
+  one of the two strategies <code>s1</code> or <code>s2</code> to
+  apply, such that the one it chooses succeeds. If both strategies
+  fail, then the choice fails as well.
     
+  Operationally the choice operator first tries one strategy, and, if
+  that fails, tries the other. The order in which this is done is
+  undefined, i.e., arbitrarily chosen by the compiler.
+
 </para>
 
 <para>
       
-  Operationally one can imagine the choice operator to first try one
-  strategy, and, if that fails, to try the other. The order in which
-  this is done is undefined, i.e., arbitrarily chosen by the compiler.
+  The <code>+</code> combinator is used to model modular composition
+  of rewrite rules and strategies with the same name. Multiple
+  definitions with the same name, are merged into a single definition
+  with that name, where the bodies are composed with
+  <code>+</code>. The following transformation illustrates this:
 
-  The \texttt{+} operator is needed to model modular composition of
-  rewrite rules.
+<screen>
+  f = s1  f = s2      ==>    f = s1 + s2
+</screen>
 
-  Rules with the same label
-
-  Explain implications of the \texttt{+} operator for semantics and
-  implementation and semantics.
+  This transformation is somewhat simplified; the complete
+  transformation needs to take care of local variables and parameters.
 
 </para>
-
-<formalpara>
-  <title>Properties</title>
 
 <para>
 
-  properties of non-deterministic choice
+  While the <code>+</code> combinator is used internally by the
+  compiler for this purpose, programmers are advised
+  <emphasis>not</emphasis> to use this combinator, but rather use the
+  left choice combinator <code>&lt;+</code> to avoid surprises.
 
 </para>
-
-</formalpara>
-
-<formalpara>
-  <title>Examples</title>
-
-<para>
-
-  examples of non-deterministic choice
-
-</para>
-
-</formalpara>
 
 </section>
 
