@@ -750,7 +750,7 @@ and(s1, s2) =
 
 </section>
 
-</section>
+</section> 
 
 <section>
   <title>Recursion</title>
@@ -759,41 +759,56 @@ and(s1, s2) =
 
    Repeated application of a strategy can be achieved with recursion.
    There are two styles for doing this; with a recursive definition or
-   using the fixpoint operator \texttt{rec}. A recursive definition is
-   a normal strategy definition with a recursive call in its body. For
-   example, the following defines the strategy \texttt{repeat}, which
-   applies a transformation $s$ until it fails:
+   using the fixpoint operator <code>rec</code>. A recursive
+   definition is a normal strategy definition with a recursive call in
+   its body. 
 
 <screen>
-  strategies
-    repeat(s) = s; repeat(s) &lt;+ id
-    eval = repeat(A &lt;+ B)
-  rules
-    A : P(Z,x) -> x
-    B : P(S(x),y) -> P(x,S(y))
+f(s) = ... f(s) ...
 </screen>
 
-  Note that sequential composition has higher priority than
-        choice. Therefore, \texttt{$s_1$; $s_2$ &lt;+ $s_3$} should be
-        read as \texttt{($s_1$; $s_2$) &lt;+ $s_3$}.
+   Another way to define recursion is using the fixpoint operator
+   <code>rec x(s)</code>, which recurses on applications of
+   <code>x</code> within <code>s</code>. For example, the definition
+     
+<screen>
+f(s) = rec x(... x ...)
+</screen>
+
+   is equivalent to the one above.
+
+   The advantage of the <code>rec</code> operator is that it allows
+   the definition of an unnamed strategy expression to be recursive.
+   For example, in the definition
 
 <screen>
-        \tty{P(S(Z),Z)}
-        \lstep{\tty{\small repeat(A+B)}}{\tty{S(Z)}}
+g(s) = foo; rec x(... x ...); bar
 </screen>
+
+   the strategy between <code>foo</code> and <code>bar</code> is a
+   recursive strategy that does <emphasis>not</emphasis> recurse to
+   <code>g(s)</code>.
 
 </para>
-
-	
+    
 <para>
-	  
-  Repeated application of a strategy can be achieved with
-  recursion. There are two styles for doing this; with a recursive
-  definition or using the fixpoint operator rec. A recursive
-  definition is a normal strategy definition with a recursive call in
-  its body.
-	
+    
+   Originally, the <code>rec</code> operator was the only way to
+   define recursion. It is still in the language in the first place
+   because it is widely used in many existing programs, and in the
+   second place because it can be a nice concise expression of a
+   recursive strategy. 
+
 </para>
+
+<formalpara>
+  <title>Examples</title>
+
+<para>
+
+   For example, the following defines the strategy
+   <code>repeat</code>, which applies a transformation <code>s</code>
+   until it fails:
 
 <screen>
 try(s) = s &lt;+ id
@@ -805,6 +820,21 @@ while(c, s) = if c then s; while(c,s) end
 do-while(s, c) = s; if c then do-while(s, c) end
 </screen>
 
+
+<screen>
+  A : P(Z(),x) -> x
+  B : P(S(x),y) -> P(x,S(y))
+</screen>
+
+  Note that sequential composition has higher priority than
+  choice. Therefore, <code>s1; s2 &lt;+ s3</code> should be read as
+  <code>(s1; s2) &lt;+ s3</code>
+
+<screen>
+        \tty{P(S(Z),Z)}
+        \lstep{\tty{\small repeat(A+B)}}{\tty{S(Z)}}
+</screen>
+
 <screen>
   strategies
     repeat(s) = s; repeat(s) &lt;+ id
@@ -814,7 +844,7 @@ do-while(s, c) = s; if c then do-while(s, c) end
     B : P(S(x),y) -> P(x,S(y))
 </screen>
 
-  <screen>
+<screen>
 map(s) =
   ?[] &lt;+ \ [x | xs] -> [&lt;s> x | &lt;map(s)> xs] \
 
@@ -822,42 +852,17 @@ foldr(s1, s2, f) =
   []; s1 &lt;+ \ [x|xs] -> &lt;s2>(&lt;f> x, &lt;foldr(s1, s2, f)> xs) \
 
 length = foldr(!0, add, !1)
-  </screen>
+</screen>
 
-
-<section xml:id="rec">
-  <title>Fixpoint operator (rec)</title>
-    
- <para>
-
-   Another way to define recursion is using the fixpoint operator
-   <code>rec x(s)</code>, which recurses on applications of
-   <code>x</code> within <code>s</code>.
-     
- </para>
-    
- <para>
-    
-   Originally, the <code>rec</code> operator was the only way to
-   define recursion. It is still in the language in the first place
-   because it is widely used in many existing programs, and in the
-   second place because it can be a nice concise expression of a
-   recursive strategy. An example usage is the definition of repeat
-   with <code>rec</code>:
-    
-  </para>
-
-  <screen>repeat(s) = try(s; repeat(s))</screen>
-
-  <para>
+<screen>
+repeat(s) = try(s; repeat(s))
+</screen>
 
     Iteration Strategies
 
     Using sequential composition, choice, and recursion a large
     variety of iteration strategies can be defined. The following
     module is part of the Stratego Standard Library:
-
-  </para>
 
 <screen>
   module iteration
@@ -876,7 +881,9 @@ length = foldr(!0, add, !1)
     for(i, c, s)       = i; while-not(c, s)
 </screen>
 
-</section>
+</para>
+
+</formalpara>
 
 </section>
 
