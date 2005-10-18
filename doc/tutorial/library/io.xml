@@ -53,10 +53,9 @@
 module example
 imports lib
 strategies
-
   main = 
     &lt;print> (stdout, ["baz"])
-    &lt;printnl> (stdout, [ "foo", 0, "bar" ])
+    ; &lt;printnl> (stdout, [ "foo", 0, "bar" ])
 </screen>
 
   <para>
@@ -77,9 +76,9 @@ bazfoo0bar
   </para>
   
   <para>
-    When using these strategies in the in the Stratego Shell,
-    some care must be taken when using the <code>std*</code>
-    files, as the following example shows.
+    When using these strategies in the Stratego Shell, some care must
+    be taken when using the <code>std*</code> files, as the following
+    example shows.
   </para>
 
 <screen>
@@ -165,7 +164,7 @@ foo0bar
     is a directory is done as follows:
   </para>
 
-<screen>    
+<screen>
 <prompt>stratego></prompt> &lt;file-exists ; filemode ; isdir> "/etc"
 </screen>
 
@@ -178,7 +177,7 @@ foo0bar
     <code>is-writeable</code>.
   </para>
 
-<screen>    
+<screen>
 <prompt>stratego></prompt> &lt;is-executable> "/bin/bash"
 "/bin/bash"
 </screen>
@@ -202,18 +201,19 @@ command failed
 </screen>
 
   <para>
-    There is also a few strategies for finding files. We shall describe
-    <code>find-file(s)</code>. The other variants of <code>find-file</code>
-    are described in the library documentation. The strategy 
-    <code>find-file(s)</code> finds one file with a specific file extension
-    in a list of directories. It takes a two-element tuple. The first element
-    is a file name as a string, then second element is a list of paths, i.e.
-    <code>(f, [d*])</code>. The extension of <filename>f</filename> will be
-    replaced by what is produced by <code>s</code>, and the directories
-    given in <code>[d*]</code>. Consider the code below.
+    There are also a few strategies for finding files. We shall
+    describe <code>find-file(s)</code>. The other variants of
+    <code>find-file</code> are described in the library
+    documentation. The strategy <code>find-file(s)</code> finds one
+    file with a specific file extension in a list of directories. It
+    takes a two-element tuple. The first element is a file name as a
+    string, then second element is a list of paths, i.e.  <code>(f,
+    [d*])</code>. The extension of <filename>f</filename> will be
+    replaced by what is produced by <code>s</code>, and the
+    directories given in <code>[d*]</code>. Consider the code below.
   </para>
   
-<screen>    
+<screen>
 <prompt>stratego></prompt> &lt;find-file(!"rtree")> ("file.str", ["."])
 </screen>
   
