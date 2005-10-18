@@ -16,45 +16,213 @@
   
   <para>
     Both the Stratego language paradigm and its syntax are rather
-    different from most other languages. Knowing how to use its
-    unique features properly, in the way we have described in
-    this manual, goes a long way towards avoiding future maintenance
-    problems. 
+    different from most other languages. Knowing how to use the
+    unique features of Stratego properly, in the way we have
+    described in this manual, goes a long way towards avoiding
+    future maintenance problems. 
   </para>
- 
+
+<section>
+  <title>Writing readable code</title>
+  
   <para>
     One important practical aspect of using language constructs is
-    expressing them in a readable manner. The intention behind the
-    code should be apparent for readers of the code. Judicious use
+    expressing their syntax in a readable manner. The intention behind
+    the code should be apparent for readers of the code. Judicious use
     of whitespaces is vital in making Stratego code readable, partly
     because its language constructs are less block-oriented than
     most Algol-derivates.
   </para>
 
+  <para>
+    The most basic unit of transformation in Stratego is the rewrite
+    rule. The following suggests how rules should be written to
+    maximize readability.
+  </para>
+      
 <screen>
- - rules
- - strategies
- 
- - inline rules
- - concrete syntax
- - higher-order strategies
- - terms
+  EvalExpr:
+  Expr(Plus(x), Plus(y) -> Expr(z)
+  where
+    &lt;addS> (x,y) => z
 </screen>
- 
+  
+  <para>
+    Rules are composed using combinators in strategies. One of the
+    combinators is <emphasis>composition</emphasis>, written
+    <code>;</code>. It is important to realize that <code>;</code>
+    is not a statement terminator, as found in imperative
+    languages. Therefore, we suggest writing a series of
+    strategies and rules joined by composition as follows:
+  </para>
+
+<screen>  
+  eval-all =
+      EvalExpr
+    ; s1
+    ; s2
+</screen>
+
+  <para>
+    Both rules and strategies should be documented, using xDoc. At the
+    very least, the type of term expected and the type of term returned
+    should be specified by the <code>@type</code> attribute. Also take
+    care to specify the arity of lists and tuples, if this is fixed.
+  </para>
+
 <screen>
- - formatting Stratego code for readability
- - documenting types
-  - arity of tuples, lists
- - help from the libary 
-  - log
-  - debug
- - common pitfalls
+ /**
+  * @type A -> B
+  */
+  foo = ...
+</screen>
+    
+  <para>
+    Inline rules are handy syntactic sugar that should be used
+    with care. Mostly, inline rules are small enough to fit a
+    single line. When they are significantly longer than one line,
+    it is recommended to extract them into a separate, named rule.
+  </para>
+
+<screen>
+  strat = 
+    \ x -> y where is-okay(|x) => y \
+</screen>    
+          
+  <para>
+    Formatting concrete syntax depends very much on the language
+    being embedded, so we will provide no hard and fast rules
+    for how to do this.
+  </para>
+
+  <para>
+    Formatting of large terms should be done in the style output
+    by <command>pp-aterm</command>.
+  </para>
+
+</section>
+
+<section>
+  <title>Debugging Stratego code</title>
+  
+  <para>
+	The Stratego/XT environment does not feature a proper debugger
+	yet, so the best low-level debugging aids are provided by the
+	library, in the from of two kinds of strategies, namely
+	<code>debug</code> and a family based around <code>log</code>.
+  </para>
+
+  <para>
+    The <code>debug</code> strategy will print the current term
+    to <filename>stdout</filename>. It will not alter
+    anything. While hunting down a bug in your code, it is
+    common to sprinkle <code>debug</code> statements liberally
+    in areas of code which are suspect:
+  </para>  
+
+<screen>
+  foo = 
+      debug
+    ; bar
+    ; debug
+    ; baz
+</screen>
+
+  <para>
+    Sometimes, you need to add additional text to your output. In
+    this case, an idiom with <code>where</code> and <code>id</code> 
+    is used:
+  </para>
+
+<screen>
+  foo = 
+     where(&lt;debug> [ "Entering foo : ", &lt;id> ])
+     ; bar
+     ; where(&lt;debug> [ "After bar : ", &lt;id> ])
+     ; baz
+</screen>
+          
+  <para>
+    The <code>where</code> prevents the current term from being
+    altered by the construction of your debugging text, and
+    <code>id</code> is used to retrieve the current term
+    before the <code>where</code> clause.
+  </para>
+                
+  <para>
+    The use of <code>debug</code> is an effective, but very intrusive
+    approach. A more disciplined regime has been built on top of
+    the <code>log(|severity, msg)</code> and
+    <code>lognl(|severity, msg)</code> strategies. 
+    (See <xref linkend="library-io" /> for details on
+    <code>log</code> and <code>lognl</code>). The higher-level 
+    strategies you should focus on are <code>fatal-err-msg(|msg)</code>,
+    <code>err-msg(|msg)</code>, <code>warn-msg(|msg)</code> and
+    <code>notice-msg(|msg)</code>.
+  </para>      
+
+  <para>
+    It is recommended that you insert calls to these strategies
+    at places where your code detects potential and actual
+    problems. During normal execution of your program, the
+    output from the various <code>-msg</code> strategies is
+    silenced. Provided you allow Stratego to deal with the
+    I/O and command line options, as explained in
+    <xref linkend="library-options"/>, the user (or the
+    developer doing debugging) can use the
+    <option>--verbose</option> option to adjust 
+    which messages he wants to be printed as part of
+    program execution. This way, you get adjustable
+    levels of tracing output, without having to change
+    your code by inserting and removing calls to 
+    <code>debug</code>, and without having to recompile.
+  </para>
+  
+</section>
+
+<section>
+  <title>Common Pitfalls</title>
+  
+  <para>
+    Some types of errors seem to be more common than others in
+    Stratego programs. Awareness of these will help you avoid
+    them in your code.
+  </para>
+
+  <para>
+    The way Stratego invokes strategies and rules may be a bit
+    unconventional to some people. We have already seen that 
+    the language allows overloading on name, i.e. you can have
+    multiple strategies with the same name, and also multiple
+    rules with the same name. You can even have rules and
+    strategies which share a common name. When invoking a 
+    name, say <code>s</code>, all rules and strategies with
+    that name will be considered, by trying all of them in
+    some order, until one succeeds. The language does not
+    specify the order which the alternatives will be tried.
+    If <code>Eval</code> is called, 
+  </para>
+
+<screen>
+ Eval: If(t, e1, e2) -> ...
+ Eval: If(False, e1, e2) -> e2
+</screen>  
+
+  <para>
+    If you want to control the order a set of rules should
+    be tried on, you must name each alternative differently,
+    and make a new strategy of application betwee
+  </para>
+<screen>  
   - combinator precedence
+  - choice
   - strategy overloading
   - variable scoping
    - explicit scoping
    - in local rules, map/filter
 </screen>
+</section>
+
 </section>
 
 <section>
@@ -65,6 +233,7 @@
  - checking configuration file accesses
   - strace
  - xtc shell?
+ - format checkers
 </screen>
 </section>
 

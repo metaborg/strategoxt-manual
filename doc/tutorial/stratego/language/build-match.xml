@@ -696,9 +696,10 @@ Applying Strategies in Build
         \quad\to\quad
         \sem{\ \tty{\{$x$:\ $s$ => $x$; !$p[x]$\}}\ }
 \]
-        In other words, the strategy $s$ is applied to the
-        \emph{current subject term}, i.e., the term to which the build
-        is applied.
+    
+    In other words, the strategy $s$ is applied to the
+    <emphasis>current subject term</emphasis>, i.e., the term to which
+    the build is applied.
 
         Using this abstraction one can now write <code>!Foo(Bar(&lt;id>))</code>,
         for the strategy <code>\{x: id => x; !Foo(Bar(x))\</code>},
