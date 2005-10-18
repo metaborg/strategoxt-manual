@@ -21,10 +21,10 @@
   </para>
 
   <para>
-    The module <code>list</code> contains a lot of convenience f
-    unctions for dealing with lists. For example, the strategy 
-    <code>elem</code> will check if a given value is in a list. If
-    it is, the identity of the list will be returned. 
+    The module <code>list</code> contains a lot of convenience
+    functions for dealing with lists. For example, the strategy
+    <code>elem</code> will check if a given value is in a list. If it
+    is, the identity of the list will be returned.
   </para>
 <screen>
 <prompt>stratego></prompt> import list
@@ -206,7 +206,7 @@
 	element in the list, as shown here. 
   </para>
       
-<screen>  
+<screen>
 <prompt>stratego></prompt> &lt;map(inc)> [1,2,3,4]
 [2,3,4,5]
 </screen>  

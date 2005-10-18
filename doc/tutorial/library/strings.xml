@@ -132,12 +132,12 @@ command failed
       the following code, which reverses a string:
     </para>
 
-<screen>    
+<screen>
 <prompt>stratego></prompt> !"evil olive"
 "evil olive"
 <prompt>stratego></prompt> explode-string
 [101,118,105,108,32,111,108,105,118,101]
-<prompt>stratego></prompt> explode-string
+<prompt>stratego></prompt> reverse
 [101,118,105,108,111,32,108,105,118,101]
 <prompt>stratego></prompt> implode-string
 "evilo live"
@@ -150,7 +150,7 @@ command failed
       more succinctly:
     </para>
 
-<screen>    
+<screen>
 <prompt>stratego></prompt> &lt;string-as-chars(reverse)> "evil olive"
 "evilo live"
 </screen>
