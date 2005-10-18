@@ -2,7 +2,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Strategy Combinators (*)</title>
+  <title>Strategy Combinators</title>
 
 <para>
 
@@ -38,6 +38,15 @@
   The failure strategy <code>fail</code> always fails.
 
   The operations have no side effects.
+
+<screen>
+<prompt>stratego></prompt> !Foo(Bar())
+Foo(Bar)
+<prompt>stratego></prompt> id
+Foo(Bar)
+<prompt>stratego></prompt> fail
+command failed
+</screen>
 
 </para>
 
@@ -794,10 +803,11 @@ g(s) = foo; rec x(... x ...); bar
 <para>
     
    Originally, the <code>rec</code> operator was the only way to
-   define recursion. It is still in the language in the first place
-   because it is widely used in many existing programs, and in the
-   second place because it can be a nice concise expression of a
-   recursive strategy. 
+   define recursive strategies. It is still in the language in the
+   first place because it is widely used in many existing programs,
+   and in the second place because it can be a concise expression of a
+   recursive strategy, since call parameters are not included in the
+   call. Furthermore, all free variables remain in scope.
 
 </para>
 
@@ -806,79 +816,118 @@ g(s) = foo; rec x(... x ...); bar
 
 <para>
 
-   For example, the following defines the strategy
-   <code>repeat</code>, which applies a transformation <code>s</code>
-   until it fails:
+   The <code>repeat</code> strategy applies a transformation
+   <code>s</code> until it fails. It is defined as a recursive
+   definition using <code>try</code> as follows:
 
 <screen>
-try(s) = s &lt;+ id
-
-repeat(s) = try(s; repeat(s))
-
-while(c, s) = if c then s; while(c,s) end
-
-do-while(s, c) = s; if c then do-while(s, c) end
-</screen>
-
-
-<screen>
-  A : P(Z(),x) -> x
-  B : P(S(x),y) -> P(x,S(y))
-</screen>
-
-  Note that sequential composition has higher priority than
-  choice. Therefore, <code>s1; s2 &lt;+ s3</code> should be read as
-  <code>(s1; s2) &lt;+ s3</code>
-
-<screen>
-        \tty{P(S(Z),Z)}
-        \lstep{\tty{\small repeat(A+B)}}{\tty{S(Z)}}
-</screen>
-
-<screen>
-  strategies
-    repeat(s) = s; repeat(s) &lt;+ id
-    eval = repeat(A &lt;+ B)
-  rules
-    A : P(Z,x) -> x
-    B : P(S(x),y) -> P(x,S(y))
-</screen>
-
-<screen>
-map(s) =
-  ?[] &lt;+ \ [x | xs] -> [&lt;s> x | &lt;map(s)> xs] \
-
-foldr(s1, s2, f) =
-  []; s1 &lt;+ \ [x|xs] -> &lt;s2>(&lt;f> x, &lt;foldr(s1, s2, f)> xs) \
-
-length = foldr(!0, add, !1)
-</screen>
-
-<screen>
+try(s)    = s &lt;+ id
 repeat(s) = try(s; repeat(s))
 </screen>
 
-    Iteration Strategies
+   An equivalent definition using <code>rec</code> is:
+
+<screen>
+repeat(s) = rec x(try(s; x))
+</screen>
+
+   The following Stratego Shell session illustrates how it works. We
+   first define the strategies:
+
+<screen>
+<prompt>stratego></prompt> try(s) = s &lt;+ id
+<prompt>stratego></prompt> repeat(s) = try(s; repeat(s))
+<prompt>stratego></prompt> A : P(Z(),x) -> x
+<prompt>stratego></prompt> B : P(S(x),y) -> P(x,S(y))
+</screen>
+
+  Then we observe that the repeated application of the individual
+  rules <code>A</code> and <code>B</code> reduces terms:
+
+<screen>
+<prompt>stratego></prompt> !P(S(Z()),Z())
+P(S(Z),Z)
+<prompt>stratego></prompt> B
+P(Z,S(Z))
+<prompt>stratego></prompt> A
+S(Z)
+</screen>
+
+  We can automate this using the <code>repeat</code> strategy, which
+  will repeat the rules as often as possible:
+
+<screen>
+<prompt>stratego></prompt> !P(S(Z()),Z())
+P(S(Z),Z)
+<prompt>stratego></prompt> repeat(A &lt;+ B)
+S(Z)
+
+<prompt>stratego></prompt> !P(S(S(S(Z()))),Z())
+P(S(S(S(Z))),Z)
+<prompt>stratego></prompt> repeat(A &lt;+ B)
+S(S(S(Z)))
+</screen>
+
+  To illustrate the intermediate steps of the transformation we can
+  use <code>debug</code> from the Stratego Library.
+
+<screen>
+<prompt>stratego></prompt> import liblib
+<prompt>stratego></prompt> !P(S(S(S(Z()))),Z())
+P(S(S(S(Z))),Z)
+<prompt>stratego></prompt> repeat(debug; (A &lt;+ B))
+P(S(S(S(Z))),Z)
+P(S(S(Z)),S(Z))
+P(S(Z),S(S(Z)))
+P(Z,S(S(S(Z))))
+S(S(S(Z)))
+S(S(S(Z)))
+</screen>
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>A Library of Iteration Strategies</title>
+
+<para>
 
     Using sequential composition, choice, and recursion a large
     variety of iteration strategies can be defined. The following
-    module is part of the Stratego Standard Library:
+    definitions are part of the Stratego Library (in module
+    <code>strategy/iteration</code>).
 
 <screen>
-  module iteration
-  imports conditional
-  strategies
-    repeat(s, c)       = rec x(s; x &lt;+ c)
-    repeat(s)          = repeat(s, id)
-    repeat1(s, c)      = rec x(s; (x &lt;+ c))
-    repeat1(s)         = repeat1(s, id)
-    repeat-until(s, c) = rec x(s; (c &lt;+ x))
+repeat(s) = 
+  rec x(try(s; x))
 
-    while(c, s)        = rec x(try(c; s; x))
-    do-while(s, c)     = rec x(s; try(c; x))
-    while-not(c, s)    = rec x(c &lt;+ s; x)
+repeat(s, c) =
+  (s; repeat(s, c)) &lt;+ c
 
-    for(i, c, s)       = i; while-not(c, s)
+repeat1(s, c) = 
+  s; (repeat1(s, c) &lt;+ c)
+
+repeat1(s) = 
+  repeat1(s, id)
+
+repeat-until(s, c) = 
+  s; if c then id else repeat-until(s, c) end
+
+while(c, s) = 
+  if c then s; while(c, s) end
+
+do-while(s, c) =
+  s; if c then do-while(s, c) end
+</screen>
+
+  The following equations describe some relations between these
+  strategies:
+
+<screen>
+  do-while(s, c) = repeat-until(s, not(c))
+
+  do-while(s, c) = s; while(c, s)
 </screen>
 
 </para>
@@ -891,6 +940,28 @@ repeat(s) = try(s; repeat(s))
   <title>Summary</title>
 
 <para>
+
+  We have seen that rules and strategies can be combined into more
+  complex strategies by means of strategy combinators. 
+ 
+  Cumulative effects are obtained by sequential composition of
+  strategies using the <code>s1 ; s2</code> combinator.
+
+  Choice combinators allow a strategy to decide between alternative
+  transformations.  While Stratego provides a variety of choice
+  combinators, they are all based on the guarded choice combinator
+  <code>s1 &lt; s2 + s3</code>.
+
+  Repetition of transformations is achieved using recursion, which can
+  be achieved through recursive definitions or the <code>rec</code>
+  combinator.
+
+</para>
+
+<para>
+
+  Next up: <xref linkend="stratego-creating-and-analyzing-terms"/>
+  shows the stuff that rewrite rules are made of.
 
 </para>
 
