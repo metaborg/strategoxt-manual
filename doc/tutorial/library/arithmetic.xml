@@ -64,9 +64,10 @@ subt, subtr, subti, subtS
 </screen>
  
    <para>
-     As we can see, the <code>mul</code> operator can be applied to a pair
-     which have different terms (real and integer). In this case, type
-     promotion from integer to real with happen automatically.
+     As we can see, the <code>mul</code> operator can be applied to a
+     pair which consists of different terms (real and integer). In
+     this case, type promotion from integer to real happens
+     automatically.
    </para>
    
    </section>
