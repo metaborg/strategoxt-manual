@@ -641,12 +641,18 @@ and(s1, s2) =
     case s1 : s1'
     case s2 : s2'
     ...
-    otherwise sn
+    otherwise sdef
   end
 </screen>
 
-  What it does is apply 
-  switch construct
+  The switch first applies the <code>s0</code> strategy to the current
+  term <code>t</code> resulting in a term <code>t'</code>. Then it
+  tries the cases in turn applying each <code>si</code> to
+  <code>t'</code>. As soon as this succeeds the corresponding case is
+  selected and <code>si'</code> is applied to the <code>t</code>, the
+  term to which the switch was applied. If none of the cases applies,
+  the default strategy <code>sdef</code> from the
+  <code>otherwise</code> is applied.
 
 </para>
 
@@ -655,16 +661,24 @@ and(s1, s2) =
 
 <para>
 
-  properties of switch construct
+  The switch construct is syntactic sugar for a nested if-then-else:
 
 <screen>
   {x : where(s0 => x);
-       if <s1> x then s1' else 
-       if <s2> x then s2' else 
-       ...
-       else sn
-       end end}
+       if &lt;s1> x 
+       then s1' 
+       else if &lt;s2> x 
+            then s2' 
+            else if ...
+                 then ...
+                 else sdef
+                 end
+            end 
+       end}
 </screen>
+
+  This translation uses a couple of Stratego constructs that we
+  haven't discussed so far.
 
 </para>
 
@@ -675,7 +689,7 @@ and(s1, s2) =
 
 <para>
 
-  examples switch construct
+  TODO
 
 </para>
 
