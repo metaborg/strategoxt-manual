@@ -367,7 +367,7 @@ SwapArgs = (Plus(e1,e2) -> Plus(e2,e1))
   binding, such as
 
 <screen>
-  let  SwapArgs = (Plus(e1,e2) -> Plus(e2,e1))  in ... end
+let  SwapArgs = (Plus(e1,e2) -> Plus(e2,e1))  in ... end
 </screen>
 
   While the variables are bound in the enclosing definition, they are
@@ -387,9 +387,8 @@ SwapArgs = (Plus(e1,e2) -> Plus(e2,e1))
   Often it is useful to apply a strategy only to test whether some
   property holds or to compute some auxiliary result. For this
   purpose, Stratego provides the <code>where(s)</code> combinator,
-  which applies <code>s</code> to the current term, but restores the
-  original term afterwards. Any bindings to variables are kept,
-  however.
+  which applies <code>s</code> to the current term, but restores that
+  term afterwards. Any bindings to variables are kept, however.
 
 <screen>
 Plus(Int("14"),Int("3"))
@@ -426,76 +425,79 @@ k is bound to "17"
   <title>Conditional rewrite rule</title>
 	
 <para>
-	  
-  Conditional rewrite rule
-
-  Syntax: (p1 -> p2 where s) 
-
-  Rewrite rule with condition s 
-
-  Equivalent to: (?p1; where(s); !p2) 
-
-<screen>
-Plus(Int("14"),Int("3"))
-<prompt>stratego></prompt> (Plus(Int(i),Int(j)) -&gt; Int(k) where &lt;addS&gt;(i,j) =&gt; k)
-Int("17")
-</screen>
-
+	
   A simple rewrite rule succeeds if the match of the left-hand side
   succeeds. Sometimes it is useful to place additional requirements on
   the application of a rule, or to compute some value for use in the
   right-hand side of the rule. This can be achieved with
-  \emph{conditional rewrite rules}.
+  <emphasis>conditional rewrite rules</emphasis>.
 
-</para>
+  A conditional rule <code>L: p1 -> p2 where s</code> is a simple rule
+  extended with an additional computation <code>s</code> which should
+  succeed in order for the rule to apply. 
 
-<para>
-        A conditional rule <code>$L$:\ $p_1$ -> $p_2$ where $s$</code> is
-        a simple rule extended with an additional computation $s$
-        which should succeed in order for the rule to apply. A
-        conditional rule can be desugared similarly to an
-        unconditional rule
-
-</para>
-
-<para>
-
-  	\sem{\tty{$L$:\ $p_1$ -> $p_2$ where $s$}}
-	\to
-   	\sem{\tty{$L$ = \{$x_1$,...,$x_n$:\ ?$p_1$; where($s$); !$p_2$\}}}
-
-
-</para>
-
-<para>
-	where $x_1$,...,$x_n$ are the free variables of the patterns
-	$p_1$ and $p_2$, and the strategy expression $s$.  Thus, after
-	the match with $p_1$ succeeds the strategy $s$ is applied to
-	the subject term. Only if the application of $s$ succeeds, is
-	the right-hand side $p_2$ built. Note that since $s$ is
-	applied within a <code>where</code>, the build <code>!$p_2$</code> is
-	applied to the original subject term; only variable bindings
-	computed within $s$ can be used in $p_2$.
+  The condition can be used to test properties of terms in the
+  left-hand side, or to compute terms to be used in the right-hand
+  side. The latter is done by binding such new terms to variables used
+  in the right-hand side.
 
 </para>
 
 <para>
 
-	As an example, consider the following constant folding rule,
-	which reduces an addition of two integer constants to the
-	constant obtained by computing the addition.
+  For example, the <code>EvalPlus</code> rule in the following session
+  uses a condition to compute the sum of <code>i</code> and
+  <code>j</code>:
+
 <screen>
-  Fold : Add(Int(i),Int(j)) -> Int(k)
-         where !(i,j); add; ?k
+<prompt>stratego></prompt> EvalPlus: Plus(Int(i),Int(j)) -&gt; Int(k) where !(i,j); addS; ?k
+<prompt>stratego></prompt> !Plus(Int("14"),Int("3"))
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> EvalPlus
+Int("17")
 </screen>
-	The addition is computed by applying the primitive strategy
-	<code>add</code> to the pair of integers <code>(i,j)</code> and
-	matching the result against the variable <code>k</code>, which is
-	then used in the right-hand side. This rule is desugared to
+
+   A conditional rule can be desugared similarly to an unconditional
+   rule. That is, a conditional rule of the form
+
 <screen>
-  Fold = {i,j,k: ?Add(Int(i),Int(j))
-                 ; where(!(i,j); add; ?k)
-                 ; !Int(k) }
+L : p1 -> p2 where s
+</screen>
+  
+   is syntactic sugar for
+
+<screen>
+L = ?p1; where(s); !p2
+</screen>
+
+  Thus, after the match with <code>p1</code> succeeds the strategy
+  <code>s</code> is applied to the subject term. Only if the
+  application of <code>s</code> succeeds, is the right-hand side
+  <code>p2</code> built. Note that since <code>s</code> is applied
+  within a <code>where</code>, the build <code>!p2</code> is applied
+  to the original subject term; only <emphasis>variable
+  bindings</emphasis> computed within <code>s</code> can be used in
+  <code>p2</code>.
+
+</para>
+
+<para>
+
+  As an example, consider the following constant folding rule, which
+  reduces an addition of two integer constants to the constant
+  obtained by computing the addition.
+
+<screen>
+EvalPlus : Add(Int(i),Int(j)) -> Int(k) where !(i,j); addS; ?k
+</screen>
+	
+  The addition is computed by applying the primitive strategy
+  <code>add</code> to the pair of integers <code>(i,j)</code> and
+  matching the result against the variable <code>k</code>, which is
+  then used in the right-hand side. This rule is desugared to
+
+<screen>
+EvalPlus = ?Add(Int(i),Int(j)); where(!(i,j); addS; ?k); !Int(k)
 </screen>
 
 </para>
@@ -515,16 +517,16 @@ Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables 
 	useful to define a rule anonymously within a strategy
 	expression. There are various ways to do this. One notation is
 	an anonymous rule of the form
-\tty{\bs $p_1$ -> $p_2$ where $s$\bs}
+\tty{\bs p_1 -> p_2 where s\bs}
 	which is desugared according to the rule
 \[
-  	\sem{\tty{\bs $p_1$ -> $p_2$ where $s$\bs }}
+  	\sem{\tty{\bs p_1 -> p_2 where s\bs }}
 	\quad \to \quad 
-	\sem{\tty{\{$x_1$,...,$x_n$:\ ?$p_1$; where($s$); !$p_2$\}}}
+	\sem{\tty{\{x_1,...,x_n:\ ?p_1; where(s); !p_2\}}}
 \]
-	with $x_1$,...,$x_n$ the free variables of $p_1$
-	\emph{only}. This means that any variables used in $s$ and
-	$p_2$, which do \emph{not} occur in $p_1$ are bound in context
+	with x_1,...,<code>x_n</code> the free variables of <code>p_1</code>
+	\emph{only}. This means that any variables used in <code>s</code> and
+	<code>p_2</code>, which do \emph{not} occur in <code>p_1</code> are bound in context
 	of the anonymous rule.
                 
 </para>
@@ -545,14 +547,14 @@ Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables 
 
 <para>
 
-	Another style of anonymous rule \tty{($p_1$ -> $p_2$ where
-	$s$)} does not imply any scope for the variables of the rule,
+	Another style of anonymous rule \tty{(p_1 -> p_2 where
+	s)} does not imply any scope for the variables of the rule,
 	but only provides rule-like syntax. Thus, this notation is
 	desugared as 
 \[
-  	\sem{\tty{($p_1$ -> $p_2$ where $s$)}}
+  	\sem{\tty{(p_1 -> p_2 where s)}}
 	\quad \to \quad 
-	\sem{\tty{?$p_1$; where($s$); !$p_2$}}
+	\sem{\tty{?p_1; where(s); !p_2}}
 \]
 	in which the variables are bound in the surrounding scope.
 </para>
@@ -564,9 +566,9 @@ Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables 
 	seen as sugar for a conditional rule with the identity
 	condition:
 \[
-  	\sem{\tty{$p_1$ -> $p_2$}}
+  	\sem{\tty{p_1 -> p_2}}
 	\quad \to \quad 
-  	\sem{\tty{$p_1$ -> $p_2$ where id}}
+  	\sem{\tty{p_1 -> p_2 where id}}
 \]
 
 
@@ -647,8 +649,8 @@ x is bound to "3"</screen>
         subject term and then matching the result against the pattern
         <code>p</code>, i.e., <code>s; ?p</code>.  The combined operation
         <code> &lt;s> p1 => p2</code> thus captures the notion of applying a
-        strategy to a term $p_1$ and matching the result against
-        $p_2$, i.e, <code>!t1; s; ?t2</code>.  Using this notation we
+        strategy to a term <code>p_1</code> and matching the result against
+        <code>p_2</code>, i.e, <code>!t1; s; ?t2</code>.  Using this notation we
         can improve the constant folding rule above as
 <screen>
   Fold : Add(Int(i),Int(j)) -> Int(k)
@@ -702,16 +704,16 @@ Applying Strategies in Build
     <emphasis>term wraps</emphasis>, allows the concise specification
     of such little transformations.
 
-    A term wrap is a build expression <code>!$p[$&lt;$s$>$]$</code> containing a
-    strategy application <code>&lt;$s$></code> that is not applied to a term.
-    Using a new variable $x$, such an expression is desugared
+    A term wrap is a build expression <code>!p[&lt;s>]</code> containing a
+    strategy application <code>&lt;s></code> that is not applied to a term.
+    Using a new variable <code>x</code>, such an expression is desugared
     as
 \[
-        \sem{\ \tty{!$p[$&lt;$s$>$]$}\ }
+        \sem{\ \tty{!p[&lt;s>]}\ }
         \quad\to\quad
-        \sem{\ \tty{\{$x$:\ $s$ => $x$; !$p[x]$\}}\ }
+        \sem{\ \tty{\{x:\ s => x; !p[x]\}}\ }
 \]
-        In other words, the strategy $s$ is applied to the
+        In other words, the strategy <code>s</code> is applied to the
         \emph{current subject term}, i.e., the term to which the build
         is applied.
 
@@ -750,15 +752,15 @@ Call("foobar", [])</screen>
 
   <para>   
     Term projections are the match dual of term wraps. A match
-    expression <code>?$p[$&lt;$s$>$]$</code> is desugared as
+    expression <code>?p[&lt;s>]</code> is desugared as
 \[
-        \sem{\ \tty{?$p[$&lt;$s$>$]$}\ }
+        \sem{\ \tty{?p[&lt;s>]}\ }
         \quad\to\quad
-        \sem{\ \tty{\{$x$:\ ?$p[x]$; &lt;$s$>$x$\}}\ }
+        \sem{\ \tty{\{x:\ ?p[x]; &lt;s>x\}}\ }
 \]
 
-    That is, after the pattern <code>$p[x]$</code> matches, it is
-    reduced to the subterm bound to $x$ to which $s$ is applied.
+    That is, after the pattern <code><code>p[x]</code></code> matches, it is
+    reduced to the subterm bound to <code>x</code> to which <code>s</code> is applied.
     Term projections can be used to \emph{project} a subterm from
     a term pattern. For example, the expression
     <code>?And(&lt;id>,x)</code> matches terms of the form
