@@ -554,116 +554,96 @@ EvalPlus = ?Add(Int(i),Int(j)); where(!(i,j); addS; ?k); !Int(k)
 </section>
 
 <section>
-   <title>Apply and match</title>
+   <title>Apply and Match</title>
+   
+<para>   
+        
+  One frequently occuring scenario is that of applying a strategy to a
+  term and then matching the result against a pattern. This typically
+  occurs in the condition of a rule. In the constant folding example
+  above we saw this scenario:
 
-<section xml:id="applymatch">
-    <title>Apply and match</title>
-
-    <para>
-Syntax: 
-   <screen>s => p</screen>
-
-Apply s, then match p 
-
-Equivalent to: s; ?p 
-    </para>
-
-</section>
-
-<section xml:id="buildapply">
-    <title>Build and apply</title>
-
-    <para>
-Build and Apply (Sugar) 
-
-Syntax: &lt;s&gt; p 
-
-Build p, then apply s 
-
-Equivalent to: !p; s 
-
-   <screen>
-<prompt>stratego></prompt> &lt;addS&gt;("1","2") =&gt; x
-<prompt>stratego></prompt> :binding x 
-x is bound to "3"
+<screen>
+EvalPlus : Add(Int(i),Int(j)) -> Int(k) where !(i,j); addS; ?k
 </screen>
-    </para>
 
+  In the condition, first the term <code>(i,j)</code> is built, then
+  the strategy <code>addS</code> is applied to it, and finally the
+  result is matched against the pattern <code>k</code>.
+
+</para>
+
+<para>
+
+  To improve the readability of such expressions, the following two
+  constructs are provided. The operation <code> &lt;s> p</code>
+  captures the notion of <emphasis>applying</emphasis> a strategy to a
+  term, i.e., the scenario <code>!p; s</code>. The operation <code>s
+  => p</code> capture the notion of applying a strategy to the current
+  subject term and then matching the result against the pattern
+  <code>p</code>, i.e., <code>s; ?p</code>.  The combined operation
+  <code> &lt;s> p1 => p2</code> thus captures the notion of applying a
+  strategy to a term <code>p1</code> and matching the result against
+  <code>p2</code>, i.e, <code>!t1; s; ?t2</code>.  Using this notation
+  we can improve the constant folding rule above as
+
+<screen>
+EvalPlus : Add(Int(i),Int(j)) -> Int(k) where &lt;add>(i,j) => k
+</screen>
+
+ </para>
+
+<formalpara>
+  <title>Applying Strategies in Build</title>
+
+<para>
+
+  Sometimes it useful to apply a strategy directly to a subterm of a
+  pattern, for example in the right-hand side of a rule, instead of
+  computing a value in a condition, binding the result to a variable,
+  and then using the variable in the build pattern. The constant
+  folding rule above, for example, could be further simplified by
+  directly applying the addition in the right-hand side:
+
+<screen>
+EvalPlus : Add(Int(i),Int(j)) -> Int(&lt;add>(i,j))
+</screen>
+        
+  This abbreviates the conditional rule above. 
+
+  In general, a strategy application in a build pattern can always be
+  expressed by computing the application before the build and binding
+  the result to a new variable, which then replaces the application in
+  the build pattern.
+
+ </para>
+
+</formalpara>
+
+<para>
+
+  Another example is the following definition of the
+  <code>map(s)</code> strategy, which applies a strategy to each term
+  in a list:
 
 <screen>
 map(s) : [] -> []
-map(s) : [x | xs] -> [y | ys] where !x; s; ?y; !xs; map(s); ?ys
+map(s) : [x | xs] -> [&lt;s> x | &lt;map(s)> xs]
 </screen>
-
-</section>
-
-
-<section>
-   <title>Apply</title>
-   <para>   
-        One frequently occuring scenario is that of applying a
-        strategy to a term and then matching the result against a
-        pattern. This typically occurs in the condition of a rule. In
-        the constant folding example above we saw this scenario:
-<screen>
-  Fold : Add(Int(i),Int(j)) -> Int(k)
-         where !(i,j); add; ?k
-</screen>
-        In the condition, first the term <code>(i,j)</code> is built, then
-        the strategy <code>add</code> is applied to it, and finally the
-        result is matched against the pattern <code>k</code>.
-
-        To improve the readability of such expressions, the following
-        two constructs are provided. The operation <code> &lt;s> p</code>
-        captures the notion of \emph{applying} a strategy to a term,
-        i.e., the scenario <code>!p; s</code>. The operation <code>s => p</code>
-        capture the notion of applying a strategy to the current
-        subject term and then matching the result against the pattern
-        <code>p</code>, i.e., <code>s; ?p</code>.  The combined operation
-        <code> &lt;s> p1 => p2</code> thus captures the notion of applying a
-        strategy to a term <code>p_1</code> and matching the result against
-        <code>p_2</code>, i.e, <code>!t1; s; ?t2</code>.  Using this notation we
-        can improve the constant folding rule above as
-<screen>
-  Fold : Add(Int(i),Int(j)) -> Int(k)
-         where &lt;add>(i,j) => k
-</screen>
-
-Syntax: !p[&lt;s&gt;p0] 
-
-Strategy application in pattern 
-
-Equivalent to: {x:where(&lt;s&gt;p0 => x); !p[x]}
-   </para>
-
-   <screen>
-Plus(Int("14"),Int("3"))
-<prompt>stratego></prompt> \ Plus(Int(i),Int(j)) -&gt; Int(&lt;addS&gt;(i,j)) \
-Int("17")</screen>
-
-<para>
-Applying Strategies in Build
-
-        Sometimes it useful to apply a strategy directly to a subterm
-        of a pattern, for example in the right-hand side of a rule,
-        instead of computing a value in a condition, binding the
-        result to a variable, and then using the variable in the build
-        pattern. The constant folding rule above, for example, could
-        be further simplified by directly applying the addition in
-        the right-hand side:
-<screen>
-  Fold : Add(Int(i),Int(j)) -> Int(&lt;add>(i,j))
-</screen>
-        This abbreviates the conditional rule above.  
 
 </para>
 
 </section>
 
-</section>
-
 <section>
   <title>Wrap and Project</title>
+
+<para>
+
+  Term wrapping and projection are two further abbreviations, which
+  allow 
+
+</para>
    
 <section>
 
