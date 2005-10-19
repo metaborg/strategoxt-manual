@@ -325,14 +325,94 @@ command failed
 
 <section>
   <title>Debugging XT compositions</title>
-  <para></para>
+
+  <para>
+    The XT component model is based on Unix pipes. Debugging XT
+    compositions can therefore be done using many of the familiar
+    Unix command line tools.
+  </para>
+
+  <formalpara>
+  <title>Checking XTC registrations</title>
+    
+  <para>
+    Whenever you call XTC components using <code>xtc-transform</code>, 
+    the location of the component you are calling is looked up in
+    a component registry. When invoking a component fails, it may
+    be because the component you are calling has been removed. 
+    Checking the registrations inside a component registry is done
+    using the <command>xtc</command> command:
+  </para>
+  </formalpara>
+
 <screen>
- - checking component registration
- - checking configuration file accesses
-  - strace
- - xtc shell?
- - format checkers
+# xtc -r /usr/local/apps/dryad/share/dryad/XTC q -a
+dryad (0.1pre11840) : /usr/local/apps/dryad/dryad
+dryad.m4 (0.1pre11840) : /usr/local/apps/dryad/share/dryad/dryad.m4
+...
 </screen>
+
+  <para>
+    The <option>-r</option> is used to specify which registry you
+    want to inspect. It should point to the XTC file where you
+    installed the program transformation system you built with
+    Stratego/XT. The XTC repository of your project usually
+    imports (refers back to) the other projects you used in
+    your build process, such as Stratego/XT itself. 
+  </para>
+
+  <para>
+    Now that you know how to obtain the paths for all XT
+    components, it is easy to determine that they actually
+    exist at the locations recorded, and that the access
+    rights are correct.
+  </para>
+  
+  <para>
+    Programs such as <command>strace</command> may also be
+    useful at the lowest level of debugging, to see which
+    parameters are passed between components, whether a
+    given component is located correctly, and whether 
+    execution of a given component succeeds.
+  </para>
+  
+  <formalpara>
+    <title>Format Checking</title>
+
+  <para>
+    Each component in a system built with Stratego/XT accepts a term,
+    definable by some grammar, and outputs another term, also definable
+    by a (possibly the same) grammar. During debugging of XT
+    compositions is useful to check that the data flowing between
+    the various components actually conform to the defined 
+    grammars. It is not always the case that the grammar in question
+    has been defined, but you are highly encouraged to do so, 
+    see <xref linkend="tutorial-rtg" /> for how to do this.
+  </para>
+  </formalpara>
+  
+  <para>
+    Once you have a formal declaration of your data, in the form
+    of a regular tree grammar, you can insert calls to the
+    <command>format-check</command> between your XT components to
+    verify data correctness, i.e. the correctness of the terms.
+  </para>
+  
+<screen>
+  ast2il = 
+      xtc-transform(!"format-check", !["--rtg", "language-ast.rtg"])
+    ; xtc-transform(!"ast2il")
+    ; xtc-transform(!"format-check", !["--rtg", "language-il.rtg"])
+</screen>
+
+  <para>
+    The <command>ast2il</command> component transforms from
+    the abstract syntax tree representation of a given language
+    to an intermediate language (IL). <command>format-check</command>
+    is used to verify that the AST passed to <command>ast2il</command>
+    is well-formed, and that the result obtained from 
+    <command>ast2il</command> is also well-formed.
+  </para>  
 </section>
 
 <section>
