@@ -5,152 +5,121 @@
 
   <title>Traversal Strategies (*)</title>
 
-  <para>
-    In the previous chapters we saw how strategies can be used to
-    control transformations and how rules can be broken down into
-    the primitive actions match, build and scope.  Together, these
-    combinators allow us to define any transformation.  However,
-    the definition of traversals using congruence operators is
-    specific for a data-type. Although a one step traversal can be
-    factored out of the definition of full tree traversals, there
-    are no generic definitions of traversals.  This entails, that
-    traversals should be defined for each data type.
+<para>
 
-    In this chapter we introduce combinators for \emph{generic
-    term traversal}, that support data type independent definition
-    of traversals, which can be reused for any data type.
-    Furthermore, the strategies that we have inspected so far are
-    geared to transform terms while preserving types, i.e.,
-    <emphasis>rephrasings</emphasis> according to the taxonomy in
-    Chapter~\ref{Chap:ProgramTransformation}. There is also a
-    class of transformations, in which terms are
-    <emphasis>translated</emphasis> to a different type. In this
-    chapter we introduce a <emphasis>generic term construction
-    and decomposition</emphasis> operator, which allows us to
-    define generic translation or
-    <emphasis>type unifying</emphasis> strategies.
+  In <xref linkend="stratego-rewriting-strategies"/> we saw a number
+  of idioms of strategic rewriting, which all involved <emphasis>tree
+  traversal</emphasis>.
 
-Requirements
+  In the previous chapters we saw how strategies can be used to
+  control transformations and how rules can be broken down into the
+  primitive actions match, build and scope.
 
-Control over application of rules 
-
-No traversal overhead 
-
-Separation of rules and strategies
-
-Many ways to traverse a tree 
-
-Bottom-up 
-
-Top-down 
-
-Innermost ... 
-
-What are the primitives of traversal?
-
-	Match, build, sequential composition, and choice only apply
-	transformations to the root of a term
-
-	Complete transformations require term traversal
-
- </para>
-    
- <para> 
-
-        There are many ways to traverse a tree. For example, a
-        bottom-up traversal, visits the subterms of a node before it
-        visits the node itself, while a top-down traversal visits
-        nodes before it visits children. One-pass traversals traverse
-        the tree one time, while fixpoint traversals, such as
-        innermost, repeatedly traverse a term until a fixpoint is
-        reached.
-
-        It is not attractive to provide built-in implementations for
-        each traversal algorithm. Rather we would like to define
-        traversals in terms of the primitive ingredients of traversal.
-        For example, a top-down, one-pass traversal strategy will
-        first visit a node, and then descend to the children of a node in
-        order to \emph{recursively} traverse all subterms.  Similarly,
-        the bottom-up, fixpoint traversal strategy \emph{innermost},
-        will first descend to the children of a node in order to
-        \emph{recursively} traverse all subterms, then visit the node
-        itself, and possibly recursively reapply the strategy.
-
-        This suggests that a full term traversal can be composed from
-        a one-step descent to the children of a node and recursive
-        closure. Thus, we need an operator which applies a strategy to
-        one or more direct subterms.  By separating this one-step
-        descent operator from recursion, and making it a first-class
-        operation, many different traversals can be defined.
-
-
-Traversal Primitives 
-
-One-Level Traversal Operators 
-
-Apply a strategy to one or more direct subterms 
-
-Congruence: 
-
-Data-Type Specific Traversal 
-
-Apply a different strategy to each argument of a specific constructor 
-
-Generic Traversal 
-
-All Apply to all direct subterms 
-
-One Apply to one direct subterm 
-
-Some Apply to as many direct subterms as possible, and at least one
+  The missing ingredient are combinators for defining traversals.
 
  </para>
 
- <para> 
+<para>
+
+  There are many ways to traverse a tree. For example, a bottom-up
+  traversal, visits the subterms of a node before it visits the node
+  itself, while a top-down traversal visits nodes before it visits
+  children. One-pass traversals traverse the tree one time, while
+  fixpoint traversals, such as innermost, repeatedly traverse a term
+  until a fixpoint is reached.
 
  </para>
+
+<para>
+
+  It is not attractive to provide built-in implementations for each
+  traversal algorithm. Rather we would like to define traversals in
+  terms of the primitive ingredients of traversal.  For example, a
+  top-down, one-pass traversal strategy will first visit a node, and
+  then descend to the children of a node in order to
+  <emphasis>recursively</emphasis> traverse all subterms.  Similarly,
+  the bottom-up, fixpoint traversal strategy
+  <emphasis>innermost</emphasis>, will first descend to the children
+  of a node in order to <emphasis>recursively</emphasis> traverse all
+  subterms, then visit the node itself, and possibly recursively
+  reapply the strategy.
+
+ </para>
+
+<para>
+
+   This suggests that a full term traversal can be composed from a
+   one-step descent to the children of a node and recursive
+   closure. Thus, we need an operator which applies a strategy to one
+   or more direct subterms.  By separating this one-step descent
+   operator from recursion, and making it a first-class operation,
+   many different traversals can be defined.
+
+ </para>
+
+<para>
+
+  In this chapter we explore the ways in which Stratego supports the
+  definition of <emphasis>traversal strategies</emphasis>.
+
+  <emphasis>Congruences operators</emphasis> provide data-type
+  specific traversal combinators. <emphasis>Generic traversal
+  operators</emphasis> support data type independent definitions of
+  traversals, which can be reused for any data type.
+
+</para>
 
 <section>
-   <title>Congruence Operators</title>
+  <title>Congruence Operators</title>
 
-    <para>
-      A congruence operator applies a strategy to each direct subterm
-      of a specific constructor. A congruence fails if the application
-      of one the argument strategies fails or if constructor of the
-      operator and that of the term do not match.
-    </para>
+<para>
+      
+  A congruence operator applies a strategy to each direct subterm of a
+  specific constructor. A congruence fails if the application of one
+  the argument strategies fails or if constructor of the operator and
+  that of the term do not match.
+    
+</para>
 
-    <screen>
+<screen>
 Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> Plus(!Var("a"), id)
 Plus(Var("a"),Int("3"))
 </screen>	
 
-    <para>
-      For each n-ary constructor c declared in a signature, there is a
-      corresponding <emphasis>congruence operator</emphasis>
-      <code>c(s1 , ..., sn )</code>, which applies to terms of the
-      form <code>c(t1 , ..., tn )</code> by applying the argument
-      strategies to the corresponding argument terms.
-    </para>
+<para>
+      
+  For each n-ary constructor c declared in a signature, there is a
+  corresponding <emphasis>congruence operator</emphasis> <code>c(s1 ,
+  ..., sn )</code>, which applies to terms of the form <code>c(t1 ,
+  ..., tn )</code> by applying the argument strategies to the
+  corresponding argument terms.
+    
+</para>
 
-    <para>
-      The congruence operator is used e.g. in conjunction with the
-      recursive traversal operator to define specific data structure
-      traversals.
-    </para>
+<para>
+      
+  The congruence operator is used e.g. in conjunction with the
+  recursive traversal operator to define specific data structure
+  traversals.
+    
+</para>
 
-    <para>
-      Congruences can also be applied to tuples,
-      <code>(s1,s2,...,sn)</code>, and lists,
-      <code>[s1,s2,...,sn]</code>. A special list congruence is
-      <code>[]</code> which 'visits' the empty list.
-    </para>
+<para>
+      
+  Congruences can also be applied to tuples,
+  <code>(s1,s2,...,sn)</code>, and lists,
+  <code>[s1,s2,...,sn]</code>. A special list congruence is
+  <code>[]</code> which 'visits' the empty list.
+    
+</para>
 
-    <para>
-      A good example of the use of list congruences is the
-      <code>map(s)</code> strategy.
-    </para>
+<para>
+      
+  A good example of the use of list congruences is the
+  <code>map(s)</code> strategy.
+    
+</para>
 
     <screen>  
 map(s) = Nil() + Cons(s, map(s))
@@ -168,35 +137,38 @@ fetch(s) = [s | id] &lt;+ [id | fetch(s)]
 filter(s) = [] + ([s | filter(s)] &lt;+ ?[ |&lt;id>]; filter(s))
 </screen>
 
+<para>
+      
+  Example: constant folding
+    
+</para>
 
-    <para>
-      Example: constant folding
-    </para>
-
-    <screen>
+<screen>
 BinOp(PLUS(), Int("14"), Int("3")) 
 stratego> EvalBinOp 
-Int("17") 
-    </screen>   
+Int("17")
+</screen>   
 
-    <screen> 
+<screen>
 const-fold =
   BinOp(id, const-fold, const-fold); try(EvalBinOp)
   &lt;+ Call(id, map(const-fold)); try(EvalCall)
   &lt;+ If(const-fold, const-fold, const-fold); try(EvalIf)
-    </screen>   
+</screen>
 
-    <screen> 
+<screen>
 BinOp(TIMES(), 
   If(BinOp(PLUS(),Int("14"),Int("3")),Int("2"),Int("23")),
   Int("4") 
 )
 stratego> const-fold 
 Int("8")
-    </screen>   
+</screen>   
 
-    <para>
-      Example: format checking
+    
+<para>
+      
+Example: format checking
 
 Format checking 
 
@@ -213,7 +185,8 @@ Documentation
 Describe format of terms in normal form 
     </para>
 
-    <screen>
+    
+<screen>
 conj(s) = rec x(And(x, x) &lt;+ s)
 disj(s) = rec x(Or(x, x) &lt;+ s)
 
@@ -222,50 +195,58 @@ conj-nf = conj(disj(Not(Var(x)) + Var(x)))
 
 // Disjunctive normal form
 disj-nf = disj(conj(Not(Var(x)) + Var(x)))
-    </screen>   
+</screen>   
  
 </section>
 
 <section>
   <title>Generic Traversal: Visiting All Subterms</title>
       
-  <para>
-    Using the congruence operators for all constructors in a type,
-    one can define a one-step traversal for that type, which can
-    be composed into all kinds of full traversals. However, the
-    combination of congruence strategies and the traversals built
-    using them have to be redone for each data type. Instead of
-    using such <emphasis>type-specific</emphasis> traversal
-    strategies, it is desirable to use <emphasis>generic</emphasis>
-    strategies that work on any data type.
+<para>
+    
+  Using the congruence operators for all constructors in a type, one
+  can define a one-step traversal for that type, which can be composed
+  into all kinds of full traversals. However, the combination of
+  congruence strategies and the traversals built using them have to be
+  redone for each data type. Instead of using such
+  <emphasis>type-specific</emphasis> traversal strategies, it is
+  desirable to use <emphasis>generic</emphasis> strategies that work
+  on any data type.
 
-    Stratego provides generic traversal by means of several
-    <emphasis>generic one-step descent operators</emphasis>. The
-    operator <code>all</code>, applies a strategy to all direct
-    subterms.  The operator <code>one</code>, applies a strategy
-    to one direct subterm, and the operator <code>some</code>,
-    applies a strategy to as many direct subterms as possible,
-    and at least one.  It will turn out later in this chapter
-    that <code>all</code>, <code>one</code>, and
-    <code>some</code> can be defined in terms of still more
-    primitive operations. That does not change the usefulness
-    of these notions, however,
+</para>
 
-      Generic traversal operators
-Data-type specific traversal requires tedious enumeration of cases 
+<para>
+    
+  Stratego provides generic traversal by means of several
+  <emphasis>generic one-step descent operators</emphasis>. The
+  operator <code>all</code>, applies a strategy to all direct
+  subterms.  The operator <code>one</code>, applies a strategy to one
+  direct subterm, and the operator <code>some</code>, applies a
+  strategy to as many direct subterms as possible, and at least one.
+  It will turn out later in this chapter that <code>all</code>,
+  <code>one</code>, and <code>some</code> can be defined in terms of
+  still more primitive operations. That does not change the usefulness
+  of these notions, however,
 
-Even if traversal behaviour is uniform 
+      
+  Generic traversal operators
 
-Generic traversal allows concise specification of default traversals
-  </para>
+  Data-type specific traversal requires tedious enumeration of cases 
 
+  Even if traversal behaviour is uniform 
 
-  <para>
-	The <code>all(s)</code> strategy transforms a constructor
-	application by applying the parameter strategy <code>s</code>
-	to each direct subterm. An application of <code>all(s)</code>
-	fails if the application to one of the subterms fails.
-  </para>
+  Generic traversal allows concise specification of default traversals
+  
+</para>
+
+<para>
+	
+  The <code>all(s)</code> strategy transforms a constructor
+  application by applying the parameter strategy <code>s</code> to
+  each direct subterm. An application of <code>all(s)</code> fails if
+  the application to one of the subterms fails.
+  
+</para>
 
 <screen>
 Plus(Int("14"),Int("3"))
@@ -273,16 +254,18 @@ Plus(Int("14"),Int("3"))
 Plus(Var("a"),Var("a"))
 </screen>
 
-  <para>
-	Using the <code>all</code> traversal primitive we can define
-	generic traversal strategies like <code>topdown</code> and
-	<code>bottomup</code>.
+<para>
+	
+  Using the <code>all</code> traversal primitive we can define generic
+  traversal strategies like <code>topdown</code> and
+  <code>bottomup</code>.
 
-    The most general class of traversals visits every node
-    of a term and applies a transformation to it. The following
-    operators define traversals that apply a strategy
-    <code>s</code> to all nodes of a term.
-  </para>
+  The most general class of traversals visits every node of a term and
+  applies a transformation to it. The following operators define
+  traversals that apply a strategy <code>s</code> to all nodes of a
+  term.
+  
+</para>
 
 <screen>
 bottomup(s) = all(bottomup(s)); s
@@ -295,22 +278,23 @@ alltd(s)    = s &lt;+ all(alltd(s))
 const-fold = bottomup(try(EvalBinOp &lt;+ EvalCall &lt;+ EvalIf))
 </screen>
 
-  <para>
+  
+<para>
 
-        \paragraph{Topdown}
+  \paragraph{Topdown}
 
-    The strategy <code>topdown(s)</code> first visits a node before it
-    descends to the subterms, <code>bottomup(s)</code> first transforms
-    subterms before applying <code>s</code> to a node, and
-    <code>downup(s)</code> applies the transformation <code>s</code> on the
-    way down and again on the way up. Since <code>s</code> is applied at
-    every subterm, these traversals only succeed if <code>s</code>
-    succeeds everywhere. Therefore, these traversals are typically
-    applied in combination with <code>try</code> or repeat.
+  The strategy <code>topdown(s)</code> first visits a node before it
+  descends to the subterms, <code>bottomup(s)</code> first transforms
+  subterms before applying <code>s</code> to a node, and
+  <code>downup(s)</code> applies the transformation <code>s</code> on
+  the way down and again on the way up. Since <code>s</code> is
+  applied at every subterm, these traversals only succeed if
+  <code>s</code> succeeds everywhere. Therefore, these traversals are
+  typically applied in combination with <code>try</code> or repeat.
 
-    For example, a constant folding transformation for proposition
-    formulae can be defined as a bottom-up traversal that
-    repeatedly applies one of the truth-rules <code>T</code>.
+  For example, a constant folding transformation for proposition
+  formulae can be defined as a bottom-up traversal that repeatedly
+  applies one of the truth-rules <code>T</code>.
     
 <screen>
   eval = bottomup(repeat(T))
