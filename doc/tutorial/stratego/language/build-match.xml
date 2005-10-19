@@ -3,7 +3,7 @@
   xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Creating and Analyzing Terms (*)</title>
+  <title>Creating and Analyzing Terms</title>
 
 <para>
 
@@ -640,115 +640,148 @@ map(s) : [x | xs] -> [&lt;s> x | &lt;map(s)> xs]
 
 <para>
 
-  Term wrapping and projection are two further abbreviations, which
-  allow 
+  Term wrapping and projection are concise idioms for constructing
+  terms that wrap the current term and for extracting subterms from
+  the current term.
 
 </para>
    
 <section>
-
   <title>Term Wrap</title>
-  <para>   
+
+<para>   
     
-    One often write rules of the form <code>\ x -> Foo(Bar(x))\</code>,
-    i.e. wrapping a term pattern around a term. Using rule syntax
-    this is quite verbose. The syntactic abstraction of
-    <emphasis>term wraps</emphasis>, allows the concise specification
-    of such little transformations.
+  One often write rules of the form <code>\ x -> Foo(Bar(x))\</code>,
+  i.e. wrapping a term pattern around the current term. Using rule
+  syntax this is quite verbose. The syntactic abstraction of
+  <emphasis>term wraps</emphasis>, allows the concise specification of
+  such little transformations as <code>!Foo(Bar(&lt;id>))</code>. 
 
-    A term wrap is a build expression <code>!p[&lt;s>]</code> containing a
-    strategy application <code>&lt;s></code> that is not applied to a term.
-    Using a new variable <code>x</code>, such an expression is desugared
-    as
-\[
-        \sem{\ \tty{!p[&lt;s>]}\ }
-        \quad\to\quad
-        \sem{\ \tty{\{x:\ s => x; !p[x]\}}\ }
-\]
-        In other words, the strategy <code>s</code> is applied to the
-        \emph{current subject term}, i.e., the term to which the build
-        is applied.
-
-        Using this abstraction one can now write <code>!Foo(Bar(&lt;id>))</code>,
-        for the strategy <code>\{x: id => x; !Foo(Bar(x))\</code>},
-        which after simplification is equivalent to
-        <code>\{x: ?x; !Foo(Bar(x))\</code>}, i.e., exactly the original
-        anonymous rule <code>\bs x -> Foo(Bar(x))\bs</code>.
-
-
-Syntax: !p[&lt;s&gt;] 
-
-Strategy application in pattern to current subterm 
-
-Equivalent to: {x: where(s => x); !p[x]} for some fresh variable x
 </para>
 
-   <screen>
+<para>
+
+  In general, a term wrap is a build strategy <code>!p[&lt;s>]</code>
+  containing on or more strategy applications <code>&lt;s></code> that
+  are <emphasis>not applied to a term</emphasis>.
+
+  When executing the the build operation, each occurrence of such a
+  strategy application <code>&lt;s></code> is replaced with the term
+  resulting from applying <code>s</code> to the current subject term,
+  i.e., the one that is being replaced by the build.
+
+  The following sessions illustrate some uses of term wraps:
+
+<screen>
 3
 <prompt>stratego></prompt> !(&lt;id&gt;,&lt;id&gt;)
 (3,3)
 <prompt>stratego></prompt> !(&lt;Fst; inc&gt;,&lt;Snd&gt;)
-(4,3)</screen>
-
-
-   <screen>
+(4,3)
+<prompt>stratego></prompt> !"foobar"
 "foobar"
 <prompt>stratego></prompt> !Call(&lt;id&gt;, [])
-Call("foobar", [])</screen>
+Call("foobar", [])
+</screen>
+
+</para>
+
+<para>
+
+  As should now be a common pattern, term projects are implemented by
+  translation to a combination of match and build expressions.
+
+  Thus, a term wrap <code>!p[&lt;s>]</code> is translated to a strategy
+  expression
+
+<screen>
+{x: where(s => x); !p[x]}  
+</screen>
+
+  where <code>x</code> is a fresh variable not occurring in
+  <code>s</code>.
+
+  In other words, the strategy <code>s</code> is applied to the
+  <emphasis>current subject term</emphasis>, i.e., the term to which
+  the build is applied.
+
+</para>
+
+<para>
+
+  As an example, the term wrap <code>!Foo(Bar(&lt;id>))</code> is
+  desugared to the strategy 
+<screen>
+\{x: where(id => x); !Foo(Bar(x))}
+</screen>
+
+  which after simplification is equivalent to <code>\{x: ?x;
+  !Foo(Bar(x))\</code>}, i.e., exactly the original lambda rule
+  <code>\ x -> Foo(Bar(x))\</code>.
+
+</para>
 
 </section>
    
 <section>
-
   <title>Term Project</title>
 
-  <para>   
-    Term projections are the match dual of term wraps. A match
-    expression <code>?p[&lt;s>]</code> is desugared as
-\[
-        \sem{\ \tty{?p[&lt;s>]}\ }
-        \quad\to\quad
-        \sem{\ \tty{\{x:\ ?p[x]; &lt;s>x\}}\ }
-\]
+ <para>  
+ 
+   Term projections are the match dual of term wraps. 
 
-    That is, after the pattern <code>p[x]</code> matches, it is
-    reduced to the subterm bound to <code>x</code> to which <code>s</code> is applied.
-    Term projections can be used to \emph{project} a subterm from
-    a term pattern. For example, the expression
-    <code>?And(&lt;id>,x)</code> matches terms of the form
-    <code>And(t1,t2)</code> and reduces them to the first subterm
-    <code>t1</code>. Another example is the strategy
+   Term projections can be used to <emphasis>project</emphasis> a
+   subterm from a term pattern. For example, the expression
+   <code>?And(&lt;id>,x)</code> matches terms of the form
+   <code>And(t1,t2)</code> and reduces them to the first subterm
+   <code>t1</code>. 
+
+   Another example is the strategy
 
 <screen>
-  map(?FunDec(&lt;id>,_,_))
+map(?FunDec(&lt;id>,_,_))
 </screen>
 
-        which reduces a list of function declarations to a list of the
-        names of the functions, i.e., the first arguments of the
-        <code>FunDec</code> constructor.
+   which reduces a list of function declarations to a list of the
+   names of the functions, i.e., the first arguments of the
+   <code>FunDec</code> constructor.
 
-        Term projections can also be used to apply additional
-        constraints to subterms in a match pattern. When multiple
-        projects are used within a match the outcome is undefined.
-
-Syntax: ?p[&lt;s&gt;] 
-
-Strategy application in pattern match 
-
-Equivalent to: {x: ?p[x]; &lt;s&gt;x} for some fresh variable x
-</para>
+   Here are some more examples:
 
 <screen>
 [1,2,3]
-<prompt>stratego></prompt> ?[ |&lt;id&gt;]
+<prompt>stratego></prompt> ?[_|&lt;id&gt;]
 [2,3]
-</screen>
-
-<screen>
+<prompt>stratego></prompt> !Call("foobar", [])
 Call("foobar", [])
 <prompt>stratego></prompt> ?Call(&lt;id&gt;, [])
 "foobar"
 </screen>
+
+   Term projections can also be used to apply additional constraints
+   to subterms in a match pattern. For example, <code>?Call(x,
+   &lt;?args; length => 3>)</code> matches only with function calls
+   with three arguments.
+
+</para>
+
+<para>
+
+   A match expression <code>?p[&lt;s>]</code> is desugared as
+
+<screen>
+{x: ?p[x]; &lt;s> x}
+</screen>
+
+   That is, after the pattern <code>p[x]</code> matches, it is reduced
+   to the subterm bound to <code>x</code> to which <code>s</code> is
+   applied. The result is also the result of the projection.
+
+   When multiple projects are used within a match the outcome is
+   undefined, i.e., the order in which the projects will be performed
+   can not be counted on.
+
+</para>
 
 </section>
 
@@ -758,6 +791,11 @@ Call("foobar", [])
   <title>Summary</title>
 
 <para>
+
+  We have seen that Stratego makes the atomic actions of
+  transformations, matching and building terms, available to Stratego
+  programmers. A number of higher-level concepts, including rewrite
+  rules, are implemented by translation to these basic actions.
 
 </para>
 
