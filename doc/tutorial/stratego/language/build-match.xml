@@ -506,80 +506,46 @@ EvalPlus = ?Add(Int(i),Int(j)); where(!(i,j); addS; ?k); !Int(k)
     
 <section>
    <title>Lambda Rules</title>
-   <para>
-Syntax: \ p1 -> p2 where s \ 
+   
+<para>
 
-Rewrite rule with condition s 
+  Sometimes it is useful to define a rule anonymously within a
+  strategy expression. The syntax for anonymous rules with scopes is a
+  bit much since it requires enumerating all variables. 
 
-Equivalent to: {x1,...,xn:(p1 -> p2 where s)} with x1,...,xn the free variables in p1
+  A `lambda' rule of the form 
 
-	So far rules have always been named entities. Sometimes it is
-	useful to define a rule anonymously within a strategy
-	expression. There are various ways to do this. One notation is
-	an anonymous rule of the form
-\tty{\bs p_1 -> p_2 where s\bs}
-	which is desugared according to the rule
-\[
-  	\sem{\tty{\bs p_1 -> p_2 where s\bs }}
-	\quad \to \quad 
-	\sem{\tty{\{x_1,...,x_n:\ ?p_1; where(s); !p_2\}}}
-\]
-	with x_1,...,<code>x_n</code> the free variables of <code>p_1</code>
-	\emph{only}. This means that any variables used in <code>s</code> and
-	<code>p_2</code>, which do \emph{not} occur in <code>p_1</code> are bound in context
-	of the anonymous rule.
+<screen>
+\ p1 -> p2 where s \
+</screen> 
+  
+  is an anonymous rewrite rule for which the variables in the
+  left-hand side <code>p1</code> are local to the rule, that is,
+  it is equivalent to an expression of the form
+
+<screen>
+{x1,...,xn : (p1 -> p2 where s)}
+</screen> 
+ 
+  with <code>x1</code>,...,<code>xn</code> the variables of
+  <code>p1</code>.
+
+  This means that any variables used in <code>s</code> and
+  <code>p2</code> that do <emphasis>not</emphasis> occur in
+  <code>p1</code> are bound in the context of the rule.
                 
 </para>
 
 <para>
-	A typical example of the use of an anonymous rule is the
-	reduction of a list of function declarations to the list of
-	names of the functions using the expression
+	
+  A typical example of the use of an anonymous rule is 
+
 <screen>
-  map(\ FunDec(f, xs, e) -> f \ )
+<prompt>stratego></prompt> ![(1,2),(3,4),(5,6)]
+[(1,2),(3,4),(5,6)]
+<prompt>stratego></prompt> map(\ (x, y) -> x \ )
+[1,3,5]
 </screen>
-	which is equivalent to
-<screen>
-  map({f,xs,e: ?Fdec(f, xs, e); !f})
-</screen>
-
-</para>
-
-<para>
-
-	Another style of anonymous rule \tty{(p_1 -> p_2 where
-	s)} does not imply any scope for the variables of the rule,
-	but only provides rule-like syntax. Thus, this notation is
-	desugared as 
-\[
-  	\sem{\tty{(p_1 -> p_2 where s)}}
-	\quad \to \quad 
-	\sem{\tty{?p_1; where(s); !p_2}}
-\]
-	in which the variables are bound in the surrounding scope.
-</para>
-
-<para>
-
-	Both forms of anonymous rules can of course also be used
-	without condition. In general, an unconditional rule can be
-	seen as sugar for a conditional rule with the identity
-	condition:
-\[
-  	\sem{\tty{p_1 -> p_2}}
-	\quad \to \quad 
-  	\sem{\tty{p_1 -> p_2 where id}}
-\]
-
-
-   <screen>
-Plus(Int("14"),Int("3"))
-<prompt>stratego></prompt> \ Plus(Int(i),Int(j)) -&gt; Int(k) where &lt;addS&gt;(i,j) =&gt; k \
-Int("17")
-<prompt>stratego></prompt> :binding i
-i is not bound to a term
-<prompt>stratego></prompt> :binding k
-k is bound to "17"</screen>
 
 </para>
 
@@ -587,9 +553,8 @@ k is bound to "17"</screen>
    
 </section>
 
-
 <section>
-    <title>Apply and match</title>
+   <title>Apply and match</title>
 
 <section xml:id="applymatch">
     <title>Apply and match</title>
@@ -620,8 +585,15 @@ Equivalent to: !p; s
    <screen>
 <prompt>stratego></prompt> &lt;addS&gt;("1","2") =&gt; x
 <prompt>stratego></prompt> :binding x 
-x is bound to "3"</screen>
+x is bound to "3"
+</screen>
     </para>
+
+
+<screen>
+map(s) : [] -> []
+map(s) : [x | xs] -> [y | ys] where !x; s; ?y; !xs; map(s); ?ys
+</screen>
 
 </section>
 
