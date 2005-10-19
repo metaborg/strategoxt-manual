@@ -129,26 +129,36 @@
 </screen>
 
   <para>
-    Sometimes, you need to add additional text to your output. In
-    this case, an idiom with <code>where</code> and <code>id</code> 
-    is used:
+    Sometimes, you need to add additional text to your output, or
+    do additional formatting. In this case, an idiom with
+    <code>where</code> and <code>id</code> is used:
   </para>
 
 <screen>
   foo = 
-     where(&lt;debug> [ "Entering foo : ", &lt;id> ])
+     where(&lt;debug> [ "Entered foo : ", &lt;id> ])
      ; bar
      ; where(&lt;debug> [ "After bar : ", &lt;id> ])
      ; baz
 </screen>
-          
+
   <para>
     The <code>where</code> prevents the current term from being
     altered by the construction of your debugging text, and
     <code>id</code> is used to retrieve the current term
-    before the <code>where</code> clause.
+    before the <code>where</code> clause. If, as in this example,
+    you only need to prepend a string before the current term,
+    you should rather use <code>debug(s)</code>, as shown next.
   </para>
-                
+
+<screen>
+  foo =
+    debug(!"Entered foo : ")
+    ; bar
+    ; debug(!"After bar : ")
+    ; baz
+</screen>    
+
   <para>
     The use of <code>debug</code> is an effective, but very intrusive
     approach. A more disciplined regime has been built on top of
@@ -184,9 +194,8 @@
   <title>Common Pitfalls</title>
   
   <para>
-    Some types of errors seem to be more common than others in
-    Stratego programs. Awareness of these will help you avoid
-    them in your code.
+    Some types of errors seem to be more common than others.
+    Awareness of these will help you avoid them in your code.
   </para>
 
   <formalpara>
@@ -200,26 +209,49 @@
     rules with the same name. You can even have rules and
     strategies which share a common name. When invoking a 
     name, say <code>s</code>, all rules and strategies with
-    that name will be considered, by trying all of them in
-    some order, until one succeeds. The language does not
-    specify the order which the alternatives will be tried.
-    If <code>Eval</code> is called, 
+    that name will be considered. During execution the alternatives
+    are tried in some order, until one succeeds. The language does
+    not specify the order which the alternatives will be tried.
   </para>
   </formalpara>
 
 <screen>
  Eval:
- If(t, e1, e2) -> ...
+ If(t, e1, e2) -> If(t, e1', e2')
+ where
+     &lt;simplify> e1 => e1'
+   ; &lt;simplify> e2 => e2'
  
  Eval:
  If(False, e1, e2) -> e2
 </screen>  
 
   <para>
-    If you want to control the order a set of rules should
-    be tried on, you must name each alternative differently,
-    and make a new strategy of application betwee
+    When <code>Eval</code> is called, execution may never
+    end up in the second case, even though it the current
+    term is an <code>If</code> term, with the condition
+    subterm being just the <code>False</code> term. 
   </para>
+  
+  <para>
+    If you want to control the order in which a set of 
+    rules should be tried, you must name each alternative
+    rule differently, and place them behind a strategy
+    that specifies the priority, e.g:
+  </para>
+
+<screen>
+  SimplifyIf
+  If(t, e1, e2) -> If(t, e1', e2')
+  where
+     &lt;simplify> e1 => e1'
+   ; &lt;simplify> e2 => e2'
+
+  EvalIfCond:
+  If(False, e1, e2) -> e2
+  
+  Eval = EvalIfCond &lt;+ SimplifyIf
+</screen>
 
   <formalpara>
     <title>Combinator Precedence</title>
@@ -291,7 +323,8 @@ command failed
     does it work for lists of four equal elements? Because the rule
     about immutability is not violated: we do not
     <emphasis>change</emphasis> the value of <code>y</code> by
-    reassigning the same value to it.
+    reassigning the same value to it, so Stratego allows us to
+    do this.
   </para>
   
   <para>
@@ -346,19 +379,30 @@ command failed
   </formalpara>
 
 <screen>
-# xtc -r /usr/local/apps/dryad/share/dryad/XTC q -a
+<prompt>#</prompt> xtc -r /usr/local/apps/dryad/share/dryad/XTC q -a
 dryad (0.1pre11840) : /usr/local/apps/dryad/dryad
 dryad.m4 (0.1pre11840) : /usr/local/apps/dryad/share/dryad/dryad.m4
 ...
 </screen>
 
   <para>
-    The <option>-r</option> is used to specify which registry you
-    want to inspect. It should point to the XTC file where you
-    installed the program transformation system you built with
-    Stratego/XT. The XTC repository of your project usually
-    imports (refers back to) the other projects you used in
-    your build process, such as Stratego/XT itself. 
+    The <option>-r</option> option is used to specify which registry
+    you want to inspect. The path given to <option>-r</option> must
+    be the <filename>XTC</filename> registry file of your
+    installed program transformation system that you built with
+    Stratego/XT. By default, <command>xtc</command> will work
+    on the Stratego/XT XTC repository, and only list the
+    components provided by Stratego/XT. This is seldom what
+    you want.
+  </para>
+  
+  <para>
+    XTC registries are hierarchical. The XTC repository of your
+    project imports (refers back to) the other projects you
+    used in your build process, such as Stratego/XT itself. 
+    The component list you get from <command>xtc</command>
+	when giving it your repository is therefore a full closure
+	of all components visible to transformations in your project.
   </para>
 
   <para>
@@ -383,11 +427,12 @@ dryad.m4 (0.1pre11840) : /usr/local/apps/dryad/share/dryad/dryad.m4
     Each component in a system built with Stratego/XT accepts a term,
     definable by some grammar, and outputs another term, also definable
     by a (possibly the same) grammar. During debugging of XT
-    compositions is useful to check that the data flowing between
+    compositions, it is useful to check that the data flowing between
     the various components actually conform to the defined 
     grammars. It is not always the case that the grammar in question
     has been defined, but you are highly encouraged to do so, 
-    see <xref linkend="tutorial-rtg" /> for how to do this.
+    see <xref linkend="tutorial-rtg" /> for how to define regular
+    tree grammars.
   </para>
   </formalpara>
   
@@ -417,16 +462,65 @@ dryad.m4 (0.1pre11840) : /usr/local/apps/dryad/share/dryad/dryad.m4
 
 <section>
   <title>Debugging SDF definitions</title>
-  <para></para>
-<screen>
- - SDF tools
-  - sdfchecker
-  - sdf2parenthesize
- - concrete syntax
-  - correct .meta file
-  - reserved metavariables
-  - ambiguities
-</screen>
+
+  <para>
+    The SDF toolkit comes with some very useful debugging aids.
+    The first is the <command>sdfchecker</command> command, which
+    will analyze your SDF definition and offer a list of issues
+    it finds. You do not need to invoke <command>sdfchecker</command>
+    directly. It is invoked by the <command>sdf2table</command> by
+    default, whenever you generate a parse table from a 
+    syntax definition. Be advised that the issues pointed to by
+    <command>sdfchecker</command> are not always errors. 
+    Nontheless, it is usually prudent to fix them.
+  </para>
+  
+  <para>
+    The other SDF debugging tool is the <command>visamb</command>
+    command. <command>visamb</command> is used to display
+    ambiguities in parse trees. Its usage is detailed in the
+    command reference (<xref linkend="ref-visamb"/>).
+  </para>
+
+  <formalpara>
+    <title>Pitfalls with Concrete Syntax</title>
+  
+  <para>
+    Doing transformations with concrete syntax in Stratego,
+    as explained in <xref linkend="stratego-concrete-syntax"/>
+    depends in the correct placement of <filename>.meta</filename>
+    files.  When creating, splitting, moving or removing 
+    Stratego source files (<filename>.str</filename> files), it is
+    important that you bring along the accompanying 
+    <filename>.meta</filename> files.
+  </para> 
+  </formalpara>
+  
+  <para>
+    Another thing to be aware of with concrete syntax, is the
+    presence of reserved meta variables. Typically, 
+    <code>x</code>, <code>xs</code>, <code>e</code>,
+    <code>t</code> and <code>f</code> have a reserved meaning
+    inside the concrete syntax fragments as being meta
+    variables, i.e. variables in the Stratego language, not
+    in the object language.
+  </para>  
+  
+  <para>
+    A final stumbling block is the general problem of 
+    ambiguities in the syntax definition. While SDF allows
+    you to write ambiguous grammars, and <command>sglr</command>
+    accepts these gracefully, you are not allowed to have
+    ambiguous syntax fragments in your Stratego code. In cases
+    where the Stratego compiler (<command>strc</command>) fails
+    due to ambiguous fragments, you can run
+    <command>parse-stratego</command> on your source code to
+    see exactly which parts are ambiguous. The 
+    <command>visamb</command> tool should then be applied to
+    the output from <command>parse-stratego</command> to 
+    visualize the ambiguities.
+  </para>
+    
 </section>
 
 </chapter>
