@@ -759,7 +759,7 @@ Call("foobar", [])</screen>
         \sem{\ \tty{\{x:\ ?p[x]; &lt;s>x\}}\ }
 \]
 
-    That is, after the pattern <code><code>p[x]</code></code> matches, it is
+    That is, after the pattern <code>p[x]</code> matches, it is
     reduced to the subterm bound to <code>x</code> to which <code>s</code> is applied.
     Term projections can be used to \emph{project} a subterm from
     a term pattern. For example, the expression
