@@ -379,42 +379,47 @@ SwapArgs = (Plus(e1,e2) -> Plus(e2,e1))
 
 </section>
 
-
 <section>
   <title>Where</title>
 	
-  <para>
+<para>
 
-    The strategy operator <code>where</code> is similar to the $\test$ operator
-    in that it tries a strategy and returns the original term if it
-    succeeds. However, it keeps the transformation on the
-    environment. This operator can be used to encode a local
-    computation that binds the answer to a variable to be used outside
-    it, without actually transforming the term.
+  Often it is useful to apply a strategy only to test whether some
+  property holds or to compute some auxiliary result. For this
+  purpose, Stratego provides the <code>where(s)</code> combinator,
+  which applies <code>s</code> to the current term, but restores the
+  original term afterwards. Any bindings to variables are kept,
+  however.
 
-
-Syntax: where(s) 
-
-Test and compute variable bindings 
-
-Equivalent to: {x: ?x; s; !x} for some fresh variable x 
-
-   <screen>
+<screen>
 Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> where(?Plus(Int(i),Int(j)); &lt;addS&gt;(i,j) =&gt; k)
 Plus(Int("14"),Int("3"))
-<prompt>stratego></prompt> :binding i i is bound to "14"
-<prompt>stratego></prompt> :binding k k is bound to "17"</screen>
+<prompt>stratego></prompt> :binding i 
+i is bound to "14"
+<prompt>stratego></prompt> :binding k 
+k is bound to "17"
+</screen>
 
+  With the match and build constructs <code>where(s)</code> is in fact
+  just syntactic sugar for <code>{x: ?x; s; !x}</code> with
+  <code>x</code> a fresh variable not occurring in <code>s</code>.
 
-        With the match and build constructs the <code>where</code> operator
-        can actually be considered as syntactic sugar.
+  Thus, the current subject term is <emphasis>saved</emphasis> by
+  binding it to a new variable <code>x</code>, then the strategy
+  <code>s</code> is applied, and finally, the original term is
+  <emphasis>restored</emphasis> by building <code>x</code>.
 
-        Thus, the current subject term is \emph{saved} by binding it
-        to a new variable $x$, then the strategy $s$ is applied, and
-        finally, the original term is \emph{restored} by building $x$.
+</para>
 
-	</para>
+<para>
+
+  We saw the use of <code>where</code> in the definition of
+  <code>if-then-else</code> in <xref
+  linkend="stratego-strategy-combinators"/>.
+
+</para>
+
 </section>
       
 <section>
@@ -430,7 +435,6 @@ Plus(Int("14"),Int("3"))
 
   Equivalent to: (?p1; where(s); !p2) 
 
-   
 <screen>
 Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> (Plus(Int(i),Int(j)) -&gt; Int(k) where &lt;addS&gt;(i,j) =&gt; k)
