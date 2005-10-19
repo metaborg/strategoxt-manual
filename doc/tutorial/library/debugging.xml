@@ -189,6 +189,9 @@
     them in your code.
   </para>
 
+  <formalpara>
+    <title>Strategy and Rule Overloading</title>
+    
   <para>
     The way Stratego invokes strategies and rules may be a bit
     unconventional to some people. We have already seen that 
@@ -202,10 +205,14 @@
     specify the order which the alternatives will be tried.
     If <code>Eval</code> is called, 
   </para>
+  </formalpara>
 
 <screen>
- Eval: If(t, e1, e2) -> ...
- Eval: If(False, e1, e2) -> e2
+ Eval:
+ If(t, e1, e2) -> ...
+ 
+ Eval:
+ If(False, e1, e2) -> e2
 </screen>  
 
   <para>
@@ -213,14 +220,105 @@
     be tried on, you must name each alternative differently,
     and make a new strategy of application betwee
   </para>
-<screen>  
-  - combinator precedence
-  - choice
-  - strategy overloading
-  - variable scoping
-   - explicit scoping
-   - in local rules, map/filter
-</screen>
+
+  <formalpara>
+    <title>Combinator Precedence</title>
+    
+  <para>
+    The precedence of the composition operator (<code>;</code>) is higher
+    than that of the choice operators (<code>&lt;+</code>,<code>+</code>,
+    <code>&gt;+</code>). This means that the expression
+    <code>s1 &lt; s2 ; s3</code> should be read as
+    <code>s1 &lt; (s2 ; s3)</code>, and similarly for non-deterministic
+    choice (<code>+</code>) and right choice (<code>&gt;+</code>). See
+    <xref linkend="choice"/> for a more detailed treatment.
+  </para>    
+  </formalpara>
+  
+  <formalpara>
+    <title>Guarded Choice vs <code>if-then-else</code></title>
+      
+  <para>
+	The difference between <code>if s1 then s2 else s3 end</code> and
+	<code>s1 &lt; s2 + s3</code> (guarded choice) is whether or not
+	the result after <code>s1</code> is passed on to the branches.
+	For <code>if-then-else</code>, <code>s2</code> (or
+	<code>s3</code>) will be applied to the original term, that is,
+	the effects of <code>s1</code> are unrolled before proceeding
+	to the branches. With the guarded choice, this unrolling does
+	not happen. Refer to <xref linkend="stratego-guarded-choice"/>
+	for details.
+  </para>
+  </formalpara>
+  
+  <formalpara>
+    <title>Variable Scoping</title>
+    
+  <para>
+    Stratego enforces a functional style, with scoped variables. Once
+    a variable has been initialized to a value inside a given scope,
+    it cannot be changed. Variables are <emphasis>immutable</emphasis>.
+    Any attempt at changing the value inside this scope will result
+    in a failure. This is generally a Good Thing, but may at times
+    be the cause of subtle coding errors. Consider the code below:
+  </para>
+  </formalpara>
+
+<screen>
+<prompt>stratego></prompt> &lt;map(\ x -> y where !x => y \)> [1]
+[1]
+<prompt>stratego></prompt> &lt;map(\ x -> y where !x => y \)> [1,1,1,1]
+[1,1,1,1]
+<prompt>stratego></prompt> &lt;map(\ x -> y where !x => y \)> [1,2,3,4]
+command failed
+</screen>    
+
+  <para>
+    Apparently, the <code>map</code> expression works for a singleton
+    list, a list with all equal elements, but not lists with four different
+    elements. Why? Let us break this conondrum into pieces and attack
+    it piece by piece.
+  </para>
+  
+  <para>
+    First, the inline rule <code>\ x -> y where !x => y \</code> will
+	be applied to each element in the list, by <code>map</code>. For
+	each element, it will bind <code>x</code> to the element, then
+	build <code>x</code> and assign the result to <code>y</code>. 
+    Thus, for each element in the list, we will assign this element
+    to <code>y</code>. This explains why it works for lists
+    with only one element; we never reassign to <code>y</code>. But why
+    does it work for lists of four equal elements? Because the rule
+    about immutability is not violated: we do not
+    <emphasis>change</emphasis> the value of <code>y</code> by
+    reassigning the same value to it.
+  </para>
+  
+  <para>
+    But why does this happen? We clearly stated that we want a local
+    rule here. The gotcha is that Stratego separates control of scopes
+    from the local rules. A separate scoping construct, 
+    <code>{y: s}</code> must be used to control the scoping of
+    variables. If no scoping has been specified, the scope of a 
+    variable will be that of its enclosing named strategy. Thus, the code
+    above must be written:
+  </para>    
+
+<screen>
+<prompt>stratego></prompt> &lt;map({y: \ x -> y where !x => y \})> [1,2,3,4]
+[1,2,3,4]
+</screen>    
+
+  <para>
+    It may be a bit surprising that this works. We have not said anything
+    about <code>x</code>, so logically, we should not be able to change
+    this variable either. The difference between <code>x</code> and 
+    <code>y</code> is that <code>x</code> is a pattern variable. Its
+    lifetime is restricted to the local rule. At first glance, this may
+    seem a bit arbitrary, but after you code a bit of Stratego, it will
+    quickly feel natural.
+  </para>
+
 </section>
 
 </section>
