@@ -153,12 +153,10 @@ e is bound to Var("a")
 Plus(Var("a"),Int("3"))
 </screen>
 
-  <para>
+<para>
       
-    Patterns may be non-linear. Multiple occurences of the same
-    variable can occur and each occurence matches the same term.
-    
-  </para>
+  Patterns may be non-linear. Multiple occurences of the same variable
+  can occur and each occurence matches the same term.
     
 <screen>
 Plus(Var("a"),Int("3"))
@@ -169,6 +167,43 @@ command failed
 <prompt>stratego></prompt> :binding e
 e is bound to Var("a")
 </screen>
+
+  Non-linear pattern matching is a way to test equality of terms. Indeed
+  the equality predicates from the Stratego Library are defined using 
+  non-linear pattern matching:
+
+<screen>
+equal = ?(x, x)
+equal(|x) = ?x
+</screen>
+   
+  The <code>equal</code> strategy tests whether the current term is a
+  a pair of the same terms.
+
+  The <code>equal(|x)</code> strategy tests whether the current term
+  is equal to the argument term.
+
+<screen>
+<prompt>stratego></prompt> equal = ?(x, x)
+<prompt>stratego></prompt> !("a", "a")
+("a", "a")
+<prompt>stratego></prompt> equal
+("a", "a")
+<prompt>stratego></prompt> !("a", "b")
+("a", "b")
+<prompt>stratego></prompt> equal
+command failed
+
+<prompt>stratego></prompt> equal(|x) = ?x
+<prompt>stratego></prompt> !Foo(Bar())
+Foo(Bar)
+<prompt>stratego></prompt> equal(|Foo(Baz()))
+command failed
+<prompt>stratego></prompt> equal(|Foo(Bar()))
+Foo(Bar)
+</screen>
+
+</para>
 
 </section>
     
@@ -233,78 +268,70 @@ Plus(Int("3"),Var("a"))
 <section>
   <title>Term variable scope</title>
 
-  <para>
+<para>
 
     Once a variable is bound it cannot be rebound to a different
-    term. To use a variable name more than once we introduce variable
-    scopes.  A scope $\{x_1,\ldots,x_n:s\}$ locally undefines the
-    variables $\vec{x}$. That is, the binding to a variable $x_i$
-    outside the scope $\scope{\vec{x}}{s}$ is not visible inside it,
-    nor is the binding to $x_i$ inside the scope visible outside
-    it. For example, in the following definition, the scope of the
-    variables <code>x</code>, <code>y</code>, and <code>z</code> is
-    restricted to the match and build sequence:
+    term. Thus, once we have applied an anonymous rule once, its
+    variables are bound and the next time it is applied it only
+    succeeds for the same term. For example, in the next session the
+    second application of the rule fails, because <code>e2</code> is
+    bound to <code>Int("3")</code> and does not match with
+    <code>Var("b")</code>.
 
 <screen>
-  DAOL = {x, y, z: ?And(Or(x, y), z); !Or(And(x, z), And(y, z))}
-</screen>
-
-    In the strategy expression
-
-<screen>
-   {x, y : ?x; {x : ?F(x, y)}; !G(x, y)}
-</screen>
-        
-    the inner <code>x</code> shadows the outer <code>x</code>.
-
-Syntax: {x1,...,xn:s} 
-
-Restrict scope of variables x1,...,xn to s 
-
-   <screen>
+<prompt>stratego></prompt> !Plus(Var("a"),Int("3"))
 Plus(Var("a"),Int("3"))
-<prompt>stratego></prompt> (Plus(e1,e2) ->; Plus(e2,e1))
+<prompt>stratego></prompt> (Plus(e1,e2) -> Plus(e2,e1))
 Plus(Int("3"),Var("a"))
+
 <prompt>stratego></prompt> :binding e1
 e1 is bound to Var("a")
-<prompt>stratego></prompt> {e3,e4 :(Plus(e3,e4) -&gt; Plus(e4,e3))}
+<prompt>stratego></prompt> :binding e2
+e2 is bound to Int("3")
+
+<prompt>stratego></prompt> !Plus(Var("a"),Var("b"))
+Plus(Var("a"),Var("b"))
+<prompt>stratego></prompt> (Plus(e1,e2) -> Plus(e2,e1))
+command failed
+</screen>
+
+    To use a variable name more than once Stratego provides
+    <emphasis>term variable scope</emphasis>.
+
+    A scope <code>{x1,...,xn : s}</code> locally undefines the
+    variables <code>xi</code>. That is, the binding to a variable
+    <code>xi</code> outside the scope is not visible inside it, nor is
+    the binding to <code>xi</code> inside the scope visible outside
+    it.
+
+    For example, to continue the session above, if we wrap the
+    anonymous swap rule in a scope for its variables, it can be
+    applied multiple times.
+
+<screen>
+<prompt>stratego></prompt> !Plus(Var("a"),Int("3"))
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> {e3,e4 : (Plus(e3,e4) -&gt; Plus(e4,e3))}
 Plus(Var("a"),Int("3"))
 <prompt>stratego></prompt> :binding e3 
 e3 is not bound to a term
+
+<prompt>stratego></prompt> !Plus(Var("a"),Var("b"))
+Plus(Var("a"),Var("b"))
+<prompt>stratego></prompt> {e3,e4 : (Plus(e3,e4) -&gt; Plus(e4,e3))}
+Plus(Var("b"),Var("a"))
 </screen>
 
+  Of course we can name such a scoped rule using a strategy definition, and
+  then invoke it by its name:
 
 <screen>
+<prompt>stratego></prompt> SwapArgs = {e1,e2 : (Plus(e1,e2) -> Plus(e2,e1))}
+<prompt>stratego></prompt> !Plus(Var("a"),Int("3"))
 Plus(Var("a"),Int("3"))
-<prompt>stratego></prompt> SwapArgs = {e1,e2 :(Plus(e1,e2) -> Plus(e2,e1))}
 <prompt>stratego></prompt> SwapArgs 
 Plus(Int("3"),Var("a"))
 </screen>
-
-	</para>
-
-<para>
-
-       Note that this definition supports matching with non-linear
-        patterns. If a variable $x$ occurs more than once in a pattern
-        $p$, then $\match(p)$ succeeds only if all occurrences of $x$
-        in $p$ are bound to the same term.  Moreover, if a variable
-        $x$ in $p$ was already bound by a previous match, it should
-        match to the exact same term as it was bound to before. For
-        example, consider the strategy \tty{contains}, which tests
-        whether $x$ is a subterm of $y$ or not. It is defined as
-<screen>
-  contains = {x, y: ?(x, y); test(!y; oncetd(?x))}
-</screen>
-        The first $\match()$ matches a pair of terms $(t_1,t_2)$,
-        binding $t_1$ to $x$ and $t_2$ to $y$. The $\build()$ replaces
-        the pair by $t_2$. The traversal
-        $\tty{oncetd}$\footnote{\tty{oncetd} will be defined in the
-        next chapter.} searches for an occurrence of $t_1$ in $t_2$ by
-        matching $x$ (which is bound to $t_1$) against subterms of
-        $t_2$. The strategy succeeds if it actually finds a matching
-        subterm. The use of $\test$ ensures that the predicate does
-        not affect the term to which it is applied.
 
 </para>
 
@@ -321,7 +348,7 @@ Plus(Int("3"),Var("a"))
   that is one should write
 
 <screen>
-  Foo = {x : ?Bar(x); !FooBar(x) }
+SwapArgs = {e1,e2 : (Plus(e1,e2) -> Plus(e2,e1))}
 </screen>
 	
   However, since declaring all variables at the top of a definition is
@@ -329,18 +356,24 @@ Plus(Int("3"),Var("a"))
   declaration can be left out. Thus, one can write
 
 <screen>
-  Foo = ?Bar(x); !FooBar(x)
+SwapArgs = (Plus(e1,e2) -> Plus(e2,e1))
 </screen>
 
   instead. The scope is automatically inserted by the compiler.  This
   implies that there is no global scope for term variables.  Of
   course, variables in inner scopes should be declared where
-  necessary. In particular, note that variable scope is \emph{not}
-  inserted for strategy definitions in a let binding, such as
+  necessary. In particular, note that variable scope is
+  <emphasis>not</emphasis> inserted for strategy definitions in a let
+  binding, such as
 
 <screen>
-  let  Foo = ?Bar(x); !FooBar(x)  in ... end
+  let  SwapArgs = (Plus(e1,e2) -> Plus(e2,e1))  in ... end
 </screen>
+
+  While the variables are bound in the enclosing definition, they are
+  not restricted to <code>SwapArgs</code> in this case, since in a let
+  you typically want to use bindings to variables in the enclosing
+  code.
 
 </para>
 
@@ -348,16 +381,16 @@ Plus(Int("3"),Var("a"))
 
 
 <section>
-	<title>Where</title>
+  <title>Where</title>
 	
-	<para>
+  <para>
 
-        The strategy operator $\where$ is similar to the $\test$
-        operator in that it tries a strategy and returns the original
-        term if it succeeds. However, it keeps the transformation on
-        the environment. This operator can be used to encode a local
-        computation that binds the answer to a variable to be used
-        outside it, without actually transforming the term.
+    The strategy operator <code>where</code> is similar to the $\test$ operator
+    in that it tries a strategy and returns the original term if it
+    succeeds. However, it keeps the transformation on the
+    environment. This operator can be used to encode a local
+    computation that binds the answer to a variable to be used outside
+    it, without actually transforming the term.
 
 
 Syntax: where(s) 
