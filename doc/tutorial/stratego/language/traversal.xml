@@ -62,18 +62,107 @@
   In this chapter we explore the ways in which Stratego supports the
   definition of <emphasis>traversal strategies</emphasis>.
 
-  <emphasis>Congruences operators</emphasis> provide data-type
-  specific traversal combinators. <emphasis>Generic traversal
-  operators</emphasis> support data type independent definitions of
-  traversals, which can be reused for any data type.
+  We start with explicitly programmed traversals using recursive rules.
+
+  Next, <emphasis>congruences operators</emphasis> provide more
+  concise specification of data-type specific traversal
+  combinators. 
+
+  Finally, <emphasis>generic traversal operators</emphasis> support
+  data type independent definitions of traversals, which can be reused
+  for any data type.
 
 </para>
+
+<section>
+  <title>Explicit Traversal</title>
+
+<para>
+
+   In <xref linkend="stratego-creating-and-analyzing-terms"/> we saw
+   the following definition of the <code>map</code> strategy, which
+   applies a strategy to each element of a list:
+
+<screen>
+map(s) : [] -> []
+map(s) : [x | xs] -> [&lt;s> x | &lt;map(s)> xs]
+</screen>
+
+   The definition uses explicit recursive calls to the strategy in the
+   right-hand side of the second rule.
+
+   What <code>map</code> does is to <emphasis>traverse</emphasis> the
+   list in order to apply the argument strategy to all elements.
+
+   We can use the same technique to other term structures as well.
+
+</para>
+
+<para>
+
+  Recall the rules for transformation propositional formulae from
+  <xref linkend="stratego-rewriting-strategies"/>:
+
+<screen>
+module prop-rules
+imports libstrategolib prop
+rules
+  DefI : Impl(x, y)       -> Or(Not(x), y)
+  DefE : Eq(x, y)         -> And(Impl(x, y), Impl(y, x))
+  DN   : Not(Not(x))      -> x
+  DMA  : Not(And(x, y))   -> Or(Not(x), Not(y))
+  DMO  : Not(Or(x, y))    -> And(Not(x), Not(y))
+  DAOL : And(Or(x, y), z) -> Or(And(x, z), And(y, z))
+  DAOR : And(z, Or(x, y)) -> Or(And(z, x), And(z, y))
+  DOAL : Or(And(x, y), z) -> And(Or(x, z), Or(y, z))
+  DOAR : Or(z, And(x, y)) -> And(Or(z, x), Or(z, y))
+</screen>
+
+<screen>
+module prop-dnf4
+imports libstrategolib prop-rules
+strategies
+  main = 
+    io-wrap(dnf)
+rules
+  dnf : True       -> True
+  dnf : False      -> False
+  dnf : Atom(x)    -> Atom(x)
+  dnf : Not(x)     -> &lt;dnfred> Not(&lt;dnf>x)
+  dnf : And(x, y)  -> &lt;dnfred> And(&lt;dnf>x, &lt;dnf>y)
+  dnf : Or(x, y)   -> Or(&lt;dnf>x, &lt;dnf>y)
+  dnf : Impl(x, y) -> Or(&lt;dnfred>Not(&lt;dnf>x), &lt;dnf>y)
+  dnf : Eq(x, y)   -> &lt;dnfred>And(&lt;dnf>Impl(x,y), &lt;dnf>Impl(y,x))
+strategies
+  dnfred = 
+    try(DN &lt;+ (DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
+</screen>
+
+<screen>
+</screen>
+
+<screen>
+</screen>
+
+<screen>
+</screen>
+
+<screen>
+</screen>
+
+<screen>
+</screen>
+
+</para>
+
+</section>
+
 
 <section>
   <title>Congruence Operators</title>
 
 <para>
-      
+
   A congruence operator applies a strategy to each direct subterm of a
   specific constructor. A congruence fails if the application of one
   the argument strategies fails or if constructor of the operator and

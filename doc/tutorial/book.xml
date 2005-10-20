@@ -6,8 +6,8 @@
 
   <xi:include href="authors.xml"/>
 
-  <xi:include href="introduction/part.xml"/>  
-  <xi:include href="xt/part.xml"/>  
+  <!--xi:include href="introduction/part.xml"/-->  
+  <!--xi:include href="xt/part.xml"/-->  
   <xi:include href="stratego/part.xml"/>
-  <xi:include href="library/part.xml"/>
+  <!--xi:include href="library/part.xml"/-->
 </book>

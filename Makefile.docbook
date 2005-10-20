@@ -12,8 +12,11 @@ FIX_XSL=$(top_srcdir)/xslt/docbook-ng-fix.xsl
 %.xml-inc2 : %.xml-exp
 	$(XMLLINT) --xinclude --output $@ $< 
 
+#%.docbook : %.xml-inc2
+#	$(JING) $(DOCBOOK_RNG) $<
+#	cp $< $@
+
 %.docbook : %.xml-inc2
-	$(JING) $(DOCBOOK_RNG) $<
 	cp $< $@
 
 # Fox DocBook so that the XSL stylesheets accept it
