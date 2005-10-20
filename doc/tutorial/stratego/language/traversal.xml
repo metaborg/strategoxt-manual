@@ -100,8 +100,9 @@ map(s) : [x | xs] -> [&lt;s> x | &lt;map(s)> xs]
 
 <para>
 
-  Recall the rules for transformation propositional formulae from
-  <xref linkend="stratego-rewriting-strategies"/>:
+  We will explore the definition of traversals using the propositional
+  formulae from <xref linkend="stratego-rewriting-strategies"/>, where
+  we introduced the following rewrite rules:
 
 <screen>
 module prop-rules
@@ -117,6 +118,36 @@ rules
   DOAL : Or(And(x, y), z) -> And(Or(x, z), Or(y, z))
   DOAR : Or(z, And(x, y)) -> And(Or(z, x), Or(z, y))
 </screen>
+
+  In <xref linkend="stratego-rewriting-strategies"/> we saw how a
+  functional style of rewriting could be encoded using extra
+  constructors. In Stratego we can achieve a similar approach by using
+  rule names as, instead of extra constructors. Thus, one way to
+  achieve normalization to disjunctive normal form, is the use of an
+  explicitly programmed traversal, implemented using recursive rules,
+  similarly to the <code>map</code> example above:
+
+<screen>
+module prop-dnf4
+imports libstrategolib prop-rules
+strategies
+  main = 
+    io-wrap(dnf)
+rules
+  dnf : True       ->          True
+  dnf : False      ->          False
+  dnf : Atom(x)    ->          Atom(x)
+  dnf : Not(x)     -> &lt;dnfred> Not (&lt;dnf>x)
+  dnf : And(x, y)  -> &lt;dnfred> And (&lt;dnf>x, &lt;dnf>y)
+  dnf : Or(x, y)   ->          Or  (&lt;dnf>x, &lt;dnf>y)  
+  dnf : Impl(x, y) -> &lt;dnfred> Impl(&lt;dnf>x, &lt;dnf>y)
+  dnf : Eq(x, y)   -> &lt;dnfred> Eq  (&lt;dnf>x, &lt;dnf>y)
+strategies
+  dnfred = 
+    try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
+</screen>
+
+  use DefI and DefE
 
 <screen>
 module prop-dnf4
