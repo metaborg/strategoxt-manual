@@ -935,8 +935,8 @@ IfThen(If(Var("a"),Var("b"),Int("0")), BinOp(PLUS,Var("c"),Int("3")))
     \paragraph{Topdown vs Bottomup}
 
     To see why this transformation should use a <code>topdown</code>
-    rather than a <code>bottomup</code> traversal, consider the following
-    derivation based on the definitions
+    rather than a <code>bottomup</code> traversal, consider the
+    following derivation based on the definitions
     
 <screen>
   desugar = bottomup(try(D))
@@ -950,8 +950,8 @@ IfThen(If(Var("a"),Var("b"),Int("0")), BinOp(PLUS,Var("c"),Int("3")))
     <emphasis>before</emphasis> the node itself is visited, this
     transformation misses the application of the implications
     (<code>I</code>), originating from the application of the
-    <code>DefE</code> rule. When <code>desugar</code> is defined
-    using a <code>topdown</code> traversal
+    <code>DefE</code> rule. When <code>desugar</code> is defined using
+    a <code>topdown</code> traversal
     
 <screen>
   desugar = topdown(try(D))
@@ -1135,171 +1135,6 @@ IfThen(If(Var("a"),Var("b"),Int("0")), BinOp(PLUS,Var("c"),Int("3")))
 
 </section>
 
-
-
-<section>
-
-   <title>Full Term Traversals</title>
-
-   <para>
-      The primitive term traversal operators of Stratego (all, some,
-      one) can be combined with the other control operators in a wide
-      variety of ways to define full term traversals.
-   </para>
-
-<section>
-
-  <title>One-Pass traversals</title>
-
-  <para>
-	The most general class of traversals visits every node of a
-	term and applies a transformation to it. The following
-	operators define traversals that apply a strategy
-	<code>s</code> to all nodes of a term.
-  </para>
-
-<screen>
-  topdown(s)     = s; all(topdown(s))
-  bottomup(s)    = all(bottomup(s)); s
-  downup(s)      = s; all(downup(s)); s
-  downup(s1, s2) = s1; all(downup(s1, s2)); s2
-</screen>
-
-  <para>
-	The strategy <code>topdown(s)</code> first visits a node
-	before it descends to the subterms, <code>bottomup(s)</code>
-	first transforms subterms before applying <code>s</code> to a
-	node, and <code>downup(s)</code> applies the transformation
-	<code>s</code> on the way down and again on the way up. Since
-	<code>s</code> is applied at every subterm, these traversals
-	only succeed if <code>s</code> succeeds everywhere. Therefore,
-	these traversals are typically applied in combination with try
-	or repeat.
-  </para>
-
-  <para>
-	The traversals above go through all constructors. If it is not
-	necessary to traverse the entire tree, the following versions
-	of the traversals can be used.  They are parameterized with a
-	strategy operator <code>stop</code> that will skip the
-	irrelevant subtrees.
-  </para>
-
-<screen>
-  topdownS(s, stop: (a -> a) * b -> b) =
-    rec x(s; (stop(x) &lt;+ all(x)))
-
-  bottomupS(s, stop: (a -> a) * b -> b) =
-    rec x((stop(x) &lt;+ all(x)); s)
-
-  downupS(s, stop: (a -> a) * b -> b) =
-    rec x(s; (stop(x) &lt;+ all(x)); s)
-    
-  downupS(s1, s2, stop: (a -> a) * b -> b) =
-    rec x(s1; (stop(x) &lt;+ all(x)); s2)
-	
-</screen>
-
-  <para>
-	While full traversals visit every node of a tree, partial
-	traversals may stop at some point. An example is the
-	<code>alltd(s)</code> strategy, which stops as soon as it has
-	found a subterm to which <code>s</code> can be succesfully
-	applied.
-  </para>
-
-<screen>
-alltd(s) = s &lt;+ all(alltd(s))
-</screen>
-
-  <para>
-	If <code>s</code> does not succeed, the strategy is applied
-	recursively at all direct subterms. This means that s is applied
-	along a frontier of the subject term.  This strategy is typically
-	used in substitution operations in which subterms are replaced
-	by other terms. For example, the strategy <code>alltd(?Var(x);
-	!e)</code> replaces all occurrences of <code>Var(x)</code> by
-	<code>e</code>.
-  </para>
-
-  <para>
-	Note that <code>alltd(try(s))</code> is not a useful
-	strategy. Since <code>try(s)</code> succeeds at the root of
-	the term, no traversal is done.
-  </para>
-
-</section>
-
-</section>
-
-<section>
-
-  <title>Fixpoint Traversals</title>
-
-  <para>
-    One-pass traversals can be repeated to arrive at fixpoint
-    traversals, which applies a strategy until no more
-    transformations can be applied.
-
-<screen>
-  reduce(s)     = repeat(rec x(one(x) + s))
-  outermost(s)  = repeat(oncetd(s))
-  innermostI(s) = repeat(oncebu(s))
-</screen>
-
-
-<screen>
-  reduce-par(s) = repeat(rec x(some(x) + s))
-</screen>
-
-    A typical example is the <code>innermost(s)</code> strategy,
-    which reduces a subject term to normal form.
-
-<screen>
-  innermost(s) = bottomup(try(s; innermost(s)))
-</screen>
-
-    By instantiating the strategy with different sets of
-    rules, different transformations can be defined:
-
-<screen>
-  dnf = innermost(DAOL + DAOR + DN + DMA + DMO)
-  cnf = innermost(DOAL + DOAR + DN + DMA + DMO)
-</screen>
-
-<screen>
-  innermost-memo(s) = rec x(memo(all(x); (s; x &lt;+ id)))
-</screen>
-
-    <code>innermost-tagged(s)</code> reduces the subject term by
-    applying <code>s</code> to innermost redices first. Terms in
-    normal form are tagged (using attributes) to prevent renormalization.
-
-<screen>
-  innermost-tagged(s) =
-    where(new => tag);
-    rec x(?_{tag} &lt;+ (all(x); (s; x &lt;+ !&lt;id>{tag})));
-    bottomup(?&lt;id>{tag})
-</screen>
-
-  </para>
-
-<screen>
-innermost(s) = bottomup(try(s; innermost(s))) 
-</screen>
-
-  <para>
-Normalization 
-  </para>
-
-<screen>
-dnf = innermost(DAOL &lt;+ DAOR &lt;+ DN &lt;+ DMA &lt;+ DMO)
-
-cnf = innermost(DOAL &lt;+ DOAR &lt;+ DN &lt;+ DMA &lt;+ DMO)
-</screen>
-
-</section>
-
 <section>
    <title>Idioms</title>
 
@@ -1311,9 +1146,6 @@ cnf = innermost(DOAL &lt;+ DOAR &lt;+ DN &lt;+ DMA &lt;+ DMO)
 <screen>
 simplify =
   innermost(R1 &lt;+ ... &lt;+ Rn)
-
-innermost(s) = 
-  bottomup(try(s; innermost(s))) 
 </screen>
 
     Staged transformations (sequence of normal forms) 
@@ -1330,15 +1162,29 @@ simplify =
 
 <screen>
 transformation =
-  alltd( trigger-transformation
-  ; innermost(A1 &lt;+ ... &lt;+ An) )
+  alltd(
+    trigger-transformation
+    ; innermost(A1 &lt;+ ... &lt;+ An) 
+  )
+</screen>
 
-alltd(s) = s &lt;+ all(alltd(s))
+    Mixing generic and specific traversals
+
+<screen>
+transformation =
+  special-case1
+  &lt;+ special-case2
+  &lt;+ special-case3
+  &lt;+ all(transformation)
+</screen>
+
+    Recursive patterns 
+
+<screen>
+disj-nf = ...
 </screen>
 
     Application-specific transformations 
-
-    Recursive patterns 
 
     Dynamic programming 
 
