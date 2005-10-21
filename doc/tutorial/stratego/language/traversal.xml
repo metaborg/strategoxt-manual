@@ -322,8 +322,8 @@ strategies
 
 <para>
 
-  The definition of the traversal rules above is a frequently
-  occurring pattern in the definition of transformation strategies.
+  The definition of the traversal rules above frequently occurs in the
+  definition of transformation strategies.
 
   Congruence operators provide a convenient abbreviation of precisely
   this operation.
@@ -341,18 +341,87 @@ strategies
   fails or if constructor of the operator and that of the term do not
   match.
 
-  For example, the following Stratego Shell session applies the
-  congruence operator <code>Plus</code>.
+</para>
+
+<formalpara>
+  <title>Example</title>
+
+<para>
+
+  For example, consider the following signature of expressions:
 
 <screen>
+module expressions
+signature
+  sorts Exp
+  constructors
+    Int   : String -> Exp
+    Var   : String -> Exp
+    Plus  : Exp * Exp -> Exp
+    Times : Exp * Exp -> Exp
+</screen>
+
+  The following Stratego Shell session applies the congruence
+  operators <code>Plus</code> and <code>Times</code> to a term:
+
+<screen>
+<prompt>stratego></prompt> import expressions
+<prompt>stratego></prompt> !Plus(Int("14"),Int("3"))
 Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> Plus(!Var("a"), id)
 Plus(Var("a"),Int("3"))
-</screen>	
+<prompt>stratego></prompt> Times(id, !Int("42"))
+command failed
+</screen>
+
+  The first application shows how a congruence transforms a specific
+  subterm, that is the strategy applied can be different for each
+  subterm. The second application shows that a congruence only
+  succeeds for terms constructed with the same constructor.
 
 </para>
 
+</formalpara>
+
 <para>
+
+  The <code>import</code> at the start of the session is necessary to
+  declare the constructors used; the definitions of congruences are
+  derived from constructor declarations.
+
+  Forgetting this import would lead to a complaint about an undeclared
+  operator:
+
+<screen>
+<prompt>stratego></prompt> !Plus(Int("14"),Int("3"))
+Plus(Int("14"),Int("3"))
+<prompt>stratego></prompt> Plus(!Var("a"), id)
+operator Plus/(2,0) not defined
+command failed
+</screen>
+
+</para>
+
+<formalpara>
+   <title>Defining Traversals with Congruences</title>
+
+<para>
+
+  Now we return to our <code>dnf</code>/<code>cnf</code> example, to
+  see how congruence operators can help in their implementation.
+
+  Since congruence operators basically define a one-step traversal for
+  a specific constructor, they capture the traversal rules defined above.
+  That is, a traversal rule such as 
+
+<screen>
+proptr(s) : And(x, y) -> And(&lt;s>x, &lt;s>y)
+</screen>
+
+  can be written by the congruence <code>And(s,s)</code>.
+
+  Applying this to the <code>prop-dnf</code> program we can replace
+  the traversal rules by congruences as follows:
       
 <screen>
 module prop-dnf10
@@ -367,9 +436,15 @@ strategies
   cnf = propbu(try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DOAL &lt;+ DOAR); cnf))
 </screen>
 
+  Observe how the five traversal rules have been reduced to five
+  congruences which fit on a single line.
+
 </para>
 
+</formalpara>
 
+<formalpara>
+  <title>Traversing Tuples and Lists</title>
 
 <para>
       
@@ -377,92 +452,116 @@ strategies
   <code>(s1,s2,...,sn)</code>, and lists,
   <code>[s1,s2,...,sn]</code>. A special list congruence is
   <code>[]</code> which 'visits' the empty list.
+
+  As an example, consider again the definition of <code>map(s)</code>
+  using recursive traversal rules:
     
-</para>
-
-<para>
-      
-  A good example of the use of list congruences is the
-  <code>map(s)</code> strategy.
-    
-</para>
-
-    <screen>  
-map(s) = Nil() + Cons(s, map(s))
-
-fetch(s) = Cons(s, id) &lt;+ Cons(id, fetch(s))
-
-filter(s) = Nil + (Cons(s, filter(s)) &lt;+ ?Cons( , &lt;id>); filter(s))
+<screen>
+map(s) : [] -> []
+map(s) : [x | xs] -> [&lt;s> x | &lt;map(s)> xs]
 </screen>
 
-    <screen>  
-map(s) = [] + [s | map(s)])
+  Using list congruences we can define this strategy as:
 
+<screen>
+map(s) = [] &lt;+ [s | map(s)]
+</screen>
+
+  The <code>[]</code> congruence matches an empty list. The <code>[s |
+  map(s)]</code> congruence matches a non-empty list, and applies
+  <code>s</code> to the head of the list and <code>map(s)</code> to
+  the tail. Thus, <code>map(s)</code> applies <code>s</code> to each
+  element of a list:
+
+<screen>
+<prompt>stratego></prompt> import liblib
+<prompt>stratego></prompt> ![1,2,3]
+[1,2,3]
+<prompt>stratego></prompt> map(inc)
+[2,3,4]
+</screen>
+
+  Note that <code>map(s)</code> only succeeds if <code>s</code>
+  succeeds for each element of the list.
+
+  The <code>fetch</code> and <code>filter</code> strategies are
+  variations on <code>map</code> that use the failure of
+  <code>s</code> to list elements.
+
+<screen>
 fetch(s) = [s | id] &lt;+ [id | fetch(s)]
+</screen>
 
+  The <code>fetch</code> strategy traverses a list
+  <emphasis>until</emphasis> it finds a element for which
+  <code>s</code> succeeds and then stops. That element is the only one
+  that is transformed.
+
+<screen>
 filter(s) = [] + ([s | filter(s)] &lt;+ ?[ |&lt;id>]; filter(s))
 </screen>
 
-<para>
-      
-  Example: constant folding
-    
-</para>
+  The <code>filter</code> strategy applies <code>s</code> to each
+  element of a list, but only keeps the elements for which it
+  succeeds.
 
 <screen>
-BinOp(PLUS(), Int("14"), Int("3")) 
-stratego> EvalBinOp 
-Int("17")
-</screen>   
-
-<screen>
-const-fold =
-  BinOp(id, const-fold, const-fold); try(EvalBinOp)
-  &lt;+ Call(id, map(const-fold)); try(EvalCall)
-  &lt;+ If(const-fold, const-fold, const-fold); try(EvalIf)
+<prompt>stratego></prompt> import liblib
+<prompt>stratego></prompt> even = where(&lt;eq>(&lt;mod>(&lt;id>,2),0))
+<prompt>stratego></prompt> ![1,2,3,4,5,6,7,8]
+[1,2,3,4,5,6,7,8]
+<prompt>stratego></prompt> filter(even)
+[2,4,6,8]
 </screen>
 
-<screen>
-BinOp(TIMES(), 
-  If(BinOp(PLUS(),Int("14"),Int("3")),Int("2"),Int("23")),
-  Int("4") 
-)
-stratego> const-fold 
-Int("8")
-</screen>   
+</para>
 
-    
+</formalpara>
+
+<formalpara>
+   <title>Format Checking</title>
+
 <para>
       
-Example: format checking
+  Another application of congruences is in the definition of format
+  checkers. A format checker describes a subset of a term language
+  using a recursive pattern. This can be used to verify input or
+  output of a transformation, and for documentation purposes. Format
+  checkers defined with congruences can check subsets of signatures or
+  regular tree grammars. 
 
-Format checking 
+  For example, the subset of terms of a signature in a some normal form.
 
-Describe a subset of a term language using a recursive pattern 
+</para>
 
-Applications 
+</formalpara>
 
-Verify output (testing) 
+<para>
 
-Verify input (pre-condition) 
-
-Documentation
-
-Describe format of terms in normal form 
-    </para>
-
+  As an example, consider checking the output of the <code>dnf</code>
+  and <code>cnf</code> transformations.
     
 <screen>
-conj(s) = rec x(And(x, x) &lt;+ s)
-disj(s) = rec x(Or(x, x) &lt;+ s)
+conj(s) = And(conj(s), conj(s)) &lt;+ s
+disj(s) = Or (disj(s), disj(s)) &lt;+ s
 
 // Conjunctive normal form
-conj-nf = conj(disj(Not(Var(x)) + Var(x)))
+conj-nf = conj(disj(Not(Atom(x)) &lt;+ Atom(x)))
 
 // Disjunctive normal form
-disj-nf = disj(conj(Not(Var(x)) + Var(x)))
-</screen>   
- 
+disj-nf = disj(conj(Not(Atom(x)) &lt;+ Atom(x)))
+</screen>
+
+  The strategies <code>conj(s)</code> and <code>disj(s)</code> check
+  that the current is a conjunct or a disjunct, respectively, with
+  terms satisfying <code>s</code> at the leaves.
+
+  The strategies <code>conj-nf</code> and <code>disj-nf</code> check
+  that the current term is in conjunctive or disjunctive normal form,
+  respectively.
+
+</para>
+
 </section>
 
 <section>

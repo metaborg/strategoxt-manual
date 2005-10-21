@@ -682,6 +682,11 @@ map(s) : [x | xs] -> [&lt;s> x | &lt;map(s)> xs]
 "foobar"
 <prompt>stratego></prompt> !Call(&lt;id&gt;, [])
 Call("foobar", [])
+<prompt>stratego></prompt> mod2 = &lt;mod>(&lt;id>,2)
+<prompt>stratego></prompt> !6
+6
+<prompt>stratego></prompt> mod2
+0
 </screen>
 
 </para>
