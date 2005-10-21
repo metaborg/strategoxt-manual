@@ -719,7 +719,8 @@ strategies
   necessary. Fortunately, Stratego allows you to mix generic traversal
   operators, congruences, your own traversal and regular rules, the
   way you see fit. In general, however, it is a good idea to try to
-  get a clean separation between pure rewrite rules and a strategy.
+  get a clean separation between pure rewrite rules and a strategy
+  that applies them.
 
 </para>
 
@@ -729,36 +730,80 @@ strategies
   <title>Visiting One Subterm</title>
 
 <para>
-	
+
   The <code>one(s)</code> strategy transforms a constructor
   application by applying the parameter strategy <code>s</code> to
   exactly one direct subterm. An application of <code>one(s)</code>
   fails if the application to all of the subterms fails.
+ 
+  The following Stratego Shell session illustrates the behaviour of
+  the combinator:
   
-</para>
-	 
 <screen>
+<prompt>stratego></prompt> !Plus(Int("14"),Int("3"))
 Plus(Int("14"),Int("3"))
 <prompt>stratego></prompt> one(!Var("a"))
-Plus(Var("a"),Var("a"))
+Plus(Var("a"),Int("3"))
+<prompt>stratego></prompt> one(\ Int(x) -> Int(&lt;addS>(x,"1")) \ )
+Plus(Var("a"),Int("4"))
+<prompt>stratego></prompt> one(?Plus(_,_))
+command failed
 </screen>
 
-  <para>
-	We can use the <code>one</code> traversal primitive to define
-	a strategy <code>contains</code>, which checks if the current
-	term contains a given term.
-   </para>
+</para>
+
+<para>
+
+  A frequently used application of <code>one</code> is the
+  <code>oncetd(s)</code> traversal, which performs a left to right
+  depth first search/transformation that stops as soon as
+  <code>s</code> has been successfuly applied.
 
 <screen>
-oncetd(s)  = s &lt;+ one(oncetd(s)) 
-oncebu(s)  = one(oncebu(s)) &lt;+ s 
-spinetd(s) = s; try(one(spinetd(s))) 
-spinebu(s) = try(one(spinebu(s))); s
+oncetd(s) = s &lt;+ one(oncetd(s))
 </screen>
+
+  Thus, <code>s</code> is first applied to the root of the subject
+  term. If that fails, its direct subterms are searched one by one,
+  with a recursive call to <code>oncetd(s)</code>.
+
+</para>
+
+<para>
+
+  An application of <code>oncetd</code> is the
+  <code>contains(|t)</code> strategy, which checks whether the subject
+  term contains a subterm that is equal to <code>t</code>.
     
 <screen>
 contains(|t) = oncetd(?t)
 </screen>
+
+  Through the depth first search of <code>oncetd</code>, either an
+  occurrence of <code>t</code> is found, or all subterms are verified
+  to be unequal to <code>t</code>.
+
+</para>
+
+<para>
+
+  Here are some other one-pass traversals using the <code>one</code>
+  combinator:
+
+<screen>
+oncebu(s)  = one(oncebu(s)) &lt;+ s
+spinetd(s) = s; try(one(spinetd(s)))
+spinebu(s) = try(one(spinebu(s))); s
+</screen>
+
+  Exercise: figure out what these strategies do.
+
+</para>
+
+<para>
+
+  Here are some fixe-point traversals, i.e., traversals that apply
+  their argument transformation exhaustively to the subject term.
 
 <screen>
 reduce(s)     = repeat(rec x(one(x) + s)) 
@@ -766,12 +811,17 @@ outermost(s)  = repeat(oncetd(s))
 innermostI(s) = repeat(oncebu(s))
 </screen>
 
+  The difference is the subterm selection strategy. Exercise: create
+  rewrite rules and terms that demonstrate the differences between
+  these strategies.
+
+</para>
+
 </section>
 
 <section>
   <title>Visiting Some Subterms</title>
 
-  
 <para>
 	
   The <code>some(s)</code> strategy transforms a constructor
@@ -779,17 +829,25 @@ innermostI(s) = repeat(oncebu(s))
   many direct subterms as possible and at least one. An application of
   <code>some(s)</code> fails if the application to all of the subterms
   fails.
-  
+
 </para>
+
+<para>
+
+  Some one-pass traversals based on <code>some</code>:
 
 <screen>
 sometd(s) = s &lt;+ some(sometd(s)) 
 somebu(s) = some(somebu(s)) &lt;+ s
 </screen>
 
+  A fixed-point traversal with <code>some</code>:
+
 <screen>
 reduce-par(s) = repeat(rec x(some(x) + s))
 </screen>
+
+</para>
 
 </section>
 
@@ -822,10 +880,7 @@ alltd(s)    = s &lt;+ all(alltd(s))
 const-fold = bottomup(try(EvalBinOp &lt;+ EvalCall &lt;+ EvalIf))
 </screen>
 
-  
 <para>
-
-  \paragraph{Topdown}
 
   The strategy <code>topdown(s)</code> first visits a node before it
   descends to the subterms, <code>bottomup(s)</code> first transforms
