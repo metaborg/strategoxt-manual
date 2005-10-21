@@ -30,8 +30,9 @@
       modules. SDF modules are stored in files with the extension
       <filename>.sdf</filename>. <xref linkend="Fig-Modules"/> shows
       two SDF modules for a small language of expressions. The module
-      Lexical defines the identifiers and integer literals of the
-      language. This module is imported by the module Expression.
+      <filename>Lexical</filename> defines the identifiers and integer
+      literals of the language. This module is imported by the module
+      <filename>Expression</filename>.
     </para>
 
     <figure xml:id="Fig-Modules">
@@ -102,9 +103,9 @@
     <para>
       From the <code>.def</code> definition file (as produced by
       <code>pack-sdf</code>), the <emphasis>parser
-      generator</emphasis> <xref linkend="ref-sdf2table"/> will
-      construct a parse table. This parse table can later on be handed
-      off to the actual parser.
+      generator</emphasis> <xref linkend="ref-sdf2table"/> constructs
+      a parse table. This parse table can later on be handed off to
+      the actual parser.
     </para>
 
     <screen><prompt>$</prompt> sdf2table -i Expression.def -o Expression.tbl -m Expression</screen>
@@ -171,7 +172,7 @@ Times(Plus(Var("a"),Var("n")),Int("1"))
       <title>Heuristic Filters</title>
       <para>
 	As we will discuss later, SGLR uses disambiguation filters to
-	select the desired derivations if their are multiple
+	select the desired derivations if there are multiple
 	possibilities. Most of these filters are based on
 	specifications in the original syntax definition, such a
 	associativity, priorities, follow restrictions, reject, avoid
@@ -233,16 +234,16 @@ parsetree( ... )
     
     <para>
       Note that we passed the option <code>-2</code> to sglr. This
-      specified the variant, AsFix2, of the AsFix parse tree format
-      that should be used. The Stratego/XT tools use this variant at
-      the moment. All variants of the AsFix format are complete and
+      option specifies the variant of the AsFix parse tree format that
+      should be used: AsFix2. The Stratego/XT tools use this variant
+      at the moment. All variants of the AsFix format are complete and
       faithful representation of the derivation constructed by the
       parser. It includes all details of the input file, including
       whitespace, comments, and is self documenting as it uses the
       complete productions of the syntax definition to encode node
-      labels. The <code>AsFix2</code> variant preserves all the
-      structure of the derivation. In the other variant, the structure
-      of the lexical parts of a parse tree are not preserved.
+      labels. The AsFix2 variant preserves all the structure of the
+      derivation. In the other variant, the structure of the lexical
+      parts of a parse tree are not preserved.
     </para>
 
     <para>
