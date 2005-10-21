@@ -26,7 +26,7 @@
 
     <para>
       In SDF, you can split a syntax definition into multiple
-      modules. So, a complete syntax definition consists a set of
+      modules. So, a complete syntax definition consists of a set
       modules. SDF modules are stored in files with the extension
       <filename>.sdf</filename>. <xref linkend="Fig-Modules"/> shows
       two SDF modules for a small language of expressions. The module

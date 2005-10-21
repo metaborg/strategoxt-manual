@@ -55,8 +55,7 @@
       <code>IntConst</code>, a string such as <code>(a+n)*1</code> can
       be recognized as an expression by reducing it to
       <code>Exp</code>, as shown by the reduction sequence in the
-      <link linkend="Fig-Expressions-NoCons.sdf">right-hand side of
-      the figure</link>.
+      right-hand side of <xref linkend="Fig-Expressions-NoCons.sdf"/>.
     </para>
     
     <figure xml:id="Fig-Expressions-NoCons.sdf">
@@ -163,7 +162,7 @@
       does not lead to a conflict since sort names and constructors
       are derived from separate name spaces. Some productions do not
       have a constructor annotation, which means that these
-      productions do not create a node in a the abstract syntax tree.
+      productions do not create a node in the abstract syntax tree.
     </para>
     
     <figure xml:id="Fig-test1-acub">
