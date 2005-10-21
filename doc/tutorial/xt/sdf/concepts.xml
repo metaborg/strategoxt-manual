@@ -38,10 +38,10 @@
       start non-terminal, by repeatedly applying grammar productions
       backwards, i.e. reducing a substring matching the right-hand
       side of a production to the non-terminal on the left-hand
-      side. In SDF, productions are specified as
-      A<subscript>1</subscript> ... A<subscript>n</subscript> ->
-      A<subscript>0</subscript>, to emphasize the recognition aspect
-      of grammars.
+      side. To emphasize the recognition aspect of grammars,
+      productions are specified as A<subscript>1</subscript>
+      ... A<subscript>n</subscript> -> A<subscript>0</subscript> in
+      SDF.
     </para>
 
     <para>

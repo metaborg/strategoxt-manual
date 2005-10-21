@@ -32,12 +32,12 @@
 
   <para>
     Actually, the component-based approach of XT allows you to use any
-    technique for parsing a source program to an ATerm. So, you don't
-    necessarily have to use the parsing techniques we present in this
+    tool for parsing a source program to an ATerm. So, you don't
+    necessarily have to use the parsing tools we present in this
     chapter. Instead, it might sometimes be a good idea to create an
     ATerm backend for a parser that you already have developed (by
-    hand or using a different parser generator), or reuse an existing
-    front-end that is provided by a third-party. However, the
+    hand or using a different parser generator), or reuse an entire,
+    existing front-end that is provided by a third-party. However, the
     techniques we present in this chapter are extremely expressive,
     flexible, and easy to use, so for developing a new parser it would
     be a very good idea to use SDF and SGLR.
