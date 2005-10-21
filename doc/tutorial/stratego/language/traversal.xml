@@ -131,8 +131,7 @@ rules
 module prop-dnf4
 imports libstrategolib prop-rules
 strategies
-  main = 
-    io-wrap(dnf)
+  main = io-wrap(dnf)
 rules
   dnf : True       ->          True
   dnf : False      ->          False
@@ -143,63 +142,207 @@ rules
   dnf : Impl(x, y) -> &lt;dnfred> Impl(&lt;dnf>x, &lt;dnf>y)
   dnf : Eq(x, y)   -> &lt;dnfred> Eq  (&lt;dnf>x, &lt;dnf>y)
 strategies
-  dnfred = 
-    try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
+  dnfred = try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
 </screen>
 
-  use DefI and DefE
+  The <code>dnf</code> rules recursively apply themselves to the
+  direct subterms and then apply <code>dnfred</code> to actually apply
+  the rewrite rules.
+
+</para>
+
+<para>
+
+  We can reduce this program by abstracting over the base cases. Since
+  there is no traversal into <code>True</code>, <code>False</code>,
+  and <code>Atom</code>s, these rules can be be left out. 
 
 <screen>
-module prop-dnf4
+module prop-dnf5
 imports libstrategolib prop-rules
 strategies
-  main = 
-    io-wrap(dnf)
+  main = io-wrap(dnf)
 rules
-  dnf : True       -> True
-  dnf : False      -> False
-  dnf : Atom(x)    -> Atom(x)
-  dnf : Not(x)     -> &lt;dnfred> Not(&lt;dnf>x)
-  dnf : And(x, y)  -> &lt;dnfred> And(&lt;dnf>x, &lt;dnf>y)
-  dnf : Or(x, y)   -> Or(&lt;dnf>x, &lt;dnf>y)
-  dnf : Impl(x, y) -> Or(&lt;dnfred>Not(&lt;dnf>x), &lt;dnf>y)
-  dnf : Eq(x, y)   -> &lt;dnfred>And(&lt;dnf>Impl(x,y), &lt;dnf>Impl(y,x))
+  dnft : Not(x)     -> &lt;dnfred> Not (&lt;dnf>x)
+  dnft : And(x, y)  -> &lt;dnfred> And (&lt;dnf>x, &lt;dnf>y)
+  dnft : Or(x, y)   ->          Or  (&lt;dnf>x, &lt;dnf>y)  
+  dnft : Impl(x, y) -> &lt;dnfred> Impl(&lt;dnf>x, &lt;dnf>y)
+  dnft : Eq(x, y)   -> &lt;dnfred> Eq  (&lt;dnf>x, &lt;dnf>y)
 strategies
-  dnfred = 
-    try(DN &lt;+ (DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
+  dnf    = try(dnft)
+  dnfred = try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
 </screen>
 
-<screen>
-</screen>
+  The <code>dnf</code> strategy is now defined in terms of the
+  <code>dnft</code> rules, which implement traversal over the
+  constructors. By using <code>try(dnft)</code>, terms for which no
+  traversal rule has been specified are not transformed.
+
+</para>
+
+<para>
+
+  We can further simplify the definition by observing that the
+  application of <code>dnfred</code> does not necessarily have to take
+  place in the right-hand side of the traversal rules.
 
 <screen>
+module prop-dnf6
+imports libstrategolib prop-rules
+strategies
+  main = io-wrap(dnf)
+rules
+  dnft : Not(x)     -> Not (&lt;dnf>x)
+  dnft : And(x, y)  -> And (&lt;dnf>x, &lt;dnf>y)
+  dnft : Or(x, y)   -> Or  (&lt;dnf>x, &lt;dnf>y)
+  dnft : Impl(x, y) -> Impl(&lt;dnf>x, &lt;dnf>y)
+  dnft : Eq(x, y)   -> Eq  (&lt;dnf>x, &lt;dnf>y)
+strategies
+  dnf    = try(dnft); dnfred
+  dnfred = try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
 </screen>
 
-<screen>
-</screen>
+  In this program <code>dnf</code> first calls <code>dnft</code> to
+  transform the subterms of the current term, and then calls
+  <code>dnfred</code> to apply the transformation rules (and possibly
+  a recursive invocation of <code>dnf</code>).
+
+</para>
+
+<para>
+
+  The program above has two problems. First, the traversal behaviour
+  is mostly uniform, so we would like to specify that more
+  concisely. We will address that concern below. Second, the traversal
+  is not reusable, for example, to define a conjunctive normal form
+  transformation. This last concern can be addressed by factoring out
+  the recursive call to <code>dnf</code> and making it a parameter of
+  the traversal rules.
 
 <screen>
+module prop-dnf7
+imports libstrategolib prop-rules
+strategies
+  main = io-wrap(dnf)
+rules
+  proptr(s) : Not(x)     -> Not (&lt;s>x)
+  proptr(s) : And(x, y)  -> And (&lt;s>x, &lt;s>y)
+  proptr(s) : Or(x, y)   -> Or  (&lt;s>x, &lt;s>y)  
+  proptr(s) : Impl(x, y) -> Impl(&lt;s>x, &lt;s>y)
+  proptr(s) : Eq(x, y)   -> Eq  (&lt;s>x, &lt;s>y)
+strategies
+  dnf    = try(proptr(dnf)); dnfred
+  dnfred = try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
+  cnf    = try(proptr(cnf)); cnfred
+  cnfred = try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DOAL &lt;+ DOAR); cnf)
 </screen>
 
+  Now the traversal rules are reusable and used in two different
+  transformations, by instantiation with a call to the particular
+  strategy in which they are used (<code>dnf</code> or
+  <code>cnf</code>).
+
+</para>
+
+<para>
+
+  But we can do better, and also make the
+  <emphasis>composition</emphasis> of this strategy reusable.
+
 <screen>
+module prop-dnf8
+imports libstrategolib prop-rules
+strategies
+  main = io-wrap(dnf)
+rules
+  proptr(s) : Not(x)     -> Not (&lt;s>x)
+  proptr(s) : And(x, y)  -> And (&lt;s>x, &lt;s>y)
+  proptr(s) : Or(x, y)   -> Or  (&lt;s>x, &lt;s>y)
+  proptr(s) : Impl(x, y) -> Impl(&lt;s>x, &lt;s>y)
+  proptr(s) : Eq(x, y)   -> Eq  (&lt;s>x, &lt;s>y)
+strategies
+  propbu(s) = proptr(proptr(s)); s
+strategies
+  dnf    = propbu(dnfred)
+  dnfred = try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf)
+  cnf    = propbu(cnfred)
+  cnfred = try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DOAL &lt;+ DOAR); cnf)
 </screen>
+
+  That is, the <code>propbu(s)</code> strategy defines a complete
+  bottom-up traversal over propostion terms, applying the strategy
+  <code>s</code> to a term after transforming its subterms. The
+  strategy is completely independent of the <code>dnf</code> and
+  <code>cnf</code> transformations, which instantiate the strategy
+  using the <code>dnfred</code> and <code>cnfred</code> strategies.
+
+</para>
+
+<para>
+
+  Come to think of it, <code>dnfred</code> and <code>cnfred</code> are
+  somewhat useless now and can be inlined directly in the
+  instantiation of the <code>propbu(s)</code> strategy:
+
+<screen>
+module prop-dnf9
+imports libstrategolib prop-rules
+strategies
+  main = io-wrap(dnf)
+rules
+  proptr(s) : Not(x)     -> Not (&lt;s>x)
+  proptr(s) : And(x, y)  -> And (&lt;s>x, &lt;s>y)
+  proptr(s) : Or(x, y)   -> Or  (&lt;s>x, &lt;s>y)
+  proptr(s) : Impl(x, y) -> Impl(&lt;s>x, &lt;s>y)
+  proptr(s) : Eq(x, y)   -> Eq  (&lt;s>x, &lt;s>y)
+strategies
+  propbu(s) = proptr(proptr(s)); s
+strategies
+  dnf = propbu(try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf))
+  cnf = propbu(try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DOAL &lt;+ DOAR); cnf))
+</screen>
+
+  Now we have defined a <emphasis>transformation
+  independent</emphasis> traversal strategy that is
+  <emphasis>specific</emphasis> for proposition terms.
+
+</para>
+
+<para>
+
+  Next we consider cheaper ways for defining the traversal rules, and
+  then ways to get completely rid of them.
 
 </para>
 
 </section>
-
 
 <section>
   <title>Congruence Operators</title>
 
 <para>
 
+  The definition of the traversal rules above is a frequently
+  occurring pattern in the definition of transformation strategies.
+
+  Congruence operators provide a convenient abbreviation of precisely
+  this operation.
+
   A congruence operator applies a strategy to each direct subterm of a
-  specific constructor. A congruence fails if the application of one
-  the argument strategies fails or if constructor of the operator and
-  that of the term do not match.
+  specific constructor. 
+
+  For each n-ary constructor c declared in a signature, there is a
+  corresponding <emphasis>congruence operator</emphasis> <code>c(s1 ,
+  ..., sn)</code>, which applies to terms of the form <code>c(t1 ,
+  ..., tn)</code> by applying the argument strategies to the
+  corresponding argument terms.
     
-</para>
+  A congruence fails if the application of one the argument strategies
+  fails or if constructor of the operator and that of the term do not
+  match.
+
+  For example, the following Stratego Shell session applies the
+  congruence operator <code>Plus</code>.
 
 <screen>
 Plus(Int("14"),Int("3"))
@@ -207,23 +350,26 @@ Plus(Int("14"),Int("3"))
 Plus(Var("a"),Int("3"))
 </screen>	
 
-<para>
-      
-  For each n-ary constructor c declared in a signature, there is a
-  corresponding <emphasis>congruence operator</emphasis> <code>c(s1 ,
-  ..., sn )</code>, which applies to terms of the form <code>c(t1 ,
-  ..., tn )</code> by applying the argument strategies to the
-  corresponding argument terms.
-    
 </para>
 
 <para>
       
-  The congruence operator is used e.g. in conjunction with the
-  recursive traversal operator to define specific data structure
-  traversals.
-    
+<screen>
+module prop-dnf10
+imports libstrategolib prop-rules
+strategies
+  main = io-wrap(dnf)
+strategies
+  proptr(s) = Not(s) &lt;+ And(s, s) &lt;+ Or(s, s) &lt;+ Impl(s, s) &lt;+ Eq(s, s)
+  propbu(s) = proptr(proptr(s)); s
+strategies
+  dnf = propbu(try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DAOL &lt;+ DAOR); dnf))
+  cnf = propbu(try(DN &lt;+ (DefI &lt;+ DefE &lt;+ DMA &lt;+ DMO &lt;+ DOAL &lt;+ DOAR); cnf))
+</screen>
+
 </para>
+
+
 
 <para>
       
