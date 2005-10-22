@@ -3,10 +3,10 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Idioms and Library Strategies for Traversal</title>  
+  <title>Idioms and Library Strategies for Traversal (*)</title>  
 
 <section>
-  <title>Full Traversals</title>
+  <title>Full Traversals (*)</title>
 
 <para>
 
@@ -138,7 +138,7 @@ bottomup-para(s) = &lt;s>(&lt;id>, &lt;all(bottomup-para(s))>)
 </section>
 
 <section>
-  <title>Cascading Transformations</title>
+  <title>Cascading Transformations (*)</title>
 
 <para>
 
@@ -178,7 +178,7 @@ simplify =
 </section>
 
 <section>
-  <title>Mixing Generic and Specific Traversals</title>
+  <title>Mixing Generic and Specific Traversals (*)</title>
 
 <para>
 
@@ -224,10 +224,8 @@ transformation =
 
 </section>
 
-
-
 <section>
-  <title>Partial Traversals</title>
+  <title>Partial Traversals (*)</title>
 
 <para>
 
