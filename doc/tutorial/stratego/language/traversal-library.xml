@@ -1,0 +1,411 @@
+<section
+  xml:id="stratego-traversal-library"
+  xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Idioms and Library Strategies for Traversal</title>  
+
+<section>
+  <title>Full Traversals</title>
+
+<para>
+
+  Using the <code>all</code> traversal primitive we can define generic
+  traversal strategies like <code>topdown</code> and
+  <code>bottomup</code>.
+
+  The most general class of traversals visits every node of a term and
+  applies a transformation to it. The following operators define
+  traversals that apply a strategy <code>s</code> to all nodes of a
+  term.
+  
+<screen>
+bottomup(s) = all(bottomup(s)); s
+topdown(s)  = s; all(topdown(s))
+downup(s)   = s; all(downup(s)); s
+</screen>
+
+<screen>
+const-fold = bottomup(try(EvalBinOp &lt;+ EvalCall &lt;+ EvalIf))
+</screen>
+
+</para>
+
+<para>
+
+  The strategy <code>topdown(s)</code> first visits a node before it
+  descends to the subterms, <code>bottomup(s)</code> first transforms
+  subterms before applying <code>s</code> to a node, and
+  <code>downup(s)</code> applies the transformation <code>s</code> on
+  the way down and again on the way up. Since <code>s</code> is
+  applied at every subterm, these traversals only succeed if
+  <code>s</code> succeeds everywhere. Therefore, these traversals are
+  typically applied in combination with <code>try</code> or repeat.
+
+</para>
+
+<para>
+
+  For example, a constant folding transformation for proposition
+  formulae can be defined as a bottom-up traversal that repeatedly
+  applies one of the truth-rules <code>T</code>.
+    
+<screen>
+eval = bottomup(repeat(T))
+</screen>
+    
+</para>
+
+<para>
+    
+  Similarly, a desugaring transformation for propositions, which
+  defines implication and equivalence in terms of other connectives
+  can be defined as a <code>topdown</code> traversal which tries to
+  apply one of the rules <code>DefI</code> or <code>DefE</code> at
+  every subterm.
+
+</para>
+
+<screen>
+DefAnd : And(e1, e2) -> If(e1, e2, Int("0"))
+
+DefPlus : Plus(e1, e2) -> BinOp(PLUS(), e1, e2)
+
+desugar = topdown(try(DefAnd &lt;+ DefPlus))
+</screen>
+
+<screen>
+IfThen(And(Var("a"),Var("b")), Plus(Var("c"),Int("3")))
+<prompt>stratego></prompt> desugar 
+IfThen(If(Var("a"),Var("b"),Int("0")), BinOp(PLUS,Var("c"),Int("3"))
+</screen>
+
+<para>
+
+    \paragraph{Topdown vs Bottomup}
+
+<screen>
+desugar = bottomup(try(DefI &lt;+ DefE))
+
+DefI : I(x, y) -> O(N(x), y)
+
+DefE : E(x, y) -> A(I(x, y), I(y, x))
+</screen>
+
+  Since the subterms of a node are traversed
+  <emphasis>before</emphasis> the node itself is visited, this
+  transformation misses the application of the implications
+  (<code>I</code>), originating from the application of the
+  <code>DefE</code> rule. When <code>desugar</code> is defined using a
+  <code>topdown</code> traversal
+    
+<screen>
+desugar = topdown(try(DefI &lt;+ DefE))
+</screen>
+
+  this problem does not arise.
+  
+</para>
+
+<para>
+
+  \paragraph{Repeated Application}
+
+    In case one rule produces a term to which another desugaring
+    rule can be used, the desugaring strategy should repeat
+    the application of rules to each subterm.
+    
+<screen>
+impl-nf = topdown(repeat(DefN + DefA2 + DefO1 + DefE))
+</screen>
+
+  Term traversals can be categorized into classes according to how
+  much of the term they traverse and to which parts of the term they
+  modify.
+
+\subsection{Paramorphism}
+
+  A variation on bottomup is a traversal that also provides the
+  original term as well as the term in which the direct subterms have
+  been transformed. (also known as a paramorphism?)
+
+<screen>
+bottomup-para(s) = &lt;s>(&lt;id>, &lt;all(bottomup-para(s))>)
+</screen>
+
+</para>
+
+</section>
+
+<section>
+  <title>Cascading Transformations</title>
+
+<para>
+
+     Cascading transformations (rewriting, exhaustive application) 
+
+<screen>
+simplify =
+  innermost(R1 &lt;+ ... &lt;+ Rn)
+</screen>
+
+<screen>
+innermost(s) = bottomup(try(s; innermost(s)))
+</screen>
+
+    Staged transformations (sequence of normal forms) 
+
+<screen>
+simplify =
+  innermost(A1 &lt;+ ... &lt;+ Ak)
+  ; innermost(B1 &lt;+ ... &lt;+ Bl)
+  ; ...
+  ; innermost(C1 &lt;+ ... &lt;+ Cm)
+</screen>
+
+    can mix different types of transformations
+
+<screen>
+simplify =
+  topdown(try(A1 &lt;+ ... &lt;+ Ak))
+  ; innermost(B1 &lt;+ ... &lt;+ Bl)
+  ; ...
+  ; bottomup(repeat(C1 &lt;+ ... &lt;+ Cm))
+</screen>
+
+</para>
+
+</section>
+
+<section>
+  <title>Mixing Generic and Specific Traversals</title>
+
+<para>
+
+    Mixing generic and specific traversals
+
+<screen>
+transformation =
+  special-case1
+  &lt;+ special-case2
+  &lt;+ special-case3
+  &lt;+ all(transformation)
+</screen>
+
+
+  The traversals above go through all constructors. If it is not
+  necessary to traverse the entire tree, the following versions of the
+  traversals can be used. They are parameterized with a strategy
+  operator <code>stop</code> that
+
+<screen>
+  topdownS(s, stop: (a -> a) * b -> b) =
+    rec x(s; (stop(x) &lt;+ all(x)))
+
+  bottomupS(s, stop: (a -> a) * b -> b) =
+    rec x((stop(x) &lt;+ all(x)); s)
+
+  downupS(s, stop: (a -> a) * b -> b) =
+    rec x(s; (stop(x) &lt;+ all(x)); s)
+
+  downupS(s1, s2, stop: (a -> a) * b -> b) =
+    rec x(s1; (stop(x) &lt;+ all(x)); s2)
+</screen>
+
+    The strategy <code>don't-stop</code> is a unit for these traversals,
+    i.e., <code>topdown(s)</code> is equivalent
+    to <code>topdown(s,don't-stop)</code>.
+
+<screen>
+  don't-stop(s) = fail
+</screen>
+
+</para>
+
+</section>
+
+
+
+<section>
+  <title>Partial Traversals</title>
+
+<para>
+
+\subsection{Once}
+
+    Apply s at one position. One s application has to succeed.
+
+<screen>
+  oncetd(s) = rec x(s &lt;+ one(x))
+  oncebu(s) = rec x(one(x) &lt;+ s)
+</screen>
+
+<screen>
+  oncetd-skip(s, skip: (a -> a) * b -> b) =
+    rec x(s &lt;+ skip(x) &lt;+ one(x))
+</screen>
+
+\subsection{At Least Once}
+
+    Apply s at some positions, but at least one. As soon as one is
+    found, searching is stopped, i.e., in the top-down case
+    searching in subtrees is stopped, in bottom-up case, searching
+    in upper spine is stopped.
+
+    One-pass traversals
+    
+<screen>
+  sometd(s) = rec x(s &lt;+ some(x))
+  somebu(s) = rec x(some(x) &lt;+ s)
+</screen>
+
+\subsection{Frontier}
+
+    While full traversals visit every node of a tree,
+    partial traversals may stop at some point. An
+    example is the <code>alltd(s)</code> strategy, which
+    stops as soon as it has found a subterm to which
+    <code>s</code> can be succesfully applied.
+
+<screen>
+  alltd(s) = s &lt;+ all(alltd(s))
+</screen>
+
+    If <code>s</code> does not succeed, the strategy is applied
+    recursively at all direct subterms. This means that <code>s</code>
+    is applied along a frontier of the subject term. This strategy
+    is typically used in substitution operations in which subterms
+    are replaced by other terms. For example, the strategy
+    <code>alltd(?Var(x); !e)</code> replaces all occurrences of
+    <code>Var(x)</code> by <code>e</code>.
+
+    Note that <code>alltd(try(s))</code> is not a useful strategy.
+    Since <code>try(s)</code> succeeds at the root of the term,
+    no travesal is done.
+
+   Local  transformations 
+
+<screen>
+transformation =
+  alltd(
+    trigger-transformation
+    ; innermost(A1 &lt;+ ... &lt;+ An) 
+  )
+</screen>
+
+</para>
+
+<para>
+
+  relatives of <code>alltd</code>
+
+<screen>
+alldownup2(s1, s2) = rec x((s1 &lt;+ all(x)); s2)
+alltd-fold(s1, s2) = rec x(s1 &lt;+ all(x); s2)
+</screen>
+
+\subsection{Leaves}
+
+<screen>
+  leaves(s, is-leaf, skip: a * (a -> a) -> a) =
+    rec x((is-leaf; s) &lt;+ skip(x) &lt;+ all(x))
+
+  leaves(s, is-leaf) =
+    rec x((is-leaf; s) &lt;+ all(x))
+</screen>
+
+\subsection{Many}
+
+    Find as many applications as possible, but at least one.
+
+<screen>
+  manybu(s) = rec x(some(x); try(s) &lt;+ s)\
+  manytd(s) = rec x(s; all(try(x)) &lt;+ some(x))
+</screen>
+
+<screen>
+  somedownup(s) = rec x(s; all(x); try(s) &lt;+ some(x); try(s))
+</screen>
+
+  </para>
+
+</section>
+
+<section>
+  <title>Path (*)</title>
+
+<para>
+
+  A spine of a term is a chain of nodes from the root to some
+  subterm. <code>spinetd</code> goes down one spine and applies
+  <code>s</code> along the way to each node on the spine. The
+  traversal stops when <code>s</code> fails for all children of a
+  node.
+
+<screen>
+spinetd(s)  = s; try(one(spinetd(s)))
+spinebu(s)  = try(one(spinebu(s))); s
+spinetd'(s) = s; (one(spinetd'(s)) + all(fail))
+spinebu'(s) = (one(spinebu'(s)) + all(fail)); s
+</screen>
+
+  Apply <code>s</code> everywhere along al spines where <code>s</code>
+  applies.
+
+<screen>
+somespinetd(s) = rec x(s; try(some(x)))
+somespinebu(s) = rec x(try(some(x)); s)
+spinetd'(s)    = rec x(s; (one(x) + all(fail)))
+spinebu'(s)    = rec x((one(x) + all(fail)); s)
+</screen>
+
+  While these strategies define the notion of applying along a spine,
+  they are rarely used. In practice one would use more specific
+  traversals with that determine which subterm to include in the
+  search for a path.
+
+</para>
+
+<para>
+
+  TODO: examples
+
+</para>
+
+</section>
+
+<section>
+  <title>Recursive Patterns (*)</title>
+
+<para>
+
+  TODO: format checking 
+
+</para>
+  
+<para>
+
+  TODO: matching of complex patterns
+
+</para>
+  
+<para>
+
+  TODO: contextual rules (local traversal)
+
+</para>
+  
+</section>
+
+<section>
+  <title>Dynamic programming (*)</title>
+
+<para>
+
+  TODO (probably move to dynamic rules chapter)
+
+</para>
+  
+</section>
+
+</section>
