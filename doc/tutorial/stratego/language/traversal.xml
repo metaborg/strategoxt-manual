@@ -856,7 +856,7 @@ reduce-par(s) = repeat(rec x(some(x) + s))
 <xi:include href="traversal-library.xml"/>
 
 <section>
-  <title>Summary</title>
+  <title>Summary (*)</title>
 
 <para>
 
