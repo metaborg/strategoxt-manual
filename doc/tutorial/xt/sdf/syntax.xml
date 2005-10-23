@@ -160,16 +160,18 @@
 	<term><code>A*</code></term>
 	<listitem> 
 	  <para> 
-	    Zero or more symbols
+	    Zero or more symbols <code>A</code>. Examples:
+	    <code>Stm*</code>, <code>[a-zA-Z]*</code>
 	  </para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term><code>A+ (One or more)</code></term>
+	<term><code>A+</code></term>
 	<listitem> 
 	  <para>
-	    One or more symbols
+	    One or more symbols <code>A</code>. Examples:
+	    <code>TypeDec+</code>, <code>[a-zA-Z]+</code>
 	  </para>
 	</listitem>
       </varlistentry>
@@ -178,7 +180,10 @@
 	<term><code>{A<subscript>0</subscript> A<subscript>1</subscript>}*</code></term>
 	<listitem> 
 	  <para> 
-	    Zero or more symbols, separated.
+	    Zero or more symbols
+	    <code>A<subscript>0</subscript></code> seperated by
+	    <code>A<subscript>1</subscript>}*</code>.  Examples:
+	    <code>{Exp ","}*</code>, <code>{FormalParam ","}*</code>
 	  </para>
 	</listitem>
       </varlistentry>
@@ -187,7 +192,10 @@
 	<term><code>{A<subscript>0</subscript> A<subscript>1</subscript>}+</code></term>
 	<listitem> 
 	  <para>
-	    One or more symbols, separated.
+	    One or more symbols <code>A<subscript>0</subscript></code>
+	    seperated by
+	    <code>A<subscript>1</subscript>}*</code>. Examples:
+	    <code>{Id "."}+</code>, <code>{InterfaceType ","}+</code>
 	  </para>
 	</listitem>
       </varlistentry>
@@ -196,7 +204,8 @@
 	<term><code>A?</code></term>
 	<listitem> 
 	  <para> 
-	    Optional
+	    Optional symbol <code>A</code>. Examples:
+	    <code>Expr?</code>, <code>[fFdD]?</code>
 	  </para>
 	</listitem>
       </varlistentry>
@@ -205,7 +214,10 @@
 	<term><code>A<subscript>0</subscript> | A<subscript>1</subscript></code></term>
 	<listitem> 
 	  <para> 
-	    Alternative
+	    Alternative of symbol
+	    <code>A<subscript>0</subscript></code> or
+	    <code>A<subscript>1</subscript></code>. Example:
+	    <code>{Expr ","}* | LocalVarDec</code>
 	  </para>
 	</listitem>
       </varlistentry>
@@ -214,7 +226,8 @@
 	<term><code>(A<subscript>0</subscript> ... A<subscript>n</subscript>)</code></term>
 	<listitem> 
 	  <para>
-	    Sequence
+	    Sequence of symbols <code>A<subscript>0</subscript>
+	    ... A<subscript>n</subscript></code>.
 	  </para>
 	</listitem>
       </varlistentry>
