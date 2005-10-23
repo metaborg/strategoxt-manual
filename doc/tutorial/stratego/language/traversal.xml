@@ -130,8 +130,8 @@ rules
   In <xref linkend="stratego-rewriting-strategies"/> we saw how a
   functional style of rewriting could be encoded using extra
   constructors. In Stratego we can achieve a similar approach by using
-  rule names as, instead of extra constructors. Thus, one way to
-  achieve normalization to disjunctive normal form, is the use of an
+  rule names, instead of extra constructors. Thus, one way to achieve
+  normalization to disjunctive normal form, is the use of an
   explicitly programmed traversal, implemented using recursive rules,
   similarly to the <code>map</code> example above:
 
@@ -211,7 +211,7 @@ strategies
 </screen>
 
   In this program <code>dnf</code> first calls <code>dnft</code> to
-  transform the subterms of the current term, and then calls
+  transform the subterms of the subject term, and then calls
   <code>dnfred</code> to apply the transformation rules (and possibly
   a recursive invocation of <code>dnf</code>).
 
@@ -561,11 +561,11 @@ disj-nf = disj(conj(Not(Atom(x)) &lt;+ Atom(x)))
 </screen>
 
   The strategies <code>conj(s)</code> and <code>disj(s)</code> check
-  that the current is a conjunct or a disjunct, respectively, with
-  terms satisfying <code>s</code> at the leaves.
+  that the subject term is a conjunct or a disjunct, respectively,
+  with terms satisfying <code>s</code> at the leaves.
 
   The strategies <code>conj-nf</code> and <code>disj-nf</code> check
-  that the current term is in conjunctive or disjunctive normal form,
+  that the subject term is in conjunctive or disjunctive normal form,
   respectively.
 
 </para>
@@ -582,9 +582,9 @@ disj-nf = disj(conj(Not(Atom(x)) &lt;+ Atom(x)))
   terms. The same can be done for other data types. However, since the
   sets of constructors of abstract syntax trees of typical programming
   languages can be quite large, this may still amount to quite a bit
-  of work that is not reusable <emphasis>acrross</emphasis> data
-  types; even though a strategy such as `bottom-up traversal', is
-  basically data-type independent.  
+  of work that is not reusable <emphasis>across</emphasis> data types;
+  even though a strategy such as `bottom-up traversal', is basically
+  data-type independent.
 
   Thus, Stratego provides generic traversal by means of several
   <emphasis>generic one-step descent operators</emphasis>. The
@@ -659,7 +659,7 @@ propbu(s) = all(propbu(s)); s
 bottomup(s) = all(bottomup(s)); s
 </screen>
 
-  It first recursively transforms the subterms of the current term and
+  It first recursively transforms the subterms of the subject term and
   then applies <code>s</code> to the result.
 
   Using this definition, the normalization of propositions now reduces
@@ -763,8 +763,9 @@ oncetd(s) = s &lt;+ one(oncetd(s))
 </screen>
 
   Thus, <code>s</code> is first applied to the root of the subject
-  term. If that fails, its direct subterms are searched one by one,
-  with a recursive call to <code>oncetd(s)</code>.
+  term. If that fails, its direct subterms are searched one by one
+  (from left to right), with a recursive call to
+  <code>oncetd(s)</code>.
 
 </para>
 
