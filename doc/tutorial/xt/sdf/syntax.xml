@@ -126,9 +126,9 @@
     </variablelist>
 
     <para>
-      Of course, defining an entire language using only productions
-      that can contain only sorts and character classes would be a lot
-      of work. For example, programming languages usually contain all
+      Of course, defining an entire language using productions that
+      can contain only sorts and character classes would be a lot of
+      work. For example, programming languages usually contain all
       kinds of list constructs. Specification of lists with plain
       context-free grammars requires several productions for each list
       construct.  SDF provides a bunch of regular expression operators
