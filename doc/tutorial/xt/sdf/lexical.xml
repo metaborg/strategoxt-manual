@@ -1,4 +1,4 @@
-<section
+<section xml:id="section-lexical-syntax"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -13,14 +13,14 @@
   </para>
    
 
-  <section>
+  <section xml:id="section-sdf-literals">
     <title>Literals</title>
     <para>
       Escaping
     </para>
   </section>
   
-  <section>
+  <section xml:id="section-sdf-character-classes">
     <title>Character Classes</title>
     
     <para>
@@ -80,6 +80,17 @@
       a C style comment should not be followed by a slash (which would
       end the comment). A reject production is used to forbid the use
       of keywords as identifiers.
+    </para>
+
+    <para>
+	Lexical syntax sections are used to define constructs, such as
+	identifiers, layout, comments, and literals. Layout is a
+	special non-terminal in \SDF{} named \verb|LAYOUT|. A symbol
+	for this non-terminal is inserted between the symbols of
+	productions in a context-free syntax section to allow layout
+	between the symbols there. The following lexical syntax
+	section defines layout (\texttt{LAYOUT}), identifiers
+	(\verb|Id|), and integer constants (\verb|IntConst|).
     </para>
 
     <para>
