@@ -88,6 +88,13 @@ pre.screen, pre.programlisting
     /* font-size: 90%; */
 }
 
+div.example > pre.programlisting
+{
+    border: none;
+    margin-left: 0em;
+    margin-right: 0em;
+}
+
 td pre.screen, td pre.programlisting
 {
     margin-left: 0.5em;

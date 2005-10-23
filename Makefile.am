@@ -24,7 +24,11 @@ manual :
 	rm -rf mandist
 	mkdir mandist
 	mkdir mandist/manual
+	mkdir mandist/manual/images
+	mkdir mandist/manual/images/callouts
 	cp html/*.css html/*.html mandist/manual
+	cp $(DOCBOOK_XSL)/xml/xsl/docbook/images/*.png mandist/manual/images/
+	cp $(DOCBOOK_XSL)/xml/xsl/docbook/images/callouts/*.png mandist/manual/images/callouts
 	cd doc && find . \
            -name *.png -or \
            -name *.str -or \

@@ -2,27 +2,145 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>SDF: The Modular Syntax Definition Formalism (*)</title>
+  <title>SDF Modules</title>
 
   <para>
-    Modules, imports, exports, hiddens.
-  </para>
-  
-  <para>
-    Hierarchical names foe modules
-  </para>
-
-  <para>
-    Comments
+    In this section, we will give an overview of the basic elements of
+    an SDF module. The next sections will discuss these constructs
+    more detail.
   </para>
 
   <section>
-    <title>Symbols and Regular Expressions</title>
+    <title>Modules</title>
 
-    <section>
-      <title>Declaring Non-terminals</title>
-      <para/>
-    </section>
+    <para>
+      Before defining some actual syntax, we have to explain the basic
+      structure of a module. For this, let's take a closer look at the
+      elements of the modules of <xref linkend="Fig-Modules"/>.
+    </para>
+
+    <example xml:id='ex-basic-module'>
+      <title>Elements of a basic SDF module</title>
+
+<programlisting>
+module Expression <co xml:id='ex-basic-module-name' />
+imports
+  Lexical Operators <co xml:id='ex-basic-module-imports' />
+
+exports  <co xml:id='ex-basic-module-exports' />
+  context-free start-symbol Exp <co xml:id='ex-basic-module-start-symbols' />
+  context-free syntax <co xml:id='ex-basic-module-syntax1' />
+    Id          -> Exp {cons("Var")} <co xml:id='ex-basic-module-attr1' />
+    IntConst    -> Exp {cons("Int")} 
+    "(" Exp ")" -> Exp {bracket}
+
+module Operators
+exports
+  sorts Exp  <co xml:id='ex-basic-module-sorts1' />
+  context-free syntax
+    Exp "*" Exp -> Exp {left, cons("Times")}
+    Exp "/" Exp -> Exp {left, cons("Div")}
+    Exp "%" Exp -> Exp {left, cons("Mod")}
+  
+    Exp "+" Exp -> Exp {left, cons("Plus")}  <co xml:id='ex-basic-module-attr2' />
+    Exp "-" Exp -> Exp {left, cons("Minus")}
+
+  context-free priorities <co xml:id='ex-basic-module-priorities' />
+    {left:
+      Exp "*" Exp -> Exp
+      Exp "/" Exp -> Exp
+      Exp "%" Exp -> Exp
+    } 
+  > {left:
+      Exp "+" Exp -> Exp
+      Exp "-" Exp -> Exp
+    }
+
+module Lexical
+exports
+  sorts Id IntConst <co xml:id='ex-basic-module-sorts2' />
+  lexical syntax <co xml:id='ex-basic-module-syntax2' />
+    [a-zA-Z]+ -> Id       
+    [0-9]+    -> IntConst 
+    [\ \t\n]  -> LAYOUT
+
+  lexical restrictions
+    Id -/- [a-zA-Z] <co xml:id='ex-basic-module-restriction' />
+</programlisting>
+    </example>
+
+    <para>
+      <xref linkend="ex-basic-module"/> shows this module. This basic
+      SDF modules
+    </para>
+
+    <calloutlist>
+      <callout arearefs='ex-basic-module-name'>
+	<para>
+	  SDF modules have a name, which can be a plain identifier,
+	  such as <filename>Expression</filename> or a path, such as
+	  <filename>java/exressions/Assignment</filename>. In the
+	  second case, the module has to be in a file with name
+	  <filename>Assignment.sdf</filename>, which must be in a
+	  directory <filename>java/expression</filename>.
+	</para>
+      </callout>
+      
+      <callout arearefs='ex-basic-module-imports'>
+	<para>
+	  Next, an SDF module can import a number of other
+	  modules. Multiple modules can be imported with a single
+	  import, or multiple imports can be used.
+	</para>
+      </callout>
+      
+      <callout arearefs='ex-basic-module-exports'>
+	<para>
+	  Finally, a module can contain a number of sections, of which
+	  we now only consider the <code>exports</code> section. An
+	  <code>exports</code> section defines a number of items that
+	  will be available to modules that import this module.
+	</para>
+      </callout>
+      
+      <callout arearefs='ex-basic-module-start-symbols'>
+	<para>
+	  A syntax definitions needs to define one or more start
+	  symbols. Start symbols are the language constructs that are
+	  allowed at the top-level of a source file. For example, for
+	  a simple expression language, the start symbol could be
+	  <code>Expr</code>. As naother example, the start symbol of
+	  Java is a <code>CompilationUnit</code>, which concists of a
+	  package, import, and type declarations.
+	</para>
+      </callout>
+      
+      <callout arearefs='ex-basic-module-sorts1 ex-basic-module-sorts2'>
+	<para>
+	  Declare sorts
+	</para>
+      </callout>
+
+      <callout arearefs='ex-basic-module-syntax1 ex-basic-module-syntax2'>
+	<para>
+	  Define syntax
+	</para>
+      </callout>
+
+      <callout arearefs='ex-basic-module-attr1 ex-basic-module-attr2'>
+	<para>
+	  Production have attributes. Some have a special meaning.
+	</para>
+      </callout>
+
+      <callout arearefs='ex-basic-module-priorities ex-basic-module-restriction'>
+	<para>
+	  SDF syntax definitions support constructs to define in a
+	  declarative way that certain kinds of derivations are not
+	  allowed.
+	</para>
+      </callout>
+    </calloutlist>
   </section>
 
   <section>
@@ -34,6 +152,15 @@
     <para>
       Explain the difference.
     </para>
+  </section>
+
+  <section>
+    <title>Symbols and Regular Expressions</title>
+
+    <section>
+      <title>Declaring Non-terminals</title>
+      <para/>
+    </section>
   </section>
 
   <section>
@@ -54,30 +181,6 @@
     <para>
       Disambiguation later.
     </para>
-  </section>
-
-  <section>
-    <title>Renaming Symbols</title>
-    <para>
-      Import module and rename symbols in the imported definition.
-    </para>
-
-    <para>
-      Not very common, but heavily used for combining syntax
-      definitions of different language. See concrete object syntax.
-    </para>
-  </section>
-
-  <section>
-    <title>Parameterized Modules</title>
-    <para>
-      Modules can have formal parameters.
-    </para>
-
-    <example>
-      <title>Parameterized Module for Regular Expressions</title>
-      <para/>
-    </example>
   </section>
 </section>
 
