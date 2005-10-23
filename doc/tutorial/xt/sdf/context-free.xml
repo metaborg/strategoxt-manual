@@ -4,21 +4,6 @@
 
     <title>Context-free Syntax</title>
 
-    <section>
-      <title>Regular Expressions</title>
-      
-      <para>
-	Programming languages usually contain all kinds of list
-	constructs. Specification of lists with plain context-free
-	grammars requires several productions for each list construct.
-	SDF provides a bunch of regular expression operators abbreviating
-	common patterns. The operators <code>A*</code> and
-	<code>A+</code> denote lists of zero (one) or more
-	<code>A</code>s.  The <code>{A lit}*</code> and <code>{A
-	lit}+</code> operators denote lists of zero (one) or more
-	<code>A</code>s separated by <code>lit</code>.
-      </para>
-      
       <para>
 	<xref linkend="Fig-RegularExpressions"/> illustrates the use of
 	these operators in the extension of the expression language with
@@ -28,11 +13,14 @@
 	formal and actual arguments of a function (<code>FunDec</code>
 	and <code>Call</code>). An example function definition in this
 	language is:
-
 <screen>
 function fact(n, x) =
   if n > 0 then fact(n - 1, n * x) else x
 </screen>
+      </para>
+
+      <para>
+	Constructor annotations
       </para>
 
   <para>
@@ -45,6 +33,5 @@ function fact(n, x) =
 	</title>
 	<showfile root="." file="xmpl/Statements.sdf"/>
       </figure>
-    </section>
   </section>
   

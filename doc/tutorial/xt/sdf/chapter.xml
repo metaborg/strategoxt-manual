@@ -46,8 +46,65 @@
   <xi:include href="concepts.xml" />
   <xi:include href="practice.xml" />
   <xi:include href="modules.xml" />
+
+  <section>
+    <title>Syntax</title>
+
+    <section>
+      <title>Lexical and Context-free Syntax</title>
+
+      <para>
+	Everything defined using productions.
+      </para>
+
+      <para>
+	Difference between lexical and context-free syntax.
+      </para>
+
+      <para>
+	In SDF the definition of lexical and context-free syntax are
+	integrated in the same formalism, and are specified using the
+	same means, i.e., context-free productions, regular
+	expressions, etc. Productions for lexical items are introduced
+	using the keywords <code>lexical syntax</code>. The only
+	difference between lexical and context-free syntax is that
+	layout (whitespace, comments) can occur between the strings
+	corresponding to sorts in the left-hand of a context-free
+	production, or, conversely, <emphasis>no</emphasis> layout is
+	allowed between the tokens of a lexeme. The occurrence of
+	layout is indicated by injecting <code>LAYOUT?</code>, i.e.,
+	optional layout, between every two symbols of a context-free
+	production. To avoid cluttering syntax definitions, this is
+	done automatically by the SDF parser generator.
+      </para>
+    </section>
+
+    <section>
+      <title>Productions and Symbols</title>
+      <para/>
+    </section>
+
+    <section>
+      <title>Regular Expressions</title>
+
+      <para>
+	Programming languages usually contain all kinds of list
+	constructs. Specification of lists with plain context-free
+	grammars requires several productions for each list construct.
+	SDF provides a bunch of regular expression operators abbreviating
+	common patterns. The operators <code>A*</code> and
+	<code>A+</code> denote lists of zero (one) or more
+	<code>A</code>s.  The <code>{A lit}*</code> and <code>{A
+	lit}+</code> operators denote lists of zero (one) or more
+	<code>A</code>s separated by <code>lit</code>.
+      </para>
+    </section>
+  </section>
+
+
   <xi:include href="lexical.xml" />
   <xi:include href="context-free.xml" />
+
   <xi:include href="disambiguation.xml" />
 
   <section>
@@ -107,5 +164,32 @@
     </section>
   </section>
 
+  <section>
+    <title>SDF Glossary</title>
+
+    <glosslist>
+      <glossentry>
+	<glossterm>Sort</glossterm>
+	<glossdef>
+	  <para/>
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm>Symbol</glossterm>
+	<glossdef>
+	  <para/>
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm>Section</glossterm>
+	<glossdef>
+	  <para/>
+	</glossdef>
+      </glossentry>
+    </glosslist>
+  </section>
+  
   <xi:include href="parse-unit/section.xml"/>
 </chapter>

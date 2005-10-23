@@ -3,7 +3,7 @@
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Lexical Syntax</title>
-  
+
   <para>
     So far we have looked at syntax of expressions and statements, but
     not at the definition of lexical items such as identifiers and
@@ -11,23 +11,7 @@
     separately to generate a scanner which divides a string into
     tokens before the parser recognizes the context-free structure.
   </para>
-    
-  <para>
-    In SDF the definition of lexical and context-free syntax are
-    integrated in the same formalism, and are specified using the same
-    means, i.e., context-free productions, regular expressions,
-    etc. Productions for lexical items are introduced using the
-    keywords <code>lexical syntax</code>. The only difference between
-    lexical and context-free syntax is that layout (whitespace,
-    comments) can occur between the strings corresponding to sorts in
-    the left-hand of a context-free production, or, conversely,
-    <emphasis>no</emphasis> layout is allowed between the tokens of a
-    lexeme. The occurrence of layout is indicated by injecting
-    <code>LAYOUT?</code>, i.e., optional layout, between every two
-    symbols of a context-free production. To avoid cluttering syntax
-    definitions, this is done automatically by the SDF parser
-    generator.
-  </para>
+   
 
   <section>
     <title>Literals</title>
