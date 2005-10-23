@@ -1,0 +1,8 @@
+module Lexical
+exports
+  sorts Id IntConst
+
+  lexical syntax
+    [\ \t\n]  -> LAYOUT
+    [a-zA-Z]+ -> Id
+    [0-9]+    -> IntConst

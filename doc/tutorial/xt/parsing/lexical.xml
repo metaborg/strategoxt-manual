@@ -1,0 +1,122 @@
+<section xml:id="section-lexical-syntax"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Defining Lexical Syntax</title>
+
+  <para>
+    "Design discussed, let's know see how this actually works."
+  </para>
+
+  <para>
+    So far we have looked at syntax of expressions and statements, but
+    not at the definition of lexical items such as identifiers and
+    constants. In most syntax definition formalisms these are defined
+    separately to generate a scanner which divides a string into
+    tokens before the parser recognizes the context-free structure.
+  </para>
+   
+
+  <section xml:id="section-sdf-literals">
+    <title>Literals</title>
+    <para>
+      Escaping
+    </para>
+  </section>
+  
+  <section xml:id="section-sdf-character-classes">
+    <title>Character Classes</title>
+    
+    <para>
+      In order to define the syntax at the level of characters, SDF
+      provides character classes <code>[...]</code>, which generate
+      one character from the set. Letters and digits can be written as
+      themselves, all other characters should be escaped using a
+      slash, e.g. <code>\_</code>. Characters can also be indicated by
+      their decimal ASCII\footnote{These codes could also be
+      interpreted in a different character encoding.} code, e.g.,
+      <code>\13</code> for linefeed. Some often used non-printable
+      characters have more mnemonic names, e.g., <code>\n</code> for
+      newline, <code>\ </code> for space and <code>\t</code> for tab.
+    </para>
+    
+    <para>
+      The definition of lexical syntax with a context-free grammar,
+      gives rise to ambiguities that cannot be resolved with the
+      associativity and priority mechanisms shown earlier. SDF
+      provides two additional disambiguation mechanism for this
+      purpose. A follow restriction \texttt{A -/- cc1 . ... . ccn}
+      indicates that a string of sort A cannot be followed by a string
+      in <code>cc1 ... ccn</code>, where the <code>cc</code> are
+      character classes. Follow restrictions can be used to encode
+      longest match disambiguation. A reject production <code>A1
+      ... An -> A0 {reject}</code> forbids an <code>A0</code> if it
+      can also be parsed as <code>A1 ... An</code>. Reject productions
+      are typically used to specify reserved words, by rejecting them
+      as identifiers.
+    </para>
+
+    <example>
+      <title>Lexical syntax for floating point literals</title>
+      <para>
+	Very complex regular expressions, without a clear structure.
+      </para>
+
+      <para>
+	Reject integer literals
+      </para>
+    </example>
+  </section>
+  
+  <section>
+    <title>Layout: Whitespace and Comments</title>
+    
+    <para>
+      These concepts are illustrated in <xref
+      linkend="Fig-LexicalSyntax"/>, which defines the lexical syntax
+      of identifiers, integer constants, and C-style comments. Note
+      how follow restrictions are used for longest match
+      disambiguation of identifiers, integer constants, and
+      layout. Since an identifier cannot be followed by a letter, the
+      <code>a</code> in <code>ab</code> cannot be recognized as an
+      identifier by itself, only the entire string <code>ab</code>.
+      Restrictions are also used to define that a sole asterisk within
+      a C style comment should not be followed by a slash (which would
+      end the comment). A reject production is used to forbid the use
+      of keywords as identifiers.
+    </para>
+
+    <para>
+	Lexical syntax sections are used to define constructs, such as
+	identifiers, layout, comments, and literals. Layout is a
+	special non-terminal in \SDF{} named \verb|LAYOUT|. A symbol
+	for this non-terminal is inserted between the symbols of
+	productions in a context-free syntax section to allow layout
+	between the symbols there. The following lexical syntax
+	section defines layout (\texttt{LAYOUT}), identifiers
+	(\verb|Id|), and integer constants (\verb|IntConst|).
+    </para>
+
+    <para>
+      Explain why longest match on layout is often necessary.
+    </para>
+
+    <example>
+      <title>Lexical Syntax of Comments in Java</title>
+      <para/>
+    </example>
+
+    <example>
+      <title>Balanced Block Comments</title>
+      <para/>
+    </example>
+    
+    <figure xml:id="Fig-LexicalSyntax">
+      <title>
+	Definition of lexical syntax.
+      </title>
+      <showfile root="." file="xmpl/Lexical.sdf"/>
+    </figure>
+  </section>
+</section>
+

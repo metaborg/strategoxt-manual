@@ -1,0 +1,10 @@
+Id          -> Var 
+Var         -> Exp
+IntConst    -> Exp
+"-" Exp     -> Exp
+Exp "*" Exp -> Exp
+Exp "+" Exp -> Exp
+Exp "-" Exp -> Exp
+Exp "=" Exp -> Exp
+Exp ">" Exp -> Exp
+"(" Exp ")" -> Exp

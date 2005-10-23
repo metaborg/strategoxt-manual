@@ -1,0 +1,245 @@
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>SDF: The Basics</title>
+
+  <para>
+    In this section, we give an overview of the basic constructs of
+    SDF. After this section, you will now the basic idea of SDF. The
+    next sections will discuss these constructs more detail.
+  </para>
+
+  <section>
+    <title>Modules</title>
+
+    <para>
+      Before defining some actual syntax, we have to explain the basic
+      structure of a module. For this, let's take a closer look at the
+      language constructs that are used in the modules we showed
+      earlier in <xref linkend="Fig-Modules"/>.
+    </para>
+
+    <example xml:id='ex-basic-module'>
+      <title>Basic constructs of SDF</title>
+
+<programlisting>
+module Expression <co xml:id='ex-basic-module-name' />
+imports
+  Lexical Operators <co xml:id='ex-basic-module-imports' />
+
+exports  <co xml:id='ex-basic-module-exports' />
+  context-free start-symbol Exp <co xml:id='ex-basic-module-start-symbols' />
+  context-free syntax <co xml:id='ex-basic-module-syntax1' />
+    Id          -> Exp {cons("Var")} <co xml:id='ex-basic-module-attr1' />
+    IntConst    -> Exp {cons("Int")} 
+    "(" Exp ")" -> Exp {bracket}
+
+module Operators
+exports
+  sorts Exp  <co xml:id='ex-basic-module-sorts1' />
+  context-free syntax
+    Exp "*" Exp -> Exp {left, cons("Times")} <co xml:id='ex-basic-module-attr2' />
+    Exp "/" Exp -> Exp {left, cons("Div")}
+    Exp "%" Exp -> Exp {left, cons("Mod")}
+  
+    Exp "+" Exp -> Exp {left, cons("Plus")} 
+    Exp "-" Exp -> Exp {left, cons("Minus")}
+
+  context-free priorities <co xml:id='ex-basic-module-priorities' />
+    {left:
+      Exp "*" Exp -> Exp
+      Exp "/" Exp -> Exp
+      Exp "%" Exp -> Exp
+    } 
+  > {left:
+      Exp "+" Exp -> Exp
+      Exp "-" Exp -> Exp
+    }
+
+module Lexical
+exports
+  sorts Id IntConst <co xml:id='ex-basic-module-sorts2' />
+  lexical syntax <co xml:id='ex-basic-module-syntax2' />
+    [a-zA-Z]+ -> Id       
+    [0-9]+    -> IntConst 
+    [\ \t\n]  -> LAYOUT
+
+  lexical restrictions <co xml:id='ex-basic-module-restriction' />
+    Id -/- [a-zA-Z]
+</programlisting>
+    </example>
+
+    <para>
+      <xref linkend="ex-basic-module"/> shows these modules,
+      highlighting some of the constructs that are important to know
+      before we dive into the details of defining syntax.
+    </para>
+
+    <calloutlist>
+      <callout arearefs='ex-basic-module-name'>
+	<para>
+	  Modules have a <emphasis>name</emphasis>, which can be a
+	  plain identifier, such as <filename>Expression</filename> in
+	  this example. The module must be in a file with same name
+	  and the <filename>.sdf</filename> extension. The module name
+	  can also be a path, for example
+	  <filename>java/expressions/Assignment</filename>. In this
+	  case, the module has to be in a file with name
+	  <filename>Assignment.sdf</filename>, which must be in a
+	  directory <filename>java/expressions</filename>.
+	</para>
+      </callout>
+
+      <callout arearefs='ex-basic-module-imports'>
+	<para>
+	  A module can optionally <emphasis>import</emphasis> a number
+	  of other modules. Multiple modules can be imported with a
+	  single import, as we have done in this example, or multiple
+	  imports can be used. This is not very common: usually,
+	  modules have just a single imports declaration.
+	</para>
+
+	<para>
+	  Modules are always imported by their full name. So, if the
+	  name of a module is a path, such as
+	  <filename>java/expressions/Assignment</filename>, then the
+	  module must be imported with that full name, even if it is
+	  in the directory <filename>java/expressions</filename>. If
+	  the name of the modules are long, which is typically the
+	  case if you use full paths to organize a large syntax
+	  definition in different directories, then the names are
+	  usually mentioned on separate lines, but still in a single
+	  import.
+	</para>
+      </callout>
+      
+      <callout arearefs='ex-basic-module-exports'>
+	<para>
+	  Modules contain a number of <emphasis>sections</emphasis>,
+	  of which we now only consider the <code>exports</code>
+	  section. An <code>exports</code> section defines a number of
+	  syntactic aspects, called a <emphasis>grammar</emphasis>,
+	  that will be available to modules that import this
+	  module. This includes syntax, but also declarations of
+	  sorts, start symbols, priorities, restrictions, etc.
+	</para>
+
+	<para>
+	  A module can also just import other modules and not actually
+	  define any syntactical aspects itself. This is typically the
+	  case in main modules of large syntax definitions, which only
+	  import modules for names, expressions, statements, etc.
+	</para>
+      </callout>
+    </calloutlist>
+  </section>
+
+  <section>
+    <title>Start Symbols</title>
+    
+    <calloutlist>
+      <callout arearefs='ex-basic-module-start-symbols'>
+	<para>
+	  Every syntax definition needs to define one or more start
+	  symbols, otherwise not a single input will accepted. Start
+	  symbols are the language constructs that are allowed at the
+	  top-level of a source file. For our simple expression
+	  language, the start symbol is <code>Exp</code>. For a java
+	  syntax definition, the start symbol could be
+	  <code>CompilationUnit</code>, which consists of a package,
+	  import, and type declarations.
+	</para>
+      </callout>
+    </calloutlist>
+  </section>
+
+  <section>
+    <title>Sorts</title>
+    
+    <calloutlist>      
+      <callout arearefs='ex-basic-module-sorts1 ex-basic-module-sorts2'>
+	<para>
+	  Every syntax definition introduces names for the syntactical
+	  sorts of a language, such as <code>Exp</code> and
+	  <code>Id</code>. These names can be declared in a
+	  <code>sorts</code> declaration. Declaring sorts is optional,
+	  but the SDF parser generator will give a warning if a sort
+	  that is used somewhere in the syntax definition is not
+	  declared. It is a good habit to declare all the sorts, since
+	  this makes it easier to find possible miss-spellings of
+	  these names.
+	</para>
+
+	<para>
+	  Note that in SDF syntax definitions we do not directly use
+	  the terminology of terminal and non-terminal, since actually
+	  only single characters are terminals in SDF, and almost
+	  everything else is a non-terminal. Lexical and context-free
+	  sorts are both declared as sorts.
+	</para>
+      </callout>
+    </calloutlist>
+  </section>
+
+  <section>
+    <title>Syntax</title>
+
+    <calloutlist>
+      <callout arearefs='ex-basic-module-syntax1 ex-basic-module-syntax2'>
+	<para>
+	  The actual syntax is defined in <code>lexical</code> and
+	  <code>context-free</code> syntax. The lexical syntax defines
+	  the syntax of language constructs like literals, comments,
+	  whitespace, and identifiers, or what is usally referred to
+	  as terminals. The context-free syntax defines the syntax of
+	  constructs like operators, statements, or what is usually
+	  referred to as non-terminals.
+	</para>
+
+	<para>
+	  In other parser generators the lexical syntax is often
+	  specified in a separate scanner specification, but in SDF
+	  these lexical aspects are integrated in the definition of
+	  the context-free syntax. We will come back to that later
+	  when we discuss the definition of lexical syntax.
+	</para>
+      </callout>
+    </calloutlist>
+
+    <calloutlist>
+      <callout arearefs='ex-basic-module-attr1 ex-basic-module-attr2'>
+	<para>
+	  Productions can have <emphasis>attributes</emphasis> can
+	  have attributes, specified between curly braces after the
+	  production. Some of these attributes, such as
+	  <code>left</code> have a special meaning for SDF
+	  itself. Other attributes can specify information about a
+	  production that target a different tool, such as
+	  <code>bracket</code> and <code>cons</code>, which target the
+	  tool that implodes parse trees to abstract syntax trees.
+	</para>
+      </callout>
+    </calloutlist>
+  </section>
+
+  <section>
+    <title>Disambiguation</title>
+
+    <calloutlist>
+      <callout arearefs='ex-basic-module-priorities ex-basic-module-restriction'>
+	<para>
+	  SDF support constructs to define in a declarative way that
+	  certain kinds of derivations are not allowed, also known as
+	  disambiguation filters. In our example, there two examples
+	  of this: we define <emphasis>priorities</emphasis> of the
+	  arithmetic expressions, and there is a <emphasis>lexical
+	  restriction</emphasis> that specifies that an identifier can
+	  never be followed by a character that is allowed in an
+	  identifier. We will explain these mechanisms later.
+	</para>
+      </callout>
+    </calloutlist>
+  </section>
+</section>
+

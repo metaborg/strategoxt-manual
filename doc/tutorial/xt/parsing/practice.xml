@@ -1,0 +1,273 @@
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>From Concepts to Practice: Generating a Parser</title>
+  
+  <para>
+    In the next section we will take a closer look at the various
+    features of the SDF language, but before that it is useful to know
+    your tools, so that you can immediately experiment with the
+    various SDF features you will learn about. You don't need to fully
+    understand the SDF fragments we use to explain the tools: we will
+    come back to that later.
+  </para>
+
+  <para>
+    One of the nice things about SDF and the tools for it, is that the
+    concepts that we have discussed directly translate to
+    practice. For example, SDF supports all context-free grammars; the
+    parser produces complete parse trees, which can even be yielded;
+    parse trees can be converted to abstract syntax trees.
+  </para>
+  
+  <section>
+    <title>From Modules to Definition</title>
+
+    <para>
+      In SDF, you can split a syntax definition into multiple
+      modules. So, a complete syntax definition consists of a set
+      modules. SDF modules are stored in files with the extension
+      <filename>.sdf</filename>. <xref linkend="Fig-Modules"/> shows
+      two SDF modules for a small language of expressions. The module
+      <filename>Lexical</filename> defines the identifiers and integer
+      literals of the language. This module is imported by the module
+      <filename>Expression</filename>.
+    </para>
+
+    <figure xml:id="Fig-Modules">
+      <title>
+	SDF modules for a small language of arithmetic expressions.
+      </title>
+
+      <informaltable frame="void">
+	<col width="0*"/>
+	<col width="1*"/>
+	<tbody align='left'>
+	    <tr valign="top">
+	      <td>
+		<programlisting><xi:include parse="text" href="practice/Expression.sdf"/></programlisting>
+	      </td>
+	      <td rowspan="2">
+		<programlisting><xi:include parse="text" href="practice/Operators.sdf"/></programlisting>
+	      </td>
+	    </tr>
+	    <tr valign="top">
+	      <td>
+		<programlisting><xi:include parse="text" href="practice/Lexical.sdf"/></programlisting>
+	      </td>
+	    </tr>
+	</tbody>
+      </informaltable>
+    </figure>
+
+    <para>
+      Before you can invoke the parser generator to create a parser
+      for this expression language, the modules that constitute a
+      complete syntax definition have to be collected into a single
+      file, usually called a <emphasis>definition</emphasis>. This
+      file has the extension <filename>.def</filename>. Collecting SDF
+      modules into a <filename>.def</filename> file is the job of the
+      tool <link linkend="ref-pack-sdf">pack-sdf</link>.
+
+      <screen><prompt>$</prompt> pack-sdf -i Expression.sdf -o Expression.def</screen>
+      
+      Pack-sdf collects all modules imported by the SDF module
+      specified using the <code>-i</code> parameter. This results in a
+      combined syntax definition, which is written to the file
+      specified with the <code>-o</code> parameter. Modules are looked
+      for in the current directory and any of the include directories
+      indicated with the <code>-I dir</code> arguments.
+    </para>
+
+    <para>
+      Pack-sdf does not analyse the contents of an SDF module to
+      report possible errors (except for syntactical ones). The parser
+      generator, discussed next, performs this analysis.
+    </para>
+
+    <tip>
+      <title>Standard options for input and output</title>
+      <para>
+	All tools in Stratego/XT use the <code>-i</code> and
+	<code>-o</code> options for input and output. Also, most tools
+	read from the standard input or write to standard output if no
+	input or output is specified.
+      </para>
+    </tip>
+  </section>
+
+  <section>
+    <title>Generating a Parser</title>
+
+    <para>
+      From the <code>.def</code> definition file (as produced by
+      <code>pack-sdf</code>), the <emphasis>parser
+      generator</emphasis> <xref linkend="ref-sdf2table"/> constructs
+      a parse table. This parse table can later on be handed off to
+      the actual parser.
+    </para>
+
+    <screen><prompt>$</prompt> sdf2table -i Expression.def -o Expression.tbl -m Expression</screen>
+
+    <para>
+      The <code>-m</code> option is used to specify the module for
+      which to generate a parse table. The default module is
+      <code>Main</code>, so if the syntax definition has a different
+      main module (in this case <code>Expression</code>), then you
+      need to specify this option.
+    </para>
+
+    <para>
+      The parse table is stored in a file with extension
+      <code>.tbl</code>. If all you plan on doing with your grammar is
+      parsing, the resulting <code>.tbl</code> file is all you need to
+      deploy. <xref linkend="ref-sdf2table"/> could be thought of as a
+      parse-generator; however, unlike many other parsing systems, it
+      does not construct an parser program, but a compact data
+      representation of the parse table.
+    </para>
+
+    <para>
+      Sdf2table analyzes the SDF syntax definition to detect possible
+      errors, such as undefined symbols, symbols for which no
+      productions exists, deprecated features, etc. It is a good idea
+      to try to fix these problems, although <code>sdf2table</code>
+      will usually still happily generated a parse table for you.
+    </para>
+  </section>
+
+  <section>
+    <title>Invoking the Parser</title>
+
+    <para>
+      Now we have a parse table, we can invoke the actual parser with
+      this parse table to parse a source program. The parser is called
+      <xref linkend="ref-sglr"/> and produces a
+      <emphasis>complete</emphasis> parse tree in the so-called AsFix
+      format. Usually, we are not really interested in the parse tree
+      and want to work on an abstract syntax tree. For this, there is
+      the somewhat easier to use tool <xref linkend="ref-sglri"/>,
+      which indirectly just invokes <code>sglr</code>.
+    </para>
+
+<screen>
+<prompt>$</prompt> cat mul.exp
+(a + n) * 1
+<prompt>$</prompt> sglri -p Expression.tbl -i mul.exp
+Times(Plus(Var("a"),Var("n")),Int("1"))
+</screen>
+
+    <para>
+      For small experiments, it is useful that sglri can also read the
+      source file from standard input. Example:
+    </para>
+
+<screen>
+<prompt>$</prompt> echo "(a + n) * 1" | sglri -p Expression.tbl
+Times(Plus(Var("a"),Var("n")),Int("1"))
+</screen>
+
+    <formalpara>
+      <title>Heuristic Filters</title>
+      <para>
+	As we will discuss later, SGLR uses disambiguation filters to
+	select the desired derivations if there are multiple
+	possibilities. Most of these filters are based on
+	specifications in the original syntax definition, such a
+	associativity, priorities, follow restrictions, reject, avoid
+	and prefer productions. However, unfortunately there are some
+	filters that select based on heuristics. Sometimes these
+	heuristics are applicable to your situation, but sometimes
+	they are not. Also, the heuristic filters make it less clear
+	when and why there are ambiguities in a syntax
+	definition. Therefore, we strongly advice you to use the
+	option <code>--no-heuristic-filters</code> of
+	<code>sglri</code>. The support for heuristic filters will be
+	removed in the future.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title>Start Symbols</title>
+
+      <para>
+	If the original syntax definition contained multiple start
+	symbols, then you can optionally specify the desired start
+	symbol with the <code>-s</code> option. For example, if we add
+	<code>Id</code> to the <code>start-symbols</code> of our
+	expression language, then a single identifier is suddenly an
+	ambiguous input (we will come back to ambiguities later) :
+      </para>
+    </formalpara>
+
+<screen><prompt>$</prompt> echo "a" | sglri -p Expression.tbl --no-heuristic-filters
+amb([Var("a"),"a"])
+</screen>
+
+    <para>
+      By specifying a start symbol, we can instruct the parser to give
+      us the expression alternative, which is the first term in the
+      list of two alternatives.
+    </para>
+
+<screen><prompt>$</prompt> echo "a" | sglri -p Expression.tbl --no-heuristic-filters -s Exp 
+Var("a")</screen>
+
+    <formalpara>
+      <title>Working with Parse Trees</title>
+
+      <para>
+	If you need a parse tree, then you can use <xref
+	linkend="ref-sglr"/> itself. These parse trees contain a lot
+	of information, so they are huge. Usually, you really don't
+	want to see them. Still, the structure of the parse tree is
+	quite interesting, since you can exactly inspect how the
+	productions from the syntax definition have been applied to
+	the input.
+      </para>
+    </formalpara>
+
+    <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | pp-aterm
+parsetree( ... )
+</screen>
+    
+    <para>
+      Note that we passed the option <code>-2</code> to sglr. This
+      option specifies the variant of the AsFix parse tree format that
+      should be used: AsFix2. The Stratego/XT tools use this variant
+      at the moment. All variants of the AsFix format are complete and
+      faithful representation of the derivation constructed by the
+      parser. It includes all details of the input file, including
+      whitespace, comments, and is self documenting as it uses the
+      complete productions of the syntax definition to encode node
+      labels. The AsFix2 variant preserves all the structure of the
+      derivation. In the other variant, the structure of the lexical
+      parts of a parse tree are not preserved.
+    </para>
+
+    <para>
+      The parse tree can be imploded to an abstract syntax tree
+      using the tool <xref linkend="ref-implode-asfix"/>. The
+      combination of <code>sglr</code> and
+      <code>implode-asfix</code> has the same effect as directly
+      invoking <code>sglri</code>.
+    </para>
+
+<screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | implode-asfix
+Times(Plus(Var("a"),Var("n")),Int("1"))</screen>
+
+      <para>
+        The parse tree can also be yielded back to the original source
+        file using the tool <xref
+        linkend="ref-asfix-yield"/>. Applying this tool shows that
+        whitespace and comments are indeed present in the parse tree,
+        since the source is reproduced in exactly the same way as it
+        was!
+      </para>
+
+      <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | asfix-yield
+(a + n) * 1</screen>
+
+  </section>
+</section>

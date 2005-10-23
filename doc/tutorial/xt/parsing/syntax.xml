@@ -1,0 +1,236 @@
+<section
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Syntax</title>
+  
+  <section>
+    <title>Lexical and Context-free Syntax</title>
+    
+    <para>
+      Usually, parsing is performed in two phases. First, a lexical
+      analysis phase splits the input in tokens, based on a grammar
+      for the lexical syntax of the language. This lexical grammar is
+      usually specified by a set of regular expressions that specifiy
+      the tokens of the language. Second, a parser based on a grammar
+      for the context-free syntax of the language performs the
+      syntactic analysis. This approach has several disadvantages for
+      certain applications, which won't discuss in detail for now. One
+      of the most important disadvantages is that the combination of
+      the two grammars is not a complete, declarative definition of
+      the syntax of the language.
+    </para>
+
+    <para>
+      SDF integrates the definition of lexical and context-free syntax
+      in a single formalism, thus supporting the
+      <emphasis>complete</emphasis> description of the syntax of a
+      language in a single specification. All syntax, both lexical and
+      context-free, is defined by <emphasis>productions</emphasis>,
+      respectively in <code>lexical syntax</code> and
+      <code>context-free syntax</code> sections. Parsing of languages
+      defined in SDF is implemented by scannerless generalized-LR
+      parsing, which operates on individual characters instead of
+      tokens.
+    </para>
+
+    <formalpara>
+      <title>Expressive Power</title>
+      <para>
+	Since lexical and context-free syntax are both defined by
+	productions, there is actually no difference in the expressive
+	power of the lexical and context-free grammar. Hence, lexical
+	syntax can be a context-free language, instead of being
+	restricted to a regular grammar, which is the case when using
+	conventional lexical analysis tools based on regular
+	expression. For example, this means that you can define the
+	syntax of nested comments in SDF, which we will illustrate
+	later. In practice, more important is that it is easier to
+	define lexical syntax using productions than using regular
+	expressions.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title>Layout</title>
+      <para>
+	Then, why are there two different sections for defining
+	syntax? The difference between these two kinds of syntax
+	sections is that in lexical syntax no layout (typically
+	whitespace and comments) is allowed between symbols. In
+	contrast, in context-free syntax sections layout is allowed
+	between the symbols of a production. We will explain later how
+	layout is defined. The allowance of layout is the only
+	difference between the two kinds of syntax sections.
+      </para>
+    </formalpara>
+  </section>
+
+  <section>
+    <title>Productions, Sorts, and Symbols</title>
+
+    <para>
+      In the <xref linkend="section-parsing-concepts"/> we recapped
+      context-free grammars and productions, which have the form
+      A<subscript>0</subscript> -> A<subscript>1</subscript>
+      ... A<subscript>n</subscript>, where A<subscript>0</subscript>
+      is non-terminal and A<subscript>1</subscript>
+      ... A<subscript>n</subscript> is a string of terminals and
+      non-terminals. Also, we mentioned earlier that the distinction
+      between terminals and non-terminals is less useful in SDF, since
+      only single characters are terminals if the lexical and
+      context-free syntax are defined in a single formalism. For this
+      reason, every element of a production,
+      i.e. A<subscript>0</subscript> ... A<subscript>n</subscript> is
+      called a <emphasis>symbol</emphasis>. So, productions take a
+      list of symbols and produce another symbol.
+    </para>
+  </section>
+
+  <section>
+    <title>Symbols and Regular Expressions</title>
+    
+    <para>
+      There are two primary symbols:
+    </para>
+
+    <variablelist>
+      <varlistentry>
+	<term>Sorts</term>
+	<listitem> 
+	  <para> 
+	    Sorts are names for language specific constructs, such as
+	    <code>Exp</code>, <code>Id</code>, and
+	    <code>IntConst</code>. These names are declared using the
+	    previously introduced <code>sorts</code> declaration and
+	    defined by productions.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>Character Classes</term>
+	<listitem> 
+	  <para> 
+	    A character class is set of characters. Character classes
+	    are specified by single characters, character ranges, and
+	    can be combined using set operators, such as complement,
+	    difference, union, intersection. Examples:
+	    <code>[abc]</code>, <code>[a-z]</code>,
+	    <code>[a-zA-Z0-9]</code>, <code>~[\n]</code>. We will
+	    discuss character classes in more detail in <xref
+	    linkend="section-sdf-character-classes"/>.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>
+      Of course, defining an entire language using productions that
+      can contain only sorts and character classes would be a lot of
+      work. For example, programming languages usually contain all
+      kinds of list constructs. Specification of lists with plain
+      context-free grammars requires several productions for each list
+      construct.  SDF provides a bunch of regular expression operators
+      abbreviating these common patterns. In the following list,
+      <code>A</code> represents a symbol and <code>c</code> a
+      character.
+    </para>
+
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <code>"c<subscript>0</subscript> ... c<subscript>n</subscript>"</code>
+	</term>
+	<listitem> 
+	  <para> 
+	    Literals are strings that must literally occur in the
+	    input, such as keywords (<code>if</code>,
+	    <code>while</code>, <code>class</code>), literals
+	    (<code>null</code>, <code>true</code>) and operators
+	    (<code>+</code>, <code>*</code>). Literals can be written
+	    naturally as, for example, <code>"while"</code>. Escaping
+	    of special characters will be discussed in <xref
+	    linkend="section-sdf-literals"/>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><code>A*</code></term>
+	<listitem> 
+	  <para> 
+	    Zero or more symbols <code>A</code>. Examples:
+	    <code>Stm*</code>, <code>[a-zA-Z]*</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><code>A+</code></term>
+	<listitem> 
+	  <para>
+	    One or more symbols <code>A</code>. Examples:
+	    <code>TypeDec+</code>, <code>[a-zA-Z]+</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><code>{A<subscript>0</subscript> A<subscript>1</subscript>}*</code></term>
+	<listitem> 
+	  <para> 
+	    Zero or more symbols
+	    <code>A<subscript>0</subscript></code> seperated by
+	    <code>A<subscript>1</subscript>}*</code>.  Examples:
+	    <code>{Exp ","}*</code>, <code>{FormalParam ","}*</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><code>{A<subscript>0</subscript> A<subscript>1</subscript>}+</code></term>
+	<listitem> 
+	  <para>
+	    One or more symbols <code>A<subscript>0</subscript></code>
+	    seperated by
+	    <code>A<subscript>1</subscript>}*</code>. Examples:
+	    <code>{Id "."}+</code>, <code>{InterfaceType ","}+</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><code>A?</code></term>
+	<listitem> 
+	  <para> 
+	    Optional symbol <code>A</code>. Examples:
+	    <code>Expr?</code>, <code>[fFdD]?</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><code>A<subscript>0</subscript> | A<subscript>1</subscript></code></term>
+	<listitem> 
+	  <para> 
+	    Alternative of symbol
+	    <code>A<subscript>0</subscript></code> or
+	    <code>A<subscript>1</subscript></code>. Example:
+	    <code>{Expr ","}* | LocalVarDec</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><code>(A<subscript>0</subscript> ... A<subscript>n</subscript>)</code></term>
+	<listitem> 
+	  <para>
+	    Sequence of symbols <code>A<subscript>0</subscript>
+	    ... A<subscript>n</subscript></code>.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+</section>

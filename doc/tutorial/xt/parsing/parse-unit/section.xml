@@ -1,0 +1,131 @@
+<section xml:id="sdf-unit-testing"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+  
+  <title>Unit Testing of Syntax Definitions</title>
+  
+  <para>
+    <command>Parse-unit</command> is a tool, part of Stratego/XT, for
+    testing SDF syntax definitions. The spirit of unit testing is
+    implemented in parse-unit by allowing you to check that small code
+    fragements are parsed correctly with your syntax definition.
+  </para>
+  
+  <para>
+    In a parse testsuite you can define tests with an input and an
+    expected result. You can specify that a test should succeed
+    (<code>succeeds</code>, for lazy people), fail
+    (<code>fails</code>) or that the abstract syntax tree should have
+    a specific format. The input can be an inline string or the
+    contents of a file for larger tests.
+  </para>
+
+  <section>
+    <title>Usage example</title>
+    
+    <section>
+      <title>Syntax Definition</title>
+      
+      <para>
+	Assuming the following grammar for a simple arithmetic
+	expressions:
+      </para>
+      <programlisting><xi:include href="Exp.sdf" parse="text"/></programlisting>
+      
+    </section>
+    
+    <section>
+      <title>Parse Testsuite</title>
+      
+      <para>
+	You could define the following parse testsuite in a file
+	<filename>expression.testsuite</filename> :
+      </para>
+      
+      <programlisting><xi:include href="expression.testsuite" parse="text"/></programlisting>
+    </section>
+
+    <section>
+      <title>Running the Parse Testsuite</title>
+      
+      <para>
+	Running this parse testsuite with:
+      </para>
+
+      <screen><xi:include href="run" parse="text"/></screen>
+      
+      <para>
+	will output:
+      </para>
+      
+      <screen><xi:include href="output" parse="text"/></screen>
+    </section>
+  </section>
+
+  <section>
+    <title>Parse Testsuite Syntax</title>
+    
+    <para>
+      You cannot escape special characters because there is no need to
+      escape them. The idea of the testsuite syntax is that test input
+      typically contains a lot of special characters, which therefore
+      they should no be special and should not need escaping.
+    </para>
+    
+    <para>
+      Anyhow, you still need some mechanism make it clear where the
+      test input stops. Therefore the testsuite syntax supports
+      several quotation symbols. Currently you can choose from:
+      <code>"</code>, <code>""</code>, <code>"""</code>, and
+      <code>[</code>, <code>[[</code>, <code>[[[</code>. Typically, if
+      you need a double quote in your test input, then you use the
+      <code>[</code>.
+    </para>
+  </section>
+  
+  
+  <section>
+    <title>Debugging Support</title>
+    
+    <para>
+      Parse-unit has an option to parse a single test and write the
+      result to the output. In this mode ambiguities are accepted,
+      which is useful for debugging. The option for the 'single test
+      mode' is <option>--single <replaceable>nr</replaceable></option>
+      where <replaceable>nr</replaceable> is the number in the
+      testsuite (printed when the testsuite is executed). The
+      <option>--asfix2</option> flag can be used to produce an asfix2
+      parse tree instead of an abstract syntax tree.
+    </para>
+  </section>
+  
+  <section>
+    <title>Invocation in Automake</title>
+    
+    <para>
+      The following make rule can be used to invoke parse-unit from your build system.
+    </para>
+    
+    <programlisting>
+%.runtestsuite : %.testsuite
+      $(SDF_TOOLS)/bin/parse-unit -i $&lt; -p $(PARSE_UNIT_PTABLE) --verbose 1 -o /dev/null
+    </programlisting>
+
+    <para>
+      A typical <filename>Makefile.am</filename> fo testing your
+      syntax definitions looks like:
+    </para>
+
+    <programlisting>
+EXTRA_DIST = $(wildcard *.testsuite)
+
+TESTSUITES = \
+  expressions.testsuite \
+  identifiers.testsuite
+
+PARSE_UNIT_PTABLE = $(top_srcdir)/syn/Foo.tbl
+
+installcheck-local: $(TESTSUITES:.testsuite=.runtestsuite)
+    </programlisting>
+  </section>
+</section>

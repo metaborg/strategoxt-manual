@@ -1,0 +1,10 @@
+Id          -> Var  {cons("Var")}
+Var         -> Exp 
+IntConst    -> Exp  {cons("Int")}
+"-" Exp     -> Exp  {cons("Uminus")}
+Exp "*" Exp -> Exp  {cons("Times")}
+Exp "+" Exp -> Exp  {cons("Plus")}
+Exp "-" Exp -> Exp  {cons("Minus")}
+Exp "=" Exp -> Exp  {cons("Eq")}
+Exp ">" Exp -> Exp  {cons("Gt")}
+"(" Exp ")" -> Exp

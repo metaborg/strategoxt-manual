@@ -1,0 +1,23 @@
+module Lexical
+exports
+  lexical syntax
+    [a-zA-Z][a-zA-Z0-9\_]* -> Id
+    [0-9]+ 		   -> IntConst
+  lexical restrictions
+    Id       -/- [a-zA-Z0-9\_]
+    IntConst -/- [0-9]
+
+  lexical syntax
+    [\ \t\n\13]         -> LAYOUT
+    "/*" CommChar* "*/" -> LAYOUT
+    "//" ~[\n]* [\n\13] -> LAYOUT
+    ~[\*] 		-> CommChar
+    Asterisk 		-> CommChar
+    [\*]		-> Asterisk
+  context-free restrictions
+    LAYOUT?  -/- [\ \t\n]
+    Asterisk -/- [\/]
+
+%%  context-free syntax
+%%    "let" | "in" | "end" | "while" | "do"
+%%    | "function" | "if" | "then" | "else" -> Id {reject}

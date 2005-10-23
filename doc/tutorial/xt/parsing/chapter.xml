@@ -1,0 +1,48 @@
+<chapter xml:id="tutorial-parsing"
+   xmlns="http://docbook.org/ns/docbook"
+   xmlns:xi="http://www.w3.org/2003/XInclude">
+
+  <title>Syntax Definition and Parsing</title>
+
+  <para>
+    In <xref linkend="xt-architecture"/> we have introduced the
+    architecture of the XT tansformation tools. Source to source
+    transformation systems based on XT consist of a pipeline of a
+    parser, a series of transformations on a structured program
+    representation, and a pretty-printer. In <xref
+    linkend="tutorial-aterms"/> we have explained the ATerm format,
+    which is the format we use for this structured program
+    transformation. This chapter will be about the parser part of the
+    pipeline.
+  </para>
+
+  <para>
+    Stratego/XT uses the <emphasis>Syntax Definition Formalism
+    (SDF)</emphasis>, for defining the syntax of a programming
+    language. From a syntax definition in SDF, a parser can be
+    generated fully automatically. There is no need for a separate
+    lexer or scanner specification, since SDF integrates the lexical
+    and the context-free syntax definition of a programming language
+    in a single specification. The generated parser is based on the
+    <emphasis>Scannerless Generalized-LR</emphasis> algorithm, but
+    more details about that later. The parser directly produces an
+    ATerm representation of the program, as a parse tree, or as an
+    abstract syntax tree.
+  </para>
+
+  <para>
+    Actually, the component-based approach of XT allows you to use any
+    tool for parsing a source program to an ATerm. So, you don't
+    necessarily have to use the parsing tools we present in this
+    chapter. Instead, it might sometimes be a good idea to create an
+    ATerm backend for a parser that you already have developed (by
+    hand or using a different parser generator), or reuse an entire,
+    existing front-end that is provided by a third-party. However, the
+    techniques we present in this chapter are extremely expressive,
+    flexible, and easy to use, so for developing a new parser it would
+    be a very good idea to use SDF and SGLR.
+  </para>
+
+  <xi:include href="concepts.xml" />
+  <xi:include href="practice.xml" />
+</chapter>
