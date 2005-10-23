@@ -3,7 +3,19 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Idioms and Library Strategies for Traversal (*)</title>  
+  <title>Idioms and Library Strategies for Traversal (*)</title>
+
+<para>
+
+  Above we have seen the basic mechanisms for defining traversals in
+  Stratego: custom traversal rules, data-type specific congruence
+  operators, and generic traversal operators.
+
+  Now we will consider a number of idioms and standard strategies from
+  the Stratego Library that are useful in the definition of traversals.
+
+
+</para>
 
 <section>
   <title>Full Traversals (*)</title>
@@ -182,7 +194,14 @@ simplify =
 
 <para>
 
-    Mixing generic and specific traversals
+  While completely generic strategies such as <code>bottomup</code>
+  and <code>innermost</code> are often useful, there are also
+  situations where a mixture of generic and data-type specific
+  traversal is necessary. Fortunately, Stratego allows you to mix
+  generic traversal operators, congruences, your own traversal and
+  regular rules, the way you see fit. In general, however, it is a
+  good idea to try to get a clean separation between pure rewrite
+  rules and a strategy that applies them.
 
 <screen>
 transformation =

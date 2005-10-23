@@ -25,35 +25,39 @@
   traversal, visits the subterms of a node before it visits the node
   itself, while a top-down traversal visits nodes before it visits
   children. One-pass traversals traverse the tree one time, while
-  fixpoint traversals, such as innermost, repeatedly traverse a term
-  until a fixpoint is reached.
+  fixed-point traversals, such as <code>innermost</code>, repeatedly
+  traverse a term until a normal form is reached.
 
  </para>
 
 <para>
 
-  It is not attractive to provide built-in implementations for each
-  traversal algorithm. Rather we would like to define traversals in
-  terms of the primitive ingredients of traversal.  For example, a
-  top-down, one-pass traversal strategy will first visit a node, and
-  then descend to the children of a node in order to
-  <emphasis>recursively</emphasis> traverse all subterms.  Similarly,
-  the bottom-up, fixpoint traversal strategy
-  <emphasis>innermost</emphasis>, will first descend to the children
-  of a node in order to <emphasis>recursively</emphasis> traverse all
-  subterms, then visit the node itself, and possibly recursively
-  reapply the strategy.
+  It is not desirable to provide built-in implementations for all
+  traversals needed in transformations, since such a collection would
+  necessarily be imcomplete.
+
+  Rather we would like to define traversals in terms of the primitive
+  ingredients of traversal.  For example, a top-down, one-pass
+  traversal strategy will first visit a node, and then descend to the
+  children of a node in order to <emphasis>recursively</emphasis>
+  traverse all subterms.  Similarly, the bottom-up, fixed-point
+  traversal strategy <emphasis>innermost</emphasis>, will first
+  descend to the children of a node in order to
+  <emphasis>recursively</emphasis> traverse all subterms, then visit
+  the node itself, and possibly recursively reapply the strategy.
 
  </para>
 
 <para>
 
-   This suggests that a full term traversal can be composed from a
-   one-step descent to the children of a node and recursive
-   closure. Thus, we need an operator which applies a strategy to one
-   or more direct subterms.  By separating this one-step descent
-   operator from recursion, and making it a first-class operation,
-   many different traversals can be defined.
+   Traversal in Stratego is based on the observation that a full term
+   traversal is a recursive closure of a one-step descent, that is, an
+   operation that applies a strategy to one or more direct subterms of
+   the subject term.
+
+   By separating this one-step descent operator from recursion, and
+   making it a first-class operation, many different traversals can be
+   defined.
 
  </para>
 
@@ -62,15 +66,19 @@
   In this chapter we explore the ways in which Stratego supports the
   definition of <emphasis>traversal strategies</emphasis>.
 
-  We start with explicitly programmed traversals using recursive rules.
+  We start with explicitly programmed traversals using recursive
+  traversal rules.
 
-  Next, <emphasis>congruences operators</emphasis> provide more
-  concise specification of data-type specific traversal
-  combinators. 
+  Next, <emphasis>congruences operators</emphasis> provide a more
+  concise notation for such data-type specific traversal rules.
 
   Finally, <emphasis>generic traversal operators</emphasis> support
   data type independent definitions of traversals, which can be reused
   for any data type.
+
+  Given these basic mechanisms, we conclude with an an exploration of
+  idioms for traversal and standard traversal strategies in the
+  Stratego Library.
 
 </para>
 
@@ -711,16 +719,7 @@ strategies
 
 <para>
 
-  Below we will consider a little library of traversal strategies,
-  featuring variants of the definitions above. While completely
-  generic strategies such as <code>bottomup</code> and
-  <code>innermost</code> are often useful, there are also situations
-  where a mixture of generic and data-type specific traversal is
-  necessary. Fortunately, Stratego allows you to mix generic traversal
-  operators, congruences, your own traversal and regular rules, the
-  way you see fit. In general, however, it is a good idea to try to
-  get a clean separation between pure rewrite rules and a strategy
-  that applies them.
+
 
 </para>
 
