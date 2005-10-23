@@ -233,4 +233,26 @@
       </varlistentry>
     </variablelist>
   </section>
+
+  <section xml:id="section-sdf-character-classes">
+    <title>Character Classes</title>
+    
+    <para>
+      In order to define the syntax at the level of characters, SDF
+      provides character classes <code>[...]</code>, which generate
+      one character from the set. Letters and digits can be written as
+      themselves, all other characters should be escaped using a
+      slash, e.g. <code>\_</code>. Characters can also be indicated by
+      their decimal ASCII\footnote{These codes could also be
+      interpreted in a different character encoding.} code, e.g.,
+      <code>\13</code> for linefeed. Some often used non-printable
+      characters have more mnemonic names, e.g., <code>\n</code> for
+      newline, <code>\ </code> for space and <code>\t</code> for tab.
+    </para>
+
+    <example>
+      <title>Some Basic Character Classes</title>
+      <para/>
+    </example>
+  </section>
 </section>

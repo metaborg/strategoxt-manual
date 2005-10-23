@@ -4,6 +4,12 @@
 
   <title>Syntax Definition in SDF (*)</title>
 
+  <para>
+    First, basic structure of SDF. Second, how syntax is defined
+    SDF. Third, examples of lexical and context-free syntax. Fourth,
+    more detailed coverage of disambigation.
+  </para>
+
   <xi:include href="basic.xml" />
   <xi:include href="syntax.xml" />
   <xi:include href="lexical.xml" />

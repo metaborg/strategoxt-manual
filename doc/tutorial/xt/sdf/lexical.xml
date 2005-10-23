@@ -2,11 +2,18 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Defining Lexical Syntax</title>
+  <title>Examples: Defining Lexical Syntax</title>
 
   <para>
     "Design discussed, let's know see how this actually works."
   </para>
+
+  <figure xml:id="Fig-LexicalSyntax">
+    <title>
+      Definition of lexical syntax.
+    </title>
+    <showfile root="." file="xmpl/Lexical.sdf"/>
+  </figure>  
 
   <para>
     So far we have looked at syntax of expressions and statements, but
@@ -15,62 +22,48 @@
     separately to generate a scanner which divides a string into
     tokens before the parser recognizes the context-free structure.
   </para>
-   
-
-  <section xml:id="section-sdf-literals">
-    <title>Literals</title>
-    <para>
-      Escaping
-    </para>
-  </section>
-  
-  <section xml:id="section-sdf-character-classes">
-    <title>Character Classes</title>
-    
-    <para>
-      In order to define the syntax at the level of characters, SDF
-      provides character classes <code>[...]</code>, which generate
-      one character from the set. Letters and digits can be written as
-      themselves, all other characters should be escaped using a
-      slash, e.g. <code>\_</code>. Characters can also be indicated by
-      their decimal ASCII\footnote{These codes could also be
-      interpreted in a different character encoding.} code, e.g.,
-      <code>\13</code> for linefeed. Some often used non-printable
-      characters have more mnemonic names, e.g., <code>\n</code> for
-      newline, <code>\ </code> for space and <code>\t</code> for tab.
-    </para>
-    
-    <para>
-      The definition of lexical syntax with a context-free grammar,
-      gives rise to ambiguities that cannot be resolved with the
-      associativity and priority mechanisms shown earlier. SDF
-      provides two additional disambiguation mechanism for this
-      purpose. A follow restriction \texttt{A -/- cc1 . ... . ccn}
-      indicates that a string of sort A cannot be followed by a string
-      in <code>cc1 ... ccn</code>, where the <code>cc</code> are
-      character classes. Follow restrictions can be used to encode
-      longest match disambiguation. A reject production <code>A1
-      ... An -> A0 {reject}</code> forbids an <code>A0</code> if it
-      can also be parsed as <code>A1 ... An</code>. Reject productions
-      are typically used to specify reserved words, by rejecting them
-      as identifiers.
-    </para>
-
-    <example>
-      <title>Lexical syntax for floating point literals</title>
-      <para>
-	Very complex regular expressions, without a clear structure.
-      </para>
-
-      <para>
-	Reject integer literals
-      </para>
-    </example>
-  </section>
   
   <section>
-    <title>Layout: Whitespace and Comments</title>
-    
+    <title>Defining Identifiers</title>
+
+    <para/>
+
+    <section>
+      <title>Reserving Keywords</title>
+      
+      <para>
+	The definition of lexical syntax with a context-free grammar,
+	gives rise to ambiguities that cannot be resolved with the
+	associativity and priority mechanisms shown earlier. SDF
+	provides two additional disambiguation mechanism for this
+	purpose. A follow restriction \texttt{A -/- cc1 . ... . ccn}
+	indicates that a string of sort A cannot be followed by a string
+	in <code>cc1 ... ccn</code>, where the <code>cc</code> are
+	character classes. Follow restrictions can be used to encode
+	longest match disambiguation. A reject production <code>A1
+	... An -> A0 {reject}</code> forbids an <code>A0</code> if it
+	can also be parsed as <code>A1 ... An</code>. Reject productions
+	are typically used to specify reserved words, by rejecting them
+	as identifiers.
+      </para>
+
+      <para>
+	Technically, literals are not keywords in some languages.
+      </para>
+    </section>
+
+    <section>
+      <title>Longest Match for Identifiers</title>
+      <para>
+	Surprising effects: break of identifiers
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Defining Whitespace</title>
+    <para/>
+
     <para>
       These concepts are illustrated in <xref
       linkend="Fig-LexicalSyntax"/>, which defines the lexical syntax
@@ -87,22 +80,27 @@
     </para>
 
     <para>
-	Lexical syntax sections are used to define constructs, such as
-	identifiers, layout, comments, and literals. Layout is a
-	special non-terminal in \SDF{} named \verb|LAYOUT|. A symbol
-	for this non-terminal is inserted between the symbols of
-	productions in a context-free syntax section to allow layout
-	between the symbols there. The following lexical syntax
-	section defines layout (\texttt{LAYOUT}), identifiers
-	(\verb|Id|), and integer constants (\verb|IntConst|).
+      Lexical syntax sections are used to define constructs, such as
+      identifiers, layout, comments, and literals. Layout is a special
+      non-terminal in \SDF{} named \verb|LAYOUT|. A symbol for this
+      non-terminal is inserted between the symbols of productions in a
+      context-free syntax section to allow layout between the symbols
+      there. The following lexical syntax section defines layout
+      (\texttt{LAYOUT}), identifiers (\verb|Id|), and integer
+      constants (\verb|IntConst|).
     </para>
 
     <para>
-      Explain why longest match on layout is often necessary.
+      Why follow restrictions on whitespace is necessary
     </para>
+  </section>
+
+  <section>
+    <title>Defining Comments</title>
+    <para/>
 
     <example>
-      <title>Lexical Syntax of Comments in Java</title>
+      <title>Lexical Syntax of Line Comments</title>
       <para/>
     </example>
 
@@ -110,13 +108,42 @@
       <title>Balanced Block Comments</title>
       <para/>
     </example>
-    
-    <figure xml:id="Fig-LexicalSyntax">
-      <title>
-	Definition of lexical syntax.
-      </title>
-      <showfile root="." file="xmpl/Lexical.sdf"/>
-    </figure>
+  </section>
+
+  <section>
+    <title>Defining Literals</title>
+
+    <para>
+      The use of productions for lexical syntax becomes clear if we
+      take a look at the definition of floating point literals in
+      Java.
+    </para>
+
+    <example>
+      <title>Lexical Syntax for Floating Point Literals</title>
+      <para>
+	Very complex regular expressions, without a clear structure.
+      </para>
+
+      <para>
+	Reject integer literals
+      </para>
+
+      <para>
+	Follow restrictions
+      </para>
+    </example>
+  </section>
+
+  <section>
+    <title>Defining Keywords</title>
+    <para>
+      See identifiers
+    </para>
+
+    <para>
+      Follow restriction
+    </para>
   </section>
 </section>
 
