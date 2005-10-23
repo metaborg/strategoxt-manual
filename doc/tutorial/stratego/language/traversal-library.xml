@@ -14,7 +14,6 @@
   Now we will consider a number of idioms and standard strategies from
   the Stratego Library that are useful in the definition of traversals.
 
-
 </para>
 
 <section>
@@ -22,39 +21,72 @@
 
 <para>
 
-  Using the <code>all</code> traversal primitive we can define generic
-  traversal strategies like <code>topdown</code> and
-  <code>bottomup</code>.
+  One class of traversal strategies performs a <emphasis>full
+  traversal</emphasis>, that is visits and transforms every subterm of
+  the subject term.
 
-  The most general class of traversals visits every node of a term and
-  applies a transformation to it. The following operators define
-  traversals that apply a strategy <code>s</code> to all nodes of a
-  term.
-  
+  We already saw the <code>bottomup</code> strategy defined as
+
 <screen>
 bottomup(s) = all(bottomup(s)); s
-topdown(s)  = s; all(topdown(s))
-downup(s)   = s; all(downup(s)); s
 </screen>
 
+  It first visits the subterms of the subject term and then applies
+  the transformation <code>s</code> to the result.
+  
+  A related strategy is <code>topdown</code>, which is defined as
+  
 <screen>
-const-fold = bottomup(try(EvalBinOp &lt;+ EvalCall &lt;+ EvalIf))
+topdown(s) = s; all(topdown(s))
 </screen>
+ 
+  It <emphasis>first</emphasis> transforms the subject therm and
+  <emphasis>then</emphasis> visits the subterms of the result.
+
+  A combination of <code>topdown</code> and <code>bottomup</code> is
+  <code>downup</code>, defined as
+
+<screen>
+downup(s) = s; all(downup(s)); s
+</screen>
+
+  It applies <code>s</code> on the way down the tree, and again on the
+  way up. 
+
+  A variation is <code>downup(2,0)</code>
+
+<screen>
+downup(s1, s2) = s1; all(downup(s1, s2)); s2
+</screen>
+
+  which applies one strategy on the way down and another on the way
+  up.
 
 </para>
 
 <para>
 
-  The strategy <code>topdown(s)</code> first visits a node before it
-  descends to the subterms, <code>bottomup(s)</code> first transforms
-  subterms before applying <code>s</code> to a node, and
-  <code>downup(s)</code> applies the transformation <code>s</code> on
-  the way down and again on the way up. Since <code>s</code> is
-  applied at every subterm, these traversals only succeed if
-  <code>s</code> succeeds everywhere. Therefore, these traversals are
-  typically applied in combination with <code>try</code> or repeat.
+  Since the parameter strategy is applied at every subterm, these
+  traversals only succeed if it succeeds everywhere. Therefore, these
+  traversals are typically applied in combination with
+  <code>try</code> or <code>repeat</code>.
+
+<screen>
+topdown(try(R1 &lt;+ R2 &lt;+ ...))
+</screen>
 
 </para>
+
+<formalpara>
+  <title>Choosing a Strategy</title>
+
+<para>
+
+  TODO: Question: which strategy to apply when?
+
+</para>
+
+</formalpara>
 
 <para>
 
@@ -65,6 +97,9 @@ const-fold = bottomup(try(EvalBinOp &lt;+ EvalCall &lt;+ EvalIf))
 <screen>
 eval = bottomup(repeat(T))
 </screen>
+
+   TODO: note that bottomup is useful here and not topdown; give
+   example in shell
     
 </para>
 
@@ -76,32 +111,17 @@ eval = bottomup(repeat(T))
   apply one of the rules <code>DefI</code> or <code>DefE</code> at
   every subterm.
 
-</para>
-
 <screen>
-DefAnd : And(e1, e2) -> If(e1, e2, Int("0"))
+DefI : I(x, y) -> O(N(x), y)
+DefE : E(x, y) -> A(I(x, y), I(y, x))
 
-DefPlus : Plus(e1, e2) -> BinOp(PLUS(), e1, e2)
-
-desugar = topdown(try(DefAnd &lt;+ DefPlus))
+desugar = topdown(try(DefI &lt;+ DefE))
 </screen>
 
-<screen>
-IfThen(And(Var("a"),Var("b")), Plus(Var("c"),Int("3")))
-<prompt>stratego></prompt> desugar 
-IfThen(If(Var("a"),Var("b"),Int("0")), BinOp(PLUS,Var("c"),Int("3"))
-</screen>
-
-<para>
-
-    \paragraph{Topdown vs Bottomup}
+  Note that here it is not
 
 <screen>
 desugar = bottomup(try(DefI &lt;+ DefE))
-
-DefI : I(x, y) -> O(N(x), y)
-
-DefE : E(x, y) -> A(I(x, y), I(y, x))
 </screen>
 
   Since the subterms of a node are traversed
@@ -119,13 +139,14 @@ desugar = topdown(try(DefI &lt;+ DefE))
   
 </para>
 
+<formalpara>
+   <title>Repeated Application</title>
+
 <para>
 
-  \paragraph{Repeated Application}
-
-    In case one rule produces a term to which another desugaring
-    rule can be used, the desugaring strategy should repeat
-    the application of rules to each subterm.
+  In case one rule produces a term to which another desugaring rule
+  can be used, the desugaring strategy should repeat the application
+  of rules to each subterm.
     
 <screen>
 impl-nf = topdown(repeat(DefN + DefA2 + DefO1 + DefE))
@@ -135,7 +156,14 @@ impl-nf = topdown(repeat(DefN + DefA2 + DefO1 + DefE))
   much of the term they traverse and to which parts of the term they
   modify.
 
-\subsection{Paramorphism}
+</para>
+
+</formalpara>
+
+<formalpara>
+   <title>Paramorphism</title>
+
+<para>
 
   A variation on bottomup is a traversal that also provides the
   original term as well as the term in which the direct subterms have
@@ -145,7 +173,11 @@ impl-nf = topdown(repeat(DefN + DefA2 + DefO1 + DefE))
 bottomup-para(s) = &lt;s>(&lt;id>, &lt;all(bottomup-para(s))>)
 </screen>
 
+  TODO: example
+
 </para>
+
+</formalpara>
 
 </section>
 
