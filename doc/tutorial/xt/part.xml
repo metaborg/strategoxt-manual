@@ -12,7 +12,11 @@
 
   <xi:include href="architecture/chapter.xml" />
   <xi:include href="terms/chapter.xml" />
+
+  <xi:include href="parsing/chapter.xml" />
   <xi:include href="sdf/chapter.xml" />
+  <xi:include href="sdf-advanced/chapter.xml" />
+
   <xi:include href="rtg/chapter.xml" />
   <xi:include href="gpp/chapter.xml" />
   <!-- <xi:include href="xml/chapter.xml" /> -->

@@ -1,7 +1,7 @@
-<section
+<chapter
     xmlns="http://docbook.org/ns/docbook"
     xmlns:xi="http://www.w3.org/2003/XInclude">
-  <title>Advanced Topics</title>
+  <title>Advanced Topics in Syntax Definition</title>
   
   <section>
     <title>Combining Languages</title>
