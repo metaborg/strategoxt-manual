@@ -50,7 +50,6 @@
   <xi:include href="lexical.xml" />
   <xi:include href="context-free.xml" />
   <xi:include href="disambiguation.xml" />
-  <xi:include href="advanced.xml" />
   <xi:include href="glossary.xml"/>
   <xi:include href="parse-unit/section.xml"/>
 </chapter>
