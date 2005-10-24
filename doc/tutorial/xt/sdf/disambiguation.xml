@@ -138,9 +138,18 @@
       <title>Avoid and Prefer Productions</title>
       <para/>
 
+      <para>
+	In general, we suggest to use prefer and avoid only as a last
+	resorts. A disavantage of this method is that you do not
+	actually define over which production you actually prefer or
+	avoid the current one. The might lead to surprising
+	non-ambiguities.
+      </para>
+
       <example>
 	<title>Dangling Else</title>
-	<para/>
+	<para>
+	</para>
       </example>
 
     </section>
