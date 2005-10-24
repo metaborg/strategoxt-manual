@@ -5,33 +5,126 @@
   <title>Examples: Defining Lexical Syntax</title>
 
   <para>
-    "Design discussed, let's know see how this actually works."
+    Until now, we have mostly discussed the design of SDF. Now, it's
+    about time to see how all these fancy ideas for syntax definition
+    work about in practice. In this and the next section, we will
+    present a series of examples that explain how typical language
+    constructs are defined in SDF. This first section covers examples
+    of lexical syntax constructs. The next section will be about
+    context-free syntax.
   </para>
 
-  <figure xml:id="Fig-LexicalSyntax">
-    <title>
-      Definition of lexical syntax.
-    </title>
-    <showfile root="." file="xmpl/Lexical.sdf"/>
-  </figure>  
+  <section>
+    <title>Defining Whitespace</title>
 
-  <para>
-    So far we have looked at syntax of expressions and statements, but
-    not at the definition of lexical items such as identifiers and
-    constants. In most syntax definition formalisms these are defined
-    separately to generate a scanner which divides a string into
-    tokens before the parser recognizes the context-free structure.
-  </para>
-  
+    <programlisting>
+lexical syntax
+  [\ \t\r\n] -> LAYOUT</programlisting>
+  </section>
+
   <section>
     <title>Defining Identifiers</title>
 
-    <para/>
+    <para>
+      Almost every language has identifiers, so we will start with
+      that. Defining identifiers themselves is easy, but there is some
+      more definition of syntax required, as we will see next. First,
+      the actual definition of identifiers. As in most languages, we
+      want to disallow digits as the first character of an identifier,
+      so we take a little bit more restrictive character class for
+      that first character.
+    </para>
 
-    <section>
+    <programlisting>
+lexical syntax
+  [A-Za-z][A-Za-z0-9]* -> Id</programlisting>
+
+    <formalpara>
       <title>Reserving Keywords</title>
+
+      <para>
+	If a language would only consists of identifiers, then this
+	production does the job. Unfortunately, life is not that easy.
+	In practice, identifiers interact with other language
+	constructs. The best known interaction is that most languages
+	do not allow keywords (such as <code>if</code>,
+	<code>while</code>, <code>class</code>) and special literals
+	(such as <code>null</code>, <code>true</code>). In SDF,
+	keywords and special literals are not automatically preferred
+	over identifiers. For example, consider the following, very
+	simple expression language (for the context-free syntax we
+	appeal to your intuition for now).
+      </para>
+    </formalpara>
+
+    <programlisting>
+lexical syntax
+  [A-Za-z][A-Za-z0-9]* -> Id
+  "true"  -> Bool
+  "false" -> Bool
+
+context-free start-symbols Exp
+context-free syntax
+  Id   -> Exp {cons("Id")}
+  Bool -> Exp {cons("Bool")}</programlisting>
+
+    <para>
+      The input <code>true</code> can now be parsed as an identifier
+      as well as a boolean literal. Since the generalized-LR parser
+      actually supports ambiguities, we can even try this out:
+    </para>
+
+    <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
+amb([Bool("true"),Id("true")])</screen>
+      
+    <para>
+      The <code>amb</code> term is a representation of the
+      ambiguity. The argument of the ambiguity is a list of
+      alternatives. In this case, the first is the boolean literal and
+      the second is the identifier true. So, we have to define
+      explicitly that we do not want to allow these boolean literals
+      as identifiers. For this purpose, we can use SDF
+      <emphasis>reject</emphasis> productions. The intuition of these
+      reject productions is that <emphasis>all</emphasis> derivations
+      for which there is a reject production are forbidden. In this
+      example,
+    </para>
+
+    <programlisting>
+lexical syntax
+  "true"  -> Id {reject}
+  "false" -> Id {reject}</programlisting>
+
+    <para>
+      Indeed, if we add these productions to our syntax definition,
+      then the true literal is no longer ambiguous:
+    </para>
+
+    <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
+Bool("true")</screen>
+
+    <para>
+      We can make the definition of these reject productions a bit
+      more concise by just reusing the <code>Bool</code> sort. In the
+      same way, we can define keywords using separate production rules
+      and have a single reject productions for keywords to
+      identifiers.
+    </para>
+
+    <programlisting>
+lexical syntax
+  Bool    -> Id {reject}
+  Keyword -> Id {reject}
+
+  "class" -> Keyword
+  "if"    -> Keyword
+  "while" -> Keyword</programlisting>
+
+    <formalpara>
+      <title>Longest Match</title>
       
       <para>
+	Surprising effects: break of identifiers
 	The definition of lexical syntax with a context-free grammar,
 	gives rise to ambiguities that cannot be resolved with the
 	associativity and priority mechanisms shown earlier. SDF
@@ -40,24 +133,9 @@
 	indicates that a string of sort A cannot be followed by a string
 	in <code>cc1 ... ccn</code>, where the <code>cc</code> are
 	character classes. Follow restrictions can be used to encode
-	longest match disambiguation. A reject production <code>A1
-	... An -> A0 {reject}</code> forbids an <code>A0</code> if it
-	can also be parsed as <code>A1 ... An</code>. Reject productions
-	are typically used to specify reserved words, by rejecting them
-	as identifiers.
+	longest match disambiguation.
       </para>
-
-      <para>
-	Technically, literals are not keywords in some languages.
-      </para>
-    </section>
-
-    <section>
-      <title>Longest Match for Identifiers</title>
-      <para>
-	Surprising effects: break of identifiers
-      </para>
-    </section>
+    </formalpara>
   </section>
 
   <section>
@@ -144,6 +222,13 @@
     <para>
       Follow restriction
     </para>
+
+    <figure xml:id="Fig-LexicalSyntax">
+      <title>
+	Definition of lexical syntax.
+      </title>
+      <showfile root="." file="xmpl/Lexical.sdf"/>
+    </figure>  
   </section>
 </section>
 
