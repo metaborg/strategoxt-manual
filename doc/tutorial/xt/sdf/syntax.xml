@@ -239,20 +239,104 @@
     
     <para>
       In order to define the syntax at the level of characters, SDF
-      provides character classes <code>[...]</code>, which generate
-      one character from the set. Letters and digits can be written as
-      themselves, all other characters should be escaped using a
-      slash, e.g. <code>\_</code>. Characters can also be indicated by
-      their decimal ASCII\footnote{These codes could also be
-      interpreted in a different character encoding.} code, e.g.,
-      <code>\13</code> for linefeed. Some often used non-printable
-      characters have more mnemonic names, e.g., <code>\n</code> for
-      newline, <code>\ </code> for space and <code>\t</code> for tab.
+      provides character classes, which represent a set of characters
+      from which one character can be recognized during parsing.  The
+      content of a character classes is a specification of single
+      characters or character ranges
+      (<code>c<subscript>0</subscript>-</code><code>c<subscript>1</subscript></code>). Letters
+      and digits can be written as themselves, all other characters
+      should be escaped using a slash,
+      e.g. <code>\_</code>. Characters can also be indicated by their
+      decimal ASCII code, e.g. <code>\13</code> for linefeed. Some
+      often used non-printable characters have more mnemonic names,
+      e.g., <code>\n</code> for newline, <code>\ </code> for space and
+      <code>\t</code> for tab.
+    </para>
+
+    <para>
+      Character classes can be combined using set operations. The most
+      common one is the unary complement operator <code>~</code>, e.g
+      <code>~[\n]</code>. Binary operators are the set difference
+      <code>/</code>, union <code>\/</code> and intersection
+      <code>/\</code>.
     </para>
 
     <example>
-      <title>Some Basic Character Classes</title>
-      <para/>
+      <title>Examples of Character Classes</title>
+
+      <variablelist>
+	<varlistentry>
+	  <term>
+	    <code>[0-9]</code>
+	  </term>
+	  <listitem> 
+	    <para>Character class for digits: 0, 1, 2, 3, 4, 5, 6, 8,
+	    9.</para>
+	  </listitem>
+	</varlistentry>
+	
+	<varlistentry>
+	  <term>
+	    <code>[0-9a-fA-F]</code>
+	  </term>
+	  <listitem> 
+	    <para>
+	      Characters typically used in hexi-decimal literals.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	
+	
+	<varlistentry>
+	  <term>
+	    <code>[fFdD]</code>
+	  </term>
+	  <listitem>
+	    <para>
+	      Characters used as a floating point type suffix,
+	      typically in C-like languages.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	
+	<varlistentry>
+	  <term>
+	    <code>[\ \t\12\r\n]</code>
+	  </term>
+	  <listitem>
+	    <para>
+	      Typical character class for defining whitespace. Note
+	      that SDF does not yet support \f as an escape for form
+	      feed (ASCII code 12).
+	    </para>
+	  </listitem>
+	</varlistentry>
+	
+	<varlistentry>
+	  <term>
+	    <code>[btnfr\"\'\\]</code>
+	  </term>
+	  <listitem>
+	    <para>
+	      Character class for the set of characters that are
+	      usually allowed as escape sequences in C-like
+	      programming languages.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>
+	    <code>~[\"\\\n\r]</code>
+	  </term>
+	  <listitem>
+	    <para>
+	      The set of characters that is typically allowed in
+	      string literals.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
     </example>
   </section>
 </section>
