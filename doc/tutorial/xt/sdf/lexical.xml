@@ -75,7 +75,7 @@ context-free syntax
     </para>
 
     <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
-amb([Bool("true"),Id("true")])</screen>
+amb([Bool("true"), Id("true")])</screen>
       
     <para>
       The <code>amb</code> term is a representation of the
@@ -136,6 +136,46 @@ lexical syntax
 	longest match disambiguation.
       </para>
     </formalpara>
+
+    <programlisting>
+context-free syntax
+  Id    -> Stm {cons("Call")}
+  Id Id -> Stm {cons("VarDec")}</programlisting>
+
+    <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl --no-heuristic-filters
+amb([Call("foo"), VarDec("f","oo"), VarDec("fo","o")])</screen>
+
+    <programlisting>
+lexical restrictions
+  Id -/- [A-Za-z0-9]</programlisting>
+
+    <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl --no-heuristic-filters
+Call("foo")</screen>
+
+    <para>
+      Similar issue with keywords:
+    </para>
+
+    <screen><prompt>$</prompt> echo "gotox" | sglri -p Test.tbl --no-heuristic-filters
+Goto("x")</screen>
+
+    <para>
+      Usually, we want to forbid this.
+    </para>
+
+    <programlisting>
+lexical restrictions
+  "goto" -/- [A-Za-z0-9]</programlisting>
+
+    <para>
+      Note that it is not possible to define follow restrictions on
+      abstractions. The follow restriction must be defined on the
+      symbol that literally occurs in the productions.
+    </para>
+
+    <programlisting>
+lexical restrictions
+  "goto" "if" -/- [A-Za-z0-9]</programlisting>
   </section>
 
   <section>
