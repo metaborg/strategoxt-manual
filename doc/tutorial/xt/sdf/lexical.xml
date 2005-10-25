@@ -17,6 +17,17 @@
   <section>
     <title>Defining Whitespace</title>
 
+    <para>
+      Lexical syntax sections are used to define constructs, such as
+      identifiers, layout, comments, and literals. Layout is a special
+      non-terminal in \SDF{} named \verb|LAYOUT|. A symbol for this
+      non-terminal is inserted between the symbols of productions in a
+      context-free syntax section to allow layout between the symbols
+      there. The following lexical syntax section defines layout
+      (\texttt{LAYOUT}), identifiers (\verb|Id|), and integer
+      constants (\verb|IntConst|).
+    </para>
+
     <programlisting>
 lexical syntax
   [\ \t\r\n] -> LAYOUT</programlisting>
@@ -193,8 +204,7 @@ lexical restrictions
       identifier by itself, only the entire string <code>ab</code>.
       Restrictions are also used to define that a sole asterisk within
       a C style comment should not be followed by a slash (which would
-      end the comment). A reject production is used to forbid the use
-      of keywords as identifiers.
+      end the comment).
     </para>
 
     <para>
