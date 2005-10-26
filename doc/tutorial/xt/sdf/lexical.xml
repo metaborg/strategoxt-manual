@@ -311,39 +311,65 @@ lexical syntax
     <title>Floating-Point Literals</title>
 
     <para>
-      Until now, the productions for lexical syntax have not been ery
-      complex. To illustrate the lexical syntax becomes clear if we
-      take a look at the definition of floating point literals in
-      Java.
+      Until now, the productions for lexical syntax have not been very
+      complex. In some cases, the definition of lexical syntax might
+      even seem to be more complex in SDF, since you explicitly have
+      to define behaviour that is implicit in existing lexical
+      anlalysis tools. Fortunately, the expressiveness of lexical
+      syntax in SDF also has important advantages, even if it is
+      applied to language that are designed to be processed with a
+      separate scanner. As a first example, let's take a look at the
+      definition of floating-point literals.
     </para>
 
     <para>
-      Complex regular expressions, without a clear structure. Several
-      optional elements, but if you leave out one element, another
-      suddely becomes required.
+      Floating-point literals consists of three elements: digits,
+      which may include a dot, an exponent, and a float suffix
+      (e.g. <code>f</code>, <code>d</code> etc). There are three
+      optional elements in float literals: the dot, the exponent, and
+      the float suffix. But, if you leave them all out, then the
+      floating-point literal no longer distinguishes itself from an
+      integer literal. So, one of the floating-point specific elements
+      is required. For example, valid floating-point literals are:
+      <code>1.0</code>, <code>1.</code>, <code>.1</code>,
+      <code>1f</code>, and <code>1e5</code>, but invalid are:
+      <code>1</code>, and <code>.e5</code>. These rules are encoded in
+      the usual definition of floating-point literals by duplicating
+      the production rule and making different elements optional and
+      required in each production. For example:
     </para>
 
-<programlisting>
+    <programlisting>
 lexical syntax
-  FloatNumeral [fFdD]? -> FloatLiteral
-  [0-9]+               -> FloatLiteral {reject}
-
-  FloatDigits ExponentPart? -> FloatNumeral
-
-  [0-9]* "." [0-9]* -> FloatDigits
-  [0-9]+            -> FloatDigits
-         "."        -> FloatDigits {reject}
+  [0-9]+ "." [0-9]* ExponentPart? [fFdD]? -> FloatLiteral
+  [0-9]* "." [0-9]+ ExponentPart? [fFdD]? -> FloatLiteral
+  [0-9]+            ExponentPart  [fFdD]? -> FloatLiteral
+  [0-9]+            ExponentPart? [fFdD]  -> FloatLiteral
 
   [eE] SignedInteger -> ExponentPart
   [\+\-]? [0-9]+ -> SignedInteger</programlisting>
 
     <para>
-      Reject integer literals
+      However, in SDF we can use <emphasis>reject
+      production</emphasis> to reject these special cases. So, the
+      definition of floating-point literals itself can be more
+      naturally defined in a single production <xref
+      linkend="prod-float-literal"/>. The reject production <xref
+      linkend="prod-reject-integer-literal"/> defines that there
+      should at least be one element of a floating-point literal: it
+      rejects plain integer literals. The reject production <xref
+      linkend="prod-reject-dot"/> defines that the digits part of the
+      floating-point literals is not allowed to be a single dot.
     </para>
 
-    <para>
-      Follow restrictions
-    </para>
+<programlisting>
+lexical syntax
+  FloatDigits ExponentPart? [fFdD]? -> FloatLiteral <co xml:id="prod-float-literal"/>
+  [0-9]* "." [0-9]* -> FloatDigits
+  [0-9]+            -> FloatDigits
+
+  [0-9]+ -> FloatLiteral {reject} <co xml:id="prod-reject-integer-literal"/>
+  "."    -> FloatDigits  {reject} <co xml:id="prod-reject-dot"/></programlisting>
   </section>
 
   <section>
