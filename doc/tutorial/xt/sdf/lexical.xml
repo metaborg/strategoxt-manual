@@ -421,11 +421,14 @@ lexical syntax
 	allowed in a comment, but it cannot be followed by a
 	<code>/</code>. As explained earlier, we need to specify this
 	follow restriction on a symbol that
-	<emphasis>literally</emphasis> occurs in the production. To
-	distinguish this <code>*</code> from the multiplication
-	operator, we introduce a new sort, <code>Asterisk</code>, for
-	which we can specify a follow restriction that only applies to
-	the <code>*</code> in a comment.
+	<emphasis>literally</emphasis> occurs in the production. So,
+	first we could try to use <code>"*"</code>, but this symbol
+	also occurs in other productions, for example in
+	multiplication expressions. To distinguish the block comment
+	<code>*</code> from the multiplication operator, we introduce
+	a new sort, called <code>Asterisk</code>, for which we can
+	specify a follow restriction that only applies to the
+	<code>*</code> in a block comment.
       </para>
 
       <programlisting>
@@ -435,10 +438,6 @@ lexical syntax
 
 context-free restrictions
   Asterisk -/- [\/]</programlisting>
-
-      <para>
-	Explain why Asterisk is required (as opposed to "*")
-      </para>
     </section>
 
     
