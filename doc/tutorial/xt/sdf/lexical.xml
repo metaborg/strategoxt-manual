@@ -281,7 +281,8 @@ lexical restrictions
     </para>
 
     <programlisting>
-lexical syntax [0-9]+ -> IntConst
+lexical syntax
+  [0-9]+ -> IntConst
 
 lexical restrictions
   IntConst -/- [0-9]</programlisting>
