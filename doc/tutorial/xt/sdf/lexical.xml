@@ -376,9 +376,10 @@ lexical syntax
     <title>Comments</title>
 
     <para>
-      Similar to whitespace, comments can be allowed everywhere by add
-      productions for comments that produce <code>LAYOUT</code>. In
-      this section, we give examples of several kinds of comments.
+      Similar to defining whitespace, comments can be allowed
+      everywhere by defining additional <code>LAYOUT</code>
+      productions. In this section, we give examples of how to define
+      several kinds of common comments.
     </para>
 
     <section>
@@ -389,8 +390,8 @@ lexical syntax
 	special characters, such as <code>//</code>, <code>#</code>,
 	or <code>%</code>. After that, all characters on that line are
 	part of the comment. Defining end-of-line comments is quite
-	easy: after the initial characters, everything accept for the
-	line-terminating characters is allowed until a line
+	easy: after the initial characters, every character except for
+	the line-terminating characters is allowed until a line
 	terminator.
       </para>
 
@@ -403,32 +404,55 @@ lexical syntax
       <title>Traditional Block Comment</title>
 
       <para>
-	Block comments (i.e. <code>/* ... */</code> are bit more
+	Block comments (i.e. <code>/* ... */</code>) are a bit more
 	tricky to define, since the content of a block comment may
-	include a <code>*</code>. 
+	include an asterisk (<code>*</code>). Let's first take a look
+	at a definition of block comments that does not allow an
+	asterisk in its content:
       </para>
 	
 <programlisting>
   "/*" ~[\*]* "*/" -> LAYOUT</programlisting>
 
       <para>
-	If we allow all characters, including sequences of
-	<code>*/</code>, then the parser will accept <code>/* */
-	*/</code>, which is not valid in C-like languages. So, we need
-	to disallow this specific sequence of characters
-	<code>*/</code> inside a comment. We can specify this using a
-	<emphasis>follow restriction</emphasis>: a <code>*</code> is
-	allowed in a comment, but it cannot be followed by a
-	<code>/</code>. As explained earlier, we need to specify this
-	follow restriction on a symbol that
-	<emphasis>literally</emphasis> occurs in the production. So,
-	first we could try to use <code>"*"</code>, but this symbol
-	also occurs in other productions, for example in
-	multiplication expressions. To distinguish the block comment
-	<code>*</code> from the multiplication operator, we introduce
-	a new sort, called <code>Asterisk</code>, for which we can
-	specify a follow restriction that only applies to the
-	<code>*</code> in a block comment.
+	If we allow an asterisk and a slash, the sequence
+	<code>*/</code> will be allowed as well. So, the parser will
+	accept the string <code>/* */ */</code> as a comment, which is
+	not valid in C-like languages. In general, allowing this in a
+	language would be very inefficient, since the parser can never
+	decide where to stop a block comment. So, we need to disallow
+	just the specific sequence of characters <code>*/</code>
+	inside a comment. We can specify this using a <emphasis>follow
+	restriction</emphasis>: an asterisk in a block comments is
+	allowed, but it cannot be followed by a slash
+	(<code>/</code>).
+      </para>
+
+      <para>
+	But, on what symbol do we specify this follow restriction? As
+	explained earlier, we need to specify this follow restriction
+	on a symbol that <emphasis>literally</emphasis> occurs in the
+	production. So, we could try to allow a <code>"*"</code>, and
+	introduce a follow restriction on that:
+      </para>
+
+      <programlisting>
+lexical syntax
+  "/*" (~[\*] | "*")* "*/" -> LAYOUT
+
+lexical restrictions
+  "*" -/- [\/]</programlisting>
+
+      <para>
+	But, the symbol <code>"*"</code> also occurs in other
+	productions, for example in multiplication expressions and we
+	do not explicitly say here that we intend to refer to the
+	<code>"*"</code> in the block comment production. To
+	distinguish the block comment asterisk from the multiplication
+	operator, we introduce a new sort, creatively named
+	<code>Asterisk</code>, for which we can specify a follow
+	restriction that only applies to the asterisk in a block
+	comment.
       </para>
 
       <programlisting>
@@ -436,32 +460,47 @@ lexical syntax
   "/*" (~[\*] | Asterisk)* "*/" -> LAYOUT
   [\*] -> Asterisk
 
-context-free restrictions
+lexical restrictions
   Asterisk -/- [\/]</programlisting>
     </section>
 
-    
-    
     <section>
       <title>Balanced Block Comments</title>
-      <para/>
+
+      <para>
+	To illustrate that lexical syntax in SDF can actually be
+	context-free, we now show an example of how to implement
+	balanced, nested block comments, i.e. a block comment that
+	supports block comments in its content: <code>/* /* */
+	*/</code>. Defining the syntax for nested block comments is
+	quite easy, since we can just define a production that allows
+	a block comment inside itself <xref
+	linkend="sdf-nested-comment"/>. For performance and
+	predictability, it is important to require that the comments
+	are balanced correctly. So, in addition to disallowing
+	<code>*/</code> inside in block comments, we now also have to
+	disallow <code>/*</code>. For this, we introduce a
+	<code>Slash</code> sort, for which we define a follow
+	restriction <xref linkend="sdf-slash-follow-restriction"/>,
+	similar to the <code>Asterisk</code> sort that we discussed in
+	the previous section.
+      </para>
+
+      <programlisting>
+lexical syntax
+  BlockComment -> LAYOUT
+
+  "/*" CommentPart* "*/" -> BlockComment
+  ~[\/\*]      -> CommentPart
+  Asterisk     -> CommentPart
+  Slash        -> CommentPart
+  BlockComment -> CommentPart <co xml:id="sdf-nested-comment"/>
+  [\/] -> Slash
+  [\*] -> Asterisk
+
+lexical restrictions
+  Asterisk -/- [\/]
+  Slash    -/- [\*]  <co xml:id="sdf-slash-follow-restriction"/></programlisting>
     </section>
-  </section>
-
-  <section>
-    <title>More on Defining Whitespace and Comments</title>
-
-<programlisting>
-context-free restrictions
-  LAYOUT? -/- [\ \t\12\n\r]</programlisting>
-
-    <para>
-      Why follow restrictions on whitespace is necessary
-    </para>
-
-<programlisting>
-context-free restrictions
-  LAYOUT?  -/- [\/].[\*]
-  LAYOUT?  -/- [\/].[\/]</programlisting>
   </section>
 </section>

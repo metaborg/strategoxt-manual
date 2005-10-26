@@ -2,7 +2,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-    <title>Examples: Defining Context-free Syntax</title>
+    <title>Examples: Defining Context-Free Syntax</title>
 
       <para>
 	<xref linkend="Fig-RegularExpressions"/> illustrates the use of
@@ -33,5 +33,22 @@ function fact(n, x) =
 	</title>
 	<showfile root="." file="xmpl/Statements.sdf"/>
       </figure>
+
+  <section>
+    <title>More on Defining Whitespace and Comments</title>
+
+<programlisting>
+context-free restrictions
+  LAYOUT? -/- [\ \t\12\n\r]</programlisting>
+
+    <para>
+      Why follow restrictions on whitespace is necessary
+    </para>
+
+<programlisting>
+context-free restrictions
+  LAYOUT?  -/- [\/].[\*]
+  LAYOUT?  -/- [\/].[\/]</programlisting>
   </section>
+</section>
   
