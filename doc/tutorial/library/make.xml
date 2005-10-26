@@ -468,10 +468,13 @@ ogetarts/
      <title>Building Your Own library (*)</title>
      
      <para>Organizing your Library
-     - putting it into <filename>src/lib/</filename>
-     - dividing a library into packages
-     - importing packages
      </para>
+
+<screen>
+ - putting it into <filename>src/lib/</filename>
+ - dividing a library into packages
+ - importing packages
+</screen>
 
      <para>Supporing Separate Compilation</para>
 

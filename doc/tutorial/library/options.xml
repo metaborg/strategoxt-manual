@@ -101,5 +101,12 @@ Description:
   <para>
     <code>option-wrap(opts, usage, about, announce, s)</code>
   </para>
+
+<screen> 
+ - reading option values
+ - setting defaults
+ - dealing with verbosity
+ - keeping intermediate files
+</screen>
 </chapter>
 
