@@ -318,8 +318,24 @@ lexical syntax
     </para>
 
     <para>
-      Very complex regular expressions, without a clear structure.
+      Complex regular expressions, without a clear structure. Several
+      optional elements, but if you leave out one element, another
+      suddely becomes required.
     </para>
+
+<programlisting>
+lexical syntax
+  FloatNumeral [fFdD]? -> FloatLiteral
+  [0-9]+               -> FloatLiteral {reject}
+
+  FloatDigits ExponentPart? -> FloatNumeral
+
+  [0-9]* "." [0-9]* -> FloatDigits
+  [0-9]+            -> FloatDigits
+         "."        -> FloatDigits {reject}
+
+  [eE] SignedInteger -> ExponentPart
+  [\+\-]? [0-9]+ -> SignedInteger</programlisting>
 
     <para>
       Reject integer literals
@@ -336,17 +352,32 @@ lexical syntax
     <section>
       <title>End-of-line Comment</title>
 
-      <figure xml:id="Fig-LexicalSyntax">
-	<title>
-	  Definition of lexical syntax.
-	</title>
-	<showfile root="." file="xmpl/Lexical.sdf"/>
-      </figure>  
+<programlisting>
+lexical syntax
+  "//" ~[\n]* [\n] -> LAYOUT</programlisting>
     </section>
 
     <section>
       <title>Traditional Block Comment</title>
       <para/>
+
+      <para>
+	Explain why follow restriction on Asterisk is required.
+      </para>
+
+      <para>
+	Explain why Asterisk is required (as opposed to "*")
+      </para>
+
+<programlisting>
+lexical syntax
+  "/*" CommentChar* "*/" -> LAYOUT
+  ~[\*]    -> CommentChar
+  Asterisk -> CommentChar
+  [\*]     -> Asterisk
+
+context-free restrictions
+  Asterisk -/- [\/]</programlisting>
     </section>
     
     <section>
@@ -356,13 +387,19 @@ lexical syntax
   </section>
 
   <section>
-    <title>More on Defining Whitespace</title>
-    <para/>
+    <title>More on Defining Whitespace and Comments</title>
+
+<programlisting>
+context-free restrictions
+  LAYOUT? -/- [\ \t\12\n\r]</programlisting>
 
     <para>
       Why follow restrictions on whitespace is necessary
     </para>
+
+<programlisting>
+context-free restrictions
+  LAYOUT?  -/- [\/].[\*]
+  LAYOUT?  -/- [\/].[\/]</programlisting>
   </section>
-
 </section>
-
