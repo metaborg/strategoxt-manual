@@ -102,6 +102,7 @@
 	<title>No New Array</title>
 	<para/>
       </example>
+    </section>
   </section>
 
   <section>
@@ -152,4 +153,3 @@ context-free restrictions
   LAYOUT?  -/- [\/].[\/]</programlisting>
   </section>
 </section>
-
