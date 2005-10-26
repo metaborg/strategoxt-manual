@@ -7,7 +7,7 @@
   <para>
     Until now, we have mostly discussed the design of SDF. Now, it's
     about time to see how all these fancy ideas for syntax definition
-    work about in practice. In this and the next section, we will
+    work out in practice. In this and the next section, we will
     present a series of examples that explain how typical language
     constructs are defined in SDF. This first section covers examples
     of lexical syntax constructs. The next section will be about
@@ -18,22 +18,37 @@
     <title>Defining Whitespace</title>
 
     <para>
-      Lexical syntax sections are used to define constructs, such as
-      identifiers, layout, comments, and literals. Layout is a special
-      non-terminal in \SDF{} named \verb|LAYOUT|. A symbol for this
-      non-terminal is inserted between the symbols of productions in a
-      context-free syntax section to allow layout between the symbols
-      there. The following lexical syntax section defines layout
-      (\texttt{LAYOUT}), identifiers (\verb|Id|), and integer
-      constants (\verb|IntConst|).
+      Before we can start with the examples of lexical constructs like
+      identifiers and literals, you need to know the basics of
+      defining whitespace. In SDF, layout is a special sort, called
+      <code>LAYOUT</code>. To define layout, you have to define
+      productions that produce this <code>LAYOUT</code> sort. Thus, to
+      allow whitespace we can define a production that takes all
+      whitespace characters and produces layout. Layout is lexical
+      syntax, so we define this in a lexical syntax section.
     </para>
 
     <programlisting>
 lexical syntax
   [\ \t\r\n] -> LAYOUT</programlisting>
+
+    <para>
+      We can now also reveal how <code>context-free syntax</code>
+      exactly works. In <code>context-free syntax</code>, layout is
+      allowed between symbols in the left-hand side of the
+      productions, by automatically inserting optional layout
+      (e.g. <code>LAYOUT?</code>) between them.
+    </para>
+
+    <para>
+      In the following examples, we will assume that whitespace is
+      always defined in this way. So, we will not repeat this
+      production in the examples. We will come back to the details of
+      whitespace and comments later.
+    </para>
   </section>
 
-  <section>
+  <section xml:id="section-sdf-lexical-identifiers">
     <title>Defining Identifiers</title>
 
     <para>
@@ -50,7 +65,7 @@ lexical syntax
 lexical syntax
   [A-Za-z][A-Za-z0-9]* -> Id</programlisting>
 
-    <formalpara>
+    <section>
       <title>Reserving Keywords</title>
 
       <para>
@@ -66,9 +81,8 @@ lexical syntax
 	simple expression language (for the context-free syntax we
 	appeal to your intuition for now).
       </para>
-    </formalpara>
 
-    <programlisting>
+      <programlisting>
 lexical syntax
   [A-Za-z][A-Za-z0-9]* -> Id
   "true"  -> Bool
@@ -79,50 +93,56 @@ context-free syntax
   Id   -> Exp {cons("Id")}
   Bool -> Exp {cons("Bool")}</programlisting>
 
-    <para>
-      The input <code>true</code> can now be parsed as an identifier
-      as well as a boolean literal. Since the generalized-LR parser
-      actually supports ambiguities, we can even try this out:
-    </para>
+      <para>
+        The input <code>true</code> can now be parsed as an identifier
+        as well as a boolean literal. Since the generalized-LR parser
+        actually supports ambiguities, we can even try this out:
+      </para>
 
-    <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
+      <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
 amb([Bool("true"), Id("true")])</screen>
       
-    <para>
-      The <code>amb</code> term is a representation of the
-      ambiguity. The argument of the ambiguity is a list of
-      alternatives. In this case, the first is the boolean literal and
-      the second is the identifier true. So, we have to define
-      explicitly that we do not want to allow these boolean literals
-      as identifiers. For this purpose, we can use SDF
-      <emphasis>reject</emphasis> productions. The intuition of these
-      reject productions is that <emphasis>all</emphasis> derivations
-      for which there is a reject production are forbidden. In this
-      example,
-    </para>
+      <para>
+        The <code>amb</code> term is a representation of the
+        ambiguity. The argument of the ambiguity is a list of
+        alternatives. In this case, the first is the boolean literal
+        and the second is the identifier true. So, we have to define
+        explicitly that we do not want to allow these boolean literals
+        as identifiers. For this purpose, we can use SDF
+        <emphasis>reject productions</emphasis>. The intuition of
+        reject productions is that <emphasis>all</emphasis>
+        derivations of a symbol for which there is a reject production
+        are forbidden. In this example, we need to create productions
+        for the boolean literals to identifiers.
+      </para>
 
-    <programlisting>
+      <programlisting>
 lexical syntax
   "true"  -> Id {reject}
   "false" -> Id {reject}</programlisting>
 
-    <para>
-      Indeed, if we add these productions to our syntax definition,
-      then the true literal is no longer ambiguous:
-    </para>
+      <para>
+	For <code>true</code>, there will now be two derivations for
+	an <code>Id</code>: one using the reject production and one
+	using the real production for identifiers. Because of that
+	reject production, all derivations will be rejected, so
+	<code>true</code> is not an identifier anymore.  Indeed, if we
+	add these productions to our syntax definition, then the true
+	literal is no longer ambiguous:
+      </para>
 
-    <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
+      <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
 Bool("true")</screen>
 
-    <para>
-      We can make the definition of these reject productions a bit
-      more concise by just reusing the <code>Bool</code> sort. In the
-      same way, we can define keywords using separate production rules
-      and have a single reject productions for keywords to
-      identifiers.
-    </para>
+      <para>
+        We can make the definition of these reject productions a bit
+        more concise by just reusing the <code>Bool</code> sort. In
+        the same way, we can define keywords using separate production
+        rules and have a single reject production from keywords to
+        identifiers.
+      </para>
 
-    <programlisting>
+      <programlisting>
 lexical syntax
   Bool    -> Id {reject}
   Keyword -> Id {reject}
@@ -130,48 +150,104 @@ lexical syntax
   "class" -> Keyword
   "if"    -> Keyword
   "while" -> Keyword</programlisting>
+    </section>
 
-    <formalpara>
+    <section>
       <title>Longest Match</title>
       
       <para>
-	Surprising effects: break of identifiers
-	The definition of lexical syntax with a context-free grammar,
-	gives rise to ambiguities that cannot be resolved with the
-	associativity and priority mechanisms shown earlier. SDF
-	provides two additional disambiguation mechanism for this
-	purpose. A follow restriction \texttt{A -/- cc1 . ... . ccn}
-	indicates that a string of sort A cannot be followed by a string
-	in <code>cc1 ... ccn</code>, where the <code>cc</code> are
-	character classes. Follow restrictions can be used to encode
-	longest match disambiguation.
+	Scanners usually apply a longest match policy for scanning
+	tokens. Thus, if the next character can be included in the
+	current token, then this will always be done, regardless of
+	the consequences after this token. In most languages, this is
+	indeed the required behaviour, but in some languages longest
+	match scanning actually doesn't work. Similar to not
+	automatically reserving keywords, SDF doesn't choose the
+	longest match by default. Instead, you need to specify
+	explicitly that you want to recognize the longest match.
       </para>
-    </formalpara>
 
-    <programlisting>
+      <para>
+        For example, suppose that we introduce two language constructs
+        based on the previously defined <code>Id</code>. The following
+        productions define two statements: a simple goto and a
+        construct for variable declarations, where the first
+        <code>Id</code> is the type and the second the variable name.
+      </para>
+
+      <programlisting>
 context-free syntax
-  Id    -> Stm {cons("Call")}
+  Id    -> Stm {cons("Goto")}
   Id Id -> Stm {cons("VarDec")}</programlisting>
 
-    <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl --no-heuristic-filters
-amb([Call("foo"), VarDec("f","oo"), VarDec("fo","o")])</screen>
+      <para>
+        For the input <code>foo</code>, which is of course intended to
+        be a goto, the parser will now happily split up the identifier
+        <code>foo</code>, which results in variable
+        declarations. Hence, this input is ambiguous.
+      </para>
 
-    <programlisting>
+    <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl --no-heuristic-filters
+amb([Goto("foo"), VarDec("f","oo"), VarDec("fo","o")])</screen>
+
+      <para>
+        To specify that we want the longest match of an identifier, we
+        define a <emphasis>follow restriction</emphasis>. Such a
+        follow restriction indicates that a string of a certain symbol
+        cannot be followed by a character from the given character
+        class. In this way, follow restrictions can be used to encode
+        longest match disambiguation. In this case, we need to specify
+        that an <code>Id</code> cannot be followed by one of the
+        identifier characters:
+      </para>
+
+      <programlisting>
 lexical restrictions
   Id -/- [A-Za-z0-9]</programlisting>
 
-    <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl --no-heuristic-filters
-Call("foo")</screen>
+      <para>
+        Indeed, the input <code>foo</code> is no longer ambiguous and
+        is parsed as a goto:
+      </para>
+
+      <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl --no-heuristic-filters
+Goto("foo")</screen>
+    </section>
+  </section>
+
+  <section>
+    <title>Defining Keywords</title>
+    
+    <para>
+      In <xref linkend="section-sdf-lexical-identifiers"/> we
+      explained how to reject keywords as identifiers, so we will not
+      repeat that here. Also, we discussed how to avoid that
+      identifiers get split. A similar split issue arises with
+      keywords. Usually, we want to forbid a letter immediately after
+      a keyword, but the scannerless parser will happily start a new
+      identifier token immediately after the keyword. To illustrate
+      this, we need to introduce a keyword, so let's make our previous
+      <code>goto</code> statement a bit more clear:
+    </para>
+
+    <programlisting>
+context-free syntax
+  "goto" Id -> Stm {cons("Goto")}</programlisting>
 
     <para>
-      Similar issue with keywords:
+      To illustrate the problem, let's take the input
+      <code>gotox</code>.  Of course, we don't want to allow this
+      string to be a goto, but without a follow restriction, it will
+      actually be parsed by starting an identifier after the
+      <code>goto</code>:
     </para>
 
     <screen><prompt>$</prompt> echo "gotox" | sglri -p Test.tbl --no-heuristic-filters
 Goto("x")</screen>
 
     <para>
-      Usually, we want to forbid this.
+      The solution is to specify a follow restriction on the
+      <code>"goto"</code> literal symbol.
     </para>
 
     <programlisting>
@@ -179,63 +255,18 @@ lexical restrictions
   "goto" -/- [A-Za-z0-9]</programlisting>
 
     <para>
-      Note that it is not possible to define follow restrictions on
-      abstractions. The follow restriction must be defined on the
-      symbol that literally occurs in the productions.
+      It is not possible to define the follow restrictions on the
+      <code>Keyword</code> sort that we introduced earlier in the
+      <code>reject</code> example. The follow restriction must be
+      defined on the symbol that <emphasis>literally</emphasis> occurs
+      in the production, which is not the case with the
+      <code>Keyword</code> symbol. However, you can specify all the
+      symbols in a single follow restriction, seperated by spaces:
     </para>
 
     <programlisting>
 lexical restrictions
   "goto" "if" -/- [A-Za-z0-9]</programlisting>
-  </section>
-
-  <section>
-    <title>Defining Whitespace</title>
-    <para/>
-
-    <para>
-      These concepts are illustrated in <xref
-      linkend="Fig-LexicalSyntax"/>, which defines the lexical syntax
-      of identifiers, integer constants, and C-style comments. Note
-      how follow restrictions are used for longest match
-      disambiguation of identifiers, integer constants, and
-      layout. Since an identifier cannot be followed by a letter, the
-      <code>a</code> in <code>ab</code> cannot be recognized as an
-      identifier by itself, only the entire string <code>ab</code>.
-      Restrictions are also used to define that a sole asterisk within
-      a C style comment should not be followed by a slash (which would
-      end the comment).
-    </para>
-
-    <para>
-      Lexical syntax sections are used to define constructs, such as
-      identifiers, layout, comments, and literals. Layout is a special
-      non-terminal in \SDF{} named \verb|LAYOUT|. A symbol for this
-      non-terminal is inserted between the symbols of productions in a
-      context-free syntax section to allow layout between the symbols
-      there. The following lexical syntax section defines layout
-      (\texttt{LAYOUT}), identifiers (\verb|Id|), and integer
-      constants (\verb|IntConst|).
-    </para>
-
-    <para>
-      Why follow restrictions on whitespace is necessary
-    </para>
-  </section>
-
-  <section>
-    <title>Defining Comments</title>
-    <para/>
-
-    <example>
-      <title>Lexical Syntax of Line Comments</title>
-      <para/>
-    </example>
-
-    <example>
-      <title>Balanced Block Comments</title>
-      <para/>
-    </example>
   </section>
 
   <section>
@@ -261,17 +292,6 @@ lexical restrictions
 	Follow restrictions
       </para>
     </example>
-  </section>
-
-  <section>
-    <title>Defining Keywords</title>
-    <para>
-      See identifiers
-    </para>
-
-    <para>
-      Follow restriction
-    </para>
 
     <figure xml:id="Fig-LexicalSyntax">
       <title>
@@ -280,5 +300,30 @@ lexical restrictions
       <showfile root="." file="xmpl/Lexical.sdf"/>
     </figure>  
   </section>
+
+  <section>
+    <title>Defining Comments</title>
+    <para/>
+
+    <example>
+      <title>Lexical Syntax of Line Comments</title>
+      <para/>
+    </example>
+
+    <example>
+      <title>Balanced Block Comments</title>
+      <para/>
+    </example>
+  </section>
+
+  <section>
+    <title>More on Defining Whitespace</title>
+    <para/>
+
+    <para>
+      Why follow restrictions on whitespace is necessary
+    </para>
+  </section>
+
 </section>
 
