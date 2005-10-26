@@ -270,7 +270,41 @@ lexical restrictions
   </section>
 
   <section>
-    <title>Defining Literals</title>
+    <title>Defining Numeric Literals</title>
+
+    <para>
+      Compared to identifiers, integer literals are usually very easy
+      to define, since they do not really interact with other language
+      constructs. Just to be sure, we still define a lexical
+      restriction. The need for this restriction depends on the
+      language in which the integer literal is used.
+    </para>
+
+    <programlisting>
+lexical syntax
+  [0-9]+ -> IntConst
+
+lexical restrictions
+  IntConst -/- [0-9]</programlisting>
+
+    <para>
+      In mainstream languages, there are often several notations for
+      integer literal, for example decimal, hexadecimal, or octal. The
+      alternatives are then usually prefixed with one or more
+      character that indicates the kind of integer literal. In Java,
+      hexadecimal numerals start with <code>0x</code> and octal with a
+      <code>0</code> (zero). For this, we have to make the definition
+      of decimal numerals a bit more precise, since <code>01234</code>
+      is now an <emphasis>octal</emphasis> numeral.
+    </para>
+
+    <programlisting>
+lexical syntax
+  "0"         -> DecimalNumeral
+  [1-9][0-9]* -> DecimalNumeral
+
+  [0][xX] [0-9a-fA-F]+ -> HexaDecimalNumeral
+  [0]     [0-7]+       -> OctalNumeral</programlisting>
 
     <para>
       The use of productions for lexical syntax becomes clear if we
