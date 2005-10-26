@@ -15,7 +15,7 @@
   </para>
 
   <section>
-    <title>Defining Whitespace</title>
+    <title>Simple Whitespace</title>
 
     <para>
       Before we can start with the examples of lexical constructs like
@@ -49,7 +49,7 @@ lexical syntax
   </section>
 
   <section xml:id="section-sdf-lexical-identifiers">
-    <title>Defining Identifiers</title>
+    <title>Identifiers</title>
 
     <para>
       Almost every language has identifiers, so we will start with
@@ -216,7 +216,7 @@ Goto("foo")</screen>
   </section>
 
   <section>
-    <title>Defining Keywords</title>
+    <title>Keywords</title>
     
     <para>
       In <xref linkend="section-sdf-lexical-identifiers"/> we
@@ -270,8 +270,8 @@ lexical restrictions
   </section>
 
   <section>
-    <title>Defining Numeric Literals</title>
-
+    <title>Integer Literals</title>
+    
     <para>
       Compared to identifiers, integer literals are usually very easy
       to define, since they do not really interact with other language
@@ -281,8 +281,7 @@ lexical restrictions
     </para>
 
     <programlisting>
-lexical syntax
-  [0-9]+ -> IntConst
+lexical syntax [0-9]+ -> IntConst
 
 lexical restrictions
   IntConst -/- [0-9]</programlisting>
@@ -305,49 +304,54 @@ lexical syntax
 
   [0][xX] [0-9a-fA-F]+ -> HexaDecimalNumeral
   [0]     [0-7]+       -> OctalNumeral</programlisting>
+  </section>
+
+  <section>
+    <title>Floating-Point Literals</title>
 
     <para>
-      The use of productions for lexical syntax becomes clear if we
+      Until now, the productions for lexical syntax have not been ery
+      complex. To illustrate the lexical syntax becomes clear if we
       take a look at the definition of floating point literals in
       Java.
     </para>
 
-    <example>
-      <title>Lexical Syntax for Floating Point Literals</title>
-      <para>
-	Very complex regular expressions, without a clear structure.
-      </para>
+    <para>
+      Very complex regular expressions, without a clear structure.
+    </para>
 
-      <para>
-	Reject integer literals
-      </para>
+    <para>
+      Reject integer literals
+    </para>
 
-      <para>
-	Follow restrictions
-      </para>
-    </example>
-
-    <figure xml:id="Fig-LexicalSyntax">
-      <title>
-	Definition of lexical syntax.
-      </title>
-      <showfile root="." file="xmpl/Lexical.sdf"/>
-    </figure>  
+    <para>
+      Follow restrictions
+    </para>
   </section>
 
   <section>
-    <title>Defining Comments</title>
-    <para/>
+    <title>Comments</title>
 
-    <example>
-      <title>Lexical Syntax of Line Comments</title>
+    <section>
+      <title>End-of-line Comment</title>
+
+      <figure xml:id="Fig-LexicalSyntax">
+	<title>
+	  Definition of lexical syntax.
+	</title>
+	<showfile root="." file="xmpl/Lexical.sdf"/>
+      </figure>  
+    </section>
+
+    <section>
+      <title>Traditional Block Comment</title>
       <para/>
-    </example>
-
-    <example>
+    </section>
+    
+    <section>
       <title>Balanced Block Comments</title>
       <para/>
-    </example>
+    </section>
   </section>
 
   <section>
