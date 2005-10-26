@@ -375,8 +375,24 @@ lexical syntax
   <section>
     <title>Comments</title>
 
+    <para>
+      Similar to whitespace, comments can be allowed everywhere by add
+      productions for comments that produce <code>LAYOUT</code>. In
+      this section, we give examples of several kinds of comments.
+    </para>
+
     <section>
       <title>End-of-line Comment</title>
+
+      <para>
+	Most languages support end-of-line comments, which start with
+	special characters, such as <code>//</code>, <code>#</code>,
+	or <code>%</code>. After that, all characters on that line are
+	part of the comment. Defining end-of-line comments is quite
+	easy: after the initial characters, everything accept for the
+	line-terminating characters is allowed until a line
+	terminator.
+      </para>
 
 <programlisting>
 lexical syntax
@@ -385,26 +401,47 @@ lexical syntax
 
     <section>
       <title>Traditional Block Comment</title>
-      <para/>
 
       <para>
-	Explain why follow restriction on Asterisk is required.
+	Block comments (i.e. <code>/* ... */</code> are bit more
+	tricky to define, since the content of a block comment may
+	include a <code>*</code>. 
       </para>
+	
+<programlisting>
+  "/*" ~[\*]* "*/" -> LAYOUT</programlisting>
+
+      <para>
+	If we allow all characters, including sequences of
+	<code>*/</code>, then the parser will accept <code>/* */
+	*/</code>, which is not valid in C-like languages. So, we need
+	to disallow this specific sequence of characters
+	<code>*/</code> inside a comment. We can specify this using a
+	<emphasis>follow restriction</emphasis>: a <code>*</code> is
+	allowed in a comment, but it cannot be followed by a
+	<code>/</code>. As explained earlier, we need to specify this
+	follow restriction on a symbol that
+	<emphasis>literally</emphasis> occurs in the production. To
+	distinguish this <code>*</code> from the multiplication
+	operator, we introduce a new sort, <code>Asterisk</code>, for
+	which we can specify a follow restriction that only applies to
+	the <code>*</code> in a comment.
+      </para>
+
+      <programlisting>
+lexical syntax
+  "/*" (~[\*] | Asterisk)* "*/" -> LAYOUT
+  [\*] -> Asterisk
+
+context-free restrictions
+  Asterisk -/- [\/]</programlisting>
 
       <para>
 	Explain why Asterisk is required (as opposed to "*")
       </para>
-
-<programlisting>
-lexical syntax
-  "/*" CommentChar* "*/" -> LAYOUT
-  ~[\*]    -> CommentChar
-  Asterisk -> CommentChar
-  [\*]     -> Asterisk
-
-context-free restrictions
-  Asterisk -/- [\/]</programlisting>
     </section>
+
+    
     
     <section>
       <title>Balanced Block Comments</title>
