@@ -2,37 +2,138 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-    <title>Examples: Defining Context-Free Syntax</title>
+  <title>Examples: Defining Context-Free Syntax</title>
 
+
+  <section>
+    <title>Expressions</title>
+
+    <para>
+      Constructor annotations
+    </para>
+    
+    <para>
+      bracket annotations
+    </para>
+
+    <para>
+      Syntax definitions in the style of <xref
+      linkend="Fig-test1-acub"/> are <emphasis>ambiguous</emphasis>,
+      i.e., there is more than one way to map strings to trees. For
+      example, the string <code>a+b*c</code> has two possible
+      derivations, as shown in <xref linkend="Fig-ambiguities"/>.
+    </para>
+    
+    <example xml:id="Fig-ambiguities">
+      <title>
+	Parses for the string <code>a+b*c</code>
+      </title>
+	<nexttoeachother>
+	  <entry>
+	    <pngobject fileref="xmpl/test5-acub.png" align="center"/>
+	  </entry>
+	  <entry>
+	    <pngobject fileref="xmpl/test4-acub.png" align="center"/>
+	  </entry>
+	</nexttoeachother>
+    </example>
+
+    <section>
+      <title>Associativity</title>
+      
       <para>
-	<xref linkend="Fig-RegularExpressions"/> illustrates the use of
-	these operators in the extension of the expression language with
-	statements and function declarations. Lists are used in numerous
-	places, such as for the sequential composition of statements
-	(<code>Seq</code>), the declarations in a let binding, and the
-	formal and actual arguments of a function (<code>FunDec</code>
-	and <code>Call</code>). An example function definition in this
-	language is:
-<screen>
-function fact(n, x) =
-  if n > 0 then fact(n - 1, n * x) else x
-</screen>
+	In plain context-free grammars such ambiguities are solved by
+	introducing additional non-terminals and productions. This
+	results in much more complex parse trees and increases the
+	distance between parse trees and abstract syntax trees. In
+	order to support natural syntax definitions, SDF provides
+	several declarative disambiguation mechanismqs. Associativity
+	declarations (<code>left</code>, <code>right</code>,
+	<code>non-assoc</code>), disambiguate combinations of a binary
+	operator with itself and with other operators. Thus, the left
+	associativity of <code>+</code> entails that
+	<code>a+b+c</code> is parsed as <code>(a+b)+c</code>. Priority
+	declarations (<code>></code>) declare the relative priority of
+	productions. A production with lower priority cannot be a
+	direct subtree of a production with higher priority. Thus
+	<code>a+b*c</code> is parsed as <code>a+(b*c)</code> since the
+	other parse <code>(a+b)*c</code> has a conflict between the
+	<code>*</code> and <code>+</code> productions.
       </para>
-
-      <para>
-	Constructor annotations
-      </para>
-
-  <para>
-    bracket annotations
-  </para>
-
-      <figure xml:id="Fig-RegularExpressions">
+      
+      <figure xml:id="Fig-Expressions.sdf">
 	<title>
-	  Syntax definition with regular expressions.
+	  Syntax definition with associativity and priority declarations.
 	</title>
-	<showfile root="." file="xmpl/Statements.sdf"/>
+	<showfile root="." file="xmpl/Expressions.sdf"/>
       </figure>
+
+      <para>
+	Associativity in Group
+      </para>
+    </section>
+    
+    <section>
+      <title>Priorities</title>
+
+      <example>
+	<title>Expressions</title>
+	<para/>
+      </example>
+
+      <example>
+	<title>Preventing Cycles</title>
+	<para/>
+      </example>
+
+      <warning>
+	<title>Hedged Symbols</title>
+	<para/>
+	<para>
+	  Solution: introduce an auxiliary non-terminal
+	</para>
+      </warning>
+    </section>
+
+    <section>
+      <title>Misc Issues</title>
+
+      <example>
+	<title>No New Array</title>
+	<para/>
+      </example>
+  </section>
+
+  <section>
+    <title>Statements</title>
+    
+    <para>
+      <xref linkend="Fig-RegularExpressions"/> illustrates the use of
+      these operators in the extension of the expression language with
+      statements and function declarations. Lists are used in numerous
+      places, such as for the sequential composition of statements
+      (<code>Seq</code>), the declarations in a let binding, and the
+      formal and actual arguments of a function (<code>FunDec</code>
+      and <code>Call</code>). An example function definition in this
+      language is:
+    </para>
+
+    <figure xml:id="Fig-RegularExpressions">
+      <title>
+	Syntax definition with regular expressions.
+      </title>
+      <showfile root="." file="xmpl/Statements.sdf"/>
+    </figure>
+
+    <screen>
+function fact(n, x) =
+  if n > 0 then fact(n - 1, n * x) else x</screen>
+
+    <section>
+      <title>Dangling Else</title>
+      <para/>
+    </section>
+  </section>
 
   <section>
     <title>More on Defining Whitespace and Comments</title>
@@ -51,4 +152,4 @@ context-free restrictions
   LAYOUT?  -/- [\/].[\/]</programlisting>
   </section>
 </section>
-  
+
