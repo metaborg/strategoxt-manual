@@ -8,10 +8,10 @@ PNG = \
   tutorial/xt/architecture/simple-expr-tree.png \
   tutorial/xt/terms/sharing-tree.png \
   tutorial/xt/terms/sharing-graph.png \
-  tutorial/xt/sdf/Plus.png \
-  tutorial/xt/sdf/PlusTimes.png \
-  tutorial/xt/sdf/parse-tree.png \
-  tutorial/xt/sdf/abstract-syntax-tree.png
+  tutorial/xt/parsing/Plus.png \
+  tutorial/xt/parsing/PlusTimes.png \
+  tutorial/xt/parsing/parse-tree.png \
+  tutorial/xt/parsing/abstract-syntax-tree.png
 
 rasterclean :
 	rm -f $(PNG)
@@ -26,10 +26,10 @@ tutorial/xt/architecture/simple-expr-tree.png : SIZE = -w 225 -h 225
 tutorial/xt/terms/sharing-tree.png  : SIZE = -w 275 -h 275
 tutorial/xt/terms/sharing-graph.png : SIZE = -w 275 -h 275
 
-tutorial/xt/sdf/Plus.png       : SIZE = -w 600 -h 125
-tutorial/xt/sdf/PlusTimes.png  : SIZE = -w 225 -h 200
-tutorial/xt/sdf/parse-tree.png : SIZE = -w 275 -h 400
-tutorial/xt/sdf/abstract-syntax-tree.png : SIZE = -w 225 -h 225
+tutorial/xt/parsing/Plus.png       : SIZE = -w 600 -h 125
+tutorial/xt/parsing/PlusTimes.png  : SIZE = -w 225 -h 200
+tutorial/xt/parsing/parse-tree.png : SIZE = -w 275 -h 400
+tutorial/xt/parsing/abstract-syntax-tree.png : SIZE = -w 225 -h 225
 
 # Generic rules
 

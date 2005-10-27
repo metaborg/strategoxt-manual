@@ -25,7 +25,7 @@
       linkend="xmpl-sdf-expression-modules"/>.
     </para>
 
-    <example xml:id='xmpl-sdf-expression-modules'>
+    <example xml:id='xmpl-sdf-expression-module'>
       <title>Syntax of Small Expression Language in SDF</title>
 
     <programlisting>
@@ -71,7 +71,10 @@ exports
     <title>Constructor Attributes</title>
 
     <para>
-      cons
+      First, it is about time to explain the mysterious
+      <code>cons</code> attributes that, for example <xref
+      linkend="xmpl-cf-cons1"/> and <xref linkend="xmpl-cf-cons2"/> in
+      <xref linkend="xmpl-sdf-expression-module"/>.
     </para>
 
     <para>
