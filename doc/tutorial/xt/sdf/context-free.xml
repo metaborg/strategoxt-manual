@@ -121,10 +121,10 @@ exports
 
 <programlisting>
   ...
-> Exp "&amp;"   Exp -> Exp
-> Exp "^"   Exp -> Exp
-> Exp "|"   Exp -> Exp
-> Exp "&amp;&amp;"  Exp -> Exp
+> Exp "&amp;"  Exp -> Exp
+> Exp "^"  Exp -> Exp
+> Exp "|"  Exp -> Exp
+> Exp "&amp;&amp;" Exp -> Exp
 > Exp "||" Exp -> Exp
 > ... </programlisting>
 
