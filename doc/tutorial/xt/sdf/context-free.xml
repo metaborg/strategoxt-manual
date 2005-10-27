@@ -24,7 +24,7 @@ module Operators
 exports
   sorts Exp
   context-free syntax
-    "-" Exp     -> Exp {cons("UnaryPlus")}
+    "-" Exp     -> Exp {cons("UnaryMinus")}
     Exp "*" Exp -> Exp {cons("Times"), left <co xml:id="xmpl-cf-assoc-left"/>}
     Exp "/" Exp -> Exp {cons("Div"), left}
     Exp "%" Exp -> Exp {cons("Mod"), left}
@@ -50,10 +50,29 @@ exports
         Exp "=" Exp -> Exp
         Exp ">" Exp -> Exp
       }</programlisting>
+  </section>
 
+  <section>
+    <title>Constructor Attributes</title>
 
     <para>
-      Constructor annotations
+      cons
+    </para>
+
+    <para>
+      bracket
+    </para>
+  </section>
+
+  <section>
+    <title>Ambiguities in Expressions</title>
+
+    <para>
+      Syntax definitions in the style of <xref
+      linkend="Fig-test1-acub"/> are <emphasis>ambiguous</emphasis>,
+      i.e., there is more than one way to map strings to trees. For
+      example, the string <code>a+b*c</code> has two possible
+      derivations, as shown in <xref linkend="Fig-ambiguities"/>.
     </para>
 
     <programlisting>
@@ -70,18 +89,6 @@ exports
   IntConst -> PrimExp {cons("Int")}
   Id       -> PrimExp {cons("Var")}</programlisting>
     
-    <para>
-      bracket annotations
-    </para>
-
-    <para>
-      Syntax definitions in the style of <xref
-      linkend="Fig-test1-acub"/> are <emphasis>ambiguous</emphasis>,
-      i.e., there is more than one way to map strings to trees. For
-      example, the string <code>a+b*c</code> has two possible
-      derivations, as shown in <xref linkend="Fig-ambiguities"/>.
-    </para>
-    
     <example xml:id="Fig-ambiguities">
       <title>
 	Parses for the string <code>a+b*c</code>
@@ -95,31 +102,32 @@ exports
 	  </entry>
 	</nexttoeachother>
     </example>
+  </section>
 
-    <section>
-      <title>Associativity</title>
-      
-      <para>
-	In plain context-free grammars such ambiguities are solved by
-	introducing additional non-terminals and productions. This
-	results in much more complex parse trees and increases the
-	distance between parse trees and abstract syntax trees. In
-	order to support natural syntax definitions, SDF provides
-	several declarative disambiguation mechanismqs. Associativity
-	declarations (<code>left</code>, <code>right</code>,
-	<code>non-assoc</code>), disambiguate combinations of a binary
-	operator with itself and with other operators. Thus, the left
-	associativity of <code>+</code> entails that
-	<code>a+b+c</code> is parsed as <code>(a+b)+c</code>. Priority
-	declarations (<code>></code>) declare the relative priority of
-	productions. A production with lower priority cannot be a
-	direct subtree of a production with higher priority. Thus
-	<code>a+b*c</code> is parsed as <code>a+(b*c)</code> since the
-	other parse <code>(a+b)*c</code> has a conflict between the
-	<code>*</code> and <code>+</code> productions.
-      </para>
+  <section>
+    <title>Associativity and Priorities</title>
 
-<programlisting>
+    <para>
+      In plain context-free grammars such ambiguities are solved by
+      introducing additional non-terminals and productions. This
+      results in much more complex parse trees and increases the
+      distance between parse trees and abstract syntax trees. In order
+      to support natural syntax definitions, SDF provides several
+      declarative disambiguation mechanismqs. Associativity
+      declarations (<code>left</code>, <code>right</code>,
+      <code>non-assoc</code>), disambiguate combinations of a binary
+      operator with itself and with other operators. Thus, the left
+      associativity of <code>+</code> entails that <code>a+b+c</code>
+      is parsed as <code>(a+b)+c</code>. Priority declarations
+      (<code>></code>) declare the relative priority of productions. A
+      production with lower priority cannot be a direct subtree of a
+      production with higher priority. Thus <code>a+b*c</code> is
+      parsed as <code>a+(b*c)</code> since the other parse
+      <code>(a+b)*c</code> has a conflict between the <code>*</code>
+      and <code>+</code> productions.
+    </para>
+    
+    <programlisting>
   ...
 > Exp "&amp;"  Exp -> Exp
 > Exp "^"  Exp -> Exp
@@ -128,43 +136,35 @@ exports
 > Exp "||" Exp -> Exp
 > ... </programlisting>
 
-      <para>
-	Associativity in Group
-      </para>
+    <section>
+      <title>Group Associativity</title>
+      <para/>
     </section>
     
     <section>
-      <title>Priorities</title>
-
-      <example>
-	<title>Expressions</title>
-	<para/>
-      </example>
-
-      <example>
-	<title>Preventing Cycles</title>
-	<para/>
-      </example>
-
-      <warning>
-	<title>Hedged Symbols</title>
-	<para/>
-	<para>
-	  Solution: introduce an auxiliary non-terminal
-	</para>
-      </warning>
-    </section>
-
-    <section>
-      <title>Misc Issues</title>
-
-      <example>
-	<title>No New Array</title>
-	<para/>
-      </example>
+      <title>Priorities and Hedged Symbols</title>
+      <para/>
+      <para>
+	Solution: introduce an auxiliary non-terminal
+      </para>
     </section>
   </section>
 
+  <section>
+    <title>Array Creation and Access Ambiguity</title>
+    
+    <para>
+      This is usually handled with introducing a new non-terminal.
+    </para>
+    
+    <programlisting>
+context-free syntax
+  "new" ArrayBaseType DimExp+ Dim*  -> ArrayCreationExp {cons("NewArray")}
+
+  Exp "[" Exp "]" -> Exp {cons("ArrayAccess")}
+  ArrayCreationExp "[" Exp "]" -> Exp {reject}</programlisting>
+  </section>
+  
   <section>
     <title>Statements</title>
     
@@ -197,7 +197,7 @@ function fact(n, x) =
   </section>
 
   <section>
-    <title>More on Defining Whitespace and Comments</title>
+    <title>Whitespace and Comments</title>
 
 <programlisting>
 context-free restrictions
