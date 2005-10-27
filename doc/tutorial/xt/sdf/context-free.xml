@@ -31,7 +31,7 @@
     <programlisting>
 module Expression
 imports
-  Lexical Operators
+  Lexical
 
 exports
   context-free start-symbol Exp
@@ -40,18 +40,12 @@ exports
     IntConst    -> Exp {cons("Int")}
     "(" Exp ")" -> Exp {bracket <co xml:id="xmpl-cf-bracket"/>}
 
-module Operators
-exports
-  sorts Exp
-  context-free syntax
     "-" Exp     -> Exp {cons("UnaryMinus")}
     Exp "*" Exp -> Exp {cons("Times"), left <co xml:id="xmpl-cf-assoc-left"/>}
     Exp "/" Exp -> Exp {cons("Div"), left}
     Exp "%" Exp -> Exp {cons("Mod"), left}
-  
     Exp "+" Exp -> Exp {cons("Plus") <co xml:id="xmpl-cf-cons2"/>, left}
     Exp "-" Exp -> Exp {cons("Minus"), left}
-
     Exp "=" Exp -> Exp {cons("Eq"), non-assoc <co xml:id="xmpl-cf-non-assoc"/>}
     Exp ">" Exp -> Exp {cons("Gt"), non-assoc}
 
