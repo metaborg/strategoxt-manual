@@ -66,8 +66,7 @@ exports
     [\ \t\n]  -> LAYOUT
 
   lexical restrictions <co xml:id='ex-basic-module-restriction' />
-    Id -/- [a-zA-Z]
-</programlisting>
+    Id -/- [a-zA-Z]</programlisting>
     </example>
 
     <para>

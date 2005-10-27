@@ -8,9 +8,67 @@
   <section>
     <title>Expressions</title>
 
+    <programlisting>
+module Expression
+imports
+  Lexical Operators
+
+exports
+  context-free start-symbol Exp
+  context-free syntax
+    Id          -> Exp {cons("Var") <co xml:id="xmpl-cf-cons1"/>}
+    IntConst    -> Exp {cons("Int")}
+    "(" Exp ")" -> Exp {bracket <co xml:id="xmpl-cf-bracket"/>}
+
+module Operators
+exports
+  sorts Exp
+  context-free syntax
+    "-" Exp     -> Exp {cons("UnaryPlus")}
+    Exp "*" Exp -> Exp {cons("Times"), left <co xml:id="xmpl-cf-assoc-left"/>}
+    Exp "/" Exp -> Exp {cons("Div"), left}
+    Exp "%" Exp -> Exp {cons("Mod"), left}
+  
+    Exp "+" Exp -> Exp {cons("Plus") <co xml:id="xmpl-cf-cons2"/>, left}
+    Exp "-" Exp -> Exp {cons("Minus"), left}
+
+    Exp "=" Exp -> Exp {cons("Eq"), non-assoc <co xml:id="xmpl-cf-non-assoc"/>}
+    Exp ">" Exp -> Exp {cons("Gt"), non-assoc}
+
+  context-free priorities <co xml:id='xmpl-cf-priorities' />
+       "-" Exp -> Exp <co xml:id="xmpl-cf-priority-prod"/>
+    > {left: <co xml:id="xmpl-cf-group-left"/>
+        Exp "*" Exp -> Exp
+        Exp "/" Exp -> Exp
+        Exp "%" Exp -> Exp
+      } 
+    > {left: 
+        Exp "+" Exp -> Exp
+        Exp "-" Exp -> Exp
+      }
+    > {non-assoc: <co xml:id="xmpl-cf-group-non-assoc"/>
+        Exp "=" Exp -> Exp
+        Exp ">" Exp -> Exp
+      }</programlisting>
+
+
     <para>
       Constructor annotations
     </para>
+
+    <programlisting>
+  AddExp -> Exp
+
+  MulExp -> AddExp
+  AddExp "+" MulExp -> AddExp {cons("Plus")}
+  AddExp "-" MulExp -> AddExp {cons("Minus")}
+
+  PrimExp -> MulExp
+  MulExp "*" PrimExp -> MulExp {cons("Mul")} 
+  MulExp "/" PrimExp -> MulExp {cons("Div")}
+
+  IntConst -> PrimExp {cons("Int")}
+  Id       -> PrimExp {cons("Var")}</programlisting>
     
     <para>
       bracket annotations
@@ -60,13 +118,15 @@
 	other parse <code>(a+b)*c</code> has a conflict between the
 	<code>*</code> and <code>+</code> productions.
       </para>
-      
-      <figure xml:id="Fig-Expressions.sdf">
-	<title>
-	  Syntax definition with associativity and priority declarations.
-	</title>
-	<showfile root="." file="xmpl/Expressions.sdf"/>
-      </figure>
+
+<programlisting>
+  ...
+> Exp "&amp;"   Exp -> Exp
+> Exp "^"   Exp -> Exp
+> Exp "|"   Exp -> Exp
+> Exp "&amp;&amp;"  Exp -> Exp
+> Exp "||" Exp -> Exp
+> ... </programlisting>
 
       <para>
 	Associativity in Group
