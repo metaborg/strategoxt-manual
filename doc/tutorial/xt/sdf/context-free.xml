@@ -28,7 +28,7 @@
     <example xml:id='xmpl-sdf-expression-module'>
       <title>Syntax of Small Expression Language in SDF</title>
 
-    <programlisting>
+      <programlisting>
 module Expression
 imports
   Lexical
@@ -152,11 +152,37 @@ Times(Plus(Int("1"),Int("2")),Int("3"))</screen>
     <title>Ambiguities in Expressions</title>
 
     <para>
-      Syntax definitions in the style of <xref
-      linkend="Fig-test1-acub"/> are <emphasis>ambiguous</emphasis>,
-      i.e., there is more than one way to map strings to trees. For
+      Syntax definitions that use only a single non-terminal for
+      expressions are highly ambiguous. <xref
+      linkend="xmpl-sdf-amb-expression"/> shows the basic arithmetic
+      operators defined in this way. For every combination of
+      operators, there are now multiple possible derivations. For
       example, the string <code>a+b*c</code> has two possible
-      derivations, as shown in <xref linkend="Fig-ambiguities"/>.
+      derivations, which we can actually see because of the use of a
+      generalized-LR parser:
+    </para>
+
+    <example xml:id="xmpl-sdf-amb-expression">
+      <title>Ambiguous and Non-Ambiguous Syntax for
+      Expressions</title>
+
+      <programlisting>
+  Exp "+" Exp -> Exp {cons("Plus")}
+  Exp "-" Exp -> Exp {cons("Minus")}
+  Exp "*" Exp -> Exp {cons("Mul")} 
+  Exp "/" Exp -> Exp {cons("Div")}</programlisting>
+    </example>
+
+    
+
+
+
+
+    <para>
+      In plain context-free grammars such ambiguities are solved by
+      introducing additional non-terminals and productions. This
+      results in much more complex parse trees and increases the
+      distance between parse trees and abstract syntax trees.
     </para>
 
     <programlisting>
@@ -172,32 +198,14 @@ Times(Plus(Int("1"),Int("2")),Int("3"))</screen>
 
   IntConst -> PrimExp {cons("Int")}
   Id       -> PrimExp {cons("Var")}</programlisting>
-    
-    <example xml:id="Fig-ambiguities">
-      <title>
-	Parses for the string <code>a+b*c</code>
-      </title>
-	<nexttoeachother>
-	  <entry>
-	    <pngobject fileref="xmpl/test5-acub.png" align="center"/>
-	  </entry>
-	  <entry>
-	    <pngobject fileref="xmpl/test4-acub.png" align="center"/>
-	  </entry>
-	</nexttoeachother>
-    </example>
   </section>
 
   <section>
     <title>Associativity and Priorities</title>
 
     <para>
-      In plain context-free grammars such ambiguities are solved by
-      introducing additional non-terminals and productions. This
-      results in much more complex parse trees and increases the
-      distance between parse trees and abstract syntax trees. In order
-      to support natural syntax definitions, SDF provides several
-      declarative disambiguation mechanismqs. Associativity
+      In order to support natural syntax definitions, SDF provides
+      several declarative disambiguation mechanismqs. Associativity
       declarations (<code>left</code>, <code>right</code>,
       <code>non-assoc</code>), disambiguate combinations of a binary
       operator with itself and with other operators. Thus, the left
