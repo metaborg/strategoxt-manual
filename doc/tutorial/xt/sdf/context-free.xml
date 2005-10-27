@@ -4,9 +4,29 @@
 
   <title>Examples: Defining Context-Free Syntax</title>
 
+  <para>
+    Context-free syntax in SDF is syntax where layout is allowed
+    between the symbols of the productions. Context-free syntax can be
+    defined in a natural way, thanks to the use of generalized-LR
+    parsing, declarative disambiguation mechanism, and an extensive
+    set of regular expression operators. To illustrate the definition
+    of context-free syntax, we give examples of defining expressions
+    and statements. Most of the time will be spend on explaining the
+    disambiguation mechanisms.
+  </para>
 
   <section>
     <title>Expressions</title>
+
+    <para>
+      In the following sections, we will explain the details of a
+      slightly extended version of the SDF modules in <xref
+      linkend="ex-basic-module"/>, shown in <xref
+      linkend="xmpl-sdf-expression-modules"/>.
+    </para>
+
+    <example xml:id='xmpl-sdf-expression-modules'>
+      <title>Syntax of Small Expression Language in SDF</title>
 
     <programlisting>
 module Expression
@@ -50,6 +70,7 @@ exports
         Exp "=" Exp -> Exp
         Exp ">" Exp -> Exp
       }</programlisting>
+    </example>
   </section>
 
   <section>
