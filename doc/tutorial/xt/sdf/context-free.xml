@@ -34,17 +34,18 @@ imports
   Lexical
 
 exports
-  context-free start-symbol Exp
+  context-free start-symbols Exp
   context-free syntax
-    Id          -> Exp {cons("Var") <co xml:id="xmpl-cf-cons1"/>}
-    IntConst    -> Exp {cons("Int")}
+    Id          -> Var <co xml:id="xmpl-cf-injection"/>
+    Var         -> Exp {cons("Var") <co xml:id="xmpl-cf-cons1"/>}
+    IntConst    -> Exp {cons("Int") <co xml:id="xmpl-cf-cons2"/>}}
     "(" Exp ")" -> Exp {bracket <co xml:id="xmpl-cf-bracket"/>}
 
     "-" Exp     -> Exp {cons("UnaryMinus")}
     Exp "*" Exp -> Exp {cons("Times"), left <co xml:id="xmpl-cf-assoc-left"/>}
     Exp "/" Exp -> Exp {cons("Div"), left}
     Exp "%" Exp -> Exp {cons("Mod"), left}
-    Exp "+" Exp -> Exp {cons("Plus") <co xml:id="xmpl-cf-cons2"/>, left}
+    Exp "+" Exp -> Exp {cons("Plus") <co xml:id="xmpl-cf-cons3"/>, left}
     Exp "-" Exp -> Exp {cons("Minus"), left}
     Exp "=" Exp -> Exp {cons("Eq"), non-assoc <co xml:id="xmpl-cf-non-assoc"/>}
     Exp ">" Exp -> Exp {cons("Gt"), non-assoc}
@@ -71,37 +72,39 @@ exports
     <title>Constructor Attributes and Abstract Syntax Trees</title>
 
     <para>
-      First, it is about time to explain the constructor attributes
-      (<code>cons</code>), which were already briefly mentioned in
-      <xref linkend="section-concepts-parse-trees"/>. In the example
+      First, it is about time to explain the constructor attribute,
+      <code>cons</code>, which was already briefly mentioned in <xref
+      linkend="section-concepts-parse-trees"/>. In the example
       expression language, most productions have a constructor
-      attribute, for example <xref linkend="xmpl-cf-cons1"/> and <xref
-      linkend="xmpl-cf-cons2"/>, but some have not, for example <xref
+      attribute, for example <xref linkend="xmpl-cf-cons1"/>, <xref
+      linkend="xmpl-cf-cons2"/> and <xref linkend="xmpl-cf-cons3"/>,
+      but some have not, for example <xref
+      linkend="xmpl-cf-injection"/> and <xref
       linkend="xmpl-cf-bracket"/>.
     </para>
 
     <para>
       The <code>cons</code> attribute does not have any actual meaning
       in the definition of the syntax, i.e the presence or absence of
-      the <code>cons</code> does not affect the syntax that is defined
-      in any way. The <code>cons</code> attribute only serves to
-      specify the name of the abstract syntax tree node that is to be
-      constructed if that production is applied. In this way, the
-      <code>cons</code> attribute <xref linkend="xmpl-cf-cons1"/> of
-      the production for variables, defines that a <code>Var</code>
-      node should be produced for that production:
+      a constructor does not affect the syntax that is defined in any
+      way. The constructor only serves to specify the name of the
+      abstract syntax tree node that is to be constructed if that
+      production is applied. In this way, the <code>cons</code>
+      attribute <xref linkend="xmpl-cf-cons2"/> of the production for
+      integer literals, defines that an <code>Int</code> node should
+      be produced for that production:
     </para>
 
-    <screen><prompt>$</prompt> echo "x" | sglri -p Test.tbl --no-heuristic-filters
-Var("x")</screen>
+    <screen><prompt>$</prompt> echo "1" | sglri -p Test.tbl --no-heuristic-filters
+Int("1")</screen>
 
     <para>
-      Note that this <code>Var</code> constructor takes a single
-      argument: a string, which is the name of the variable. This
-      argument of <code>Var</code> is a string because the production
-      for <code>Id</code> is defined in <emphasis>lexical
+      Note that this <code>Int</code> constructor takes a single
+      argument, a string, which is the name of the variable. This
+      argument of <code>Int</code> is a string because the production
+      for <code>IntConst</code> is defined in <emphasis>lexical
       syntax</emphasis> and all derivations from lexical syntax
-      productions are represented as string, i.e. without
+      productions are represented as strings, i.e. without
       structure. As another example, the production for addition has a
       <code>Plus</code> constructor attribute <xref
       linkend="xmpl-cf-cons2"/>. This production has three symbols on
@@ -114,8 +117,35 @@ Var("x")</screen>
 Plus(Int("1"),Int("2"))</screen>
 
     <para>
-      bracket
+      However, there are also productions that have no
+      <code>cons</code> attribute, i.e. <xref
+      linkend="xmpl-cf-injection"/> and <xref
+      linkend="xmpl-cf-bracket"/>. The production <xref
+      linkend="xmpl-cf-injection"/> from <code>Id</code> to
+      <code>Var</code> is called an <emphasis>injection</emphasis>,
+      since it does not involve any additional syntax. Injections
+      don't need to have a constructor attribute. If it is left out,
+      then the application of the production will not produce a node
+      in the abstract syntax tree. Example:
     </para>
+
+    <screen><prompt>$</prompt> echo "x" | sglri -p Test.tbl --no-heuristic-filters
+Var("x")</screen>
+
+    <para>
+      Nevertheless, the production <xref linkend="xmpl-cf-bracket"/>
+      does involve additional syntax, but does not have a
+      constructor. In this case, the <code>bracket</code> attribute
+      should be used to indicate that this is a symbol between
+      brackets, which should be literals. The <code>bracket</code>
+      attribute does not affect the syntax of the language, similar to
+      the constructor attribute. Hence, the parenthesis in the
+      following example do not introduce a node, and the
+      <code>Plus</code> is a direct subterm of <code>Times</code>.
+    </para>
+
+    <screen><prompt>$</prompt> echo "(1 + 2) * 3" | sglri -p Test.tbl --no-heuristic-filters
+Times(Plus(Int("1"),Int("2")),Int("3"))</screen>
   </section>
 
   <section>
