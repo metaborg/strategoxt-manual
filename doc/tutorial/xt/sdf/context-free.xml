@@ -22,7 +22,7 @@
       In the following sections, we will explain the details of a
       slightly extended version of the SDF modules in <xref
       linkend="ex-basic-module"/>, shown in <xref
-      linkend="xmpl-sdf-expression-modules"/>.
+      linkend="xmpl-sdf-expression-module"/>.
     </para>
 
     <example xml:id='xmpl-sdf-expression-module'>
@@ -68,14 +68,50 @@ exports
   </section>
 
   <section>
-    <title>Constructor Attributes</title>
+    <title>Constructor Attributes and Abstract Syntax Trees</title>
 
     <para>
-      First, it is about time to explain the mysterious
-      <code>cons</code> attributes that, for example <xref
-      linkend="xmpl-cf-cons1"/> and <xref linkend="xmpl-cf-cons2"/> in
-      <xref linkend="xmpl-sdf-expression-module"/>.
+      First, it is about time to explain the constructor attributes
+      (<code>cons</code>), which were already briefly mentioned in
+      <xref linkend="section-concepts-parse-trees"/>. In the example
+      expression language, most productions have a constructor
+      attribute, for example <xref linkend="xmpl-cf-cons1"/> and <xref
+      linkend="xmpl-cf-cons2"/>, but some have not, for example <xref
+      linkend="xmpl-cf-bracket"/>.
     </para>
+
+    <para>
+      The <code>cons</code> attribute does not have any actual meaning
+      in the definition of the syntax, i.e the presence or absence of
+      the <code>cons</code> does not affect the syntax that is defined
+      in any way. The <code>cons</code> attribute only serves to
+      specify the name of the abstract syntax tree node that is to be
+      constructed if that production is applied. In this way, the
+      <code>cons</code> attribute <xref linkend="xmpl-cf-cons1"/> of
+      the production for variables, defines that a <code>Var</code>
+      node should be produced for that production:
+    </para>
+
+    <screen><prompt>$</prompt> echo "x" | sglri -p Test.tbl --no-heuristic-filters
+Var("x")</screen>
+
+    <para>
+      Note that this <code>Var</code> constructor takes a single
+      argument: a string, which is the name of the variable. This
+      argument of <code>Var</code> is a string because the production
+      for <code>Id</code> is defined in <emphasis>lexical
+      syntax</emphasis> and all derivations from lexical syntax
+      productions are represented as string, i.e. without
+      structure. As another example, the production for addition has a
+      <code>Plus</code> constructor attribute <xref
+      linkend="xmpl-cf-cons2"/>. This production has three symbols on
+      the left-hand side, but the constructor takes only two
+      arguments, since literals are not included in the abstract
+      syntax tree.
+    </para>
+
+    <screen><prompt>$</prompt> echo "1+2" | sglri -p Test.tbl --no-heuristic-filters
+Plus(Int("1"),Int("2"))</screen>
 
     <para>
       bracket
