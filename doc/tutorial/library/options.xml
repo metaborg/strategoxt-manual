@@ -18,6 +18,9 @@
     we will cover the mechanism available in Stratego for
     working with command line arguments.
   </para>
+
+<section>
+  <title>Parsing Command-line Options</title>
   
   <para>
     When a compiled Stratego program is first started, 
@@ -169,14 +172,15 @@ Yes(It(Works))
     bonus, these options also make your program compatible with XTC; it
 	can be composed with other XTC components.
   </para>
+</section>
 
-  <formalpara>
-    <title>Adding Options</title>
+<section>
+  <title>Adding Custom Options</title>
     
     <para>
       It is often necessary for programs to expose switches to turn
       functionality on and off, or to read extra configuration knowledge
-      from additional files. All these cases require additional command
+      from external files. All these cases require additional command
       line options, so we need a mechanism for extending
       the basic <code>io-wrap(s)</code> strategy. The preferred way of
       adding new options is to use the <code>io-wrap(opts,s)</code>
@@ -197,7 +201,7 @@ Yes(It(Works))
 
     <para>
       Adding this option to our program <command>foo</command> 
-      makes our program look like this:
+      gives us the following code:
     </para>
     
 <screen>
@@ -206,7 +210,7 @@ imports
   liblib
 signature
   constructors
-    Conservative : Option
+    Verify : Option
 
 strategies
 
@@ -215,29 +219,32 @@ strategies
         "--verify"
       , &lt;set-config> (Verify(), "on")
       , !"--verify         Turn on verification")
-    , id)
+    , do-foo)
+
+  do-foo = ...
 </screen>
     
     <para>
       Note that we made a new term type, <code>Verify</code>, to serve as
-      our switch symbol. Our sample program is just <code>id</code>, but
-      in a more realistic program, we would write
+      our switch symbol. Inside the real logic of program, 
+      given by <code>do-foo</code>, we would write
       <code>&lt;get-config> Verify</code> to get the state of the 
       <code>Verify</code> switch. In the case where the user had specified
       <option>--verify</option> on the command line, 
       <code>get-config</code> would result in the term <code>"on"</code>, 
-      taken from the declaration of our <code>Option</code>, above. If
-      the user had not added <option>--verify</option> to his command
-      line arguments, <code>get-config</code> would fail.
+      taken from the declaration of our verify <code>Option</code>. If
+      the did not add <option>--verify</option> to his command line
+      arguments, <code>&lt;get-config> Verify</code> will fail.
     </para>
     
     <para>
-      The usage of options with arguments, <code>ArgOption</code>,
-      is very much the same. Assume our transformation needs a bit of
-      help from configurable processing tables, and that we want these
-      specified using the <option>-p</option> option. We would add
-      another alternative to the <code>opts</code> argument of
-      <code>io-wrap</code>:
+      Options with arguments is provided through <code>ArgOption</code>.
+      The use is pretty much identical to that of <code>Option</code>.
+      Assume our transformation needs a bit of help from configurable 
+      processing tables (whatever that might be), and that we want these
+      tables configured at runtime, using the <option>-p</option> option.
+      We want to add another alternative to the <code>opts</code> argument
+      of <code>io-wrap</code>:
     </para>
     
 <screen>
@@ -252,11 +259,19 @@ strategies
 </screen>  
 
     <para>
-      Again, the value (the filename) provided to the <option>-p</option>
-      is returned by the <code>get-option</code> strategy. Sometimes, it
-      is a bit annoying that <code>get-option</code> fails for certain
-      arguments. If you browse through Stratego code, you may come across
-      the following idiom for dealing with this situation:
+      Note how we compose options with the choice operator (<code>+</code>).
+      With this addition, our users can now specify their elusive processing
+      tables with the <option>-p</option>. The arity of this option is checked
+      automatically. That is, if the user adds <option>-p</option> to his
+      argument list without specifying a file afterwards, this will be signaled
+      as an error, and the usage screen will be printed. Once the user has
+      read this and corrected the error of his ways, the value (the filename)
+      provided via <option>-p</option> can be obtained using the 
+      <code>get-option</code> strategy. If no <option>-p</option> was
+      specified, <code>get-option</code> will fail. Sometimes, this failure
+      may be inappropriate, and a default value is desired instead. If you
+      browse through Stratego code, you may come across the following idiom
+      for dealing with this situation:
     </para>
     
 <screen>
@@ -265,12 +280,13 @@ strategies
 </screen>
 
     <para>
-      That is all you need to know about basic command-line option
-      processing. As usual, detailed API documentation is available in
-      the API reference.
+	  This is all you need to know about basic command-line option
+      processing. When in doubt, you are advised to refer to the 
+      detailed API documentation is available in the API reference.
     </para>
+</section>
 
-  <formalpara>
+<section>
     <title>Setting Description and About</title>
     
     <para>
@@ -346,23 +362,24 @@ This program verifies the input against a processing table.
 Written by Alan Turing &lt;alan@turing.org>
 </screen>  
 
-  <formalpara>
-    <title>option-wrap</title>
+</section>
+
+<section>
+  <title>I/O-less Programs</title>
 
     <para>
       It is not always the case that programs written in Stratego are
-      used for processing ATermsome rare cases, the full I/O functionality provided by
-      <code>io-wrap</code> is not appropriate. In these cases, you
-      can use the <code>option-wrap</code> family of strategies.
-      <code>option-wrap</code> works analogously to <code>io-wrap</code>,
-      but dooes not provide the <option>-i</option> and
-      <option>-o</option> options, nor does it read anything from
+      used for processing ATerm. The full I/O functionality provided by
+      <code>io-wrap</code> may therefore not always be appropriate. In
+      these cases, you can use the <code>option-wrap</code> family of
+      strategies. <code>option-wrap</code> works analogously to
+      <code>io-wrap</code>, but does not provide the <option>-i</option>
+      and <option>-o</option> options, nor does it read anything from
       <filename>stdin</filename> automatically.
     </para>
-  </formalpara>
-  
+
   <para>
-    The default set of options proveded by <code>option-wrap</code>
+    The default set of options provided by <code>option-wrap</code>
     is shown below:
   </para>
   
@@ -372,6 +389,7 @@ Written by Alan Turing &lt;alan@turing.org>
    --about          Display information about this program
    --version        Same as --about
 </screen>
+</section>
     
 </chapter>
 
