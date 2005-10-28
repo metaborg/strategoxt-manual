@@ -2,7 +2,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
   
-  <title>Building and Deploying Stratego Programs (*)</title>
+  <title>Building and Deploying Stratego Programs</title>
   
   <para>
     The Stratego build system is based on the GNU Autotools, that is
@@ -465,19 +465,98 @@ ogetarts/
   </section>
   
   <section>
-     <title>Building Your Own library (*)</title>
+     <title>Building Your Own library</title>
      
-     <para>Organizing your Library
-     </para>
+     <para>
+       The Stratego/XT build system allows you to freely 
+       organize the source files of your project, but we recommend
+       that you follow some conventions in the way the directories
+       are organized. The base directory of your library should
+       be in <filename>src/lib/</filename>. Each
+       <filename>.str</filename> file placed inside this
+       directory becomes a module. For sufficiently large
+       projects, it is recommended that you further organize
+       your modules into subdirectories inside
+       <filename>lib/</filename>. Each such subdirectory
+       becomes a package. 
+    </para>
+    
+    <para>
+       Importing modules and packages in Stratego is done
+       using the <code>imports</code> statement. Using
+       <code>imports</code>, you specify which module from
+       which package to import. You can import all modules
+       from one package in one single declaration. There is
+       a direct mapping between the directory name and the
+       package name, and also between file and module names.
+       Consider the following code snippet:
+    </para>
+           
+<screen>
+imports
+  ogetarts/core
+  ogetarts/extensions/- 
+</screen>    
+
+    <para>
+      The declaration <code>ogetarts/core</code> states
+      that we want to import the module <code>core</code>
+      from the package <code>ogetarts</code>. This
+      tells the Stratego compiler to look for the file
+      <filename>core.str</filename> inside the 
+      <filename>ogetarts/</filename> directory. The line
+      <code>ogetarts/extensions/-</code> will import all
+      modules in the <code>ogetarts/extensions</code>
+      package, that is, all <filename>.str</filename> files
+      inside the <filename>ogetarts/extensions/</filename>
+      directory. On disk, we will have the following layout:
+    </para>
 
 <screen>
- - putting it into <filename>src/lib/</filename>
- - dividing a library into packages
- - importing packages
+src/
+    lib/
+        ogetarts/
+                 core.str
+        extensions/
+                 ext1.str
+                 ext2.str
+                 ...
 </screen>
 
-     <para>Supporing Separate Compilation</para>
+   <para>
+     So how does the compiler know where to search for the
+     packages (directories)? This is specified by the
+     <option>-I</option> option to <command>strc</command>. In
+     our case, we specify <filename>src/lib/</filename> as the
+     basepath for our library. All module and package references
+     are looked up from there. For programs using several libraries
+     installed at different locations, multiple base directories
+     should be specified, each with the <option>-I</option> option.
+   </para>
+   
+  <formalpara>
+    <title>Supporing Separate Compilation</title>
 
+    <para>
+       The build system can be told to create a separate library from
+       your source (<filename>.str</filename>) files. This is done using
+       <command>libtool</command>, which takes care of creating both static
+       and shared libraries. On most platforms, the linker prefers shared
+       libraries over static libraries, given the choice. This means that
+       linking to your Stratego library will be done dynamically, unless
+       you or your library user take steps to enable static linking.
+    </para>
+  </formalpara>
+
+  <para>
+    In cases where you want to compile all of the library code into
+    one dynamic (or static) library, you must provide a toplevel
+    module that imports all of the library. Let this be the file
+    <filename>lib/ogetarts.str</filename>. The code below is what
+    goes into your <filename>Makefile.am</filename> for you
+    library:
+  </para>
+  
 <screen>
   pkglib_LTLIBRARIES   = libogetarts.la 
   pkgdata_DATA         = libogetarts.rtree
@@ -486,26 +565,15 @@ ogetarts/
   AM_CPPFLAGS          = -I$(SRTS)/include -I$(ATERM)/include
 
   libmod.c : 
-   $(STRC)/bin/strc -c --library -i ./ogetarts.str -o libogetarts.rtree
+      $(STRC)/bin/strc -c --library -i ./src/lib/ogetarts.str -o libogetarts.rtree
 </screen>
      
-
-     <para>
-       The build system can be told to create a separate library from your
-       <filename>.str</filename> files. This is done using
-       <command>libtool</command>, which takes care of creating both static
-       and shared libraries. On most platforms, the the linker prefers shared
-       libraries over static libraries, given the choice. This means that
-       linking to your Stratego library will be done dynamically, unless you
-       or your library user take steps to enable static linking.
-     </para>
-
-     <para>
-       If your prefer static over dynamic libraries, you can enforce static
-       linking by passing the <code>-static</code> option to the
-       <command>configure</command> of your package via the
-       <code>LDFLAGS</code> variable: 
-     </para>     
+  <para>
+    If you prefer static over dynamic libraries, you can enforce static
+    linking by passing the <code>-static</code> option to the
+    <command>configure</command> of your package via the
+    <code>LDFLAGS</code> variable: 
+  </para>     
 
 <screen>
 <prompt>$</prompt> ./configure ... LDFLAGS=-static
