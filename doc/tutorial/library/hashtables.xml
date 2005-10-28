@@ -99,7 +99,6 @@ Hashtable(136604296)
   </para>
 
 <screen>
-<prompt>stratego></prompt> imports lib
 <prompt>stratego></prompt> new-iset => i
 IndexedSet(136662256)
 </screen>
