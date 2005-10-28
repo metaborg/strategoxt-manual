@@ -186,7 +186,6 @@ Yes(It(Works))
       adding new options is to use the <code>io-wrap(opts,s)</code>
       strategy, providing it with a strategy encoding the options.
     </para>
-  </formalpara>
   
     <para>
       When adding a new option, we must decide whether this option
@@ -294,7 +293,6 @@ strategies
 	  encouraged to complete your program's option configuration with
 	  a short description of what your tool does.
     </para>
-  </formalpara>
 
   <para>
     We can easily add a short description and also an about section.
