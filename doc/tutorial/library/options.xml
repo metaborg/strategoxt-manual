@@ -3,7 +3,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Command-line Options (*)</title>
+  <title>Command-line Options</title>
   
   <para>
     As <xref linkend="tutorial-xt"/> explained, the world of
@@ -366,10 +366,11 @@ Written by Alan Turing &lt;alan@turing.org>
   <title>I/O-less Programs</title>
 
     <para>
-      It is not always the case that programs written in Stratego are
-      used for processing ATerm. The full I/O functionality provided by
-      <code>io-wrap</code> may therefore not always be appropriate. In
-      these cases, you can use the <code>option-wrap</code> family of
+      Not all programs written in Stratego intended for processing ATerms.
+      For these programs, the full I/O functionality provided by 
+      <code>io-wrap</code> may often turn out to be inappropriate. An
+      alternative way of dealing with parameters is also provided by
+      the library, centered around the <code>option-wrap</code> family of
       strategies. <code>option-wrap</code> works analogously to
       <code>io-wrap</code>, but does not provide the <option>-i</option>
       and <option>-o</option> options, nor does it read anything from
@@ -387,6 +388,11 @@ Written by Alan Turing &lt;alan@turing.org>
    --about          Display information about this program
    --version        Same as --about
 </screen>
+
+  <para>
+    Adding new options is identical to what we already explained
+    for <code>io-wrap</code>.
+  </para>
 </section>
     
 </chapter>
