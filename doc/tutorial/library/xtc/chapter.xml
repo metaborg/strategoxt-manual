@@ -5,29 +5,145 @@
   <title>Transformation Tool Composition with XTC (*)</title>
   
   <para>
-    Introduce the concept of XTC.
+    In <xref linkend="xt-architecture"/>, we explained that the
+    Stratego/XT universe is built from small components, each
+    being a separately executable program. The Stratego/XT
+    distribution itself comes with a collection of XT components
+    that you can reuse. We have already seen many of them 
+    throughout <xref linkend="tutorial-xt"/>. In this chapter,
+    we will explain how to compose existing components
+    together, and also explain how you can make your own
+    Stratego programs into reusable components. 
   </para>
 
   <section>
     <title>Registration of Programs and Data</title>
 
     <para>
-      Creating a repository
+      An XTC repository is a collection of programs and data. 
+      The programs, which are usually XT components, must be
+      registered explicitly using the <command>xtc</command>
+      tool before they can be used. This is also the case for
+      data files. A normal program transformation system built
+      with Stratego/XT will have an XTC repository inside of
+      it, where all the XT components have been registered.
+      Though this registration is done completely automatically
+      for you by the Stratego build system, it will provide 
+      instructive to know what takes place behind the scenes.
     </para>
 
     <para>
-      Importing a repository.
+      Suppose our project, called Ogetarts, is has been installed
+      into <filename>.../ogetarts</filename> 
+      (<filename>...</filename> is path of your choice). A
+      typical directory layout for this project will look
+      like the following:
     </para>
 
-    <para>
-      By hand
-    </para>
+<screen>
+.../ogetarts/
+             share/
+                   ogetarts/
+             bin/
+             libexec/
+             lib/
+</screen>
 
     <para>
-      In Automake
+       The part we are interested in now, is the directory
+       <filename>ogetarts/share/ogetarts/</filename>. This
+       is where the registry for the XTC repository is normally
+       placed, in the file <filename>XTC</filename>. Assuming we
+       already have the XT component <command>foo2bar</command>
+       placed in <filename>ogetarts/libexec/</filename>, the
+       following will register it:
     </para>
-  </section>
-  
+    
+<screen>
+<prompt>$</prompt> xtc -r .../ogetarts/share/ogetarts/XTC register -t foo2bar -l .../ogetarts/libexec -V 1.0
+</screen>
+
+    <para>
+      This command will also take care of creating a fresh
+      <filename>XTC</filename> registry file if it does not already
+      exist. The <option>-l</option> specifies the path to the component
+      being registered, and <option>-t</option> specifies its name. This
+      name is used for lookup purposes later. Additionally, 
+      the <option>-V</option> may be used to associate a version number
+      with a given program.
+    </para>
+
+</section>
+
+<section>
+      <title>Importing other Repositories</title>
+      
+      <para>
+        The XTC system provides a form of inheritance, whereby one
+        repository can refer to another. When searches for components
+        fail at the local repository, the imported repositories will
+        be searched in turn.
+      </para>
+    
+      <para>
+        It is practically always necessary for your project to import
+        the Stratego/XT repository, as most transformation systems built
+        with Stratego/XT reuse many of the XT components. The following
+        command adds the Stratego/XT to our project:
+      </para>
+<screen>
+<prompt>$</prompt> xtc -r .../ogetarts/share/ogetarts/XTC import /usr/share/StrategoXT/XTC
+</screen>
+
+    <para>
+      In <xref linkend="library-building" /> we explain how to configure
+      the Stratego/XT build system to automatically register your XT
+      components.
+    </para>
+  </section>  
+
+  <section>
+      <title>Searching Repositories</title>
+      
+      <para>
+        Once you have registered all components or imported other
+        repositories, you may inspect them to see that everything
+        looks good. This is done using the <option>query</option>
+        option to <command>xtc</command>. Using <option>query</option>,
+        you can either look for a particular component, or list all
+        registrations in a given repository.
+      </para>
+          
+      <para>
+        The following command will search the Ogetarts repository
+        for the <command>sglr</command> component. This component
+        was not registered by us, but is inherited from the
+        Stratego/XT repository.
+      </para>
+
+<screen>
+<prompt>$</prompt> xtc -r ...ogetarts/share/ogetarts/XTC query -t sglr 
+sglr (3.8) : /bin/sglr
+</screen>
+
+     <para>
+       Alternatively, we can list all registrations, in one go:
+     </para>
+     
+<screen>
+<prompt>$</prompt> xtc -r ...ogetarts/share/ogetarts/XTC query -a
+dryad (1.0) : .../ogetarts/libexec/foo2bar
+stratego-lib (0.16M1) : .../stratego-lib
+...
+</screen>
+
+     <para>
+       First, all registrations in the Ogetarts will be displayed,
+       then all the ones we imported from the Stratego/XT reposistory,
+       (<code>...</code> indicates that we have omitted a lot of lines)
+     </para>
+</section>
+     
   <section>
     <title>Composing Tools in Stratego</title>
 
