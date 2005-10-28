@@ -122,7 +122,7 @@
       </para>
 
 <screen>
-<prompt>$</prompt> xtc -r ...ogetarts/share/ogetarts/XTC query -t sglr 
+<prompt>$</prompt> xtc -r .../ogetarts/share/ogetarts/XTC query -t sglr 
 sglr (3.8) : /bin/sglr
 </screen>
 
@@ -131,7 +131,7 @@ sglr (3.8) : /bin/sglr
      </para>
      
 <screen>
-<prompt>$</prompt> xtc -r ...ogetarts/share/ogetarts/XTC query -a
+<prompt>$</prompt> xtc -r .../ogetarts/share/ogetarts/XTC query -a
 dryad (1.0) : .../ogetarts/libexec/foo2bar
 stratego-lib (0.16M1) : .../stratego-lib
 ...
