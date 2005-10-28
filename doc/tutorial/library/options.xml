@@ -7,23 +7,24 @@
   
   <para>
     As <xref linkend="tutorial-xt"/> explained, the world of
-    Stratego is one of small components tied together using
-    Unix pipes. The pipe carry the data, while parameters
-    are passed between components using command line arguments.
-    Incidentally, this is the same mechanism used by humans
-    to invoke programs, which eases understanding and
-    debugging of XT compositions tremendously. Details about
-    debugging is covered in <xref linkend="library-debugging"/>.
-    Here we will cover the provided mechanism for dealing with
-    command line arguments.
+    Stratego is one of small programs tied together using
+    Unix pipes. The pipes carry the data, while configuration
+    and control is passed between programs in the form of
+    command line arguments. Incidentally, this is the same
+    mechanism used by humans to invoke programs, and this
+    eases understanding and debugging of XT compositions
+    tremendously. Details about  debugging is covered in
+    <xref linkend="library-debugging"/>. In this chatper, 
+    we will cover the mechanism available in Stratego for
+    working with command line arguments.
   </para>
   
   <para>
     When a compiled Stratego program is first started, 
     the initial value of the current term is a list
     containing the command line arguments to the program.
-    Consider the following, trivial program which does
-    nothing but return whatever is provided to it:
+    Fhe following program, <command>foo</command>, is a
+    genuine "do nothing" program.
   </para>
   
 <screen>
@@ -35,11 +36,13 @@ strategies
 </screen>
 
   <para>
-    If we compile and run the program with some arguments,
-    we will get the following:
+    In the course of this chapter, we will extend this program
+    with new options and even a help screen for the user to 
+    enjoy. But first, let us compile and run <command>foo</command> 
+    with some arguments, to get an idea of where we stand.
   </para>
   
-<screen>  
+<screen>
 <prompt>$</prompt> strc -i foo.str
 ...
 <prompt>$</prompt> ./foo --help
@@ -49,34 +52,41 @@ strategies
 </screen>
 
   <para>
-    From this we see that the arguments we provided on the
-    command line become the initial term your program will
-    work on. Each command line argument becomes its own
-    string element in a list, and the first element of the
-    list is the command used to invoke the program itself. 
-    This list must be interpreted by your program for the
-    arguments to have any meaning. The library contains
-    a collection of coherent strategies that deals with
-    most aspects of program options. The strategies will
-    parse the argument list, let you set default values
+    From this interaction, we see that a list of the
+    arguments provided on the command line becomes the
+    initial term of the program. Each command line argument
+    becomes its own string element in the list, and the first
+    element of the list is the command used to invoke the
+    <command>foo</command> itself. Clearly, this list must be
+    interpreted somehow, for the arguments to have any meaning.
+    The library contains a collection of robust strategies
+    that deal with just this. The option handling strategies
+    will parse the argument list, let you set default values
     for options and transparently deal with long and short
-    forms of the same option. Some strategies will even 
-    provide you with a default set of options, and
-    automatically read input files specified by the
-    <option>-i</option>, or from <filename>stdin</filename>.
-    We will cover all these features in this chapter.
+    forms of the same option. Even more interesting, the
+    library provides so-called <code>wrap</code> strategies
+    that abstract away all of the dreary details of this
+    option handling, and also provide a default set of
+    options with some basic functionality.
   </para>
     
   <para>
-    The easiest way for you to deal with command line options,
-    is to outsource as much as possible of it to the Stratego
-    library, using the <code>io-wrap</code> family of strategies.
-    This family includes <code>io-wrap(s)</code>, 
+    Perhaps the most frequently used wrap strategy is 
+    <code>io-wrap</code> (or its XTC equivalent,
+    <code>xtc-io-wrap</code>, which is not covered here).
+    In fact, <code>io-wrap</code> is a family of strategy,
+    which includes <code>io-wrap(s)</code>, 
     <code>io-wrap(opts, s)</code> and
-    <code>io-wrap(opts, usage, about, s)</code>. When using
+    <code>io-wrap(opts, usage, about, s)</code>. All of
+    these variants provide the same basic functionality. The
+    increasing number parameters allows you to override
+    default bevhavior, when you need to. When using
     one of these strategies, a standard package of
-    functionality will be provided by your program. Consider
-    a revised edition of <command>foo</command>, from above:
+    command line handling will be provided to your users
+    through your program. Let us start with the simplest
+    case, <code>io-wrap(s)</code> and work our way from
+    there. Consider a revised edition of <command>foo</command>,
+    from above:
   </para>
   
 <screen>
@@ -88,7 +98,9 @@ strategies
 </screen>
 
   <para>
-    If we run <command>foo</command> with the <option>--help</option>
+    Here, we wrap the core logic of our program (just <code>id</code>
+    in our case) inside the <code>io-wrap</code>er. If we run
+    <command>foo</command> with the <option>--help</option>
     this time around, we will get a more instructive reply than
     previously: 
   </para>
@@ -114,13 +126,13 @@ Description:
 </screen>
   
   <para>
-    As indicated by the help screen, the input term
+    All of a sudden, our program is a well-behaved citizen
+    in the command line world. It answers to
+    <option>--help</option>, and appears to have a few other
+    tricks up its sleeve to. For example, the input term
     to <command>foo</command> can now be specified using the 
     <code>-i</code> option, and output can be stored to
-    a file using the <code>-o</code> option. If
-    <option>-i</option> is not provided, <filename>stdin</filename>
-    is read. Similarly, <filename>stdout</filename> is written
-    to if <option>-o</option> is not specified.
+    a file using the <code>-o</code> option. 
   </para>
 
   <para>
@@ -134,13 +146,22 @@ Yes(It(Works))
 </screen>
   
   <para>
-    After this, we try:
+    Bursting with excitement, we try:
   </para>
 
 <screen>
 <prompt>$</prompt> ./foo -i term.trm
 Yes(It(Works))
 </screen>   
+
+  <para>
+    And if that's not enough, there is even a bit of extra
+    convenience provided by <code>io-wrap</code>: If
+    <option>-i</option> is not provided,
+    <filename>stdin</filename> is read. Similarly,
+    <filename>stdout</filename> is written to if
+    <option>-o</option> is not specified.
+  </para>
 
   <para>
     So, using <code>io-wrap</code> is all you have to do for your program
@@ -291,6 +312,7 @@ strategies
   </para>
   
 <screen>
+<prompt>$</prompt> ./foo --help
 Usage: foo -p proctbl [options]
 
 Options:
@@ -315,10 +337,12 @@ This program verifies the input against a processing table.
 </screen>
 
   <para>
-    The output with <option>--about</option> is:
+    If we invoke our splendid program <command>foo</command> with
+    the <option>--about</option> option, we can now observe:
   </para>
 
 <screen>
+<prompt>$</prompt> ./foo --about
 Written by Alan Turing &lt;alan@turing.org>
 </screen>  
 
@@ -326,7 +350,8 @@ Written by Alan Turing &lt;alan@turing.org>
     <title>option-wrap</title>
 
     <para>
-      In some rare cases, the full I/O functionality provided by
+      It is not always the case that programs written in Stratego are
+      used for processing ATermsome rare cases, the full I/O functionality provided by
       <code>io-wrap</code> is not appropriate. In these cases, you
       can use the <code>option-wrap</code> family of strategies.
       <code>option-wrap</code> works analogously to <code>io-wrap</code>,
