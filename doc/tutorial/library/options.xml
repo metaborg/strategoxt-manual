@@ -6,40 +6,95 @@
   <title>Command-line Options (*)</title>
   
   <para>
-    When a compiled Stratego program is first started, 
-    the initial value of the current term is a list
-    containing the command line arguments to the program.
-	The library contains various convenience strategies for
-	parsing this list, handling options, reading input
-	terms from <filename>stdin</filename> and
-	writing terms to <filename>stdout</filename>.
+    As <xref linkend="tutorial-xt"/> explained, the world of
+    Stratego is one of small components tied together using
+    Unix pipes. The pipe carry the data, while parameters
+    are passed between components using command line arguments.
+    Incidentally, this is the same mechanism used by humans
+    to invoke programs, which eases understanding and
+    debugging of XT compositions tremendously. Details about
+    debugging is covered in <xref linkend="library-debugging"/>.
+    Here we will cover the provided mechanism for dealing with
+    command line arguments.
   </para>
   
   <para>
-    The primary family of strategies for command line handling
-    include <code>io-wrap(s)</code>, <code>io-wrap(opts, s)</code>
-    and <code>io-wrap(opts, usage, about, s)</code>. By using
-    one of these, a standard package of functionality will be
-    provided by your program. Consider using the simplest of
-    these on the simplest of Stratego programs:
+    When a compiled Stratego program is first started, 
+    the initial value of the current term is a list
+    containing the command line arguments to the program.
+    Consider the following, trivial program which does
+    nothing but return whatever is provided to it:
   </para>
   
 <screen>
-module prog
-imports lib
+module foo
+imports
+  liblib
+strategies
+  main = id
+</screen>
+
+  <para>
+    If we compile and run the program with some arguments,
+    we will get the following:
+  </para>
+  
+<screen>  
+<prompt>$</prompt> strc -i foo.str
+...
+<prompt>$</prompt> ./foo --help
+["./foo","--help"]
+<prompt>$</prompt> ./foo -i foo.str --extra --option -s
+["./foo","-i","foo.str","--extra","--option","-s"]
+</screen>
+
+  <para>
+    From this we see that the arguments we provided on the
+    command line become the initial term your program will
+    work on. Each command line argument becomes its own
+    string element in a list, and the first element of the
+    list is the command used to invoke the program itself. 
+    This list must be interpreted by your program for the
+    arguments to have any meaning. The library contains
+    a collection of coherent strategies that deals with
+    most aspects of program options. The strategies will
+    parse the argument list, let you set default values
+    for options and transparently deal with long and short
+    forms of the same option. Some strategies will even 
+    provide you with a default set of options, and
+    automatically read input files specified by the
+    <option>-i</option>, or from <filename>stdin</filename>.
+    We will cover all these features in this chapter.
+  </para>
+    
+  <para>
+    The easiest way for you to deal with command line options,
+    is to outsource as much as possible of it to the Stratego
+    library, using the <code>io-wrap</code> family of strategies.
+    This family includes <code>io-wrap(s)</code>, 
+    <code>io-wrap(opts, s)</code> and
+    <code>io-wrap(opts, usage, about, s)</code>. When using
+    one of these strategies, a standard package of
+    functionality will be provided by your program. Consider
+    a revised edition of <command>foo</command>, from above:
+  </para>
+  
+<screen>
+module foo
+imports
+  liblib
 strategies
   main = io-wrap(id)
 </screen>
 
   <para>
-    This program should be put into <filename>prog.str</filename>
-    and compiled and run with <code>--help</code>.
+    If we run <command>foo</command> with the <option>--help</option>
+    this time around, we will get a more instructive reply than
+    previously: 
   </para>
   
 <screen>
-<prompt>$</prompt> strc -i prog.str
-....
-<prompt>$</prompt> ./prog --help
+<prompt>$</prompt> ./foo --help
 Options:
    -i f|--input f   Read input from f
    -o f|--output f  Write output to f
@@ -60,53 +115,238 @@ Description:
   
   <para>
     As indicated by the help screen, the input term
-    to <command>prog</command> can now be specified using the 
+    to <command>foo</command> can now be specified using the 
     <code>-i</code> option, and output can be stored to
-    a file using the <code>-o</code> option. By default,
-    <filename>stdin</filename> is read, and
-    <filename>stdout</filename> is written to.
+    a file using the <code>-o</code> option. If
+    <option>-i</option> is not provided, <filename>stdin</filename>
+    is read. Similarly, <filename>stdout</filename> is written
+    to if <option>-o</option> is not specified.
   </para>
+
+  <para>
+    So does this actually work? All for free? Let's test with
+    putting the following term into the file
+    <filename>term.trm</filename>:
+  </para>  
+  
+<screen>
+Yes(It(Works))
+</screen>
   
   <para>
-    Setting about
-  </para>
-  
-  <para>
-    Setting description
-  </para>
-  
-  <para>
-    It is of course possible to add more command line options to
-    your program. 
+    After this, we try:
   </para>
 
 <screen>
-    ArgOption(
-      "-p"
-    , where(&lt;extend-config> ("-p", [&lt;id>]))
-    , !"-p file   Use pretty-print table in file"
-    )
+<prompt>$</prompt> ./foo -i term.trm
+Yes(It(Works))
+</screen>   
 
+  <para>
+    So, using <code>io-wrap</code> is all you have to do for your program
+    to gain a minimal, but functional set of command line options. As a
+    bonus, these options also make your program compatible with XTC; it
+	can be composed with other XTC components.
+  </para>
+
+  <formalpara>
+    <title>Adding Options</title>
+    
+    <para>
+      It is often necessary for programs to expose switches to turn
+      functionality on and off, or to read extra configuration knowledge
+      from additional files. All these cases require additional command
+      line options, so we need a mechanism for extending
+      the basic <code>io-wrap(s)</code> strategy. The preferred way of
+      adding new options is to use the <code>io-wrap(opts,s)</code>
+      strategy, providing it with a strategy encoding the options.
+    </para>
+  </formalpara>
+  
+    <para>
+      When adding a new option, we must decide whether this option
+      will require a argument of its own, or not. The term 
+      <code>ArgOption</code> is used to construct options that take
+      arguments and <code>Option</code> is the term used for on/off
+      switches. Suppose we want to expose an option 
+      <option>--verify</option> that enables the user to run our
+      transformation in a self-verifying mode. This is clearly an
+      on/off switch, and therefore a job for <code>Option</code>.
+    </para>
+
+    <para>
+      Adding this option to our program <command>foo</command> 
+      makes our program look like this:
+    </para>
+    
+<screen>
+module foo
+imports
+  liblib
+signature
+  constructors
+    Conservative : Option
+
+strategies
+
+  main =  io-wrap(
     Option(
-      "-c", 
-    , &lt;set-config> (Conservative(), "on"),
-    , !"-c               Conservative pretty-printing (only for"
-    )
+        "--verify"
+      , &lt;set-config> (Verify(), "on")
+      , !"--verify         Turn on verification")
+    , id)
+</screen>
+    
+    <para>
+      Note that we made a new term type, <code>Verify</code>, to serve as
+      our switch symbol. Our sample program is just <code>id</code>, but
+      in a more realistic program, we would write
+      <code>&lt;get-config> Verify</code> to get the state of the 
+      <code>Verify</code> switch. In the case where the user had specified
+      <option>--verify</option> on the command line, 
+      <code>get-config</code> would result in the term <code>"on"</code>, 
+      taken from the declaration of our <code>Option</code>, above. If
+      the user had not added <option>--verify</option> to his command
+      line arguments, <code>get-config</code> would fail.
+    </para>
+    
+    <para>
+      The usage of options with arguments, <code>ArgOption</code>,
+      is very much the same. Assume our transformation needs a bit of
+      help from configurable processing tables, and that we want these
+      specified using the <option>-p</option> option. We would add
+      another alternative to the <code>opts</code> argument of
+      <code>io-wrap</code>:
+    </para>
+    
+<screen>
+  main = io-wrap(
+     Option(....)
+     + 
+     ArgOption(
+        "-p"
+       , where(&lt;extend-config> ("-p", [&lt;id>]))
+       , !"-p file   Use processing table in file")
+     , id)
 </screen>  
+
+    <para>
+      Again, the value (the filename) provided to the <option>-p</option>
+      is returned by the <code>get-option</code> strategy. Sometimes, it
+      is a bit annoying that <code>get-option</code> fails for certain
+      arguments. If you browse through Stratego code, you may come across
+      the following idiom for dealing with this situation:
+    </para>
+    
 <screen>
   get-config-p =
     &lt;get-config> "-p" &lt;+ ![]
 </screen>
 
+    <para>
+      That is all you need to know about basic command-line option
+      processing. As usual, detailed API documentation is available in
+      the API reference.
+    </para>
+
+  <formalpara>
+    <title>Setting Description and About</title>
+    
+    <para>
+	  If your program is primarily intended for human use, you are
+	  encouraged to complete your program's option configuration with
+	  a short description of what your tool does.
+    </para>
+  </formalpara>
+
   <para>
-    <code>option-wrap(opts, usage, about, announce, s)</code>
+    We can easily add a short description and also an about section.
+    The description is shown as part of the help screen 
+    (displayed with <option>--help</option>), whereas the about
+    section is displayed when the arguments to <command>foo</command>
+    contain <option>--about</option>. It is customary for the about
+    screen to contain copyright notices and credits.
+  </para>
+  
+<screen>  
+  main = io-wrap(
+        ...
+      , foo-tool-usage
+      , foo-tool-about
+      , id)
+
+  foo-tool-usage =
+    default-system-usage(
+      !["Usage: foo -p proctbl [options]"]
+    , ![ "This program verifies the input against a processing table.\n"]
+    )
+
+  foo-tool-about =
+     &lt;echo> "Written by Alan Turing &lt;alan@turing.org>"
+</screen>
+
+  <para>
+    After compiling this version of <command>foo</command>, invoking
+    it with <option>--help</option> give the following help screen:
+  </para>
+  
+<screen>
+Usage: foo -p proctbl [options]
+
+Options:
+   --verify         Turn on verification
+   -p file          Use processing table in file
+   -i f|--input f   Read input from f
+   -o f|--output f  Write output to f
+   -b               Write binary output
+   -S|--silent      Silent execution (same as --verbose 0)
+   --verbose i      Verbosity level i (default 1)
+                    ( i as a number or as a verbosity descriptor:
+                      emergency, alert, critical, error,
+                      warning, notice, info, debug, vomit )
+   -k i | --keep i  Keep intermediates (default 0)
+   --statistics i  Print statistics (default 0 = none)
+   -h|-?|--help     Display usage information
+   --about          Display information about this program
+   --version        Same as --about
+
+Description:
+This program verifies the input against a processing table.
+</screen>
+
+  <para>
+    The output with <option>--about</option> is:
   </para>
 
-<screen> 
- - reading option values
- - setting defaults
- - dealing with verbosity
- - keeping intermediate files
+<screen>
+Written by Alan Turing &lt;alan@turing.org>
+</screen>  
+
+  <formalpara>
+    <title>option-wrap</title>
+
+    <para>
+      In some rare cases, the full I/O functionality provided by
+      <code>io-wrap</code> is not appropriate. In these cases, you
+      can use the <code>option-wrap</code> family of strategies.
+      <code>option-wrap</code> works analogously to <code>io-wrap</code>,
+      but dooes not provide the <option>-i</option> and
+      <option>-o</option> options, nor does it read anything from
+      <filename>stdin</filename> automatically.
+    </para>
+  </formalpara>
+  
+  <para>
+    The default set of options proveded by <code>option-wrap</code>
+    is shown below:
+  </para>
+  
+<screen>    
+   --verify         Turn on verification
+   -h|-?|--help     Display usage information
+   --about          Display information about this program
+   --version        Same as --about
 </screen>
+    
 </chapter>
 
