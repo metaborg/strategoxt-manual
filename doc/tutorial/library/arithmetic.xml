@@ -10,9 +10,9 @@
  
      <para>
        Stratego does not have the normal mathematical syntax for 
-       arithmetic operators, such as <code>+</code>, <code>-</code>, <code>/</code>
-       and <code>*</code>. These operators are used for other purposes.
-	   Instead, the library provides the operators
+       arithmetic operators, such as <code>+</code>, <code>-</code>, 
+       <code>/</code> and <code>*</code>. These operators are used for
+       other purposes. Instead, the library provides the operators
        as the strategies, namely <code>add</code>, <code>subt</code>, 
        <code>div</code> and <code>mul</code>. Further, there is
        convenience strategy for integer increment, <code>inc</code>
@@ -57,8 +57,6 @@ subt, subtr, subti, subtS
 3
 <prompt>stratego></prompt> &lt;mul> (1.5, 2)
 3.000000000000000e+00
-<prompt>stratego></prompt> &lt;divS> ("9", "3")
-"3"
 <prompt>stratego></prompt> &lt;inc> 2
 3
 </screen>
@@ -69,7 +67,24 @@ subt, subtr, subti, subtS
      this case, type promotion from integer to real happens
      automatically.
    </para>
+
+   <formalpara>
+     <title>Working on Strings</title>
+     
+     <para>
+       The string variants, e.g. <code>addS</code> and <code>divS</code>
+       work on strings containing integers. The result in strings
+       containing integers.
+     </para>
+   </formalpara>
    
+<screen>     
+<prompt>stratego></prompt> &lt;addS> ("40", "2")
+"42"
+<prompt>stratego></prompt> &lt;divS> ("9", "3")
+"3"
+</screen>
+       
    </section>
 
    <section>
@@ -101,6 +116,8 @@ geq, geqr, geqi, geqS
 <screen>
 <prompt>stratego></prompt> &lt;lt> (1.0, 2)
 (1.000000000000000e+00,2)
+<prompt>stratego></prompt> &lt;ltS> ("1", "2")
+("1", "2")
 <prompt>stratego></prompt> &lt;geqS> ("2", "2")
 ("2","2")
 <prompt>stratego></prompt> &lt;gtr> (0.9, 1.0)
