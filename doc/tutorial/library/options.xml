@@ -14,7 +14,7 @@
     mechanism used by humans to invoke programs, and this
     eases understanding and debugging of XT compositions
     tremendously. Details about  debugging is covered in
-    <xref linkend="library-debugging"/>. In this chatper, 
+    <xref linkend="library-debugging"/>. In this chapter, 
     we will cover the mechanism available in Stratego for
     working with command line arguments.
   </para>
