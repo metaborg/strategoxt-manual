@@ -162,6 +162,16 @@ Times(Plus(Int("1"),Int("2")),Int("3"))</screen>
       generalized-LR parser:
     </para>
 
+    <programlisting>
+$ echo "a + b * c" | sglri -p Test3.tbl  | pp-aterm
+amb(
+  [ Times(Plus(Var("a"), Var("b")), Var("c"))
+  , Plus(Var("a"), Times(Var("b"), Var("c")))
+  ]
+)</programlisting>
+
+
+
     <example xml:id="xmpl-sdf-amb-expression">
       <title>Ambiguous and Non-Ambiguous Syntax for
       Expressions</title>
