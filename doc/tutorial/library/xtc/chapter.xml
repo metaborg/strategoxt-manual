@@ -5,39 +5,65 @@
   <title>Transformation Tool Composition with XTC (*)</title>
   
   <para>
-    In <xref linkend="xt-architecture"/>, we explained that the
+    In <xref linkend="xt-architecture"/>, we explained how
     Stratego/XT universe is built from small components, each
-    being a separately executable program. The Stratego/XT
-    distribution itself comes with a collection of XT components
-    that you can reuse. We have already seen many of them 
-    throughout <xref linkend="tutorial-xt"/>. In this chapter,
-    we will explain how to compose existing components
-    together, and also explain how you can make your own
-    Stratego programs into reusable components. 
+    a separately executable program. Many such components are
+    provided for your reuse by the Stratego/XT distribution.
+    We have already seen some of these in action throughout
+    <xref linkend="tutorial-xt"/>.
+    In this chapter, we will first explain how to compose
+    existing components together. Afterwards, we will explain
+    how you can make your own Stratego programs into reusable
+    XT components. 
   </para>
 
+  <section>
+    <title>Basic Mechanisms of XTC</title>
+    
+  <para>
+    Before we can compose XT components, we must place them
+    in a component repository. This is referred to as
+    <emphasis>registration</emphasis>. The registration
+    associates each component with a name, a path and
+    a version. The name is used later to look up
+    components, and map their names to their actual location
+    on the system. In our Stratego programs, we only have to
+    specify the name of the program we want executed, and
+    the XTC machinery will automatically figure out which
+    program to execute, set up the piping, and even 
+    perform the execution for us.
+  </para>  
+
+  <para>
+    In this section we will cover the registration and lookup
+    mechanisms in some detail. 
+  </para>
+      
   <section>
     <title>Registration of Programs and Data</title>
 
     <para>
-      An XTC repository is a collection of programs and data. 
+      An XTC repository is a collection of programs and data files. 
       The programs, which are usually XT components, must be
       registered explicitly using the <command>xtc</command>
       tool before they can be used. This is also the case for
-      data files. A normal program transformation system built
-      with Stratego/XT will have an XTC repository inside of
-      it, where all the XT components have been registered.
+      the data files. A normal program transformation system built
+      with Stratego/XT will contain an XTC repository, where all its
+      components have been registered.
       Though this registration is done completely automatically
       for you by the Stratego build system, it will provide 
       instructive to know what takes place behind the scenes.
+      Refer to <xref linkend="library-building" /> for an explaination
+      of how to configure the Stratego/XT build system to automatically 
+      register your XT components.
     </para>
 
     <para>
-      Suppose our project, called Ogetarts, is has been installed
+      Suppose our project, called Ogetarts, has been installed
       into <filename>.../ogetarts</filename> 
-      (<filename>...</filename> is path of your choice). A
-      typical directory layout for this project will look
-      like the following:
+      (where <filename>...</filename> is a path of your choice).
+      A typical directory layout for this project would include
+      the following directories:
     </para>
 
 <screen>
@@ -50,13 +76,14 @@
 </screen>
 
     <para>
-       The part we are interested in now, is the directory
-       <filename>ogetarts/share/ogetarts/</filename>. This
+       The part we are interested in now is the directory
+       <filename>.../ogetarts/share/ogetarts/</filename>. This
        is where the registry for the XTC repository is normally
        placed, in the file <filename>XTC</filename>. Assuming we
        already have the XT component <command>foo2bar</command>
-       placed in <filename>ogetarts/libexec/</filename>, the
-       following will register it:
+       placed in <filename>.../ogetarts/libexec/</filename>, the
+       following <command>xtc</command> invocation will register
+       it with the Ogetarts registry:
     </para>
     
 <screen>
@@ -73,41 +100,46 @@
       with a given program.
     </para>
 
-</section>
+  </section>
 
-<section>
-      <title>Importing other Repositories</title>
+  <section>
+    <title>Importing other Repositories</title>
       
       <para>
         The XTC system provides a form of inheritance, whereby one
-        repository can refer to another. When searches for components
-        fail at the local repository, the imported repositories will
-        be searched in turn.
+        repository can refer to another. You may also think of it as
+        a scoping mechanism on the namespaces of repositories. When 
+        searches for components fail at the local repository, the 
+        imported repositories will be searched in turn.
       </para>
     
       <para>
         It is practically always necessary for your project to import
         the Stratego/XT repository, as most transformation systems built
         with Stratego/XT reuse many of the XT components. The following
-        command adds the Stratego/XT to our project:
+        command adds the Stratego/XT repository to our project:
       </para>
+      
 <screen>
 <prompt>$</prompt> xtc -r .../ogetarts/share/ogetarts/XTC import /usr/share/StrategoXT/XTC
 </screen>
 
-    <para>
-      In <xref linkend="library-building" /> we explain how to configure
-      the Stratego/XT build system to automatically register your XT
-      components.
-    </para>
+      <para>
+        In case you wondered, the current version of XTC has no mechanism
+        for declaring some components as private, and others public. Once
+        a component <code>c</code> is registered in an XTC repository
+        <code>r</code>, all other repositories importing <code>r</code> 
+        can ask for <code>c</code>.
+      </para>
+        
   </section>  
 
   <section>
       <title>Searching Repositories</title>
       
       <para>
-        Once you have registered all components or imported other
-        repositories, you may inspect them to see that everything
+        When you have registered your components or imported other
+        repositories, you may inspect your repository to see that everything
         looks good. This is done using the <option>query</option>
         option to <command>xtc</command>. Using <option>query</option>,
         you can either look for a particular component, or list all
@@ -132,30 +164,75 @@ sglr (3.8) : /bin/sglr
      
 <screen>
 <prompt>$</prompt> xtc -r .../ogetarts/share/ogetarts/XTC query -a
-dryad (1.0) : .../ogetarts/libexec/foo2bar
+foo2bar (1.0) : .../ogetarts/libexec/foo2bar
 stratego-lib (0.16M1) : .../stratego-lib
 ...
 </screen>
 
      <para>
-       First, all registrations in the Ogetarts will be displayed,
-       then all the ones we imported from the Stratego/XT reposistory,
-       (<code>...</code> indicates that we have omitted a lot of lines)
+       The format of this list is <code>name (version) : path</code>,
+       where <code>name</code>, we remember, is the handle used to
+       look up the given component. The list follows a pre-determined
+       order. First, all registrations in the Ogetarts will be displayed.
+       Here, <code>foo2bar</code>  is our only component. After the
+       local components, the contents of each imported repository will
+       be displayed. In our case, we only imported Stratego/XT, and the
+       first component in Stratego/XT is <code>stratego-lib</code>. The
+       other 490 registrations have been omitted, for the sake of clarity.
      </para>
+  </section>
 </section>
      
   <section>
     <title>Composing Tools in Stratego</title>
 
     <para>
-      xtc-io-wrap, xtc-transform, read-from, write-to,
-      xtc-io-transform, xtc-find, etc.
+      Much of the scalability of Stratego/XT comes from its component
+      model, thus it is important to know how to design your own programs
+      to take advantage of this infrastructure. Fortunately, the 
+      programming interface of XTC consists of a small set of clearly
+      defined strategies. If you are already familiar with 
+      <code>io-wrap</code>, as introduced in
+      <xref linkend="library-options"/>, this will be even easier to
+      comprehend.
     </para>
-
+    
+    <para>
+      There are three main usage scenarios for the XTC API. Either you
+      use the API to create a new XT component of your own, or you use
+      it to invoke an XT component from your Stratego program (which
+      need not be an XT component), or both. 
+    </para>
+    
+  <section>
+    <title>Making an XT component</title>
+    
+    <para>
+      xtc-input, xtc-output, xtc-check-dependencies
+      xtc-io-wrap, xtc-transform, read-from, write-to,
+      xtc-io-transform, xtc-find, xtc-input, xtc-io-exit, 
+    </para>
+  </section>
+  
+  <section>
+    <title>Invoking XT components</title>
     <para>
       Compiling with a default xtc repository: --xtc-repos of
       AutoXT/Automake.
     </para>
+  </section>
+  
+  <section>
+   <title>Conclusion</title>
+   
+   <para>
+     This chapter introduced you to the mechanics of the XTC model. We
+     saw how to maintain a registry of XT components using the
+     <command>xtc</command> tool, and also how to write XTC compositions
+     in Stratego. Additional detail about the XTC API can be found in 
+     the API reference documentation, and the complete documentation
+     for <command>xtc</command> is given in <xref linkend="ref-xtc"/>
+   </para>
   </section>
 </chapter>
 
