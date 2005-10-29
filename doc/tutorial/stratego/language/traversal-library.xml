@@ -31,9 +31,14 @@
 bottomup(s) = all(bottomup(s)); s
 </screen>
 
-  It first visits the subterms of the subject term and then applies
-  the transformation <code>s</code> to the result.
+  It first visits the subterms of the subject term, recursively
+  transforming <emphasis>its</emphasis> subterms, and then applies the
+  transformation <code>s</code> to the result.
   
+</para>
+
+<para>
+
   A related strategy is <code>topdown</code>, which is defined as
   
 <screen>
@@ -42,6 +47,10 @@ topdown(s) = s; all(topdown(s))
  
   It <emphasis>first</emphasis> transforms the subject therm and
   <emphasis>then</emphasis> visits the subterms of the result.
+
+</para>
+
+<para>
 
   A combination of <code>topdown</code> and <code>bottomup</code> is
   <code>downup</code>, defined as
