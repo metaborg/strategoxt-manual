@@ -99,7 +99,7 @@ context-free syntax
         actually supports ambiguities, we can even try this out:
       </para>
 
-      <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
+      <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl
 amb([Bool("true"), Id("true")])</screen>
       
       <para>
@@ -131,7 +131,7 @@ lexical syntax
 	literal is no longer ambiguous:
       </para>
 
-      <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl --no-heuristic-filters
+      <screen><prompt>$</prompt> echo "true" | sglri -p Test.tbl
 Bool("true")</screen>
 
       <para>
@@ -187,7 +187,7 @@ context-free syntax
         declarations. Hence, this input is ambiguous.
       </para>
 
-    <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl --no-heuristic-filters
+    <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl
 amb([Goto("foo"), VarDec("f","oo"), VarDec("fo","o")])</screen>
 
       <para>
@@ -210,7 +210,7 @@ lexical restrictions
         is parsed as a goto:
       </para>
 
-      <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl --no-heuristic-filters
+      <screen><prompt>$</prompt> echo "foo" | sglri -p Test.tbl
 Goto("foo")</screen>
     </section>
   </section>
@@ -242,7 +242,7 @@ context-free syntax
       <code>goto</code>:
     </para>
 
-    <screen><prompt>$</prompt> echo "gotox" | sglri -p Test.tbl --no-heuristic-filters
+    <screen><prompt>$</prompt> echo "gotox" | sglri -p Test.tbl
 Goto("x")</screen>
 
     <para>
