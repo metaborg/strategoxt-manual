@@ -15,7 +15,6 @@
   <xi:include href="language/traversal.xml"/>
   <xi:include href="language/type-unifying.xml"/>
   <xi:include href="language/concrete-syntax.xml"/>
-  <!--xi:include href="language/dynamic.xml"/-->
   <xi:include href="language/dynamic-rules.xml"/>
 
 </part>

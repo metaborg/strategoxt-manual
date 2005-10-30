@@ -268,31 +268,59 @@ bottomup-para(s) = &lt;s>(&lt;id>, &lt;all(bottomup-para(s))>)
   This is most useful in a bottom-up traversal; the original term is
   always available in a top-down traversal.
 
-  TODO/Exercise: give an example application of this strategy
-
 </para>
 
 </formalpara>
 
+<para>
+  Exercise: give an example application of this strategy
+</para>
+
 </section>
 
 <section>
-  <title>Cascading Transformations (*)</title>
+  <title>Cascading Transformations</title>
 
 <para>
 
-     Cascading transformations (rewriting, exhaustive application) 
+  Cascading transformations are transformations upon
+  transformations. While the full traversals discussed above walk over
+  the tree once, cascading transformations apply multiple `waves' of
+  transformations to the nodes in the tree.
+
+  The prototypical example is the <code>innermost</code> strategy,
+  which exhaustively applies a transformation, typically a set of
+  rules, to a tree.
 
 <screen>
 simplify =
   innermost(R1 &lt;+ ... &lt;+ Rn)
 </screen>
 
+  The basis of <code>innermost</code> is a <code>bottomup</code>
+  traversal that tries to apply the transformation at each node after
+  visiting its subterms.
+
 <screen>
 innermost(s) = bottomup(try(s; innermost(s)))
 </screen>
 
-    Staged transformations (sequence of normal forms) 
+  If the transformation <code>s</code> succeeds, the result term is
+  transformed again with a recursive call to <code>innermost</code>.
+
+</para>
+
+<para>
+
+  Application of <code>innermost</code> exhaustively applies
+  <emphasis>one</emphasis> set of rules to a tree.
+
+  Using sequential composition we can apply several
+  <emphasis>stages</emphasis> of reductions.
+
+  A special case of such a <emphasis>staged transformation</emphasis>,
+  is known as <emphasis>sequence of normal forms</emphasis> (in the
+  TAMPR system):
 
 <screen>
 simplify =
@@ -302,7 +330,15 @@ simplify =
   ; innermost(C1 &lt;+ ... &lt;+ Cm)
 </screen>
 
-    can mix different types of transformations
+  At each stage the term is reduced with respect to a different set of
+  rules.
+
+</para>
+
+<para>
+
+  Of course it is possible to mix different types of transformations
+  in such a stage pipeline, for example.
 
 <screen>
 simplify =
@@ -311,6 +347,10 @@ simplify =
   ; ...
   ; bottomup(repeat(C1 &lt;+ ... &lt;+ Cm))
 </screen>
+
+  At each stage a different strategy and different set of rules can be
+  used. (Of course one may use the same strategy several times, and
+  some of the rule sets may overlap.)
 
 </para>
 
@@ -326,9 +366,11 @@ simplify =
   situations where a mixture of generic and data-type specific
   traversal is necessary. Fortunately, Stratego allows you to mix
   generic traversal operators, congruences, your own traversal and
-  regular rules, the way you see fit. In general, however, it is a
-  good idea to try to get a clean separation between pure rewrite
-  rules and a strategy that applies them.
+  regular rules, any way you see fit.
+
+</para>
+
+<para>
 
 <screen>
 transformation =
@@ -337,7 +379,6 @@ transformation =
   &lt;+ special-case3
   &lt;+ all(transformation)
 </screen>
-
 
   The traversals above go through all constructors. If it is not
   necessary to traverse the entire tree, the following versions of the
@@ -367,6 +408,20 @@ transformation =
 </screen>
 
 </para>
+
+<note>
+  <title>Separate rules and strategies</title>
+
+  <para>
+    
+    While it is possible to construct your own strategies by mixing
+    traversal elements and rules, in general, it is a good idea to try
+    to get a clean separation between pure rewrite rules and a
+    strategy that applies them.
+
+  </para>
+
+</note>
 
 </section>
 
