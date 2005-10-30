@@ -208,31 +208,366 @@ stratego-lib (0.16M1) : .../stratego-lib
     <title>Making an XT component</title>
     
     <para>
-      xtc-input, xtc-output, xtc-check-dependencies
-      xtc-io-wrap, xtc-transform, read-from, write-to,
-      xtc-io-transform, xtc-find, xtc-input, xtc-io-exit, 
+      The simplest way to make an XT component is to wrap your 
+      top level strategy using the <code>xtc-io-wrap</code>
+      wrapper. This automatically confers your program with
+      basic command line option parsing capabilities, and also
+      basic I/O. 
     </para>
+
+    <para>
+      The following is an example of a trivial XT component which
+      just passes through the term passed to it.
+    </para>
+    
+<screen>
+module xtcid
+imports liblib xtc-lib
+strategies
+  main = xtc-io-wrap(xtcfoo)
+  xtcfoo = id
+</screen>
+
+   <para>  
+     As with the <code>io-wrap</code> strategy explained in
+     <xref linkend="library-options"/>, a default set of
+     command line options is provided by <code>xtc-io-wrap</code>.
+     After compiling the <filename>xtcid.str</filename>, 
+     we can run it to inspect the default set of options.
+   </para>
+
+<screen>
+<prompt>$</prompt> ./xtcid --help
+
+Options:
+   -i f|--input f   Read input from f
+   -o f|--output f  Write output to f
+   -b               Write binary output
+   -S|--silent      Silent execution (same as --verbose 0)
+   --verbose i      Verbosity level i (default 1)
+                    ( i as a number or as a verbosity descriptor:
+                      emergency, alert, critical, error,
+                      warning, notice, info, debug, vomit )
+   -k i | --keep i  Keep intermediates (default 0)
+   --statistics i  Print statistics (default 0 = none)
+   -h|-?|--help     Display usage information
+   --about          Display information about this program
+   --version        Same as --about
+
+Description:
+</screen> 
+  
+  <para>
+    This is normally all you have to do to have a working
+    XT component. You can add additional options using
+    the <code>Option</code> and <code>ArgOption</code>, as
+    explained in <xref linkend="library-options"/>, by
+    wrapping with <code>xtc-io-wrap(extra-opts, s)</code>.
+  </para>  
+
+  <para>
+    In some situations, it does not make sense for your
+    component to accept an input term, or to generate
+    and output term. That is, your component may be a
+    data <emphasis>sink</emphasis>, or a data
+    <emphasis>generator</emphasis>. In these cases,
+    your component should rather use 
+    <code>xtc-input-wrap</code>, in the case of a
+    sink, or <code>xtc-output-wrap</code>, in the 
+    case of a generator.
+  </para>
+    
+  <para>
+    The following programs shows a trivial generator, which
+    produces the term <code>"foo"</code> when invoked.
+  </para>
+
+<screen>
+module xtcid
+imports liblib xtc-lib
+strategies
+  main = xtc-output-wrap(xtcfoo)
+  xtcfoo = !"foo" ; write-to
+</screen>        
+  
+  <para>
+    Note how <code>xtcfoo</code> ends in a call to
+    <code>write-to</code>. The argument <code>s</code> to
+    <code>xtc-output-wrap(s)</code> must result in a
+    file, not a term. This is taken care of by the 
+    <code>write-to</code> strategy, which writes the current
+    term to a fresh, temporary file. The inverse of this
+    strategy is <code>read-from</code> which reads a term
+    from a file. It is used together with
+    <code>xtc-input-wrap</code>, analogously to the example
+    above.
+  </para> 
+ 
+  <para>
+    In both cases (<code>xtc-input-wrap</code> and
+    <code>xtc-output-wrap</code>), you may add additional command
+    line options, by using variants of the wrappers which
+    accept extra options, <code>xtc-input-wrap(extra-options, s)</code> 
+    and <code>xtc-output-wrap(extra-options, s)</code>,
+    respectively. 
+  </para>
+  
+  <formalpara>
+    <title>Checking Component Dependencies</title>
+    
+    <para>
+      If you write a component which depends on other components 
+      as part of its operation, you are encouraged to add 
+      dependency checking using the
+      <code>xtc-check-dependencies</code>. This is a two step
+      procedure: First, you add the <option>--check</option>
+      option to your components command-line options,
+      by adding <code>check-options(deps)</code> to the
+      <code>extra-opts</code> argument of
+      <code>xtc-io-wrap</code>. Afterwards, you should call
+      <code>xtc-check-dependencies</code> as part of your
+      option-processing.
+    </para>
+  </formalpara>
+     
+   <para>
+     In our simple program, <command>xtcid</command>, the 
+     above instructions can be implemented as shown next.
+   </para>
+      
+<screen>
+module xtcid
+imports liblib xtc-lib
+strategies
+
+  main = xtc-io-wrap(check-options(!["mybar", "mybaz"]), xtcid)
+  
+  xtcid = xtc-check-dependencies ; id
+</screen>  
+
+   <para>
+     After recompiling <command>xtcid</command>, the user can now
+     ask your component to do a self-check of its dependencies,
+     by calling it with the <option>--check</option>. You may 
+     want to piggy-back on this option, adding other kinds of
+     self-checks, such as data consistency checking. 
+   </para>
+   
+  <formalpara>
+    <title>Graceful Termination</title>
+    
+    <para>
+      As you have witnessed, the implementation of the XTC model
+      makes heavy use of temporary files. It is important that
+      these files are cleaned up after exectuion of your program.
+      In all programs we have seen so far, this was taken care of
+      automatically by the wrappers. But what happens if you want
+      to terminate your program in the middle of execution, by
+      calling <code>exit</code>, for example? In that case, the
+      temporary files will not be removed properly. A safe way
+      of exiting XTC programs is provided by the
+      <code>xtc-io-exit</code> strategy. This strategy is a
+      plugin replacement for <code>exit</code>, but takes
+      care of cleaning any and all temporary files created by
+      your program before terminating. 
+    </para>
+  </formalpara>
+  
   </section>
   
   <section>
     <title>Invoking XT components</title>
+  
     <para>
-      Compiling with a default xtc repository: --xtc-repos of
-      AutoXT/Automake.
+      Now that we know how to create XT components, and we also
+      know that the Stratego/XT environment provides many
+      reuseable XTC programs, we should take a bit of time to
+      explain how we can invoke these inside our Stratego
+      programs. It is important to realize that your Stratego
+      program must not itself be an XT component before it
+      can call out to other XT components. Both XTC programs
+      and normal Stratego programs call XT components in the
+      same way.
+    </para>
+
+    <para>
+      Before we proceed, we need to create a small XTC program
+      that we can call. The following is an XTC version of
+      the <code>inc</code> strategy. When invoked on an
+      integer <code>n</code>, it will return
+      <code>n + 1</code>.
+    </para>
+      
+<screen>
+module xtcfoo
+imports liblib xtc-lib
+strategies
+  main = xtc-io-wrap(read-from ; &lt;add> (&lt;id>, 1) ; write-to)
+</screen>
+
+    <para>
+      Let us quickly whip up a client for this component, that
+      invokes <command>xtcfoo</command> on the integer 
+      <code>1</code>:
+    </para>
+
+<screen>
+module xtcclient
+imports lib xtc-lib
+strategies
+  main = !1 ; xtc-transform(!"xtcinc")
+</screen>
+
+
+   <para>
+     Let us a compile and run this program.
+   </para>
+   
+<screen>
+<prompt>$</prompt> ./xtcclient
+[ identity crisis | error ] No XTC registration for xtcinc found
+./xtcclient: rewriting failed
+</screen>
+
+   <para>
+     Harking back a few sections, we should now realize that we forgot
+     to register <command>xtcinc</command> anywhere. We already 
+     know how to do this. For the sake of this demonstration, let
+     us create the <filename>XTC</filename> registry in the same
+     directory as the source code:
+   </para>
+
+<screen>
+<prompt>$</prompt> xtc -r XTC r -t xtcinc -V 1.0 -l `pwd`
+</screen>
+
+   <para>
+     If we were to run our program, <command>xtcclient</command> again
+     at this point, we would still get the same error. This is because
+     we have not told <command>xtcclient</command> which repository
+     it should use. This is done by the <option>--xtc-repo</option>
+     option to the Stratego compiler.
+   </para>
+
+<screen>
+<prompt>$</prompt> strc --xtc-repo ./XTC -i xtcclient.str
+....
+</screen>
+
+   <para>
+     At this point, we have created the XTC program
+     <command>xtcinc</command>. We have registered it in the 
+     XTC registry in <filename>./XTC</filename>, and we have
+     told <command>strc</command> to compile our client program,
+     <command>xtcclient</command> against this repository. We
+     should be all set to run our composition. Let's try. 
+   </para>
+   
+<screen>
+<prompt>$</prompt> ./xtcclient
+2
+</screen>
+
+    <para>
+      At last, it works. We have connected two components. By
+      changing the internals of our components, we can change
+      them to process any terms we want, and we can of course
+      also add additional components into the mix, all using the
+      same basic steps we have explained here.
+    </para>
+    
+    <para>
+      Having to remember the <option>--xtc-repo</option> option
+      to <command>strc</command> all the time is a bit annoying, but
+      as we shall in <xref linkend="library-building"/>, this will
+      be taken care of automatically by the Stratego/XT build system.
+    </para>      
+
+   <formalpara>
+     <title>Finding XTC Data Files</title>
+     
+     <para>
+       We have just seen how to use XTC programs from a repository,
+       but so far, we have said nothing about any data files we have
+       registered. This is where the <code>xtc-find-file</code> strategy
+       comes in handy. Let us go through the process of creating a term,
+       registering it, and then using it inside our program.
+     </para>
+   </formalpara>
+   
+    <para>
+      Suppose the file <filename>myterm.trm</filename> contains the
+      following term, written in plain text:
+    </para>
+    
+<screen>
+My(Term)
+</screen>
+
+    <para>
+      Calling <command>xtc</command> as follows, will register it
+      in the local repository we have already created.
+    </para>
+    
+<screen>
+<prompt>$</prompt> xtc -r ./XTC r -t myterm.trm -V 1.0 -l `pwd`
+</screen>
+
+    <para>
+      This will register the file <filename>myterm.trm</filename>
+      under the name <code>myterm.trm</code>, which we can use
+      to look it up from inside our programs later. Let us make a
+      new program that just does this.
+    </para>
+    
+<screen>
+module xtcclient
+imports liblib xtc-lib
+strategies
+  main = &lt;xtc-find-file> "myterm.trm" ; read-from
+</screen>
+
+    <para>
+      <code>xtc-find</code> is applied to a string, which must be
+      the name of an already registered data file in the
+      repository. As before, we have to compile our program 
+      using <command>strc</command>, and remember to include
+      the <option>--xtc-repo</option> option.
+    </para>
+
+<screen>
+<prompt>$</prompt> strc -i xtcload.str --xtc-repo ./XTC
+</screen>
+
+    <para>
+      We can now run our freshly compiled program.
+    </para> 
+
+<screen>
+<prompt>$</prompt> ./xtcload
+My(Term)
+</screen>
+
+    <para>
+      The result is as we anticipated. Congratulations! You have 
+      now mastered the basics of the XTC mechanics.
     </para>
   </section>
+</section>
   
   <section>
-   <title>Conclusion</title>
+   <title>Summary</title>
    
    <para>
      This chapter introduced you to the mechanics of the XTC model. We
      saw how to maintain a registry of XT components using the
      <command>xtc</command> tool, and also how to write XTC compositions
      in Stratego. Additional detail about the XTC API can be found in 
-     the API reference documentation, and the complete documentation
-     for <command>xtc</command> is given in <xref linkend="ref-xtc"/>
+     the API reference documentation. The complete documentation
+     for the <command>xtc</command> tool is given on the manual
+     page (<xref linkend="ref-xtc"/>).
    </para>
   </section>
+
 </chapter>
 
