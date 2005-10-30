@@ -84,6 +84,10 @@ downup(s1, s2) = s1; all(downup(s1, s2)); s2
 topdown(try(R1 &lt;+ R2 &lt;+ ...))
 </screen>
 
+  This has the effect that the rules are tried at each subterm. If
+  none of the rules apply the term is left as it was and traversal
+  continues with its subterms.
+
 </para>
 
 <formalpara>
@@ -91,7 +95,8 @@ topdown(try(R1 &lt;+ R2 &lt;+ ...))
 
 <para>
 
-  TODO: Question: which strategy to apply when?
+  The strategy to be used for a particular transformation depends on
+  the rules and the goal to be achieved.
 
 </para>
 
@@ -100,52 +105,97 @@ topdown(try(R1 &lt;+ R2 &lt;+ ...))
 <para>
 
   For example, a constant folding transformation for proposition
-  formulae can be defined as a bottom-up traversal that repeatedly
-  applies one of the truth-rules <code>T</code>.
+  formulae can be defined as a bottom-up traversal that tries to apply
+  one of the truth-rules <code>T</code> at each subterm:
     
 <screen>
-eval = bottomup(repeat(T))
+T : And(True(), x) -> x
+T : And(x, True()) -> x
+T : And(False(), x) -> False()
+T : And(x, False()) -> False()
+T : Or(True(), x) -> True()
+T : Or(x, True()) -> True()
+T : Or(False(), x) -> x
+T : Or(x, False()) -> x
+T : Not(False()) -> True()
+T : Not(True()) -> False()
+
+eval = bottomup(try(T))
 </screen>
 
-   TODO: note that bottomup is useful here and not topdown; give
-   example in shell
-    
+   Bottomup is the strategy of choice here because it evaluates
+   subterms before attempting to rewrite a term.
+
+   An evaluation strategy using <code>topdown</code>
+
+<screen>
+eval2 = topdown(try(T)) // bad strategy
+</screen>
+
+  does not work as well, since it attempts to rewrite terms before
+  their subterms have been reduced, thus missing rewriting
+  opportunities.
+
+  The following Stratego Shell session illustrates this:
+
+<screen>
+<prompt>stratego></prompt> !And(True(), Not(Or(False(), True())))
+And(True,Not(Or(False,True)))
+<prompt>stratego></prompt> eval
+False
+<prompt>stratego></prompt> !And(True(), Not(Or(False(), True())))
+And(True,Not(Or(False,True)))
+<prompt>stratego></prompt> eval2
+Not(True)
+</screen>
+
+  Exercise: find other terms that show the difference between these
+  strategies.
+
 </para>
 
 <para>
     
-  Similarly, a desugaring transformation for propositions, which
-  defines implication and equivalence in terms of other connectives
-  can be defined as a <code>topdown</code> traversal which tries to
-  apply one of the rules <code>DefI</code> or <code>DefE</code> at
-  every subterm.
+  On the other hand, a desugaring transformation for propositions,
+  which defines implication and equivalence in terms of other
+  connectives is best defined as a <code>topdown</code> traversal
+  which tries to apply one of the rules <code>DefI</code> or
+  <code>DefE</code> at every subterm.
 
 <screen>
-DefI : I(x, y) -> O(N(x), y)
-DefE : E(x, y) -> A(I(x, y), I(y, x))
+DefI : Impl(x, y) -> Or(Not(x), y)
+DefE : Eq(x, y) -> And(Impl(x, y), Impl(y, x))
 
 desugar = topdown(try(DefI &lt;+ DefE))
 </screen>
 
-  Note that here it is not
+  Since <code>DefE</code> rewrites <code>Eq</code> terms to terms
+  involving <code>Impl</code>, a strategy with <code>bottomup</code>
+  does not work.
 
 <screen>
-desugar = bottomup(try(DefI &lt;+ DefE))
+desugar2 = bottomup(try(DefI &lt;+ DefE))   // bad strategy
 </screen>
 
   Since the subterms of a node are traversed
   <emphasis>before</emphasis> the node itself is visited, this
-  transformation misses the application of the implications
-  (<code>I</code>), originating from the application of the
-  <code>DefE</code> rule. When <code>desugar</code> is defined using a
-  <code>topdown</code> traversal
-    
+  transformation misses the desugaring of the implications
+  (<code>Impl</code>) originating from the application of the
+  <code>DefE</code> rule.
+
+  The following Shell session illustrates this:
+
 <screen>
-desugar = topdown(try(DefI &lt;+ DefE))
+<prompt>stratego></prompt> !Eq(Atom("p"), Atom("q"))
+Eq(Atom("p"),Atom("q"))
+<prompt>stratego></prompt> desugar
+And(Or(Not(Atom("p")),Atom("q")),Or(Not(Atom("q")),Atom("p")))
+<prompt>stratego></prompt> !Eq(Atom("p"), Atom("q"))
+Eq(Atom("p"),Atom("q"))
+<prompt>stratego></prompt> desugar2
+And(Impl(Atom("p"),Atom("q")),Impl(Atom("q"),Atom("p")))
 </screen>
 
-  this problem does not arise.
-  
 </para>
 
 <formalpara>
