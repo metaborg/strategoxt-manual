@@ -502,14 +502,19 @@ strategies
   to order the application of <code>propconst</code> to its subterms
   <xref linkend='stratego-trav-propconst-if' />.  The first congruence
   applies <code>propconst</code> to the condition expression. Then an
-  application of the rule <code>EvalIf</code> attempts to eliminate un
-  
+  application of the rule <code>EvalIf</code> attempts to eliminate
+  one of the branches of the statement, in case the condition
+  evaluated to a constant value. If that is not possible the branches
+  are visited by two more congruence operator applications joined by a
+  dynamic rule intersection operator, which distributes the constant
+  propagation rules over the branches and merges the rules afterwards,
+  keeping only the consistent ones.
 
-</para>
+  Something similar happens in the case of <code>While</code>
+  statements <xref linkend='stratego-trav-propconst-while' />.
 
-<para>
-
-  <xref linkend='stratego-trav-propconst-while' />
+  For details concerning dynamic rules, see <xref
+  linkend="stratego-dynamic-rules"/>.
 
 </para>
 
@@ -522,7 +527,7 @@ strategies
 Block([
   Assign("x", Int("1")),
   Assign("y", Int("42")),
-  Assign("z", Plus(Var("x"), Var("z"))),
+  Assign("z", Plus(Var("x"), Var("y"))),
   If(Plux(Var("a"), Var("z")),
      Assign("b", Plus(Var("x"), Int("1"))),
      Block([
@@ -533,18 +538,26 @@ Block([
 ])
 </screen>
 
+  We import the module in the Stratego Shell, read the abstract syntax
+  tree from file, and apply the <code>propconst</code> transformation
+  to it:
+
 <screen>
 <prompt>stratego></prompt> import libstrategolib
 <prompt>stratego></prompt> import propconst
 <prompt>stratego></prompt> &lt;ReadFromFile> "foo.prg"
 ...
 <prompt>stratego></prompt> propconst
-Block([Assign("x",Int("1")),Assign("y",Int("42")),
-Assign("z",Plus(Int("1"),Var("z"))),If(Plux(Var("a"),
-Var("z")),Assign("b",Int("2")),Block([Assign("z",
-Int("17")),Assign("b",Int("2"))])),Assign("c",
-Plus(Int("2"),Plus(Var("z"),Int("42"))))])
+Block([Assign("x",Int("1")),Assign("y",Int("42")),Assign("z",Int("43")),
+If(Plux(Var("a"),Int("43")),Assign("b",Int("2")),Block([Assign("z",
+Int("17")),Assign("b",Int("2"))])),Assign("c",Plus(Int("2"),Plus(
+Var("z"),Int("42"))))])
 </screen>
+
+  Since the Stratego Shell does not (yet) pretty-print terms, the
+  result is rather unreadable. We can remedy this by writing the
+  result of the transformation to a file, and pretty-printing it on
+  the regular command-line with <xref linkend="ref-pp-aterm"/>.
 
 <screen>
 <prompt>stratego></prompt> &lt;ReadFromFile> "foo.prg"
@@ -557,9 +570,9 @@ Plus(Int("2"),Plus(Var("z"),Int("42"))))])
 Block(
   [ Assign("x", Int("1"))
   , Assign("y", Int("42"))
-  , Assign("z", Plus(Int("1"), Var("z")))
+  , Assign("z", Int("43"))
   , If(
-      Plux(Var("a"), Var("z"))
+      Plux(Var("a"), Int("43"))
     , Assign("b", Int("2"))
     , Block(
         [Assign("z", Int("17")), Assign("b", Int("2"))]
@@ -573,6 +586,9 @@ Block(
 )
 </screen>
 
+  Compare the result to the original program and try to figure out
+  what has happened and why that is correct. (Assuming the `usual'
+  semantics for this type of imperative language.)
 
 </para>
 
