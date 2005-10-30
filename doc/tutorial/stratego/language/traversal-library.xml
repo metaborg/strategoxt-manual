@@ -659,7 +659,7 @@ downupS(s1, s2, stop: (a -> a) * b -> b) =
 </section>
 
 <section>
-  <title>Partial Traversals (*)</title>
+  <title>Partial Traversals</title>
 
 <para>
 
@@ -671,58 +671,75 @@ downupS(s1, s2, stop: (a -> a) * b -> b) =
 
 <para>
 
-    Apply s at one position. One s application has to succeed.
+  The <code>oncet</code> and <code>oncebu</code> strategies apply the
+  argument strategy <code>s</code> at one position in the tree. That
+  is, application is tried at every node along the traversal until it
+  succeeds.
 
 <screen>
 oncetd(s) = s &lt;+ one(oncetd(s))
 oncebu(s) = one(oncebu(s)) &lt;+ s
 </screen>
 
-<screen>
+<!--screen>
 oncetd-skip(s, skip: (a -> a) * b -> b) =
   s &lt;+ skip(oncetd-skip(s, skip)) 
     &lt;+ one(oncetd-skip(s, skip))
-</screen>
+</screen-->
 
-\subsection{At Least Once}
+  The <code>sometd</code> and <code>somebu</code> strategies are
+  variations on <code>oncet</code> and <code>oncebu</code> that apply
+  <code>s</code> at least once at some positions, but possibly many
+  times. As soon as one is found, searching is stopped, i.e., in the
+  top-down case searching in subtrees is stopped, in bottom-up case,
+  searching in upper spine is stopped.
 
-    Apply s at some positions, but at least one. As soon as one is
-    found, searching is stopped, i.e., in the top-down case
-    searching in subtrees is stopped, in bottom-up case, searching
-    in upper spine is stopped.
-
-    One-pass traversals
-    
 <screen>
-  sometd(s) = rec x(s &lt;+ some(x))
-  somebu(s) = rec x(some(x) &lt;+ s)
+sometd(s) = s &lt;+ some(sometd(s))
+somebu(s) = some(somebu(s)) &lt;+ s
 </screen>
 
-\subsection{Frontier}
+ Similar strategies that find as many applications as possible, but at
+ least one, can be built using <code>some</code>:
 
-    While full traversals visit every node of a tree,
-    partial traversals may stop at some point. An
-    example is the <code>alltd(s)</code> strategy, which
-    stops as soon as it has found a subterm to which
-    <code>s</code> can be succesfully applied.
+<screen>
+manybu(s) = rec x(some(x); try(s) &lt;+ s)
+manytd(s) = rec x(s; all(try(x)) &lt;+ some(x))
+</screen>
+
+<screen>
+somedownup(s) = rec x(s; all(x); try(s) &lt;+ some(x); try(s))
+</screen>
+
+</para>
+
+<para>
+
+  The <code>alltd(s)</code> strategy stops as soon as it has found a
+  subterm to which <code>s</code> can be succesfully applied.
 
 <screen>
   alltd(s) = s &lt;+ all(alltd(s))
 </screen>
 
-    If <code>s</code> does not succeed, the strategy is applied
-    recursively at all direct subterms. This means that <code>s</code>
-    is applied along a frontier of the subject term. This strategy
-    is typically used in substitution operations in which subterms
-    are replaced by other terms. For example, the strategy
-    <code>alltd(?Var(x); !e)</code> replaces all occurrences of
-    <code>Var(x)</code> by <code>e</code>.
+  If <code>s</code> does not succeed, the strategy is applied
+  recursively at all direct subterms. This means that <code>s</code>
+  is applied along a frontier of the subject term. This strategy is
+  typically used in substitution operations in which subterms are
+  replaced by other terms. For example, the strategy
+  <code>alltd(?Var(x); !e)</code> replaces all occurrences of
+  <code>Var(x)</code> by <code>e</code>.
 
-    Note that <code>alltd(try(s))</code> is not a useful strategy.
-    Since <code>try(s)</code> succeeds at the root of the term,
-    no travesal is done.
+  Note that <code>alltd(try(s))</code> is not a useful strategy.
+  Since <code>try(s)</code> succeeds at the root of the term, no
+  traversal is done.
 
-   Local  transformations 
+</para>
+
+<para>
+
+  A typical application of <code>alltd</code> is the definition of
+  local transformations, that only apply to some specific subterm.
 
 <screen>
 transformation =
@@ -753,18 +770,6 @@ alltd-fold(s1, s2) = rec x(s1 &lt;+ all(x); s2)
     rec x((is-leaf; s) &lt;+ all(x))
 </screen>
 
-\subsection{Many}
-
-    Find as many applications as possible, but at least one.
-
-<screen>
-  manybu(s) = rec x(some(x); try(s) &lt;+ s)\
-  manytd(s) = rec x(s; all(try(x)) &lt;+ some(x))
-</screen>
-
-<screen>
-  somedownup(s) = rec x(s; all(x); try(s) &lt;+ some(x); try(s))
-</screen>
 
   </para>
 
