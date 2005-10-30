@@ -3,7 +3,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Idioms and Library Strategies for Traversal (*)</title>
+  <title>Idioms and Library Strategies for Traversal</title>
 
 <para>
 
@@ -753,23 +753,29 @@ transformation =
 
 <para>
 
-  relatives of <code>alltd</code>
+  Some relatives of <code>alltd</code> that add a strategy to apply on
+  the way up.
 
 <screen>
 alldownup2(s1, s2) = rec x((s1 &lt;+ all(x)); s2)
 alltd-fold(s1, s2) = rec x(s1 &lt;+ all(x); s2)
 </screen>
 
-\subsection{Leaves}
+</para>
+
+<para>
+
+  Finally, the following strategies select the
+  <emphasis>leaves</emphasis> of a tree, where the determination of
+  what is a leaf is upto a parameter strategy.
 
 <screen>
-  leaves(s, is-leaf, skip: a * (a -> a) -> a) =
-    rec x((is-leaf; s) &lt;+ skip(x) &lt;+ all(x))
+leaves(s, is-leaf, skip: a * (a -> a) -> a) =
+  rec x((is-leaf; s) &lt;+ skip(x) &lt;+ all(x))
 
-  leaves(s, is-leaf) =
-    rec x((is-leaf; s) &lt;+ all(x))
+leaves(s, is-leaf) =
+  rec x((is-leaf; s) &lt;+ all(x))
 </screen>
-
 
   </para>
 
