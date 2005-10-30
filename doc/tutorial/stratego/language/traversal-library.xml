@@ -357,7 +357,7 @@ simplify =
 </section>
 
 <section>
-  <title>Mixing Generic and Specific Traversals (*)</title>
+  <title>Mixing Generic and Specific Traversals</title>
 
 <para>
 
@@ -394,10 +394,20 @@ reduce = ...
 
 <para>
 
-  A typical example is the following constant propagation
-  transformation.  It uses the exceptions to the basic generic
-  traversal to traverse the tree in the order of the control-flow of
-  the program that is represented by the term.
+  A typical example is the following constant propagation strategy.
+  It uses the exceptions to the basic generic traversal to traverse
+  the tree in the order of the control-flow of the program that is
+  represented by the term.
+
+  This program makes use of <emphasis>dynamic rewrite
+  rules</emphasis>, which are used to propagate context-sensitive
+  information through a program. In this case, the context-sensitive
+  information concerns the constant values of some variables in the
+  program, which should be propagated to the uses of those variables.
+
+  Dynamic rules will be explained in <xref
+  linkend="stratego-dynamic-rules"/>; for now we are mainly concerned
+  with the traversal strategy.
 
 <screen>
 module propconst
@@ -414,14 +424,14 @@ signature
     
 strategies
 
-  propconst = 
-    PropConst
+  propconst = <co xml:id='stratego-trav-propconst' />
+    PropConst <co xml:id='stratego-trav-PropConst' />
     &lt;+ propconst-assign
     &lt;+ propconst-if
     &lt;+ propconst-while
-    &lt;+ all(propconst); try(EvalBinOp)
+    &lt;+ all(propconst); try(EvalBinOp) 
 
-  EvalBinOp :
+  EvalBinOp : <co xml:id='stratego-trav-propconst-evalbinop' />
     Plus(Int(i), Int(j)) -> Int(k) where &lt;addS>(i,j) => k
 
   EvalIf :
@@ -430,7 +440,7 @@ strategies
   EvalIf :
     If(Int(i), s1, s2) -> s1 where &lt;not(eq)>(i, "0")
 
-  propconst-assign =
+  propconst-assign = <co xml:id='stratego-trav-propconst-assign' />
     Assign(?x, propconst => e)
     ; if &lt;is-value> e then
         rules( PropConst : Var(x) -> e )
@@ -438,22 +448,133 @@ strategies
         rules( PropConst :- Var(x) )
       end
 
-  propconst-if =
+  propconst-if = <co xml:id='stratego-trav-propconst-if' />
     If(propconst, id, id)
     ; (EvalIf; propconst
-       &lt;+ 
+       &lt;+ (If(id, propconst, id) /PropConst\ If(id,id,propconst)))
 
+  propconst-while = <co xml:id='stratego-trav-propconst-while' />
+    While(id,id)
+    ; (/PropConst\* While(propconst, propconst))
 
+  is-value = Int(id)
 </screen>
-
-  This program makes use of <emphasis>dynamic rewrite
-  rules</emphasis>, which are used to propagate context-sensitive
-  information through a program. Dynamic rules be explained in <xref
-  linkend="stratego-dynamic-rules"/>
 
 </para>
 
 </formalpara>
+
+<para>
+
+  The main strategy of the constant propagation transformation <xref
+  linkend='stratego-trav-propconst' />, follows the pattern described
+  above; a number of special case alternatives followed by a generic
+  traversal alternative. The special cases are defined in their own
+  definitions. 
+
+  Generic traversal is followed by the constant folding rule
+  <code>EvalBinOp</code> <xref
+  linkend='stratego-trav-propconst-evalbinop' />.
+
+</para>
+
+<para>
+
+  The first special case is an application of the dynamic rule
+  <code>PropConst</code>, which replaces a constant valued variable by
+  its constant value <xref linkend='stratego-trav-PropConst' />.
+
+  This rule is defined by the second special case strategy,
+  <code>propconst-assign</code> <xref
+  linkend='stratego-trav-propconst-assign' />. It first traverses the
+  right-hand side of an assignment with an <code>Assign</code>
+  congruence operator, and a recursive call to
+  <code>propconst</code>. Then, if the expression evaluated to a
+  constant value, a new <code>PropConst</code> rule is
+  defined. Otherwise, any old instance of <code>PropConst</code> for
+  the left-hand side variable is undefined.
+
+</para>
+
+<para>
+
+  The third special case for <code>If</code> uses congruence operators
+  to order the application of <code>propconst</code> to its subterms
+  <xref linkend='stratego-trav-propconst-if' />.  The first congruence
+  applies <code>propconst</code> to the condition expression. Then an
+  application of the rule <code>EvalIf</code> attempts to eliminate un
+  
+
+</para>
+
+<para>
+
+  <xref linkend='stratego-trav-propconst-while' />
+
+</para>
+
+<para>
+
+  To see what <code>propconst</code> achieves, consider the following
+  abstract syntax tree (say in file <code>foo.prg</code>).
+
+<screen>
+Block([
+  Assign("x", Int("1")),
+  Assign("y", Int("42")),
+  Assign("z", Plus(Var("x"), Var("z"))),
+  If(Plux(Var("a"), Var("z")),
+     Assign("b", Plus(Var("x"), Int("1"))),
+     Block([
+       Assign("z", Int("17")),
+       Assign("b", Int("2"))
+     ])),
+  Assign("c", Plus(Var("b"), Plus(Var("z"), Var("y"))))
+])
+</screen>
+
+<screen>
+<prompt>stratego></prompt> import libstrategolib
+<prompt>stratego></prompt> import propconst
+<prompt>stratego></prompt> &lt;ReadFromFile> "foo.prg"
+...
+<prompt>stratego></prompt> propconst
+Block([Assign("x",Int("1")),Assign("y",Int("42")),
+Assign("z",Plus(Int("1"),Var("z"))),If(Plux(Var("a"),
+Var("z")),Assign("b",Int("2")),Block([Assign("z",
+Int("17")),Assign("b",Int("2"))])),Assign("c",
+Plus(Int("2"),Plus(Var("z"),Int("42"))))])
+</screen>
+
+<screen>
+<prompt>stratego></prompt> &lt;ReadFromFile> "foo.prg"
+...
+<prompt>stratego></prompt> propconst; &lt;WriteToTextFile> ("foo-pc.prg", &lt;id>)
+...
+<prompt>stratego></prompt> :quit
+...
+<prompt>$</prompt> pp-aterm -i foo-pc.prg
+Block(
+  [ Assign("x", Int("1"))
+  , Assign("y", Int("42"))
+  , Assign("z", Plus(Int("1"), Var("z")))
+  , If(
+      Plux(Var("a"), Var("z"))
+    , Assign("b", Int("2"))
+    , Block(
+        [Assign("z", Int("17")), Assign("b", Int("2"))]
+      )
+    )
+  , Assign(
+      "c"
+    , Plus(Int("2"), Plus(Var("z"), Int("42")))
+    )
+  ]
+)
+</screen>
+
+
+</para>
 
 <formalpara>
   <title>Generic Strategies with Exceptional Cases</title>
