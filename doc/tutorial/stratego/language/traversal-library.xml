@@ -11,13 +11,17 @@
   Stratego: custom traversal rules, data-type specific congruence
   operators, and generic traversal operators.
 
-  Now we will consider a number of idioms and standard strategies from
-  the Stratego Library that are useful in the definition of traversals.
+  Term traversals can be categorized into classes according to how
+  much of the term they traverse and to which parts of the term they
+  modify.
+
+  We will consider a number of idioms and standard strategies from the
+  Stratego Library that are useful in the definition of traversals.
 
 </para>
 
 <section>
-  <title>Full Traversals (*)</title>
+  <title>Full Traversals</title>
 
 <para>
 
@@ -204,16 +208,45 @@ And(Impl(Atom("p"),Atom("q")),Impl(Atom("q"),Atom("p")))
 <para>
 
   In case one rule produces a term to which another desugaring rule
-  can be used, the desugaring strategy should repeat the application
-  of rules to each subterm.
+  can be applied, the desugaring strategy should repeat the
+  application of rules to each subterm.
+
+  Consider the following rules and strategy for desugaring
+  propositional formulae to implicative normal form (using only
+  implication and <code>False</code>).
     
 <screen>
-impl-nf = topdown(repeat(DefN + DefA2 + DefO1 + DefE))
+DefT  : True() -> Impl(False(), False())
+DefN  : Not(x) -> Impl(x, False())
+DefA2 : And(x, y) -> Not(Impl(x, Not(y)))
+DefO1 : Or(x, y) -> Impl(Not(x), y)
+DefE  : Eq(x, y) -> And(Impl(x, y), Impl(y, x))
+
+impl-nf = topdown(repeat(DefT &lt;+ DefN &lt;+ DefA2 &lt;+ DefO1 &lt;+ DefE))
 </screen>
 
-  Term traversals can be categorized into classes according to how
-  much of the term they traverse and to which parts of the term they
-  modify.
+  Application of the rules with <code>try</code> instead of
+  <code>repeat</code> 
+
+<screen>
+impl-nf2 = topdown(try(DefT &lt;+ DefN &lt;+ DefA2 &lt;+ DefO1 &lt;+ DefE))  // bad strategy
+</screen>
+
+  is not sufficient, as shown by the following Shell session:
+
+<screen>
+<prompt>stratego></prompt> !And(Atom("p"),Atom("q"))
+And(Atom("p"),Atom("q"))
+<prompt>stratego></prompt> impl-nf
+Impl(Impl(Atom("p"),Impl(Atom("q"),False)),False)
+<prompt>stratego></prompt> !And(Atom("p"),Atom("q"))
+And(Atom("p"),Atom("q"))
+<prompt>stratego></prompt> impl-nf2
+Not(Impl(Atom("p"),Impl(Atom("q"),False)))
+</screen>
+
+  Note that the <code>Not</code> is not desugared with
+  <code>impl-nf2</code>.
 
 </para>
 
@@ -226,13 +259,16 @@ impl-nf = topdown(repeat(DefN + DefA2 + DefO1 + DefE))
 
   A variation on bottomup is a traversal that also provides the
   original term as well as the term in which the direct subterms have
-  been transformed. (also known as a paramorphism?)
+  been transformed. (Also known as a paramorphism?)
 
 <screen>
 bottomup-para(s) = &lt;s>(&lt;id>, &lt;all(bottomup-para(s))>)
 </screen>
 
-  TODO: example
+  This is most useful in a bottom-up traversal; the original term is
+  always available in a top-down traversal.
+
+  TODO/Exercise: give an example application of this strategy
 
 </para>
 
