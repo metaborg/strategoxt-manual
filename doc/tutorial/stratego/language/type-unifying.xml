@@ -276,14 +276,18 @@ fold-if(f, s)     : If(e1, e2, e3)    -> &lt;s>(&lt;f>e1, &lt;f>e2, &lt;f>e3)
 
 <para>
 
-  Term-Size with Fold 
+  Instantation of this strategy requires a rule for each constructor
+  of the data-type. For instance, the following instantiation defines
+  <code>term-size</code> using <code>fold-exp</code> by providing
+  rules that sum up the sizes of the subterms and add one
+  (<code>inc</code>) to account for the node itself.
 
 <screen>
 term-size  = fold-exp(BinOpSize, AssignSize, IfSize, ...)
 
-BinOpSize  : (Plus(), e1, e2) -> &lt;add>(1, &lt;add>(e1, e2))
-AssignSize : (e1, e2)         -> &lt;add>(e1, e2)
-IfSize     : (e1, e2, e3)     -> &lt;add>(e1, &lt;add>(e2, e3))
+BinOpSize  : (Plus(), e1, e2) -> &lt;add; inc>(e1, e2)
+AssignSize : (e1, e2)         -> &lt;add; inc>(e1, e2)
+IfSize     : (e1, e2, e3)     -> &lt;add; inc>(e1, &lt;add>(e2, e3))
 </screen>
 
 </para>
@@ -293,11 +297,10 @@ IfSize     : (e1, e2, e3)     -> &lt;add>(e1, &lt;add>(e2, e3))
   This looks suspiciously like the traversal rules in <xref
   linkend="stratego-traversal-strategies"/>.
 
-
-  Definining folds in this manner has several limitations.  In the
+  Defining folds in this manner has several limitations.  In the
   definition of fold, one parameter for each constructor is provided
   and traversal is defined explicitly for each constructor.
-  Furthermore, in the instantiation of fold one rule for each
+  Furthermore, in the instantiation of fold, one rule for each
   constructor is needed, and the default behaviour is not generically
   specified.
 
@@ -321,8 +324,6 @@ IfSize      : If(e1, e2, e3)        -> &lt;add>(e1, &lt;add>(e2, e3))
   Although the recursive application to subterms is now defined
   generically , one still has to specify rules for the default
   behaviour.
-
-  congruences or generic traversal operators don't apply here
 
 </para>
 
