@@ -3,7 +3,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Traversal Strategies (*)</title>
+  <title>Traversal Strategies</title>
 
 <para>
 
@@ -856,9 +856,25 @@ reduce-par(s) = repeat(rec x(some(x) + s))
 <xi:include href="traversal-library.xml"/>
 
 <section>
-  <title>Summary (*)</title>
+  <title>Summary</title>
 
 <para>
+
+  We have seen that tree traversals can be defined in several ways. 
+
+  Recursive traversal rules allow finegrained specification of a
+  traversal, but usually require too much boilerplate code.
+
+  Congruence operators provide syntactic sugar for traversal rules
+  that apply a strategy to each direct subterm of a term.
+
+  The generic traversal operators <code>all</code>, <code>one</code>,
+  and <code>some</code> allow consise, data-type independent
+  implementation of traversals.
+
+  A host of traversal strategies can be obtained by a combination of
+  the strategy combinators from the previous chapters with these
+  traversal operators.
 
 </para>
 
