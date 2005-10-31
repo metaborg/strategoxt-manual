@@ -20,7 +20,11 @@
   strategy is analysis of expresssions with examples such as free
   variables collection and call-graph extraction.
 
-  We will consider the following example problems:
+</para>
+
+<para>
+
+  We consider the following example problems:
             
   <itemizedlist>
     <listitem>
@@ -50,6 +54,14 @@
     </listitem>
   </itemizedlist>
 
+  These problems have in common that they reduce a structure to a
+  single value or to a collection of derived values. The structure of
+  the original term is usually lost.
+
+</para>
+
+<para>
+
   We start with examining these problems in the context of lists, and
   then generalize the solutions we find there to arbitrary terms using
   generic term deconstruction, which allows concise implementation of
@@ -65,33 +77,111 @@
 
   We start with considering type-unifying operations on lists.
 
-  Size (Number of Nodes) Replacing Nil by s1 and Cons by s2 
+</para>
+
+<formalpara>
+  <title>Fold</title>
+
+<para>
+
+  Reducing a list to a value can be conveniently expressed by means of
+  a fold, which has as parameters operations for reducing the list
+  constructors.
+
+  The <code>foldr/2</code> strategy reduces a list by replacing each
+  <code>Cons</code> by an application of <code>s2</code>, and the
+  empty list by <code>s1</code>.
 
 <screen>
 foldr(s1, s2) = 
   []; s1 &lt;+ \ [y|ys] -> &lt;s2>(y, &lt;foldr(s1, s2)> ys) \ 
 </screen>
 
-  Add the elements of a list of integers 
+  Thus, when applied to a list with three terms the result is
 
 <screen>
-sum = foldr(!0, add) 
+&lt;foldr(s1,s2)> [t1,t2,t3] => &lt;s2>(t1, &lt;s2>(t2, &lt;s2>(t3, &lt;s1> [])))
 </screen>
 
-  Fold and apply f to the elements of the list 
+</para>
+
+</formalpara>
+
+<para>
+
+  A typical application of <code>foldr/2</code> is <code>sum</code>,
+  which reduces a list to the sum of its elements.  It sums the
+  elements of a list of integers, using <code>0</code> for the empty
+  list and <code>add</code> to combine the head of a list and the
+  result of folding the tail.
+
+<screen>
+sum = foldr(!0, add)
+</screen>
+ 
+  The effect of <code>sum</code> is illustrated by the following
+  application:
+
+<screen>
+&lt;foldr(!0,add)> [1,2,3] => &lt;add>(1, &lt;add>(2, &lt;add>(3, &lt;!0> []))) => 6
+</screen>
+
+  Note the build operator for replacing the empty list with
+  <code>0</code>; writing <code>foldr(0, add)</code> would be wrong,
+  since <code>0</code> by itself is a congruence operator, which
+  basically <emphasis>matches</emphasis> the subject term with the
+  term <code>0</code> (rather than replacing it).
+
+</para>
+
+<formalpara>
+  <title>Fold with Map</title>
+
+<para>
+
+  The <code>foldr/2</code> strategy does not touch the elements of a
+  list.  The <code>foldr/3</code> strategy is a combination of fold
+  and map that extends <code>foldr/2</code> with a strategy that is
+  applied to the elements of the list.
 
 <screen>
 foldr(s1, s2, f) = 
-  []; s1 &lt;+ \ [y|ys] -> &lt;s2>(&lt;f>y,&lt;foldr(s1,s2,f)>ys) \ 
+  []; s1 &lt;+ \ [y|ys] -> &lt;s2>(&lt;f>y, &lt;foldr(s1,s2,f)>ys) \ 
 </screen>
 
-  Length of a list 
+  Thus, when applying it to a list with three elements, we get:
+
+<screen>
+&lt;foldr(s1,s2)> [t1,t2,t3] => &lt;s2>(&lt;f>t1, &lt;s2>(&lt;f>t2, &lt;s2>(&lt;f>t3, &lt;s1> [])))
+</screen>
+
+</para>
+
+</formalpara>
+
+<para>
+
+  The length of a list is the sum of the list with the elements
+  replaced by <code>1</code>.
 
 <screen>
 length = foldr(!0, add, !1)
 </screen>
 
-  Number of occurrences in a list 
+</para>
+
+<formalpara>
+  <title>Number of Occurrences</title>
+
+<para>
+
+  The number of occurrences in a list of terms that satisfy some
+  predicate, entails only counting those elements in the list for
+  which the predicate succeeds. (Where a predicate is expressed as the
+  succes or failure of applying a strategy.) 
+
+  This follows the same pattern as counting the length of a list, but
+  includes a test for the predicate:
 
 <screen>
 list-occurrences(s) = foldr(!0, add, s &lt; !1 + !0)
@@ -104,6 +194,11 @@ list-occurrences(?Var(id))
 </screen>
 
 </para>
+
+</formalpara>
+
+<formalpara>
+  <title>Collect</title>
 
 <para>
      
@@ -128,6 +223,8 @@ filter(Var(id))
 </screen>
 
 </para>
+
+</formalpara>
 
 </section>
 
