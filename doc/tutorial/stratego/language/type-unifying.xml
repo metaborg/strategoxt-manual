@@ -6,19 +6,6 @@
 
 <para>
 
-  The strategies that we have inspected so far are geared to transform
-  terms while preserving types
-  (<emphasis>rephrasings</emphasis>). There is also a class of
-  transformations, in which terms are <emphasis>translated</emphasis>
-  to a different type. In this chapter we introduce a
-  <emphasis>generic term construction and decomposition</emphasis>
-  combinator, which allows us to define generic translation or
-  <emphasis>type unifying</emphasis> strategies.
-
-</para>
-
-<para>
-
   In <xref linkend="stratego-traversal-strategies"/> we have seen
   combinators for composing <emphasis>type preserving</emphasis>
   strategies. That is, structural transformations in which basic
@@ -63,6 +50,12 @@
     </listitem>
   </itemizedlist>
 
+  We start with examining these problems in the context of lists, and
+  then generalize the solutions we find there to arbitrary terms using
+  generic term deconstruction, which allows concise implementation of
+  generic type unifying strategies, similarly to the generic traversal
+  strategies of <xref linkend="stratego-traversal-strategies"/>.
+
 </para>
 
 <section>
@@ -70,7 +63,7 @@
 
 <para>
 
-  We start by considering type-unifying operations on lists.
+  We start with considering type-unifying operations on lists.
 
   Size (Number of Nodes) Replacing Nil by s1 and Cons by s2 
 
