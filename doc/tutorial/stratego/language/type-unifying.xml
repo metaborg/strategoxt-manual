@@ -29,26 +29,26 @@
   <itemizedlist>
     <listitem>
       <para>
-	<code>term-size</code>: Count the number of nodes in a term
+	<emphasis>term-size</emphasis>: Count the number of nodes in a term
       </para>
     </listitem>
 
     <listitem>
       <para>
-	<code>occurrences</code>: Count number of occurrences of a
+	<emphasis>occurrences</emphasis>: Count number of occurrences of a
 	subterm in a term
       </para>
     </listitem>
 
     <listitem>
       <para>
-	<code>collect-vars</code>: Collect all variables in expression
+	<emphasis>collect-vars</emphasis>: Collect all variables in expression
       </para>
     </listitem>
 
     <listitem>
       <para>
-	<code>free-vars</code>: Collect all <emphasis>free</emphasis>
+	<emphasis>free-vars</emphasis>: Collect all <emphasis>free</emphasis>
 	variables in expression
       </para>
     </listitem>
@@ -80,7 +80,7 @@
 </para>
 
 <formalpara>
-  <title>Fold</title>
+  <title>Sum</title>
 
 <para>
 
@@ -135,13 +135,13 @@ sum = foldr(!0, add)
 </para>
 
 <formalpara>
-  <title>Fold with Map</title>
+  <title>Size</title>
 
 <para>
 
   The <code>foldr/2</code> strategy does not touch the elements of a
   list.  The <code>foldr/3</code> strategy is a combination of fold
-  and map that extends <code>foldr/2</code> with a strategy that is
+  and map that extends <code>foldr/2</code> with a parameter that is
   applied to the elements of the list.
 
 <screen>
@@ -161,8 +161,10 @@ foldr(s1, s2, f) =
 
 <para>
 
-  The length of a list is the sum of the list with the elements
-  replaced by <code>1</code>.
+  Now we can solve our first example problem
+  <code>term-size</code>. The size of a list is its
+  <emphasis>length</emphasis>, which corresponds to the sum of the
+  list with the elements replaced by <code>1</code>.
 
 <screen>
 length = foldr(!0, add, !1)
@@ -171,26 +173,28 @@ length = foldr(!0, add, !1)
 </para>
 
 <formalpara>
-  <title>Number of Occurrences</title>
+  <title>Number of occurrences</title>
 
 <para>
 
   The number of occurrences in a list of terms that satisfy some
   predicate, entails only counting those elements in the list for
-  which the predicate succeeds. (Where a predicate is expressed as the
-  succes or failure of applying a strategy.) 
+  which the predicate succeeds. (Where a predicate is implemented with
+  a strategy that succeeds only for the elements in the domain of the
+  predicate.)
 
   This follows the same pattern as counting the length of a list, but
-  includes a test for the predicate:
+  now only counting the elements for which <code>s</code> succeeds.
 
 <screen>
 list-occurrences(s) = foldr(!0, add, s &lt; !1 + !0)
 </screen>
 
-  Number of variables in a list 
+  Using <code>list-occurrences</code> and a match strategy we can
+  count the number of variables in a list:
 
 <screen>
-list-occurrences(?Var(id))
+list-occurrences(?Var(_))
 </screen>
 
 </para>
@@ -201,26 +205,34 @@ list-occurrences(?Var(id))
   <title>Collect</title>
 
 <para>
-     
-  Collect Terms 
 
-  Filter elements in a list for which s succeeds 
+  The next problem is to <emphasis>collect</emphasis> all terms for
+  which a strategy succeeds. We have already seen how to do this for
+  lists.  The <code>filter</code> strategy reduces a list to the
+  elements for which its argument strategy succeeds.
 
 <screen>
-filter(s) = [] + [s | filter(s)] &lt;+ ?[ |&lt;filter(s)>]
+filter(s) = [] &lt;+ [s | filter(s)] &lt;+ ?[ |&lt;filter(s)>]
 </screen> 
 
-  Collect variables in a list 
+  Collecting the variables in a list is a matter of filtering with the
+  <code>?Var(_)</code> match.
 
 <screen>
-filter(Var(id)) 
+filter(?Var(_)) 
 </screen>
 
-  Collect variables in first list, exclude elements in second list 
+  The final problem, collecting the free variables in a term, does not
+  really have a counter part in lists, but we can mimick this if we
+  consider having two lists; where the second list is the one with the
+  bound variables that should be excluded.
 
 <screen>
-(filter(Var(id)),id); diff
+(filter(?Var(_)),id); diff
 </screen>
+
+  This collects the variables in the first list and subtracts the
+  variables in the second list.
 
 </para>
 
