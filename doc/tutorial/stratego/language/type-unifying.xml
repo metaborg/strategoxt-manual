@@ -245,38 +245,54 @@ filter(?Var(_))
 
 <para>
 
-  Generalize folding of lists to arbitrary terms 
-  
-  Example: Tiger expressions 
+  We have seen how to do typical analysis transformations on
+  lists. How can we generalize this to arbitrary terms?
+
+  The general idea of a folding operator is that it replaces the
+  constructors of a data-type by applying a function to combine the
+  reduced arguments of constructor applications.
+
+  For example, the following definition is a sketch for a fold over
+  abstract syntax trees:
 
 <screen>
-fold-exp(binop, assign, if, ...) = 
-  rec f( 
-    \ BinOp(op, e1, e2) -> &lt;binop>(op,&lt;f>e1, &lt;f>e2) \ 
-  + \ Assign(e1, e2) -> &lt;assign>(&lt;f>e1, &lt;f>e2) \ 
-  + \ If(e1, e2, e3) -> &lt;if>(&lt;f>e1, &lt;f>e2, &lt;f>e3) \ 
-  + ... 
-  )
+fold-exp(binop, assign, if, ...) = rec f( 
+  fold-binop(f, binop)
+  &lt;+ fold-assign(f, assign)
+  &lt;+ fold-if(f, if)
+  &lt;+ ... )
+
+fold-binop(f, s)  : BinOp(op, e1, e2) -> &lt;s>(op, &lt;f>e1, &lt;f>e2)
+fold-assign(f, s) : Assign(e1, e2)    -> &lt;s>(&lt;f>e1, &lt;f>e2)
+fold-if(f, s)     : If(e1, e2, e3)    -> &lt;s>(&lt;f>e1, &lt;f>e2, &lt;f>e3)
 </screen>
+
+  For each constructor of the data-type the fold has an argument
+  strategy and a rule that matches applications of the constructor,
+  which it replaces with an application of the strategy to the tuple
+  of subterms reduced by a recursive invocation of the fold.
+
+</para>
+
+<para>
 
   Term-Size with Fold 
 
 <screen>
-term-size = 
-  fold-exp(BinOpSize, AssignSize, IfSize, ...)
+term-size  = fold-exp(BinOpSize, AssignSize, IfSize, ...)
 
-BinOpSize : 
-  BinOp(op, e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
-
-AssignSize : 
-  Assign(e1, e2) -> &lt;add>(e1, e2)) 
-
-// etc.
+BinOpSize  : (Plus(), e1, e2) -> &lt;add>(1, &lt;add>(e1, e2))
+AssignSize : (e1, e2)         -> &lt;add>(e1, e2)
+IfSize     : (e1, e2, e3)     -> &lt;add>(e1, &lt;add>(e2, e3))
 </screen>
 
 </para>
 
 <para>
+
+  This looks suspiciously like the traversal rules in <xref
+  linkend="stratego-traversal-strategies"/>.
+
 
   Definining folds in this manner has several limitations.  In the
   definition of fold, one parameter for each constructor is provided
@@ -285,20 +301,6 @@ AssignSize :
   constructor is needed, and the default behaviour is not generically
   specified.
 
-  Limitations of Fold 
-
-  Definition of fold 
-  
-  One parameter for each constructor 
-  
-  Define traversal for each constructor 
-  
-  Instantiation of fold 
-  
-  One rule for each constructor 
-
-  Default behaviour not generically specified
-
 </para>
 
 <para>
@@ -306,30 +308,21 @@ AssignSize :
   One solution would be to use the generic traversal strategy
   <code>bottomup</code> to deal with fold:
 
-
-  Defining Fold with Generic Traversal 
-  
-  Fold is bottomup traversal: 
-
 <screen>
-fold-exp(s)= 
-  bottomup(s) 
+fold-exp(s) = bottomup(s) 
 
-term-size = 
-  fold-exp(BinOpSize &lt;+ AssignSize &lt;+ IfSize &lt;+ ...) 
+term-size   = fold-exp(BinOpSize &lt;+ AssignSize &lt;+ IfSize &lt;+ ...) 
+
+BinOpSize   : BinOp(Plus(), e1, e2) -> &lt;add>(1, &lt;add>(e1, e2))
+AssignSize  : Assign(e1, e2)        -> &lt;add>(e1, e2)
+IfSize      : If(e1, e2, e3)        -> &lt;add>(e1, &lt;add>(e2, e3))
 </screen>
-
-  Definition of fold 
-
-  Recursive application to subterms defined generically 
-  
-  One parameter: rules combined with choice
-
-  Instantiation: default behaviour not generically specified
 
   Although the recursive application to subterms is now defined
   generically , one still has to specify rules for the default
   behaviour.
+
+  congruences or generic traversal operators don't apply here
 
 </para>
 
@@ -343,64 +336,43 @@ term-size =
   Instead of having folding rules that are specific to a data type,
   such as
 
-  Generic Term Deconstruction 
-
-  (1) Specific definitions 
-
 <screen>
-BinOpSize : 
-  BinOp(op, e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
-
-AssignSize : 
-  Assign(e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
+BinOpSize  : BinOp(op, e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
+AssignSize : Assign(e1, e2)    -> &lt;add>(1, &lt;add>(e1, e2)) 
 </screen>
 
-  Generic definition
+  we would like to have a generic definition of the form
 
 <screen>
-CSize : 
-  c(e1, e2, ...) -> &lt;add>(e1, &lt;add>(e2, ...)) 
+CSize : c(e1, e2, ...) -> &lt;add>(e1, &lt;add>(e2, ...)) 
 </screen>
-
-  Requires generic decomposition of constructor application
 
   This requires generic decomposition of a constructor application
   into its constructor and the list with children. This can be done
   using the <code>#</code> operator. The match strategy
   <code>?p1#(p2)</code> decomposes a constructor application into its
-  onstructor name and the list of direct subterms. Matching such a
+  constructor name and the list of direct subterms. Matching such a
   pattern against a term of the form <code>C(t1,...,tn)</code> results
   in a match of <code>"C"</code> against <code>p1</code> and a match
   of <code>[t1,...,tn]</code> against <code>p2</code>.
 
-
-  Generic Term Deconstruction Syntax: ?p1#(p2) 
-
-  Semantics: when applied to a term c(t1,...,tn) matches 
-
-  "c" against p1 
-
-  [t1,...,tn] against p2 
-
-  Decompose constructor application into its constructor name and list
-  of direct subterms
-
 <screen>
 Plus(Int("1"), Var("2")) 
-stratego> ?c#(xs)
-stratego> :binding c
+<prompt>stratego></prompt> ?c#(xs)
+<prompt>stratego></prompt> :binding c
 variable c bound to "Plus" 
-stratego> :binding xs 
+<prompt>stratego></prompt> :binding xs 
 variable xs bound to [Int("1"), Var("2")]
 </screen>
 
 </para>
 
+<formalpara>
+  <title>Crush</title>
+
 <para>
 
   Reduce a constructor application by folding the list of subterms.
-
-  Definition of Crush 
 
 <screen>
 crush(nul, sum, s) : 
@@ -408,6 +380,12 @@ crush(nul, sum, s) :
 </screen>
 
    Now we can define all kinds of operations generically
+
+</para>
+
+</formalpara>
+
+<para>
 
    Applications of Crush 
 
@@ -430,9 +408,11 @@ occurrences(s) =
 <screen>
 collect(s) = 
   ![&lt;s>] &lt;+ crush(![], union, collect(s)) 
+</screen>
 
 Collect all sub-terms for whichs succeeds 
 
+<screen>
 collect-all(s) = 
   ![&lt;s> | &lt;crush(![], union, collect(s))>] 
   &lt;+ crush(![], union, collect(s))
@@ -444,7 +424,7 @@ collect-all(s) =
 
 <screen>
 get-vars = 
-  collect(Var(id))
+  collect(?Var(_))
 </screen>
 
   Free Variables 
