@@ -2,7 +2,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-   <title>Type Unifying Strategies (*)</title>
+  <title>Type Unifying Strategies (*)</title>
 
 <para>
 
@@ -20,151 +20,139 @@
 <section>
    <title>Introduction</title>
 
-   <screen>
+<para>
 
-        In the previous section we have seen combinators for composing
-        \emph{type preserving} strategies. That is, structural
-        transformations in which basic transformation rules don't
-        change the type of a term. Such strategies are typically
-        applied in transformations, which change the structure of a
-        term, but not its type. Examples are simplification and
-        optimization.
+  In <xref linkend="stratego-traversal-strategies"/> we have seen
+  combinators for composing <emphasis>type preserving</emphasis>
+  strategies. That is, structural transformations in which basic
+  transformation rules don't change the type of a term. Such
+  strategies are typically applied in transformations, which change
+  the structure of a term, but not its type. Examples are
+  simplification and optimization.
 
-        In this section we consider the class of \emph{type unifying}
-        strategies, in which terms of different types are mapped onto
-        one type. The application area for this type of strategy is
-        analysis of expresssions with examples such as free variables
-        collection and call-graph extraction.
+  In this chapter we consider the class of <emphasis>type
+  unifying</emphasis> strategies, in which terms of different types
+  are mapped onto one type. The application area for this type of
+  strategy is analysis of expresssions with examples such as free
+  variables collection and call-graph extraction.
 
-        We will consider the following example problems:
-        \begin{itemize}
+  We will consider the following example problems:
+            
+  <itemizedlist>
+    <listitem>
+      <para>
+	<code>term-size</code>: Count the number of nodes in a term
+      </para>
+    </listitem>
 
-        \item \verb|term-size|: Count the number of nodes in a term
+    <listitem>
+      <para>
+	<code>occurrences</code>: Count number of occurrences of a
+	subterm in a term
+      </para>
+    </listitem>
 
-        \item \verb|occurrences|: Count number of occurrences of a
-        subterm in a term
+    <listitem>
+      <para>
+	<code>collect-vars</code>: Collect all variables in expression
+      </para>
+    </listitem>
 
-        \item \verb|collect-vars|: Collect all variables in expression
+    <listitem>
+      <para>
+	<code>free-vars</code>: Collect all <emphasis>free</emphasis>
+	variables in expression
+      </para>
+    </listitem>
+  </itemizedlist>
 
-        \item \verb|free-vars|: Collect all \emph{free} variables in
-        expression \end{itemize}
-
-
-Type preserving 
-
-Structural transformation 
-
-Types stay the same 
-
-Application: transformation 
-
-Examples: simplification, optimization, ...
-
-   </screen>
-
-   <screen>
-
-Type Unifying 
-
-Terms of different types mapped onto one type 
-
-Application: analysis 
-
-Examples: free variables, call-graph
-
-   </screen>
-
-   <screen>
-
-Example Problems 
-
-term-size 
-
-Count the number of nodes in a term 
-
-occurrences 
-
-Count number of occurrences of a subterm in a term 
-
-collect-vars 
-
-Collect all variables in expression 
-
-free-vars 
-
-Collect all free variables in expression
-
-   </screen>
+</para>
 
 </section>
 
 <section>
    <title>Type Unifying List Transformations</title>
 
-   <screen>
+<para>
 
-            We start by considering type-unifying operations on lists.
+  We start by considering type-unifying operations on lists.
 
-   </screen>
+  Size (Number of Nodes) Replacing Nil by s1 and Cons by s2 
 
-   <screen>
-     
-Size (Number of Nodes) Replacing Nil by s1 and Cons by s2 
-
+<screen>
 foldr(s1, s2) = 
   []; s1 &lt;+ \ [y|ys] -> &lt;s2>(y, &lt;foldr(s1, s2)> ys) \ 
+</screen>
 
-Add the elements of a list of integers 
+  Add the elements of a list of integers 
 
+<screen>
 sum = foldr(!0, add) 
+</screen>
 
-Fold and apply f to the elements of the list 
+  Fold and apply f to the elements of the list 
 
+<screen>
 foldr(s1, s2, f) = 
   []; s1 &lt;+ \ [y|ys] -> &lt;s2>(&lt;f>y,&lt;foldr(s1,s2,f)>ys) \ 
+</screen>
 
-Length of a list 
+  Length of a list 
 
+<screen>
 length = foldr(!0, add, !1)
 </screen>
 
+  Number of occurrences in a list 
+
 <screen>
-Number of occurrences in a list 
+list-occurrences(s) = foldr(!0, add, s &lt; !1 + !0)
+</screen>
 
-list-occurrences(s) = foldr(!0, add, s &lt; !1 + !0) 
+  Number of variables in a list 
 
-Number of variables in a list 
-
+<screen>
 list-occurrences(?Var(id))
-   </screen>
+</screen>
 
-   <screen>
+</para>
+
+<para>
      
-Collect Terms 
+  Collect Terms 
 
-Filter elements in a list for which s succeeds 
+  Filter elements in a list for which s succeeds 
 
-filter(s) = [] + [s | filter(s)] &lt;+ ?[ |&lt;filter(s)>] 
+<screen>
+filter(s) = [] + [s | filter(s)] &lt;+ ?[ |&lt;filter(s)>]
+</screen> 
 
-Collect variables in a list 
+  Collect variables in a list 
 
+<screen>
 filter(Var(id)) 
+</screen>
 
-Collect variables in first list, exclude elements in second list 
+  Collect variables in first list, exclude elements in second list 
 
+<screen>
 (filter(Var(id)),id); diff
-   </screen>
+</screen>
+
+</para>
 
 </section>
 
 <section>
    <title>Extending Fold to Expressions</title>
 
-   <screen>
-     Generalize folding of lists to arbitrary terms 
+<para>
 
-Example: Tiger expressions 
+  Generalize folding of lists to arbitrary terms 
+  
+  Example: Tiger expressions 
 
+<screen>
 fold-exp(binop, assign, if, ...) = 
   rec f( 
     \ BinOp(op, e1, e2) -> &lt;binop>(op,&lt;f>e1, &lt;f>e2) \ 
@@ -172,11 +160,11 @@ fold-exp(binop, assign, if, ...) =
   + \ If(e1, e2, e3) -> &lt;if>(&lt;f>e1, &lt;f>e2, &lt;f>e3) \ 
   + ... 
   )
-   </screen>
+</screen>
 
-   <screen>
-     Term-Size with Fold 
+  Term-Size with Fold 
 
+<screen>
 term-size = 
   fold-exp(BinOpSize, AssignSize, IfSize, ...)
 
@@ -187,148 +175,146 @@ AssignSize :
   Assign(e1, e2) -> &lt;add>(e1, e2)) 
 
 // etc.
-   </screen>
+</screen>
 
-   <screen>
+</para>
 
-        Definining folds in this manner has several limitations.  In
-        the definition of fold, one parameter for each constructor is
-        provided and traversal is defined explicitly for each
-        constructor.  Furthermore, in the instantiation of fold one
-        rule for each constructor is needed, and the default behaviour
-        is not generically specified.
+<para>
 
-     Limitations of Fold 
+  Definining folds in this manner has several limitations.  In the
+  definition of fold, one parameter for each constructor is provided
+  and traversal is defined explicitly for each constructor.
+  Furthermore, in the instantiation of fold one rule for each
+  constructor is needed, and the default behaviour is not generically
+  specified.
 
-Definition of fold 
+  Limitations of Fold 
 
-One parameter for each constructor 
+  Definition of fold 
+  
+  One parameter for each constructor 
+  
+  Define traversal for each constructor 
+  
+  Instantiation of fold 
+  
+  One rule for each constructor 
 
-Define traversal for each constructor 
+  Default behaviour not generically specified
 
-Instantiation of fold 
+</para>
 
-One rule for each constructor 
+<para>
 
-Default behaviour not generically specified
-   </screen>
-
-   <screen>
-
-        One solution would be to use the generic traversal strategy
-        \verb|bottomup| to deal with fold:
+  One solution would be to use the generic traversal strategy
+  <code>bottomup</code> to deal with fold:
 
 
-Defining Fold with Generic Traversal 
+  Defining Fold with Generic Traversal 
+  
+  Fold is bottomup traversal: 
 
-Fold is bottomup traversal: 
-
+<screen>
 fold-exp(s)= 
   bottomup(s) 
 
 term-size = 
   fold-exp(BinOpSize &lt;+ AssignSize &lt;+ IfSize &lt;+ ...) 
+</screen>
 
-Definition of fold 
+  Definition of fold 
 
-Recursive application to subterms defined generically 
+  Recursive application to subterms defined generically 
+  
+  One parameter: rules combined with choice
 
-One parameter: 
-rules combined with choice 
+  Instantiation: default behaviour not generically specified
 
-Instantiation: default behaviour not generically specified
+  Although the recursive application to subterms is now defined
+  generically , one still has to specify rules for the default
+  behaviour.
 
-        Although the recursive application to subterms is now defined
-        generically , one still has to specify rules for the default
-        behaviour.
-
-   </screen>
-
-   <screen>
-     
-   </screen>
+</para>
 
 </section>
 
 <section>
-   <title>Generic Term Deconstruction</title>
+  <title>Generic Term Deconstruction</title>
+  
+<para>
 
-   <screen>
+  Instead of having folding rules that are specific to a data type,
+  such as
 
-        Instead of having folding rules that are specific to a data
-        type, such as
+  Generic Term Deconstruction 
 
+  (1) Specific definitions 
 
-Generic Term Deconstruction 
-
-(1) Specific definitions 
-
+<screen>
 BinOpSize : 
   BinOp(op, e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
 
 AssignSize : 
   Assign(e1, e2) -> &lt;add>(1, &lt;add>(e1, e2)) 
+</screen>
 
-Generic definition 
+  Generic definition
 
+<screen>
 CSize : 
   c(e1, e2, ...) -> &lt;add>(e1, &lt;add>(e2, ...)) 
+</screen>
 
-Requires generic decomposition of constructor application
+  Requires generic decomposition of constructor application
 
-        This requires generic decomposition of a constructor
-        application into its constructor and the list with
-        children. This can be done using the \verb|#| operator. The
-        match strategy \verb|?p1#(p2)| decomposes a constructor
-        application into its onstructor name and the list of direct
-        subterms. Matching such a pattern against a term of the form
-        \verb|C(t1,...,tn)| results in a match of \verb|"C"| against
-        \verb|p1| and a match of \verb|[t1,...,tn]| against \verb|p2|.
-
-   </screen>
-
-   <screen>
+  This requires generic decomposition of a constructor application
+  into its constructor and the list with children. This can be done
+  using the <code>#</code> operator. The match strategy
+  <code>?p1#(p2)</code> decomposes a constructor application into its
+  onstructor name and the list of direct subterms. Matching such a
+  pattern against a term of the form <code>C(t1,...,tn)</code> results
+  in a match of <code>"C"</code> against <code>p1</code> and a match
+  of <code>[t1,...,tn]</code> against <code>p2</code>.
 
 
-Generic Term Deconstruction Syntax: ?p1#(p2) 
+  Generic Term Deconstruction Syntax: ?p1#(p2) 
 
-Semantics: when applied to a term c(t1,...,tn) matches 
+  Semantics: when applied to a term c(t1,...,tn) matches 
 
-"c" against p1 
+  "c" against p1 
 
-[t1,...,tn] against p2 
+  [t1,...,tn] against p2 
 
-Decompose constructor application into its constructor name and list
-of direct subterms
-   </screen>
+  Decompose constructor application into its constructor name and list
+  of direct subterms
 
-   <screen>
+<screen>
 Plus(Int("1"), Var("2")) 
 stratego> ?c#(xs)
 stratego> :binding c
 variable c bound to "Plus" 
 stratego> :binding xs 
 variable xs bound to [Int("1"), Var("2")]
-   </screen>
+</screen>
 
-   <screen>
+</para>
 
-        Reduce a constructor application by folding the list of
-        subterms.
+<para>
 
-Definition of Crush 
+  Reduce a constructor application by folding the list of subterms.
 
+  Definition of Crush 
+
+<screen>
 crush(nul, sum, s) : 
   #(xs) -> &lt;foldr(nul, sum, s)> xs
-   </screen>
-
-   <screen>
+</screen>
 
    Now we can define all kinds of operations generically
 
+   Applications of Crush 
 
-Applications of Crush 
-
+<screen>
 node-size = 
   crush(!0, add, !1) 
 
@@ -340,11 +326,11 @@ om-occurrences(s) =
 
 occurrences(s) = 
   &lt;add>(&lt;s &lt; !1 + !0>, &lt;crush(!0, add, occurrences(s))>)
-   </screen>
+</screen>
 
-   <screen>
-Collect Collect all (outermost) sub-terms for which s succeeds 
+  Collect Collect all (outermost) sub-terms for which s succeeds 
 
+<screen>
 collect(s) = 
   ![&lt;s>] &lt;+ crush(![], union, collect(s)) 
 
@@ -353,38 +339,46 @@ Collect all sub-terms for whichs succeeds
 collect-all(s) = 
   ![&lt;s> | &lt;crush(![], union, collect(s))>] 
   &lt;+ crush(![], union, collect(s))
+</screen>
 
-Application 
+  Application 
 
-Collect all variables in an expression 
+  Collect all variables in an expression
 
+<screen>
 get-vars = 
   collect(Var(id))
-   </screen>
+</screen>
 
-   <screen>
- Free Variables 
+  Free Variables 
 
-Collect all free variables 
+  Collect all free variables 
+  
+  Collect variables 
+  
+  Remove bound variables 
+  
+  Example 
 
-Collect variables 
-
-Remove bound variables 
-
-Example 
-
+<screen>
 x + let var y := x + 1 in f(y, a + x + b) end 
+</screen>
 
-free variables: {x, a, b}
+  free variables: {x, a, b}
 
+<screen>
 function f(x : int) = let var y := h(x) in x + g(z) * y end 
+</screen>
 
-free variables: {z}
-   </screen>
+  free variables: {z}
 
-   <screen>
-Collect all free variables from a Tiger expression 
+</para>
 
+<para>
+
+  Collect all free variables from a Tiger expression 
+
+<screen>
 free-vars = 
   ExpVars 
   &lt;+FreeVars(free-vars) 
@@ -405,74 +399,78 @@ FreeVars(fv) :
 FreeVars(fv) : 
   FunDec(f, xs, t, e) -> &lt;diff>(&lt;fv>e, xs) 
   where &lt;map(Fst)> xs => xs
-   </screen>
+</screen>
+   
+</para>
 
-   <screen>
-A generic collection algorithm 
+<para>
 
+  A generic collection algorithm 
+
+<screen>
 collect-exc(base, special : a * (a -> b) -> b) = 
   rec coll( 
     base 
     &lt;+ special(coll) 
     &lt;+ crush(![], union, coll) 
   ) 
+</screen>
 
-Instantiation 
+  Instantiation 
 
+<screen>
 free-vars = collect-exc(ExpVars, FreeVars)
-   </screen>
+</screen>
+
+</para>
 
 </section>
 
 <section>
    <title>Generic Term Construction</title>
 
-   <screen>
+<para>
 
-        It can also be useful to \emph{construct} terms
-        generically. For example, in parse tree implosion, application
-        nodes should be reduced to constructor applications. Hence
-        build operators can also use the \verb|#| operator. In a
-        strategy \verb|!p1#(p2)|, the current subject term is replaced
-        by a constructor application, where the constructor name is
-        provided by \verb|p1| and the list of subterms by
-        \verb|p2|. So, if \verb|p1| evaluates to \verb|"C"| and
-        \verb|p2| evaluates to \verb|[t1,...,tn]|, the expression
-        \verb|!p1#(p2)| build the term \verb|C(t1,...,tn)|.
+  It can also be useful to <emphasis>construct</emphasis> terms
+  generically. For example, in parse tree implosion, application nodes
+  should be reduced to constructor applications. Hence build operators
+  can also use the <code>#</code> operator. In a strategy
+  <code>!p1#(p2)</code>, the current subject term is replaced by a
+  constructor application, where the constructor name is provided by
+  <code>p1</code> and the list of subterms by <code>p2</code>. So, if
+  <code>p1</code> evaluates to <code>"C"</code> and <code>p2</code>
+  evaluates to <code>[t1,...,tn]</code>, the expression
+  <code>!p1#(p2)</code> build the term <code>C(t1,...,tn)</code>.
 
-Generic Term Construction 
+</para>
 
-Syntax: !p1#(p2) 
+<formalpara>
+  <title>Imploding Parse Trees</title>
+<para>
 
-Semantics: p1 evaluates to "c" p2 evaluates to [t1,...,tn] and replace
-current term with c(t1,...,tn)
+  Parse tree format 
 
-   </screen>
-
-   <screen>
-Imploding Parse Trees 
-
-Parse tree format 
-
+<screen>
 appl(prod(sorts, sort, attrs([cons("C")])),[t1,...,tn]) 
+</screen>
 
-Abstract syntax tree format C(t1,...,tn) 
+  Abstract syntax tree format C(t1,...,tn) 
 
-Implosion strategy 
+  Implosion strategy 
 
+<screen>
 implode = 
   appl(id, map(implode)); Implode 
 
 Implode : 
   appl(prod(sorts, sort, attrs([cons(c)])), ts) -> c#(ts) 
+</screen>
 
-See implode-asfix for full strategy  
-   </screen>
+  See implode-asfix for full strategy  
 
-   <screen>
-     Generic term construction and deconstruction support the
-     definition of generic analysis and generic translation problems
-   </screen>
+</para>
+
+</formalpara>
 
 </section>
 
@@ -481,10 +479,11 @@ See implode-asfix for full strategy
 
 <para>
 
+  Generic term construction and deconstruction support the definition
+  of generic analysis and generic translation problems
+
 </para>
 
 </section>
-
-
 
 </chapter>
