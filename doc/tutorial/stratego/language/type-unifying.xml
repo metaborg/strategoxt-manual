@@ -17,9 +17,6 @@
 
 </para>
 
-<section>
-   <title>Introduction</title>
-
 <para>
 
   In <xref linkend="stratego-traversal-strategies"/> we have seen
@@ -67,8 +64,6 @@
   </itemizedlist>
 
 </para>
-
-</section>
 
 <section>
    <title>Type Unifying List Transformations</title>
