@@ -2,7 +2,7 @@
   xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Type Unifying Strategies (*)</title>
+  <title>Type Unifying Strategies</title>
 
 <para>
 
@@ -373,14 +373,110 @@ variable xs bound to [Int("1"), Var("2")]
 
 <para>
 
-  Reduce a constructor application by folding the list of subterms.
+  Using generic term deconstruction we can now generalize the type
+  unifying operations on lists to arbitrary terms.
+
+  In analogy with the generic traversal operators we need a generic
+  one-level reduction operator. 
+
+  The <code>crush/3</code> strategy reduces a constructor application
+  by folding the list of its subterms using <code>foldr/3</code>.
 
 <screen>
-crush(nul, sum, s) : 
-  #(xs) -> &lt;foldr(nul, sum, s)> xs
+crush(nul, sum, s) : c#(xs) -> &lt;foldr(nul, sum, s)> xs
 </screen>
 
-   Now we can define all kinds of operations generically
+   Thus, <code>crush</code> performs a fold-map over the direct
+   subterms of a term. The following application illustrates what
+
+<screen>
+&lt;crush(s1, s2, f)> C(t1, t2) => &lt;s2>(&lt;f>t1, &lt;s2>(&lt;f>t2, &lt;s1>[]))
+</screen>
+
+   The following Shell session instantiates this application in two ways:
+
+<screen>
+<prompt>stratego></prompt> import libstrategolib
+<prompt>stratego></prompt> !Plus(Int("1"), Var("2"))
+Plus(Int("1"),Var("2"))
+
+<prompt>stratego></prompt> crush(id, id, id)
+(Int("1"),(Var("2"),[]))
+
+<prompt>stratego></prompt> !Plus(Int("1"), Var("2"))
+Plus(Int("1"),Var("2"))
+
+<prompt>stratego></prompt> crush(!Tail(&lt;id>), !Sum(&lt;Fst>,&lt;Snd>), !Arg(&lt;id>))
+Sum(Arg(Int("1")),Sum(Arg(Var("2")),Tail([])))
+</screen>
+
+  The <code>crush</code> strategy is the tool we need to implement
+  solutions for the example problems above.
+
+</para>
+
+</formalpara>
+
+<formalpara>
+  <title>Size</title>
+
+<para>
+
+   Counting the number of direct subterms of a term is similar to
+   counting the number of elements of a list. The definition of
+   <code>node-size</code> is the same as the definition of
+   <code>length</code>, except that it uses <code>crush</code> instead
+   of <code>foldr</code>:
+ 
+<screen>
+node-size = crush(!0, add, !1)
+</screen>
+
+   Counting the number of subterms (nodes) in a term is a similar
+   problem. But, instead of counting each direct subterm as 1, we need
+   to count <emphasis>its</emphasis> subterms.  
+
+<screen>
+term-size = crush(!1, add, term-size) 
+</screen>
+
+   The <code>term-size</code> strategy achieves this simply with a
+   recursive call to itself.
+
+<screen>
+<prompt>stratego></prompt> &lt;node-size> Plus(Int("1"), Var("2"))
+2
+<prompt>stratego></prompt> &lt;term-size> Plus(Int("1"), Var("2"))
+5
+</screen>
+
+</para>
+
+</formalpara>
+
+<formalpara>
+   <title>Occurrences</title>
+
+<para>
+
+  Counting the number of occurrences of a certain term in another
+  term, or more generally, counting the number of subterms that
+  satisfy some predicate is similar to counting the term size.
+
+  However, only those terms satisfying the predicate should be
+  counted.
+
+  The solution is again similar to the solution for lists, but now
+  using <code>crush</code>.
+
+<screen>
+om-occurrences(s) = s &lt; !1 + crush(!0, add, om-occurrences(s))
+</screen>
+
+  The <code>om-occurrences</code> strategy counts the
+  <emphasis>outermost</emphasis> subterms satisfying
+  <code>s</code>. That is, the strategy stops counting as soon as it
+  finds a subterm for which <code>s</code> succeeds.
 
 </para>
 
@@ -388,113 +484,173 @@ crush(nul, sum, s) :
 
 <para>
 
-   Applications of Crush 
+  The following strategy counts <emphasis>all</emphasis> occurrences:
 
 <screen>
-node-size = 
-  crush(!0, add, !1) 
-
-term-size = 
-  crush(!1, add, term-size) 
-
-om-occurrences(s) = 
-  s &lt; !1 + crush(!0, add, om-occurrences(s))
-
-occurrences(s) = 
-  &lt;add>(&lt;s &lt; !1 + !0>, &lt;crush(!0, add, occurrences(s))>)
+occurrences(s) = &lt;add>(&lt;s &lt; !1 + !0>, &lt;crush(!0, add, occurrences(s))>)
 </screen>
 
-  Collect Collect all (outermost) sub-terms for which s succeeds 
+  It counts the current term if it satisfies <code>s</code> and adds
+  that to the occurrences in the subterms.
 
 <screen>
-collect(s) = 
-  ![&lt;s>] &lt;+ crush(![], union, collect(s)) 
+<prompt>stratego></prompt> &lt;om-occurrences(?Int(_))> Plus(Int("1"), Plus(Int("34"), Var("2")))
+2
+<prompt>stratego></prompt> &lt;om-occurrences(?Plus(_,_))> Plus(Int("1"), Plus(Int("34"), Var("2")))
+1
+<prompt>stratego></prompt> &lt;occurrences(?Plus(_,_))> Plus(Int("1"), Plus(Int("34"), Var("2")))
+2
 </screen>
 
-Collect all sub-terms for whichs succeeds 
+</para>
+
+<formalpara>
+   <title>Collect</title>
+
+<para>
+
+  <emphasis>Collecting</emphasis> the subterms that satisfy a
+  predicate is similar to counting, but now a
+  <emphasis>list</emphasis> of subterms is produced.
+
+  The <code>collect(s)</code> strategy collects all
+  <emphasis>outermost</emphasis> occurrences satisfying
+  <code>s</code>.
+
+<screen>
+collect(s) = ![&lt;s>] &lt;+ crush(![], union, collect(s)) 
+</screen>
+
+  When encountering a subterm for which <code>s</code> succeeds, a
+  singleton list is produced. For other terms, the matching subterms
+  are collected for each direct subterm, and the resulting lists are
+  combined with <code>union</code> to remove duplicates.
+
+
+</para>
+
+</formalpara>
+
+<para>
+
+  A typical application of <code>collect</code> is the collection of
+  all variables in an expression, which can be defined as follows:
+
+<screen>
+get-vars = collect(?Var(_))
+</screen>
+
+  Applying <code>get-vars</code> to an expression AST produces the
+  list of all subterms matching <code>Var(_)</code>.
+
+</para>
+
+<para>
+
+  The <code>collect-all(s)</code> strategy collects
+  <emphasis>all</emphasis> occurrences satisfying <code>s</code>.
 
 <screen>
 collect-all(s) = 
-  ![&lt;s> | &lt;crush(![], union, collect(s))>] 
-  &lt;+ crush(![], union, collect(s))
+  ![&lt;s> | &lt;crush(![], union, collect(s))>] &lt;+ crush(![], union, collect(s))
 </screen>
 
-  Application 
+  If <code>s</code> succeeds for the subject term combines the subject
+  term with the collected terms from the subterms.
 
-  Collect all variables in an expression
+</para>
 
-<screen>
-get-vars = 
-  collect(?Var(_))
-</screen>
+<formalpara>
+   <title>Free Variables</title>
 
-  Free Variables 
+<para>
 
-  Collect all free variables 
-  
-  Collect variables 
-  
-  Remove bound variables 
-  
-  Example 
+  Collecting the variables in an expression is easy, as we saw above.
+  However, when dealing with languages with variable bindings, a
+  common operation is to extract only the <emphasis>free</emphasis>
+  variables in an expression or block of statements. That is, the
+  occurrences of variables that are not bound by a variable
+  declaration.
+
+  For example, in the expression
 
 <screen>
 x + let var y := x + 1 in f(y, a + x + b) end 
 </screen>
 
-  free variables: {x, a, b}
+  the free variables are <code>{x, a, b}</code>, but not
+  <code>y</code>, since it is bound by the declaration in the let.
+
+  Similarly, in the function definition 
 
 <screen>
 function f(x : int) = let var y := h(x) in x + g(z) * y end 
 </screen>
 
-  free variables: {z}
+  the only free variable is <code>z</code> since <code>x</code> and
+  <code>y</code> are declared.
 
 </para>
 
+</formalpara>
+
 <para>
 
-  Collect all free variables from a Tiger expression 
+  Here is a free variable extraction strategy for Tiger expressions.
+
+  It follows a similar pattern of mixing generic and data-type specific
+  operations as we saw in <xref linkend="stratego-traversal-strategies"/>.
+
+  The <code>crush</code> alternative takes care of the non-special
+  constructors, while <code>ExpVars</code> and <code>FreeVars</code>
+  deal with the special cases, i.e. variables and variable binding
+  constructs:
 
 <screen>
 free-vars = 
   ExpVars 
-  &lt;+FreeVars(free-vars) 
+  &lt;+ FreeVars(free-vars) 
   &lt;+ crush(![], union, free-vars) 
 
 ExpVars : 
-  Var(x) -> []
+  Var(x) -> [x]
 
 FreeVars(fv) : 
-  Let([VarDec(x, t, e1)], e2) -> 
-  &lt;union>(&lt;fv> e1, &lt;diff>(&lt;fv> e2, [x])) 
+  Let([VarDec(x, t, e1)], e2) -> &lt;union>(&lt;fv> e1, &lt;diff>(&lt;fv> e2, [x])) 
 
 FreeVars(fv) : 
-  Let([FunctionDec(fdecs)], e2) -> 
-  &lt;diff>(&lt;union>(&lt;fv> fdecs, &lt;fv>e2), fs) 
-  where &lt;map( FunDec(f, , , )-> f )> fdecs => fs 
+  Let([FunctionDec(fdecs)], e2) -> &lt;diff>(&lt;union>(&lt;fv> fdecs, &lt;fv>e2), fs) 
+  where &lt;map(?FunDec(&lt;id>,_,_,_))> fdecs => fs 
 
 FreeVars(fv) : 
   FunDec(f, xs, t, e) -> &lt;diff>(&lt;fv>e, xs) 
   where &lt;map(Fst)> xs => xs
 </screen>
+
+  The <code>FreeVars</code> rules for binding constructs use their
+  <code>fv</code> parameter to recursively get the free variables from
+  subterms, and they subtract the bound variables from any free
+  variables found using <code>diff</code>.
    
 </para>
 
 <para>
 
-  A generic collection algorithm 
+  We can even capture the pattern exhibited here in a generic
+  collection algorithm with support for special cases:
 
 <screen>
-collect-exc(base, special : a * (a -> b) -> b) = 
-  rec coll( 
-    base 
-    &lt;+ special(coll) 
-    &lt;+ crush(![], union, coll) 
-  ) 
+collect-exc(base, special : (a -> b) * a -> b) = 
+  base 
+  &lt;+ special(collect-exc(base, special)) 
+  &lt;+ crush(![], union, collect-exc(base, special)) 
 </screen>
 
-  Instantiation 
+  The <code>special</code> parameter is a strategy parameterized with
+  a recursive call to the collection strategy.
+
+  The original definition of <code>free-vars</code> above, can now be
+  replaced with
 
 <screen>
 free-vars = collect-exc(ExpVars, FreeVars)
@@ -526,29 +682,50 @@ free-vars = collect-exc(ExpVars, FreeVars)
   <title>Imploding Parse Trees</title>
 <para>
 
-  Parse tree format 
+  A typical application of generic term construction is the implosion
+  of parse trees to abstract syntax trees performed by <xref
+  linkend="ref-implode-asfix"/>. 
+
+  Parse trees produced by <xref linkend="ref-sglr"/> have the form:
 
 <screen>
 appl(prod(sorts, sort, attrs([cons("C")])),[t1,...,tn]) 
 </screen>
 
-  Abstract syntax tree format C(t1,...,tn) 
+  That is, a node in a parse tree consists of an encoding of the
+  original production from the syntax definition, and a list with
+  subtrees. The production includes a constructor annotation
+  <code>cons("C")</code> with the name of the abstract syntax tree
+  constructor. Such a tree node should be imploded to an abstract
+  syntax tree node of the form <code>C(t1,...,tn)</code>. 
 
-  Implosion strategy 
+  Thus, this requires the construction of a term with constructor
+  <code>C</code> given the string with its name.
+
+  The following implosion strategy achieves this using generic term
+  construction:
 
 <screen>
-implode = 
-  appl(id, map(implode)); Implode 
-
-Implode : 
-  appl(prod(sorts, sort, attrs([cons(c)])), ts) -> c#(ts) 
+implode = appl(id, map(implode)); Implode 
+Implode : appl(prod(sorts, sort, attrs([cons(c)])), ts) -> c#(ts) 
 </screen>
 
-  See implode-asfix for full strategy  
+  The <code>Implode</code> rule rewrites an <code>appl</code> term to
+  a constructor application, by extracing the constructor name from
+  the production and then using generic term construction to apply the
+  constructor.
 
 </para>
 
 </formalpara>
+
+<para>
+
+  Note that this is a gross over simplification of the actual
+  implementation of <xref linkend="ref-implode-asfix"/>.  See the
+  source code for the full strategy.
+
+</para>
 
 </section>
 
@@ -558,7 +735,10 @@ Implode :
 <para>
 
   Generic term construction and deconstruction support the definition
-  of generic analysis and generic translation problems
+  of generic analysis and generic translation problems. The generic
+  solutions for the example problems term size, number of occurrences,
+  and subterm collection demonstrate the general approach to solving
+  these types of problems.
 
 </para>
 
