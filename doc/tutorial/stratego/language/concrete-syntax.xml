@@ -607,6 +607,7 @@ Assign(Var(x),Let(d*,e*)) -> Let(d*,[Assign(Var(x),Seq(e*))])
 
 <formalpara>
   <title>Disambiguating Quotations</title>
+
 <para>
 
   Sometimes the fragments used within quotations are too small for the
@@ -696,6 +697,8 @@ Assign(Var(x),Let(d*,e*)) -> Let(d*,[Assign(Var(x),Seq(e*))])
 	from static analysis such as type checking. 
 
 </para>
+
+</formalpara>
 
 </section>
 
