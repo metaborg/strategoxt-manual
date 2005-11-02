@@ -4,9 +4,19 @@
 
   <title>Introducing Stratego/XT (*)</title>
   
-  <para></para>
-<screen>
-  - Very brief re-overview
-</screen>
-    
+  <para>
+    Stratego/XT is a program transformation system. It consists of two
+    major parts: XT -- a component architecture and collection of 
+    components for basic transformation infrastructure, such as parsing
+    and pretty-printing; and Stratego -- a strategic term rewriting language
+    for implementing new, custom components.
+  </para>
+
+  <para>
+    Both the ready-made components of XT and the new components written in
+    Stratego can be composed together using the XTC component model. These
+    features combine to make Stratege/XT a scalable and flexible environment
+    for developing stand-alone transformation systems for many different
+    tasks.
+  </para>    
 </section>
