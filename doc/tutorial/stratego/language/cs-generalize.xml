@@ -1,0 +1,204 @@
+
+\section{Generalization}
+	\label{Sec:generalization}
+
+	In the previous section we described the embedding of concrete
+	syntax for object languages in Stratego.  This approach can be
+	generalized to other meta-languages.  In this section we
+	outline the ingredients needed to make your favorite language
+	into a meta-language.
+
+\subsection{Components}
+
+	Given a (general-purpose) language $M$ to be used as
+	meta-language and a language $O$, which may be a data format,
+	a programming language, or a domain-specific language, as long
+	as it has a formal syntax, we can extend $M$ to a
+	meta-language for manipulating $O$
+	programs. Figure~\ref{Fig:arch} depicts the architecture of
+	this extension and the components that are employed. The large
+	box denotes the extension of the $M$ compiler <code>m-compile</code>
+	with concrete syntax for $O$. From a meta-programmer's point
+	of view this is a black box that implements the compiler
+	(dashed arrow) <code>mo-compile</code>, which consumes source
+	meta-programs and produces executable meta-programs. In the
+	rest of this section we briefly discuss the components
+	involved.
+
+\begin{figure}[p]
+\begin{boxedminipage}{\hsize}\small
+\begin{center}
+  \ifpdftex
+	\includegraphics{arch-eps.pdf}
+  \else
+	\includegraphics{arch.eps}
+  \fi
+\end{center}
+\end{boxedminipage}
+\caption{Architecture for meta-programming with concrete object syntax}
+\label{Fig:arch}
+\end{figure}
+
+\begin{description}
+
+\item[ATerm Library]
+
+	\ \\
+	The communication between the various components is achieved
+	by exchanging ATerms \cite{BJKO00}, a generic format for
+	exchange of structured data.
+
+\item[SDF tools] 
+	
+	\ \\ The syntax definition formalism SDF is used for parsing
+	programs in the combined syntax. The following tools are
+	used in the process:
+	\begin{itemize}
+
+	\item <code>pack-sdf</code>: collection of all imported SDF modules;
+
+	\item <code>sdf2table</code>: parser generator for SDF;
+
+	\item <code>sglr</code>: scannerless generalized-LR parser reads a
+	parse table (<code>M-O.tbl</code>) and parses a source file
+	according to it;
+	
+	\item <code>implode-asfix</code>: translation from parse trees to abstract
+	syntax trees;
+
+	\item Optionally one can use pretty-printer and signature
+	generators. 
+
+	\end{itemize}
+
+\item[$M$ as meta-language]
+	
+	\ \\ To use a certain language $M$ as meta-language the following
+	ingredients are needed:
+	\begin{itemize}
+
+	\item A syntax definition <code>M.sdf</code> of $M$
+
+	\item A model for object program representation in $M$ (e.g., AST
+	represented as term)
+
+	\item An API for constructing and analyzing $O$ programs in
+	$M$ (e.g., pattern instantiation and matching)
+	
+	\item <code>m-explode</code>: An explosion algorithm for
+	transforming $O$ abstract syntax expressions into $M$
+	expressions. If the object language program representation is
+	generic, i.e., does not depend on a specific $O$, this can be
+	implemented generically, as was done for Stratego using
+	<code>meta\-explode</code>. This is a transformation on $M$
+	programs.
+
+	\end{itemize}
+
+\item[$O$ as object language] 
+
+	\ \\ To use $O$ as object language embedded in $M$ the
+	following ingredients are needed: 
+
+	\begin{itemize}
+
+	\item A syntax definition <code>O.sdf</code> of $O$
+
+	\item A combined syntax definition <code>M-O.sdf</code>, possibly resolving
+	name clashes
+
+	\item Meta-variable declarations for $O$
+
+	\item Injection of $O$ expressions into $M$ expressions
+
+		\begin{itemize}
+
+	   	\item Selection of $O$ syntactic categories to
+	   	manipulate (e.g., <code>Exp</code> and <code>Dec</code>)
+
+           	\item Selection of $M$ syntactic categories in which
+           	$O$ expressions should be injected (e.g., <code>StrategoTerm</code>)
+
+	     	\item Quotation syntax (e.g., \verb+|[...]|+)
+
+		\item Anti quotation syntax (e.g., <code>~...</code>)
+	
+		\end{itemize}
+
+	It is possible to automate this by generating syntax for
+	variables, quotations, and antiquotations automatically from
+	the syntax definition of $O$, provided that there is a
+	standard convention for quotation and antiquotation.
+
+	\end{itemize}
+
+\item[$M$ compiler]
+
+	\ \\ After <code>m-exploding</code> meta-programs they can be
+	compiled by the usual compiler <code>m-compile</code> for $M$. If
+	the compiler does not have an option to consume abstract
+	syntax trees, but only text, it is necessary to pretty-print
+	the program first.
+
+\item[$O$ meta-programs]
+	
+	\ \\ Finally, we can write a meta-program <code>MetaProg.mo</code>
+	using concrete syntax and compile it to an executable
+	<code>MetaProg.bin</code> that manipulates $O$ programs.
+
+\end{description}
+
+\subsection{Implementation}
+
+	The architecture described above is implemented by
+	<code>parse-cs</code>, a generic program for parsing programs with
+	embedded concrete syntax.  It has been applied in the
+	extension of Prolog with concrete syntax~\cite{FV03.retrofit}.
+
+	The program is parameterized with meta-data indicating
+	components for various aspects such as parsing, exploding,
+	desugaring, and pretty-printing. The meta data can be
+	specified in a <code>.meta</code> file specific for a program to
+	be parsed, or it can be associated with an extension and
+	registered in an XTC repository (See Chapter~\ref{Chap:XTC}).
+
+	For example, the following is the contents of
+	<code>pl.meta</code>, the meta-data for Prolog programs with
+	embedded syntax. The assumption (in this example) is that
+	syntax embeddings use a standard (<code>ToTerm</code>) convention
+	for indicating the boundary between meta- and object-syntax.
+<screen>
+  Meta([
+    Syntax("Prolog"),
+    ParseTable("Prolog.tbl"),
+    Explode("prolog-explode"),
+    PrettyPrintTable("Prolog-pretty.pp.af")
+  ])
+</screen>
+	This information can be overridden in a file specific
+	<code>.meta</code> file with the same extension. For example, the
+	following indicates an embedding of ABIR in Prolog and a
+	specific desugaring tool for this format:
+<screen>
+  Meta([
+    Syntax("PrologABIR"),
+    PostExplodeDesugar("abir-in-prolog-implode")
+  ])
+</screen>
+	It overrides the syntax component, and adds a desugaring component.
+
+	In order to define such meta-data for a whole class of
+	programs, it can be defined in a meta file associated with a
+	new extension. For example, the following is the contents
+	<code>plabir.meta</code>, which defines all meta-data for
+	preprocessing Prolog with embedded ABIR in files with
+	extension <code>.plabir</code>.
+<screen>
+  Meta([
+    Syntax("PrologABIR"),
+    Explode("prolog-explode"),
+    PostExplodeDesugar("abir-in-prolog-implode"),
+    PrettyPrintTable("Prolog-pretty.pp.af")
+  ])
+</screen>
+
