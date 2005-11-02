@@ -203,7 +203,9 @@
 	Elementwise transformation of a list is normally done with the
 	<code>map(s)</code> strategy. It must be applied to a list. 
 	When used, it will apply the strategy <code>s</code> to each
-	element in the list, as shown here. 
+	element in the list, as shown here. It will return a list of equal 
+  length to the input. If the application of <code>s</code> fails
+  on one of the elements <code>map(s)</code> fails.
   </para>
       
 <screen>
@@ -222,8 +224,7 @@
   </para>   	
 
   <para>
-    Both <code>map</code> and <code>mapconcat</code> return
-    a list if equal length to the input. If we want to remove
+    If we want to remove
     elements from the list, we can use <code>filter(s)</code>.
     The <code>filter</code> strategy will apply <code>s</code>
     to each element of a list, and keep whichever elements
