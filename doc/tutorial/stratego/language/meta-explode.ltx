@@ -1,0 +1,19 @@
+
+\section{Generic Definition of Meta-Explode}
+	\label{Sec:metaexplode}
+
+	The strategy <code>MetaExplode</code> uses the generic strategy
+	<code>alltd</code> to perform a generic traversal over the
+	abstract syntax tree of a Stratego module. Anywhere in this
+	tree where it finds a <code>ToTerm(\_)</code>, its argument is
+	exploded using <code>trm-explode</code>. This latter strategy is
+	composed from a number of rules that recognize special
+	cases. The general case is handled by <code>TrmOp</code>, which
+	decomposes a term into its constructor <code>op</code> and
+	arguments <code>ts</code>, and constructs an abstract syntax term
+	<code>Op(op,ts')</code>, where the <code>ts'</code> are the exploded
+	arguments. The transformation <code>str-explode</code> is similar
+	to <code>trm-explode</code>, but transforms embedded abstract
+	syntax into strategy expressions.
+
+	\input{meta-explode.str}
