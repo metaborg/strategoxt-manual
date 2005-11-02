@@ -6,7 +6,6 @@
   <title>Software (*)</title>
   
   <para>
-
      To build transformation systems using Stratego/XT you need the
      following software packages:
 
@@ -14,33 +13,49 @@
 
         <listitem>
            <para>
-             ATerm Library: term representation
+             <link xl:href="http://www.stratego-language.org/Tools/ATerm">ATerm Library</link>: term representation
            </para>
         </listitem>
 
         <listitem>
            <para>
-             SDF2 Bundle: SDF2 parser generator and parser
+             <link xl:href="http://www.program-transformation.org/Sdf/SdfBundle">SDF2 Bundle</link>:
+             SDF2 parser generator and parser
            </para>
         </listitem>
 
         <listitem>
            <para>
-             Stratego/XT: Stratego compiler and XT tools
+             <link xl:href="http://www.stratego-language.org/Tools/ATerm">Stratego/XT</link>:
+             Stratego compiler and XT tools
            </para>
         </listitem>
 
+    </itemizedlist>
+  </para>
+  
+  <para>     
+    The packages are distributed as source files, and installation follows the
+    normal Unix <command>configure</command> and <command>make</command> style.
+    For some operating systems, ready-made packages are also provided.  A 
+    complete account of the installation procedure for these package
+    is given in <xref linkend="installation"/> of the Stratego/XT Tutorial.
+  </para>
+  
+  <para>
+    Additionally, the following packages will be necessary to get full benefit
+    of all the examples. These packages are not strictly required for
+    building Stratego programs, however.
+  </para>
+  
+    <itemizedlist>
+    
         <listitem>
            <para>
-             Stratego Shell: Stratego interpreter
+             <link xl:href="http://www.stratego-language.org/view/Stratego/StrategoShell">Stratego Shell</link>:
+             Stratego interpreter
            </para>
         </listitem>
 
      </itemizedlist>
-
-     Just refer to websites and installation chapter of tutorial.
-
-  </para>
-
-
 </section>
