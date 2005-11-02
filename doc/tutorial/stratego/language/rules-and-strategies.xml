@@ -826,7 +826,7 @@ Or(And(Not(Atom("r")),ATom("p")),And(And(Atom("p"),Atom("q")),ATom("p")))
 </screen>
 
   To correctly deploy programs based on shared libraries requires some
-  additional effort. <xref linkend="stratego-building"/> explains how
+  additional effort. <xref linkend="library-building"/> explains how
   to create deployable packages for your Stratego programs.
 
 </para>
