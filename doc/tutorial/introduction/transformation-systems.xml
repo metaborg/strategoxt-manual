@@ -9,7 +9,7 @@
   <title>What is Software Transformation?</title>
 
   <para>
-    Imagine finding yourself in the a situation where you have a
+    Imagine finding yourself in a situation where you have a
     collection of files containing source code. If this is an
     unreasonable prospect for you, stop reading and pick another
     tutorial. If you are still with us, consider these files the
@@ -56,38 +56,67 @@
 
   <figure xml:id="Fig-Applications">
     <title>
-      Applications of Program Transformation. (*)
+      Applications of Program Transformation.
     </title>
-  <screen>
-Compilers 
-- translation   
-- desugaring  
-- instruction selection 
-  - maximal munch
-  - burg-style dynamic programming
-- optimization 
-  - data-flow optimizations
-  - vectorization
-  - ghc-style simplification
-  - deforestation
-  - domain-specific optimization (codeboost)
-  - partial evaluation   
-- typechecking   
-- specialization of dynamic typing
 
-Program generators
-- pretty-printer and signature generation from syntax definitions
-- application generation from DSL (Java, C++) 
+   <itemizedlist mark="bullet">
+    <listitem>Compilers</listitem>
+    <listitem override="none">
+      <itemizedlist>
+        <listitem>Translation, e.g. Stratego into C</listitem>
+        <listitem>Desugaring, e.g. Java's <code>foreach</code> into <code>for</code></listitem>
+        <listitem>Instruction selection</listitem>
+        <listitem override="none">
+          <itemizedlist>
+            <listitem>Maximal munch</listitem>
+            <listitem>BURG-style dynamic programming</listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>Optimization</listitem>
+        <listitem override="none">
+          <itemizedlist>
+            <listitem>Data-flow optimization</listitem>
+            <listitem>Vectorization</listitem>
+            <listitem>GHC-style simplification</listitem>
+            <listitem>Deforestation</listitem>
+            <listitem>Domain-specific optimization</listitem>
+            <listitem>Partial evaluation</listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>Type checking</listitem>
+        <listitem>Specialization of dynamic typing</listitem>
+      </itemizedlist>
+    </listitem>
 
-Program migration
-- grammar conversion (yacc to sdf, ...)
+    <listitem>Program generators</listitem>
+    <listitem override="none">
+      <itemizedlist>
+        <listitem>Pretty-printer and signature generation from syntax definitions</listitem>
+        <listitem>Application generation, e.g. data format checkers from specifications</listitem>
+      </itemizedlist>
+    </listitem>
+ 
+    <listitem>Program migration</listitem>
+    <listitem override="none">
+      <itemizedlist>
+        <listitem>Grammar conversion, e.g. YACC to SDF</listitem>
+      </itemizedlist>
+    </listitem>
 
-Program understanding
-- documentation generation 
-
-Document generation/transformation 
-- Web/XML programming (server-side  scripts )
-  </screen>
+    <listitem>Program understanding</listitem>
+    <listitem override="none">
+      <itemizedlist>
+        <listitem>Documentation generation, e.g. API documentation for Stratego</listitem>
+      </itemizedlist>
+    </listitem>
+    
+    <listitem>Document generation/transformation</listitem>
+    <listitem override="none">
+      <itemizedlist>
+        <listitem>Web/XML programming (server-side scripts)</listitem>
+      </itemizedlist>
+    </listitem>
+   </itemizedlist>
   </figure>
   
   <para>
@@ -108,16 +137,17 @@ Document generation/transformation
   <title>What is Stratego/XT?</title>
 
   <para>
-    A program transformation system is usually organized as a simple
-    pipeline of transformation steps. At the source of the pipeline
+    Stratego/XT is a program transformation system. A program transformation
+    system is usually organized as a simple pipeline of transformation steps,
+    see <xref linkend="Fig-Pipeline"/>. At the source of the pipeline
     (far left), a parser reads the text of the input program and turns
     it into a parse tree or abstract syntax tree. Subsequently, one or
     several transformations components modify the tree. At the sink of
     the pipeline (far right), a pretty-printer turns the output tree
-    into program text. <xref linkend="Fig-Pipeline"/> plots these
-    components in on the map of a Transformation System. Of course,
-    the output program need not be in the same language as the input
-    program. It need not even be a programming language.
+    into program text. The output program need not be in the same language
+    as the input program. It need not even be a programming language. This
+    allows us to create important tools such as compilers and documentation
+    generators using Stratego/XT.
   </para>
 
   <figure xml:id="Fig-Pipeline">
@@ -128,9 +158,9 @@ Document generation/transformation
   </figure>
 
   <para>
-    So, what is Stratego/XT? Stratego/XT combines Stratego, a language
-    for implementing program transformations, and XT, a collection of
-    transformation tools. The Stratego language is a powerful language
+    Stratego/XT is actually a composition of two systems: Stratego, a
+    language for implementing program transformations, and XT, a collection
+    of transformation tools. The Stratego language is a powerful language
     for implementing the core transformations of a complete
     transformation system. The XT tools help with the implementation
     of the infrastructure required around these core transformations,
@@ -138,7 +168,7 @@ Document generation/transformation
   </para>
 
   <para>
-    Stratego and XT aims at better productivity in the development of
+    Stratego and XT aim at better productivity in the development of
     transformation systems through the use of a high-level
     representations of programs, domain-specific languages for the
     development of parts of a transformation system, and generating
@@ -153,28 +183,139 @@ Document generation/transformation
     <varlistentry>
       <term>ATerm Format</term>
       <listitem>
-	<para>
-	  For the structured representation of a program.
-	</para>
+      <para>
+        Although some transformation systems work directly on text, in
+        general a textual representation is not adequate for performing
+        complex transformations.  Therefore, a structured representation
+        is used by most systems.  Since programs are written as texts by
+        programmers, parsers are needed to convert from text to
+        structure and unparsers are needed to convert structure to text.
+      </para>
+  
+      <para>
+        The basic assumptions in our approach are that programs can be
+        represented as trees, or terms, and that term rewrite rules are
+        an excellent way to formalize transformations on programs.
+
+        Stratego/XT uses the Annotated Term Format, or ATerms for short, as
+        term representation.
+
+        The Stratego run-time system is based on the ATerm Library which
+        provides support for internal term representation as well as
+        their persistent representation in files.
+
+        This makes it easy to provide input and output for terms in
+        Stratego, and to exchange terms between transformation tools.
+      </para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term>Stratego Language</term>
       <listitem>
-	<para>
-	  For implementing program transformations.
-	</para>
+      <para>
+        Stratego is the core of Stratego/XT. It is a language for
+        program transformation based on the paradigm of rewriting
+        strategies. Basic transformations are defined using conditional
+        term rewrite rules. These are combined into full fledged
+        transformations by means of strategies, which control the
+        application of rules.
+      </para>
+
+      <para>
+        Term rewrite systems are formalisations of systematic
+        modifications of terms or trees. A rewrite rule describes how a
+        program fragment matching a certain pattern is transformed into
+        another program fragment. Term rewriting is the exhaustive
+        application of a set of rules to a term.
+      </para>
+
+      <para>
+        A complex program transformation is achieved through a number of
+        consecutive modifications of a program.  At least at the level
+        of design it is useful to distinguish transformation rules from
+        transformation strategies.  A rule defines a basic step in the
+        transformation of a program.  A strategy is a plan for achieving
+        a complex transformation using a set of rules.
+
+    <includefile 
+        id="demos-sample-rules-str"
+        root="../../examples"
+        file="sample-rules.str" />
+
+        For example, consider the transformation rules above. The 
+        <code>Inline*</code> rules define inlining of function and variable
+        definitions. The <code>Dead</code> rule eliminates an unused variable
+        definition. The <code>Extract</code> rule abstracts an expression into
+        a function. The <code>Hoist</code> rule defines lifting a function
+        definition out of a variable definition if the variable is not used in
+        the function. Using this set of rules, different transformations can be
+        achieved. For example, a constant propagation strategy in an
+        optimizer could use the <code>InlineV</code> and <code>Dead</code> rules
+        to eliminate constant variable definitions:
+
+<screen>
+   let x = 3 in x + y  ->  let x = 3 in 3 + y  ->  3 + y
+</screen>
+        On the other hand, the <code>ExtractFunction</code> strategy in
+        a refactoring browser could use the <code>Extract</code> and
+        <code>Hoist</code> rules to abstract addition with <code>y</code> into
+        a new function and lift it to top-level.
+<screen>
+  let x = 3 in x + y
+  -> let x = 3 in let addy(z) = z + y in addy(x)
+  -> let addy(z) = z + y in let x = 3 in addy(x)
+</screen>
+
+        Conceptually, rules could be applied interactively by a programmer
+        via a graphical user interface. In Stratego/XT, you can use the
+        Stratego Shell for doing this. More on this later. The problem with
+        such interative manipulations is that the transformation is not 
+        reproducible, since the decisions have not been recorded. We want
+        to be able to automate the transformation process, because we can
+        then apply series of basic transformations repeatedly to a program.
+        By generalizing the sequence of transformations, the combined
+        transformation can be applied to many programs.  This requires a
+        mechanism for combining rules into more complex transformations,
+        and this is exactly what the Stratego language gives us.
+      </para>
+  
+      <para>
+        Pure term rewriting is not adequate for the implementation of
+        program transformation systems, since most rewrite systems are
+        non-confluent and/or non-terminating. Hence, standard rewriting
+        strategies are not applicable.  The paradigm of programmable
+        rewriting strategies solves this problem by supporting the
+        definition of strategies adapted to a specific transformation
+        system. This makes it possible to select which rule to apply in
+        which transformation stage, and using which traversal order.
+      </para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term>SDF Language</term>
       <listitem>
-	<para>
-	  For modular, concise, definition of the syntax of a
-	  language. Parsers can be fully generated from SDF.
-	</para>
+      <para>
+        Converting program texts to terms for transformations requires
+        parsers. Since Stratego programs operate on terms, they do not
+        particularly care about the implementation of parsers. Thus,
+        parsers can be implemented with any parsing technology, or terms
+        can be produced by an existing compiler front-end. In practice,
+        Stratego is mostly used together with the syntax definition
+        formalism SDF. The Stratego compiler itself uses SDF to parse
+        Stratego programs, and many Stratego applications have been
+        developed with SDF as well.
+      </para>
+
+      <para>
+        The syntax definition formalism SDF supports high-level,
+        declarative, and modular definition of the syntax of programming
+        languages and data formats. The formalism integrates the
+        definition of lexical and context-free syntax.  The modularity
+        of the formalism implies that it is possible to easily combine
+        two languages or to embed one language into another.
+      </para>
       </listitem>
     </varlistentry>
 
@@ -182,19 +323,45 @@ Document generation/transformation
     <varlistentry>
       <term>GPP and the Box Language</term>
       <listitem>
-	<para>
-	  For generating and implementing pretty-printers.
-	</para>
+      <para>
+        Stratego/XT uses the pretty-printing model provided by the
+        Generic Pretty-Printing package GPP. In this model a tree is
+        unparsed to a Box expression, which contains text with markup
+        for pretty-printing. A Box expression can be interpreted by
+        different back-ends to produce formatted output for different
+        displaying devices such as plain text, HTML, and LATEX.
+      </para>
       </listitem>
+
     </varlistentry>
 
     <varlistentry>
+      <term>XT tool collection</term>
+      
+      <listitem>
+      <para>
+        XT is a collection of transformation tools providing support
+	    for the generation of many infrastructural aspects of program
+	    transformation systems, including parsers, pretty-printers,
+	    parenthesizers, and format checkers. 
+      </para>
+      </listitem>
+    </varlistentry>
+    
+    <varlistentry>
       <term>XTC</term>
       <listitem>
-	<para>
-	  For composing individual transformation tools into a
-	  complete transformation systems.
-	</para>
+      <para>
+        Parsers, pretty-printers, and transformations can be
+        encapsulated in separate executable components, which can be
+        reused in multiple transformation systems. Composition of such
+        components is facilitated by the XTC transformation tool
+        composition library.
+
+        Initially this tutorial uses separate components that are glued
+        using shell scripts, in order to improve the understanding of
+        the separate components. The use of XTC is introduced later on.
+      </para>
       </listitem>
     </varlistentry>
   </variablelist>
@@ -208,230 +375,19 @@ Document generation/transformation
 <section>
   <title>Outline</title>
 
-  <!-- TODO: outline must be updated -->
   <para>
     The rest of this tutorial is organized as follows. First, we will
-    discuss how we represent programs in Stratego/XT. Afterwards, we
-    will discuss the Stratego language itself, which our primary tool
-    for manipulating the programs. We will then cover how to construct
-    parsers using the syntax definition formalism SDF.  We round off
-    with a brief guide to the most important tools in the XT toolkit.
+    discuss the XT architecture and many of the important tools from
+    the XT collection. One of the most important points in this part
+    is how to construct parsers using the syntax definition formalism
+    SDF. Afterwards, we will introduce the Stratego language starting
+    with the concept or terms and moving on to rules, strategies and
+    the more advanced topics of concrete syntax and dynamic rules.
+    After this, we introduce the most important parts of the Stratego
+    library, and how to put together complete program transformation
+    systems from XT components using the Stratego build system.
   </para>
   
-</section>
-
-<section>
-  <title>Components for Transformation Systems</title>
-
-  <para>
-
-    In this section we discuss the main concepts and components
-    involved in the implementation of transformation systems with
-    Stratego/XT.
-    
-  </para>
-
-  <section>
-    <title>ATerms: Program Representation</title>
-
-    <para>
-
-      Although some transformation systems work directly on text, in
-      general a textual representation is not adequate for performing
-      complex transformations.  Therefore, a structured representation
-      is used by most systems.  Since programs are written as texts by
-      programmers, parsers are needed to convert from text to
-      structure and unparsers are needed to convert structure to text.
-
-    </para>
-  
-    <para>
-
-      The basic assumptions in our approach are that programs can be
-      represented as terms and that term rewrite rules are an
-      excellent way to formalize transformations on programs.
-
-      Stratego uses the Annotated Term Format, or ATerms for short, as
-      term representation.
-
-      The Stratego run-time system is based on the ATerm Library which
-      provides support for internal term representation as well as
-      their persistent representation in files.
-
-      This makes it easy to provide input and output for terms in
-      Stratego, and to exchange terms between transformation tools.
-
-    </para>
-
-  </section>
-
-  <section>
-    <title>SDF: Syntax Definition</title>
-
-    <para>
-
-      Converting program texts to terms for transformations requires
-      parsers. Since Stratego programs operate on terms, they do not
-      particularly care about the implementation of parsers. Thus,
-      parsers can be implemented with any parsing technology, or terms
-      can be produced by an existing compiler front-end. In practice,
-      Stratego is mostly used together with the syntax definition
-      formalism SDF. The Stratego compiler itself uses SDF to parse
-      Stratego programs, and many Stratego applications have been
-      developed with SDF as well.
- 
-    </para>
-
-    <para>
-
-      The syntax definition formalism SDF supports high-level,
-      declarative, and modular definition of the syntax of programming
-      languages and data formats. The formalism integrates the
-      definition of lexical and context-free syntax.  The modularity
-      of the formalism implies that it is possible to easily combine
-      two languages or to embed one language into another.
-
-    </para>
-
-  </section>
-
-  <section>
-    <title>GPP: Pretty-printing</title>
-	
-    <para>
-
-      Stratego/XT uses the pretty-printing model provided by the
-      Generic Pretty-Printing package GPP. In this model a tree is
-      unparsed to a Box expression, which contains text with markup
-      for pretty-printing. A Box expression can be interpreted by
-      different back-ends to produce formatted output for different
-      displaying devices such as plain text, HTML, and LATEX.
-
-    </para>
-
-  </section>
-
-  <section>
-    <title>Stratego: Transformation Strategies</title>
-
-    <para>
-
-      Stratego is the core of Stratego/XT. It is a language for
-      program transformation based on the paradigm of rewriting
-      strategies. Basic transformations are defined using conditional
-      term rewrite rules. These are combined into full fledged
-      transformations by means of strategies, which control the
-      application of rules.
-
-    </para>
-
-    <para>
-
-      Term rewrite systems are formalisations of systematic
-      modifications of terms or trees. A rewrite rule describes how a
-      program fragment matching a certain pattern is transformed into
-      another program fragment. Term rewriting is the exhaustive
-      application of a set of rules to a term.
-
-    </para>
-
-    <para>
-
-      A complex program transformation is achieved through a number of
-      consecutive modifications of a program.  At least at the level
-      of design it is useful to distinguish transformation rules from
-      transformation strategies.  A rule defines a basic step in the
-      transformation of a program.  A strategy is a plan for achieving
-      a complex transformation using a set of rules.
-
-    <includefile 
-        id="demos-sample-rules-str"
-        root="../../examples"
-        file="sample-rules.str" />
-
-      For example, consider the transformation rules above. The Inline
-      rules define inlining of function and variable definitions. The
-      Dead rule eliminates an unused variable definition. The Extract
-      rule abstracts an expression into a function. The Hoist rule
-      defines lifting a function definition out of a variable
-      definition if the variable is not used in the function. Using
-      this set of rules, different transformations can be
-      achieved. For example, a constant propagation strategy in an
-      optimizer could use the InlineV and Dead rules to eliminate
-      constant variable definitions:
-
-<screen>
-   let x = 3 in x + y  ->  let x = 3 in 3 + y  ->  3 + y
-</screen>
-        On the other hand, the ExtractFunction strategy in a
-        refactoring browser could use the Extract and
-        Hoist rules to abstract addition with y into a
-        new function and lift it to top-level.
-<screen>
-  let x = 3 in x + y
-  -> let x = 3 in let addy(z) = z + y in addy(x)
-  -> let addy(z) = z + y in let x = 3 in addy(x)
-</screen>
-
-      Rules can be applied interactively by a programmer via a
-      graphical user interface.  The problem with such manipulations
-      is that the transformation is not reproducible, since the
-      decisions have not been recorded.  By automating the
-      transformation process, a series of basic transformations can be
-      repeatedly applied to a program. By generalizing the sequence of
-      transformations the combined transformation can be applied to
-      many programs.  This requires a mechanism for combining rules
-      into more complex transformations.
-
-    </para>
-  
-    <para>
-  
-      Pure term rewriting is not adequate for the implementation of
-      program transformation systems, since most rewrite systems are
-      non-confluent and/or non-terminating. Hence, standard rewriting
-      strategies are not applicable.  The paradigm of programmable
-      rewriting strategies solves this problem by supporting the
-      definition of strategies adapted to a specific transformation
-      system. This makes it possible to select which rule to apply in
-      which transformation stage, and using which traversal order.
-
-    </para>
-  
-  </section>
-
-  <section>
-    <title>XT: Transformation Tools</title>
-
-    <para>
-
-	XT is a collection of transformation tools providing support
-	for the generation of many infrastructural aspects of program
-	transformation systems, including parsers, pretty-printers,
-	parenthesizers, and format checkers. 
-
-    </para>
-
-  </section>
-
-  <section>
-    <title>XTC: Transformation Tool Composition</title>
-
-    <para>
-
-      Parsers, pretty-printers, and transformations can be
-      encapsulated in separate executable components, which can be
-      reused in multiple transformation systems. Composition of such
-      components is facilitated by the XTC transformation tool
-      composition library.
-
-      Initially this tutorial uses separate components that are glued
-      using shell scripts, in order to improve the understanding of
-      the separate components. The use of XTC is introduced later on.
-
-    </para>
-  
-  </section>
 </section>
 
 </chapter>
