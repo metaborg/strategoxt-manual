@@ -4,6 +4,10 @@
 
   <title>Software Transformations</title>
 
+  <screen>
+   - perhaps move some of this material to the tutorial intro
+     instead?
+  </screen>
   <para>
 
     Program source code is the raw material produced by the software
