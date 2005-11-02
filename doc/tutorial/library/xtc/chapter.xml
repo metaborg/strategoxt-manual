@@ -5,14 +5,14 @@
   <title>Transformation Tool Composition with XTC (*)</title>
   
   <para>
-    In <xref linkend="xt-architecture"/>, we explained how
+    In <xref linkend="xt-architecture"/>, we explained how the
     Stratego/XT universe is built from small components, each
     a separately executable program. Many such components are
     provided for your reuse by the Stratego/XT distribution.
     We have already seen some of these in action throughout
     <xref linkend="tutorial-xt"/>.
     In this chapter, we will first explain how to compose
-    existing components together. Afterwards, we will explain
+    existing components together, and then proceed to explain
     how you can make your own Stratego programs into reusable
     XT components. 
   </para>
@@ -27,15 +27,17 @@
     associates each component with a name, a path and
     a version. The name is used later to look up
     components, and map their names to their actual location
-    on the system. In our Stratego programs, we only have to
-    specify the name of the program we want executed, and
+    in the file system. This is very handy when you program
+    with XT components. Inside our Stratego programs, we only have
+    to specify the name of the program we want executed, and
     the XTC machinery will automatically figure out which
-    program to execute, set up the piping, and even 
-    perform the execution for us.
+    program to execute, set up the piping, deal with temporary
+    files, and even perform the execution and parameter passing
+    for us.
   </para>  
 
   <para>
-    In this section we will cover the registration and lookup
+    In this section, we will cover the registration and lookup
     mechanisms in some detail. 
   </para>
       
@@ -44,18 +46,18 @@
 
     <para>
       An XTC repository is a collection of programs and data files. 
-      The programs, which are usually XT components, must be
+      The programs, which we usually refer to as XT components, must be
       registered explicitly using the <command>xtc</command>
       tool before they can be used. This is also the case for
       the data files. A normal program transformation system built
-      with Stratego/XT will contain an XTC repository, where all its
-      components have been registered.
-      Though this registration is done completely automatically
-      for you by the Stratego build system, it will provide 
-      instructive to know what takes place behind the scenes.
-      Refer to <xref linkend="library-building" /> for an explaination
-      of how to configure the Stratego/XT build system to automatically 
-      register your XT components.
+      with Stratego/XT will contain an XTC repository, where all
+      its components have been registered. Though this registration is
+      done automatically for you by the Stratego build system, it will
+      prove instructive to know what takes place behind the scenes, by
+      the understanding the <command>xtc</command> command (refer to 
+      <xref linkend="library-building" /> for an explaination of how to
+      configure the Stratego/XT build system to automatically register
+      your XT components).
     </para>
 
     <para>
@@ -81,7 +83,7 @@
        is where the registry for the XTC repository is normally
        placed, in the file <filename>XTC</filename>. Assuming we
        already have the XT component <command>foo2bar</command>
-       placed in <filename>.../ogetarts/libexec/</filename>, the
+       placed in <filename>.../ogetarts/libexec/</filename>. The
        following <command>xtc</command> invocation will register
        it with the Ogetarts registry:
     </para>
@@ -95,9 +97,12 @@
       <filename>XTC</filename> registry file if it does not already
       exist. The <option>-l</option> specifies the path to the component
       being registered, and <option>-t</option> specifies its name. This
-      name is used for lookup purposes later. Additionally, 
-      the <option>-V</option> may be used to associate a version number
-      with a given program.
+      name is used for lookup purposes later. The <option>-V</option> is 
+      used to associate a version number with a given program. It is possible
+      to include the version number in the lookup of a component, to find
+      a particular version of a particular component, but this is not
+      common practice, and should be avoided. However, every registration
+      must have include a version number.
     </para>
 
   </section>
@@ -155,7 +160,7 @@
 
 <screen>
 <prompt>$</prompt> xtc -r .../ogetarts/share/ogetarts/XTC query -t sglr 
-sglr (3.8) : /bin/sglr
+sglr (3.8) : /usr/bin/sglr
 </screen>
 
      <para>
@@ -201,7 +206,8 @@ stratego-lib (0.16M1) : .../stratego-lib
       There are three main usage scenarios for the XTC API. Either you
       use the API to create a new XT component of your own, or you use
       it to invoke an XT component from your Stratego program (which
-      need not be an XT component), or both. 
+      need not be an XT component), or both; you are writing an XT
+      component which calls other XT components. 
     </para>
     
   <section>
@@ -209,8 +215,8 @@ stratego-lib (0.16M1) : .../stratego-lib
     
     <para>
       The simplest way to make an XT component is to wrap your 
-      top level strategy using the <code>xtc-io-wrap</code>
-      wrapper. This automatically confers your program with
+      top level strategy with the <code>xtc-io-wrap</code>
+      wrapper. This automatically bestows your program with
       basic command line option parsing capabilities, and also
       basic I/O. 
     </para>
@@ -222,7 +228,7 @@ stratego-lib (0.16M1) : .../stratego-lib
     
 <screen>
 module xtcid
-imports liblib xtc-lib
+imports liblib
 strategies
   main = xtc-io-wrap(xtcfoo)
   xtcfoo = id
@@ -258,23 +264,37 @@ Description:
 </screen> 
   
   <para>
-    This is normally all you have to do to have a working
-    XT component. You can add additional options using
+    This is normally all you have to do in order to have a
+    working XT component. You can add additional options using
     the <code>Option</code> and <code>ArgOption</code>, as
     explained in <xref linkend="library-options"/>, by
-    wrapping with <code>xtc-io-wrap(extra-opts, s)</code>.
+    wrapping your toplevel strategy with 
+    <code>xtc-io-wrap(extra-opts, s)</code> instead of
+    <code>xtc-io-wrap(s)</code>. In either case, your
+    program will now automatically read the input term
+    from the file specified with <option>-i</option>, pass
+    this to <code>s</code>, then write the result of
+    <code>s</code> to the file specified by
+    <option>-o</option>. When <option>-i</option> or
+    <option>-o</option> are not specified,
+    <filename>stdin</filename> and <filename>stdout</filename>
+    will be used instead, respectively.
   </para>  
 
+<screen>
+<prompt>$</prompt> echo "My(Term)" | ./xtcfoo -o myterm.trm
+<prompt>$</prompt> cat myterm.trm
+My(Term)
+<prompt>$</prompt>
+</screen>
+
   <para>
-    In some situations, it does not make sense for your
-    component to accept an input term, or to generate
-    and output term. That is, your component may be a
-    data <emphasis>sink</emphasis>, or a data
-    <emphasis>generator</emphasis>. In these cases,
-    your component should rather use 
-    <code>xtc-input-wrap</code>, in the case of a
-    sink, or <code>xtc-output-wrap</code>, in the 
-    case of a generator.
+    In some situations, it does not make sense for your component to accept an
+    input term, or to generate and output term. That is, your component may be
+    a <emphasis>data generator</emphasis>, or a <emphasis>data sink</emphasis>.
+    In these cases,your component should rather use 
+    <code>xtc-input-wrap</code>, in the case of a sink, or
+    <code>xtc-output-wrap</code>, in the case of a generator.
   </para>
     
   <para>
@@ -283,24 +303,23 @@ Description:
   </para>
 
 <screen>
-module xtcid
-imports liblib xtc-lib
+module xtcfoo
+imports liblib
 strategies
   main = xtc-output-wrap(xtcfoo)
   xtcfoo = !"foo" ; write-to
 </screen>        
   
   <para>
-    Note how <code>xtcfoo</code> ends in a call to
-    <code>write-to</code>. The argument <code>s</code> to
-    <code>xtc-output-wrap(s)</code> must result in a
-    file, not a term. This is taken care of by the 
-    <code>write-to</code> strategy, which writes the current
-    term to a fresh, temporary file. The inverse of this
-    strategy is <code>read-from</code> which reads a term
-    from a file. It is used together with
-    <code>xtc-input-wrap</code>, analogously to the example
-    above.
+    <code>xtcfoo</code> strategy is our top level strategy. Note how it ends in
+    a call to <code>write-to</code>. The argument <code>s</code> to
+    <code>xtc-output-wrap(s)</code> must result in a file, not a term. Copying
+    the current term to a file, is taken care of by the <code>write-to</code> 
+    strategy. <code>write-to</code> will create a fresh temporary file and
+    write the current term to it. The inverse of <code>write-to</code> is
+    <code>read-from</code> which reads a term from a file. This latter strategy
+    is used together with <code>xtc-input-wrap</code>, analogously to the
+    example above.
   </para> 
  
   <para>
@@ -331,17 +350,16 @@ strategies
   </formalpara>
      
    <para>
-     In our simple program, <command>xtcid</command>, the 
-     above instructions can be implemented as shown next.
+     Going back to our simple <command>xtcid</command> program, we
+     would add the <option>--check</option> with functionality, as
+     follows:
    </para>
       
 <screen>
 module xtcid
-imports liblib xtc-lib
+imports liblib
 strategies
-
-  main = xtc-io-wrap(check-options(!["mybar", "mybaz"]), xtcid)
-  
+  main = xtc-io-wrap(check-options(!["sglr", "foo2bar"]), xtcid)
   xtcid = xtc-check-dependencies ; id
 </screen>  
 
@@ -384,7 +402,7 @@ strategies
       reuseable XTC programs, we should take a bit of time to
       explain how we can invoke these inside our Stratego
       programs. It is important to realize that your Stratego
-      program must not itself be an XT component before it
+      program need not itself be an XT component before it
       can call out to other XT components. Both XTC programs
       and normal Stratego programs call XT components in the
       same way.
@@ -399,21 +417,21 @@ strategies
     </para>
       
 <screen>
-module xtcfoo
-imports liblib xtc-lib
+module xtcinc
+imports liblib
 strategies
   main = xtc-io-wrap(read-from ; &lt;add> (&lt;id>, 1) ; write-to)
 </screen>
 
     <para>
       Let us quickly whip up a client for this component, that
-      invokes <command>xtcfoo</command> on the integer 
+      invokes <command>xtcinc</command> on the integer 
       <code>1</code>:
     </para>
 
 <screen>
 module xtcclient
-imports lib xtc-lib
+imports liblib
 strategies
   main = !1 ; xtc-transform(!"xtcinc")
 </screen>
@@ -431,18 +449,18 @@ strategies
 
    <para>
      Harking back a few sections, we should now realize that we forgot
-     to register <command>xtcinc</command> anywhere. We already 
+     to register <command>xtcinc</command> in a repository. We already 
      know how to do this. For the sake of this demonstration, let
      us create the <filename>XTC</filename> registry in the same
      directory as the source code:
    </para>
 
 <screen>
-<prompt>$</prompt> xtc -r XTC r -t xtcinc -V 1.0 -l `pwd`
+<prompt>$</prompt> xtc -r ./XTC r -t xtcinc -V 1.0 -l `pwd`
 </screen>
 
    <para>
-     If we were to run our program, <command>xtcclient</command> again
+     If we were to run our program <command>xtcclient</command> again
      at this point, we would still get the same error. This is because
      we have not told <command>xtcclient</command> which repository
      it should use. This is done by the <option>--xtc-repo</option>
@@ -455,12 +473,11 @@ strategies
 </screen>
 
    <para>
-     At this point, we have created the XTC program
-     <command>xtcinc</command>. We have registered it in the 
-     XTC registry in <filename>./XTC</filename>, and we have
-     told <command>strc</command> to compile our client program,
-     <command>xtcclient</command> against this repository. We
-     should be all set to run our composition. Let's try. 
+     This should complete the necessary steps: We have created the XTC program
+     <command>xtcinc</command>, we have registered it in the XTC registry in
+     <filename>./XTC</filename>, and we have told <command>strc</command> to
+     compile our client program, <command>xtcclient</command> against this
+     repository. We should be all set to run our composition. Let's try. 
    </para>
    
 <screen>
@@ -469,18 +486,14 @@ strategies
 </screen>
 
     <para>
-      At last, it works. We have connected two components. By
-      changing the internals of our components, we can change
-      them to process any terms we want, and we can of course
-      also add additional components into the mix, all using the
-      same basic steps we have explained here.
-    </para>
-    
-    <para>
-      Having to remember the <option>--xtc-repo</option> option
-      to <command>strc</command> all the time is a bit annoying, but
-      as we shall in <xref linkend="library-building"/>, this will
-      be taken care of automatically by the Stratego/XT build system.
+      At last, it works. We have connected two components. By changing the
+      internals of our components, we can change them to process any terms we
+      want, and we can of course also add additional components into the mix,
+      all using the same basic steps we have explained here. Having to remember
+      the <option>--xtc-repo</option> option to <command>strc</command> all the
+      time is a bit annoying, but as we shall in
+      <xref linkend="library-building"/>, this will be taken care of
+      automatically by the Stratego/XT build system.
     </para>      
 
    <formalpara>
@@ -517,12 +530,12 @@ My(Term)
       This will register the file <filename>myterm.trm</filename>
       under the name <code>myterm.trm</code>, which we can use
       to look it up from inside our programs later. Let us make a
-      new program that just does this.
+      new program that does just this.
     </para>
     
 <screen>
-module xtcclient
-imports liblib xtc-lib
+module xtcload
+imports liblib
 strategies
   main = &lt;xtc-find-file> "myterm.trm" ; read-from
 </screen>
