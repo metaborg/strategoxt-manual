@@ -1,0 +1,111 @@
+\section{Exercises}
+
+\subsection{}
+
+	Rewrite the simplification rules for arithmetic and Boolean
+	expressions of Exercise~5.1 using concrete syntax.
+
+\subsection{}
+
+	For each of the following rules, give the abstract syntax
+	before and after meta-exploding
+
+		\begin{enumerate}
+		\item  {\small
+<screen>
+  TimesPlus :
+    |[ x * (y + z) ]| -> |[ (x * y) + (x * z) ]|
+</screen>
+}
+
+		\item {\small
+<screen>
+  RenameFun :
+    |[ function f(x*) = e ]| -> 
+    |[ function ~&lt;NewFun>f (x*) = e ]|
+</screen>
+}
+
+		\end{enumerate}
+
+\subsection{}
+
+	Why is it necessary to rename the sorts from the
+	Stratego syntax definition? What would happen if this was
+	not done?
+
+\subsection{}
+	
+	Write a syntax definition for StrategoXML that supports
+	writing XML expressions in Stratego rules using 
+<code>%> ... &lt;%</code> 
+	as quotation for XML expressions and 
+<code>&lt;% ... %></code> 
+	as antiquotation syntax. Then it is possible to write
+	rules such as the following: {\small
+<screen>
+   GenHTML : (t, b) ->
+     %>
+        &lt;html> 
+          &lt;head>
+            &lt;title> &lt;% t %> &lt;/title>
+          &lt;/head>
+          &lt;body>
+	     &lt;% b %>
+          &lt;/body>
+        &lt;/html>
+     &lt;%
+</screen>
+}
+	Assume the following toy syntax definition for XML that
+	defines the sorts <code>Element</code> for a tagged node and
+	<code>Content*</code> for the arguments of a tagged node. {\small
+<screen>
+module XML
+imports Identifiers Text
+exports
+  context-free syntax
+    "&lt;" Id ">" Content* "&lt;" "/" Id ">" -> Element {cons("Elt")}
+    Text                               -> Content
+    Element                            -> Content
+</screen>
+}
+
+	What is the abstract syntax before and after exploding the
+	following example:{\small
+<screen>
+   MkAddress : (name, street, city) ->
+     %>
+        &lt;address> 
+          &lt;% name %>
+          &lt;% street %> 
+          &lt;% city %> 
+        &lt;/address> 
+     &lt;%
+</screen>
+}
+
+%<screen>
+%FromTerm(Elt(\"address\", [ToTerm(Var(name)), ...
+%</screen>
+
+
+\subsection{}
+
+	Consider what is needed to extend one (or all) of the
+	following languages with concrete object syntax for
+	data. Sketch what a program with concrete syntax might look
+	like and how it would be translated to the plain language.
+
+		\begin{enumerate}
+	
+		\item Prolog
+
+		\item Haskell
+
+		\item Java
+
+		\item C
+
+		\end{enumerate}
+
