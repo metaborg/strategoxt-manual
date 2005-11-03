@@ -5,6 +5,8 @@
 
   <title>Dynamic Rules</title>
 
+  <xi:include href="../../workinprogress.xml"/>
+
 <para>
 
    In the previous chapters we have shown how programmable rewriting
