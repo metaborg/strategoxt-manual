@@ -49,6 +49,8 @@
   <part xml:id="tutorial-bibtex">
     <title>Transforming BibTeX Files (*)</title>
     
+    <include href="../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    
     <chapter>
       <title>BibTeX Syntax (*)</title>
       <para></para>

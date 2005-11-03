@@ -3,6 +3,8 @@
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Data-flow Transformation (*)</title>
+
+  <include href="../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     
   <para>
 

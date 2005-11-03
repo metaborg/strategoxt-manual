@@ -1,8 +1,11 @@
 <chapter xml:id="generic-pretty-printing"
    xmlns="http://docbook.org/ns/docbook"
+   xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Pretty Printing with GPP (*)</title>
+
+  <include href="../../workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   <para>
     The GPP package is a tool suite for generic pretty-printing. GPP

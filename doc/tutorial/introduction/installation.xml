@@ -4,6 +4,8 @@
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Installation (*)</title>
+
+  <include href="../workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
   
   <section>
     <title>What do I Need?</title>

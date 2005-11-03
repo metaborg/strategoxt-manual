@@ -4,6 +4,8 @@
 
   <title>Trees, Terms, and Tree Grammars (*)</title>
 
+  <include href="../../workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   <section>
     <title>Regular Tree Grammars</title>
     <para>

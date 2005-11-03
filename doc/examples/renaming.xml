@@ -4,6 +4,8 @@
 
   <title>Bound Variable Renaming (*)</title>
 
+  <include href="../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   <para>
 
      renaming of bound variables

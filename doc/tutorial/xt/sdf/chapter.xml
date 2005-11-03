@@ -1,8 +1,11 @@
 <chapter xml:id="tutorial-sdf"
    xmlns="http://docbook.org/ns/docbook"
+   xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Syntax Definition in SDF (*)</title>
+
+  <include href="../../workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
 
   <para>
     First, basic structure of SDF. Second, how syntax is defined

@@ -4,6 +4,8 @@
 
   <title>Compilation by Transformation (*)</title>
 
+  <include href="../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
   <para>
 
      now we define a `compiler' to a subset of a superset of TIL
