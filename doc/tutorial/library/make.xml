@@ -468,28 +468,25 @@ ogetarts/
      <title>Building Your Own library</title>
      
      <para>
-       The Stratego/XT build system allows you to freely 
-       organize the source files of your project, but we recommend
-       that you follow some conventions in the way the directories
-       are organized. The base directory of your library should
-       be in <filename>src/lib/</filename>. Each
-       <filename>.str</filename> file placed inside this
-       directory becomes a module. For sufficiently large
-       projects, it is recommended that you further organize
-       your modules into subdirectories inside
-       <filename>lib/</filename>. Each such subdirectory
-       becomes a package. 
+       The Stratego/XT build system allows you to freely organize the source
+       files of your project, but we recommend that you follow some conventions
+       in the way the directories are organized. The base directory of your
+       library should be in <filename>src/lib/</filename>. Each
+       <filename>.str</filename> file placed inside this directory becomes a
+       module. For sufficiently large projects, it is recommended that you
+       further organize your modules into subdirectories inside
+       <filename>lib/</filename>. Each such subdirectory becomes a package. 
     </para>
     
     <para>
-       Importing modules and packages in Stratego is done
-       using the <code>imports</code> statement. Using
-       <code>imports</code>, you specify which module from
-       which package to import. You can import all modules
-       from one package in one single declaration. There is
-       a direct mapping between the directory name and the
-       package name, and also between file and module names.
-       Consider the following code snippet:
+       Importing modules and packages in Stratego is done using the
+       <code>imports</code> statement. Using <code>imports</code>, you
+       specify which module from which package to import. See <xref 
+       linkend="running-stratego-programs"/> for an introduction to modules.
+       You can import all modules from one package in one single declaration.
+       There is a direct mapping between the directory name and the package
+       name, and also between file and module names. Consider the following
+       code snippet:
     </para>
            
 <screen>
