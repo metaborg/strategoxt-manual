@@ -578,4 +578,31 @@ src/
 
   </section>
 
+<section>
+  <title>Summary</title>
+  
+  <para>
+    In this chapter we learned how to organize Stratego/XT projects, and 
+    how to set up the Stratego/XT build system. We saw how the build system,
+    which is based on <command>automake</command> and
+    <command>autoconf</command>, is used to generate many of the artifacts
+    from the syntax definition, such as parse tables and signatures, in
+    the way we discussed in <xref linkend="tutorial-xt"/> . We also learned
+    how to make stand-alone programs, libraries and XT components from
+    Stratego source code, and how modules and packages relate to files and
+    directories.
+  </para>
+  
+  <para>
+    More detail can be found by looking at the manual pages for the build
+    tools, such as <xref linkend="ref-autoxt"/>, 
+    <xref linkend="ref-strc"/>, <xref linkend="ref-sdf2table"/>,
+    <xref linkend="ref-sdf2rtg"/> and <xref linkend="ref-xtc"/>. The
+    detailed examples from the
+    <link linkend="examples">Stratego/XT Examples</link> tutorial contain
+    working build systems that can serve as a starting point.
+  </para>
+  
+</section>
+
 </chapter>
