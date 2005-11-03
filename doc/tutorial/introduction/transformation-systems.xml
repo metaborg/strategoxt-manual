@@ -43,7 +43,22 @@
   <para>
     But who uses software transformation, anyway? People with a
     problem resembling any in <xref linkend="Fig-Applications"/>
-    are. All too often, Real Programmers with such a problem have the
+    are. Compilation, the translation of a program to machine code in
+    order to make it executable, is the standard processing technique
+    applied to get running programs out of source code. But much more
+    can be done. There are many other kinds of processes that can
+    be applied to programs. For example, programs can be synthesized
+    from high-level specifications; programs can be optimized using
+    knowledge of the application domain; documentation for
+    understanding a program can be automatically derived from its
+    sources; programs can be specialized to known inputs; application
+    programs can be generated from domain-specific languages;
+    low-level programs can be reverse engineered into high-level
+    programs.
+  </para>
+  
+  <para>
+    All too often, Real Programmers facing such problems are of the
     opinion that software transformation is overly complicated dark
     magic, and that simple regular expression hacks solve the problem
     just fine. Almost equally often, their ad-hoc, text-based
@@ -137,9 +152,10 @@
   <title>What is Stratego/XT?</title>
 
   <para>
-    Stratego/XT is a program transformation system. A program transformation
-    system is usually organized as a simple pipeline of transformation steps,
-    see <xref linkend="Fig-Pipeline"/>. At the source of the pipeline
+    Stratego/XT is a framework for implementing program transformation
+    systems. A program transformation system is usually organized as a
+    simple pipeline of transformation steps, see
+    <xref linkend="Fig-Pipeline"/>. At the source of the pipeline
     (far left), a parser reads the text of the input program and turns
     it into a parse tree or abstract syntax tree. Subsequently, one or
     several transformations components modify the tree. At the sink of
@@ -158,7 +174,7 @@
   </figure>
 
   <para>
-    Stratego/XT is actually a composition of two systems: Stratego, a
+    The Stratego/XT framework consists of two parts: Stratego, a
     language for implementing program transformations, and XT, a collection
     of transformation tools. The Stratego language is a powerful language
     for implementing the core transformations of a complete

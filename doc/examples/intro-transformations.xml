@@ -4,30 +4,12 @@
 
   <title>Software Transformations</title>
 
-  <screen>
-   - perhaps move some of this material to the tutorial intro
-     instead?
-  </screen>
   <para>
-
     Program source code is the raw material produced by the software
     industry. Rather than being an end product, this material requires
     further processing to turn it into useful products. Compilation,
-    the translation of a program to machine code in order to make it
-    executable, is the standard processing technique applied. But much
-    more can be done. There are many other kinds of processes that can
-    be applied to programs. For example, programs can be synthesized
-    from high-level specifications; programs can be optimized using
-    knowledge of the application domain; documentation for
-    understanding a program can be automatically derived from its
-    sources; programs can be specialized to known inputs; application
-    programs can be generated from domain-specific languages;
-    low-level programs can be reverse engineered into high-level
-    programs.
-
-  </para>
-
-  <para>
+    program generation, domain-specific optimization and
+    reverse-engineering are some examples of such processing.
 
     All these processes require the manipulation of program source
     code.  In fact, all such manipulations can be viewed as
@@ -35,82 +17,32 @@
     notion of `program' is interpreted broadly, and includes all kinds
     of artifacts used in the composition of software systems,
     including configuration and data files, as long as there contents
-    conform to some formal language.) Hence, program transformation is
+    conform to some formal language.) Hence, software transformation is
     the unifying notion underlying automatic program processing.
-
   </para>
 
   <para>
-
     To reach a higher level of automation in software engineering, the
-    use of automatic program transformation is indispensable.
-    However, the realization of program transformation systems is
+    use of automatic software transformation is indispensable.
+    However, the realization of software transformation systems is
     hard.  Parts of the process, such as parsing, are supported by
     generative techniques, but most aspects require hard work.  The
-    effective implementation of program transformation systems is a
-    barrier for the wide adoption of program transformation in
+    effective implementation of software transformation systems is a
+    barrier for the wide adoption of software transformation in
     software engineering.  Most transformation techniques used in
     practice are based on textual generation and manipulation, which
     poses limitations on what can be done and is error-prone.
-
   </para>
 
   <para>
-
-    Stratego/XT is a framework for the implementation of
-    transformation systems based on structural representations of
-    programs. 
-
-    The framework aims at better productivity in the development of
-    transformation systems through the use of high-level
-    representations, domain-specific languages, and generative
-    programming for various aspects of transformation systems: ATerms
-    for program representation, SDF for syntax definition and parsing,
-    GPP for pretty-printing, Stratego for transformation, XTC for
-    transformation tool composition, and the XT tools for the
-    generation of intermediate products needed in the construction of
-    transformation systems.
-
-  </para>
-
-  <para>
-
-    This book provides a tutorial introduction to program
-    transformation with Stratego/XT by presenting a series of
-    examples. The complete code of the example is mostly included in
-    the tutorial, and all code is available for download such that
-    these can be used for learning and experimenting.
-
-    This book is not a manual for Stratego/XT, and does not explain
-    every single detail of the examples. Rather, it sketches with bold
-    strokes how the language and tools can be used. For precise
-    information about language constructs and tool usage we refer to
-    the <link linkend="reference-manual">Stratego/XT Reference
-    manual</link>, which provides both a detailed tutorial for the
-    language and a reference manual.
-
-    Thus, the manual and tutorial are complementary, since the manual
-    does not provide large examples.
-    
-  </para>
-
-  <para>
-
-    In this chapter we give an overview of the main concepts of
-    Stratego/XT and the structure of this tutorial.
-
-    <link linkend="tutorial-components">The next section</link>
-    gives an overview of the main concepts in the implementation of
-    transformation systems and the components of Stratego/XT that
-    support these concepts.
-
-    <xref linkend="tutorial-software"/> gives an overview of the
-    software that is needed for the use of Stratego/XT and for
-    reproducing the examples in this tutorial.
-
-    <xref linkend="tutorial-overview"/> gives an overview of the rest
-    of the tutorial.
-
+    The examples contained in the next chapters show how to do software
+    transformation in a structured and robust way.  They are all
+    implemented using the Stratego/XT framework. This framework
+    provides a versatile collection of transformation tools that can
+    be applied to transformation of source code as well as documents.
+    The goal of this example-based tutorial is to show how Stratego/XT is
+    applied to practical problems, and is complimentary to the
+    <link linkend="tutorial">Stratego/XT Tutorial</link>.
   </para>
 
 </section>

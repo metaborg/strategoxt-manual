@@ -3,7 +3,7 @@
    xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Software (*)</title>
+  <title>Software</title>
   
   <para>
      To build transformation systems using Stratego/XT you need the
@@ -13,21 +13,22 @@
 
         <listitem>
            <para>
-             <link xl:href="http://www.stratego-language.org/Tools/ATerm">ATerm Library</link>: term representation
+             <link xl:href="http://www.stratego-language.org/Tools/ATerm">ATerm Library</link>: 
+             library used for structured representation of programs
            </para>
         </listitem>
 
         <listitem>
            <para>
              <link xl:href="http://www.program-transformation.org/Sdf/SdfBundle">SDF2 Bundle</link>:
-             SDF2 parser generator and parser
+             parser generator and parser for the SDF2 grammar formalism
            </para>
         </listitem>
 
         <listitem>
            <para>
              <link xl:href="http://www.stratego-language.org/Tools/ATerm">Stratego/XT</link>:
-             Stratego compiler and XT tools
+             the Stratego compiler and the XT tools
            </para>
         </listitem>
 
@@ -45,7 +46,7 @@
   <para>
     Additionally, the following packages will be necessary to get full benefit
     of all the examples. These packages are not strictly required for
-    building Stratego programs, however.
+    building Stratego/XT programs, however.
   </para>
   
     <itemizedlist>
@@ -60,7 +61,8 @@
      </itemizedlist>
      
   <para>
-    When you have this software installed and ready to use on your workstation,
-    you are ready to proceed with testing the examples explained in this tutorial.
+    Once you have this software installed and ready to use on your workstation,
+    you are ready to proceed with testing the examples contained in the next
+    chapters.
   </para>
 </section>

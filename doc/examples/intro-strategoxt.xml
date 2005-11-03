@@ -2,21 +2,41 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Introducing Stratego/XT (*)</title>
+  <title>Introducing Stratego/XT</title>
   
   <para>
-    Stratego/XT is a program transformation system. It consists of two
-    major parts: XT -- a component architecture and collection of 
-    components for basic transformation infrastructure, such as parsing
-    and pretty-printing; and Stratego -- a strategic term rewriting language
-    for implementing new, custom components.
+    Stratego/XT is a framework for the implementation of transformation
+    systems based on structural representations of programs. This structured
+    representation avoids the limitations and brittleness found in the
+    text-based approaches. 
+    
+    Stratego/XT consists of two major parts: XT, a component architecture
+    and collection of components for basic transformation infrastructure, such
+    as parsing and pretty-printing; and Stratego, a strategic term rewriting
+    language for implementing new, custom components.
   </para>
-
+  
   <para>
-    Both the ready-made components of XT and the new components written in
-    Stratego can be composed together using the XTC component model. These
-    features combine to make Stratege/XT a scalable and flexible environment
-    for developing stand-alone transformation systems for many different
-    tasks.
+    Together, Stratego and XT aim to provide better productivity in the
+    development of transformation systems through the use of high-level
+    representations, domain-specific languages, and generative
+    programming for various aspects of transformation systems: ATerms
+    for program representation, SDF for syntax definition and parsing,
+    GPP for pretty-printing, Stratego for transformation, XTC for
+    transformation tool composition, and the XT tools for the
+    generation of intermediate products needed in the construction of
+    transformation systems.
+  </para>
+  
+  <para>
+    The XTC composition system allows the combination of ready-made 
+    components found in the XT architecture with new components written
+    in Stratego. This makes Stratego/XT a scalable and flexible environment
+    for developing stand-alone transformation systems.
   </para>    
+  
+  <para>
+
+  </para>
+  
 </section>

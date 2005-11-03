@@ -18,7 +18,7 @@
     pretty-printers from syntax definitions, and compile
     transformation programs.
 
-    The source code of the examples can be downloaded as well, such
+    The source code of the examples can be downloaded as well, so
     that you can repeat the experiments from the tutorial and add your
     own experiments.
 
@@ -54,9 +54,11 @@
 
   <para>
     BibTeX is a small domain-specific data language for bibliographic
-    information. In the <link linkend="tutorial-bibtex">second
-    part</link> of this tutorial we show its syntax definition and a
-    number of transformations.
+    information. It is included in the examples collection to show how
+    Stratego/XT can be applied to document processing. In the 
+    <link linkend="tutorial-bibtex">second part</link> of this tutorial
+    we show the syntax definition for BibTeX and a number of
+    transformations on BibTeX documents.
   </para>
 
 </section>
@@ -66,9 +68,10 @@
   <title>To Do</title>
 
   <para>
-    This tutorial is not complete. There are countless other examples
+    This tutorial is not complete. There are many other examples
     of applications of Stratego that are not (yet) covered by this
-    tutorial. Here are some possible examples:
+    tutorial, and countless more possible applications. Here are some
+    examples:
 
     <itemizedlist>
       <listitem>
@@ -85,7 +88,7 @@
 
       <listitem>
         <para>
-          Partial evaluation
+          Partial evaluation: specialize programs on specific inputs
         </para>
       </listitem>
 
@@ -103,13 +106,13 @@
 
       <listitem>
         <para>
-          Domain-specific language
+          Domain-specific languages: implementation, compilation, optimization
         </para>
       </listitem> 
 
       <listitem>
         <para>
-          Code generation
+          Code generation: from specifications, high-level languages
         </para>
       </listitem>
 
@@ -121,9 +124,8 @@
  
     </itemizedlist>
 
-    You are welcome to contribute examples are requests for examples
-    of certain types of applications.
-
+    You are welcome to contribute examples, or requests for examples
+    of particular types of applications.
   </para>
 
 </section>
