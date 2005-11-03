@@ -3,7 +3,7 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Software Transformation Systems (*)</title>
+  <title>Software Transformation Systems</title>
 
 <section>
   <title>What is Software Transformation?</title>
@@ -71,7 +71,7 @@
 
   <figure xml:id="Fig-Applications">
     <title>
-      Applications of Program Transformation.
+      Applications of Software Transformation.
     </title>
 
    <itemizedlist mark="bullet">
@@ -152,8 +152,8 @@
   <title>What is Stratego/XT?</title>
 
   <para>
-    Stratego/XT is a framework for implementing program transformation
-    systems. A program transformation system is usually organized as a
+    Stratego/XT is a framework for implementing software transformation
+    systems. A software transformation system is usually organized as a
     simple pipeline of transformation steps, see
     <xref linkend="Fig-Pipeline"/>. At the source of the pipeline
     (far left), a parser reads the text of the input program and turns
@@ -175,7 +175,7 @@
 
   <para>
     The Stratego/XT framework consists of two parts: Stratego, a
-    language for implementing program transformations, and XT, a collection
+    language for implementing software transformations, and XT, a collection
     of transformation tools. The Stratego language is a powerful language
     for implementing the core transformations of a complete
     transformation system. The XT tools help with the implementation
@@ -231,7 +231,7 @@
       <listitem>
       <para>
         Stratego is the core of Stratego/XT. It is a language for
-        program transformation based on the paradigm of rewriting
+        software transformation based on the paradigm of rewriting
         strategies. Basic transformations are defined using conditional
         term rewrite rules. These are combined into full fledged
         transformations by means of strategies, which control the
@@ -247,7 +247,7 @@
       </para>
 
       <para>
-        A complex program transformation is achieved through a number of
+        A complex software transformation is achieved through a number of
         consecutive modifications of a program.  At least at the level
         of design it is useful to distinguish transformation rules from
         transformation strategies.  A rule defines a basic step in the
@@ -298,7 +298,7 @@
   
       <para>
         Pure term rewriting is not adequate for the implementation of
-        program transformation systems, since most rewrite systems are
+        software transformation systems, since most rewrite systems are
         non-confluent and/or non-terminating. Hence, standard rewriting
         strategies are not applicable.  The paradigm of programmable
         rewriting strategies solves this problem by supporting the
@@ -392,16 +392,30 @@
   <title>Outline</title>
 
   <para>
-    The rest of this tutorial is organized as follows. First, we will
-    discuss the XT architecture and many of the important tools from
-    the XT collection. One of the most important points in this part
-    is how to construct parsers using the syntax definition formalism
-    SDF. Afterwards, we will introduce the Stratego language starting
-    with the concept or terms and moving on to rules, strategies and
-    the more advanced topics of concrete syntax and dynamic rules.
-    After this, we introduce the most important parts of the Stratego
-    library, and how to put together complete program transformation
-    systems from XT components using the Stratego build system.
+    This tutorial is divided into three parts. The first part
+    introduces the XT architecture and many of the tools from
+    the XT collection. An important point in this part that is how to
+    construct parsers using the syntax definition formalism SDF. The parser
+    takes source code text into structured ATerms. Another point in this
+    part is the reverse action: going from ATerms back to source code text. 
+  </para>
+  
+  <para>
+    The second part of the tutorial introduces the Stratego language,
+    starting with the concept of terms and moving on to rules and 
+    strategies. After explaining how rules and strategies may be
+    combined to create complete transformation programs, the more
+    advanced topics of concrete syntax and dynamic rules are covered.
+  </para>
+  
+  <para>
+    The third and final part of the tutorial explains the most important
+    strategies found in the Stratego library: basic data types such as
+    lists, strings, hashtables and sets; basic I/O functionality; the SUnit
+    framework for unit testing. This part also explains the technical
+    details of how to put together complete software transformation
+    systems from XT components using the Stratego build system, using
+    the XTC component composition model.
   </para>
   
 </section>
