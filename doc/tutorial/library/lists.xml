@@ -1,33 +1,54 @@
 <chapter
    xml:id="library-lists"
    xmlns="http://docbook.org/ns/docbook"
+   xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Lists</title>
+
+  <para>
+    This chapter will introduce you to the basic strategies for
+    working with lists. The strategies provide functionality for 
+    composing and decomposing, sorting, filtering, mering as
+    well as constructing new abstractions from basic lists,
+    such as associative lists.
+  </para>
+  
+  <para>
+    Every value in Stratego is a term. This is also the case for lists.
+    You can write the list 1, 2, 3 as 
+    <code>Cons(1,Cons(2,Cons(3,Nil)))</code>, which is clearly a term.
+    Fortunately, Stratego also provides some convenient syntactic sugar
+    that makes lists more readable and easy to work with. We can write
+    the same list as <code>[1,2,3]</code>, which will be desugared
+    internally in the the term above. 
+  </para>
+  
   
   <section>
-  
   <title>Making heads and tails of it</title>
 
   <para>
-    Lists in Stratego are nothing magical, except perhaps for some
-    convenient syntactic sugar. As we know, lists are written 
-    <code>[1,2,3]</code>, but this is just sugar for the term
-    <code>Cons(1,Cons(2,Cons(3,Nil)))</code>. Assume <code>xs</code> is 
-    this list. The code <code>[0|xs]</code> will prepend a 0 to it, 
-    yielding [0,1,2,3]. Conversely, <code>![0,1,2,3] ; ?[y|ys]</code>
+    The most fundamental operations on lists is the ability 
+    compose and decompose lists. In Stratego, list composition on
+    "sugared" lists, that is, lists writen in the sugared form,
+    has some sugar of its own. Assume <code>xs</code> is the list
+    <code>[1,2,3]</code>. The code <code>[0|xs]</code> will prepend a
+    0 to it, yielding [0,1,2,3]. List decomposition is done using
+    the match operator. The code <code>![0,1,2,3] ; ?[y|ys]</code>
     will bind <code>y</code> to the head of the list, <code>0</code>,
     and <code>ys</code> to the tail of the list, <code>[1,2,3]</code>.
   </para>
 
   <para>
-    The module <code>list</code> contains a lot of convenience
-    functions for dealing with lists. For example, the strategy
+    The module <code>collection/list</code> contains a lot of convenience
+    functions for dealing with lists. (<code>collection/list</code> is
+    contained in the <code>liblib</code> library.) For example, the strategy
     <code>elem</code> will check if a given value is in a list. If it
     is, the identity of the list will be returned.
   </para>
 <screen>
-<prompt>stratego></prompt> import list
+<prompt>stratego></prompt> import liblib
 <prompt>stratego></prompt> &lt;elem> (1, [2,3,1,4])
 [2,3,1,4]
 </screen>
@@ -316,6 +337,24 @@
 </screen>
   
   </section>
+
+<section>
+  <title>Summary</title>
   
+  <para>
+    In this chapter we got a glimpse of the most important strategies
+    for manipulating lists. We saw how to construct and deconstruct
+    lists, using build and match. We also saw how we can sort, merge,
+    split and otherwise transform lists. The strategies for associative
+    lists and sets gave an impression of how we can construct new
+    abstractions from basic lists.
+  </para>
+
+  <para>
+    More information about list strategies available can be found in
+    the <code>collections/list</code> module, in the
+    <link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">library reference documentation</link>.
+  </para>  
+</section>  
 </chapter>
 

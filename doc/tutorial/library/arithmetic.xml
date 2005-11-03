@@ -1,9 +1,19 @@
 <chapter
    xml:id="library-arithmetic"
+   xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
    
    <title>Arithmetic Operations</title>
+   
+   <para>
+     In this chapter we introduce strategies for working with numbers.
+     The Stratego runtime provides two kinds of numbers: real numbers
+     and integers. They are both terms, but cannot be used interchangeably.
+     The library strategies described in this chapter also maintain the
+     distinction between real numbers and integers, but many may also
+     be applied to strings which contain numbers.
+   </para>
    
    <section>
      <title>Basic Operations</title>
@@ -196,5 +206,25 @@ command failed
       once for every program invocation.
     </para>
    </section>
-      
+
+  <section>
+    <title>Summary</title>
+ 
+    <para>
+      In this chapter, we saw that Stratego is different from many other
+      languages in that it does not provide the normal arithmetic operators.
+      We saw that instead, strategies such as <code>add</code> and
+      <code>mul</code> are used to add and multiply numbers. We also saw
+      which strategies to use for comparing numbers and generating random
+      numbers.
+    </para>
+    
+    <para>
+      The module <code>term/integer</code> contains strategies for
+      working with numbers. Refer to the 
+      <link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">library reference documentation</link>
+      for more information.
+    </para>
+    
+  </section>      
 </chapter>
