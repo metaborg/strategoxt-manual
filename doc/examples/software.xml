@@ -13,21 +13,23 @@
 
         <listitem>
            <para>
-             <link xl:href="http://www.stratego-language.org/Tools/ATerm">ATerm Library</link>: 
+             <link xl:href="http://www.aterm.org">ATerm Library</link>: 
              library used for structured representation of programs
            </para>
         </listitem>
 
         <listitem>
            <para>
-             <link xl:href="http://www.program-transformation.org/Sdf/SdfBundle">SDF2 Bundle</link>:
-             parser generator and parser for the SDF2 grammar formalism
+             <link
+             xl:href="http://www.program-transformation.org/Sdf/SdfBundle">SDF2
+             Bundle</link>: parser generator and parser for the SDF2
+             grammar formalism
            </para>
         </listitem>
 
         <listitem>
            <para>
-             <link xl:href="http://www.stratego-language.org/Tools/ATerm">Stratego/XT</link>:
+             <link xl:href="http://www.stratego-language.org">Stratego/XT</link>:
              the Stratego compiler and the XT tools
            </para>
         </listitem>
@@ -39,7 +41,7 @@
     The packages are distributed as source files, and installation follows the
     normal Unix <command>configure</command> and <command>make</command> style.
     For some operating systems, ready-made packages are also provided.  A 
-    complete account of the installation procedure for these package
+    complete account of the installation procedure for these packages
     is given in <xref linkend="installation"/> of the Stratego/XT Tutorial.
   </para>
   

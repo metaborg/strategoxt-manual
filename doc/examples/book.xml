@@ -42,14 +42,14 @@
      <xi:include href="renaming.xml"/>
      <xi:include href="run.xml"/>
      <xi:include href="data-flow.xml"/>
-     <xi:include href="compilation.xml"/>
+     <!--xi:include href="compilation.xml"/-->
      <xi:include href="eblocks.xml"/>
   </part>
-  
+
   <part xml:id="tutorial-bibtex">
     <title>Transforming BibTeX Files (*)</title>
     
-    <include href="../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+    <xi:include href="../tutorial/workinprogress.xml"/>
     
     <chapter>
       <title>BibTeX Syntax (*)</title>
@@ -61,4 +61,21 @@
       <para></para>
     </chapter>
   </part>
+
+  <part xml:id="tutorial-tiger">
+    <title>Tiger Base (*)</title>
+    
+    <xi:include href="../tutorial/workinprogress.xml"/>
+    
+    <chapter>
+      <title>Tiger Syntax (*)</title>
+      <para></para>
+    </chapter>
+    
+    <chapter>
+      <title>Tiger Transformations (*)</title>
+      <para></para>
+    </chapter>
+  </part>
+
 </book>
