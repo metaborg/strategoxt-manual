@@ -174,12 +174,18 @@
      The first three chapters outline the basic ideas of Stratego programming
      in bold strokes.
 
-     Chapter XXX shows how to set up, compile, and use a Stratego program.
+     <xref linkend="stratego-terms"/> introduces the term notation
+     used to represent source programs in Stratego.
 
-     Chapter XXX introduces term rewrite rules and term rewriting.
+     <xref linkend="running-stratego-programs"/>
+     shows how to set up, compile, and use a Stratego program.
 
-     Chapter XXX argues the need for control over the application of
-     rewrite rules and introduces strategies for achieving this.
+     <xref linkend="stratego-term-rewriting"/>
+     introduces term rewrite rules and term rewriting.
+
+     <xref linkend="stratego-rewriting-strategies"/>
+     argues the need for control over the application of rewrite rules
+     and introduces strategies for achieving this.
 
   </para>
 
@@ -188,30 +194,40 @@
   <para>
 
      The rest of the chapters in this tutorial explain the language in
-     more detail, starting bottom-up from the basic operations.
+     more detail.
 
-     Chapter XXX introduces the notions of building and matching
-     terms, which provide the core to all manipulations of
-     programs. It then goes on to show how these actions can be used
-     to define higher-level constructs for expressing transformations,
-     such as rewrite rules.
+     <xref linkend="rules-and-strategies"/>
+     examines the named rewrite rules, defines the notion of a
+     rewriting strategy, and explains how to create reusable strategy
+     expressions using definitions.
 
-     Chapter XXX explains how to name reusable strategy expressions
-     using definitions, and how to create more complex transformations
-     using control combinators.
+     <xref linkend="stratego-strategy-combinators"/> introduces
+     combinators for the combination of simple transformations into
+     more complex transformations.
 
-     Chapter XXX introduces the notion of data-type specific and generic
-     traversal combinators.
+     <xref linkend="stratego-creating-and-analyzing-terms"/>
+     re-examines the notion of a rule, and introduces the notions of
+     building and matching terms, which provide the core to all
+     manipulations of terms. It then goes on to show how these actions
+     can be used to define higher-level constructs for expressing
+     transformations, such as rewrite rules.
 
-     Chapter XXX shows how to generically define program analyses
-     using type-unifying strategies.
+     <xref linkend="stratego-traversal-strategies"/>
+     introduces the notion of data-type specific and generic traversal
+     combinators.
+
+     <xref linkend="stratego-type-unifying-strategies"/>
+     shows how to generically define program analyses using
+     type-unifying strategies.
  
-     Chapter XXX shows ho to use the syntax of the source language in
-     the patterns of transformation rules.
+     <xref linkend="stratego-concrete-syntax"/>
+     shows ho to use the syntax of the source language in the patterns
+     of transformation rules.
 
-     Finally, Chapter XXX introduces the notion of dynamic rules for
-     expressing context-sensitive transformations.     
-        
+     Finally, <xref linkend="stratego-dynamic-rules"/> introduces the
+     notion of dynamic rules for expressing context-sensitive
+     transformations.
+
   </para>
 
 </partintro>
