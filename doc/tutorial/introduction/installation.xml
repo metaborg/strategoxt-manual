@@ -11,8 +11,39 @@
     <title>What do I Need?</title>
     
     <para>
-      Description of the structure of our packages: Stratego/XT and
-      language specific extensions (such as JavaFront).
+      The Stratego/XT project distributes several packages. So let's
+      first make clear what you actually need to install. Stratego/XT
+      itself is a language independent toolset for constructing
+      program transformation systems. Language-specific extensions of
+      Stratego/XT are distributed as separate packages, so that you
+      only have to install what you really need for your particular
+      application.
+    </para>
+
+    <para>
+      All Stratego/XT users need to install the ATerm Library
+      (<code>aterm</code>), the SDF2 Bundle (<code>sdf2-bundle</code>)
+      and Stratego/XT (<code>strategoxt</code>). These packages enable
+      you to compile Stratego programs, and provide the basic
+      infrastructure for parsing and pretty-printing source
+      files.
+    </para>
+
+    <para>
+      Optionally, you can install the Stratego Shell, which provides
+      an interpreter for Stratego and an interactive command-line for
+      experimenting with the Stratego language. The Stratego Shell is
+      used in the Stratego part of this tutorial to demonstrate the
+      features of the Stratego language.
+    </para>
+
+    <para>
+      Then there are the language-specific packages. These packages
+      provide the basic infrastructure for parsing and
+      pretty-printing, and sometimes analysing, source files of a
+      specific programmign language. Reusing such a package enables
+      you to get started immediately with the implementation of an
+      actual transformation. 
     </para>
     
     <para>
