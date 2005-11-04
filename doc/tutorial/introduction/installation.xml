@@ -5,7 +5,7 @@
 
   <title>Installation (*)</title>
 
-  <include href="../workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  <xi:include href="../workinprogress.xml"/>
   
   <section>
     <title>What do I Need?</title>
@@ -37,9 +37,24 @@
     <title>Instructions</title>
   
     <para>
-      First of all download the required packages (.tar.gz, RPMs or
-      Source RPMs). You need aterm and sdf2-bundle. The URLs are
-      specified in the the release page of StrategoXT.
+      First of all, you have to decide which deployment mechanism you
+      want to use. For users of RPM-based Linux distributions (such as
+      Redhat, Fedora Core, and SUSE), we advice to use RPMs, which are
+      available from the release page. For Cygwin users we provide
+      pre-compiled binaries that can simply be unpacked. For Mac OS X
+      users, we provide such a binary package as well, but they can
+      also use the Nix deployment system, which will guarantee that
+      all dependecies are isntalled correctly. Nix packages are also
+      available for Linux users. Finally, it is always possible to
+      buid from source.
+    </para>
+
+    <para>
+      Next, download the required packages. Stratego/XT depends on the
+      ATerm Library and the SDF2 Bundle, so you to download
+      <code>aterm</code>, <code>sdf2-bundle</code>, and
+      <code>strategoxt</code>. The downloads are all available at the
+      release page of Stratego/XT.
     </para>
     
     <section>
@@ -51,49 +66,65 @@
 	<para>
 	  The following sequence of commands takes care of building
 	  and installing the aterm and the sdf2-bundle in
-	  /usr/local.
+	  <filename>/usr/local</filename>.
 	</para>
 	
 	<screen>
-tar zxf aterm-<replaceable>version</replaceable>.tar.gz
-cd aterm-<replaceable>version</replaceable>
-./configure --with-gcc
-make
-make install
-cd ..
+<prompt>$</prompt> tar zxf aterm-<replaceable>version</replaceable>.tar.gz
+<prompt>$</prompt> cd aterm-<replaceable>version</replaceable>
+<prompt>$</prompt> ./configure
+<prompt>$</prompt> make
+<prompt>$</prompt> make install
+<prompt>$</prompt> cd ..
 
-tar zxf sdf2-bundle-<replaceable>version</replaceable>.tar.gz
-cd sdf2-bundle-<replaceable>version</replaceable>
-./configure
-make
-make install
-cd ..
+<prompt>$</prompt> tar zxf sdf2-bundle-<replaceable>version</replaceable>.tar.gz
+<prompt>$</prompt> cd sdf2-bundle-<replaceable>version</replaceable>
+<prompt>$</prompt> ./configure
+<prompt>$</prompt> make
+<prompt>$</prompt> make install
+<prompt>$</prompt> cd ..
 </screen>
-
-          <para>
-	    Configuring the aterm library --with-gcc limits the number
-	    of different aterm libraries that are installed. Just
-	    installing the gcc version makes installation of the aterm
-	    library more portable and is sufficient for StrategoXT.
-	  </para>
 
 	  <para>
 	    If you want to install the packages at a different
-	    location, you should specify a --prefix in the configure
-	    command. If you want to install the packages at two
-	    different locations, you must configure the sdf2-bundle
-	    with the location prefix aterm. For example:
+	    location (i.e. not <filename>/usr/local</filename>, you
+	    should specify a <code>--prefix</code> in the configure
+	    command. For example:
 	  </para>
 	  
 	  <screen>
-./configure --prefix=/opt/aterm --with-gcc
-./configure --prefix=/opt/sdf2-bundle --with-aterm=/opt/aterm
+<prompt>$</prompt> ./configure --prefix=/opt/aterm
+<prompt>$</prompt> ./configure --prefix=/opt/sdf2-bundle --with-aterm=/opt/aterm
 </screen>
 
+	  <para>
+	    In this case, it possible that the sdf2-bundle cannot find
+	    the aterm package. To tell the sdf2-bundle where it should
+	    look for the ATerm library, you can use the
+	    <code>--with-aterm</code> argument:
+	  </para>
+
+	  <screen>
+<prompt>$</prompt> ./configure --prefix=/opt/sdf2-bundle --with-aterm=/opt/aterm
+</screen>
+
+	  <para>
+	    Alternatively, you can add the location of the ATerm
+	    Library to the <code>PKG_CONFIG_PATH</code>, which the
+	    configure script will use for searching packages. In this
+	    way, you don't need to specify the <code>--with-</code>
+	    arguments. More information about this is available in the
+	    pkg-config documentation (<code>man
+	    pkg-config</code>). For example:
+	  </para>
+
+	  <screen>
+<prompt>$</prompt> export PKG_CONFIG_PATH=/opt/aterm/lib/pkgconfig:/opt/sdf2-bundle/lib/pkgconfig
+</screen>
 	</section>
 
 	<section>
-	  <title>Installation of StrategoXT</title>
+	  <title>Installation of Stratego/XT</title>
 
 	  <para>
 	    Unpack, configure, make and install StrategoXT using the
@@ -101,11 +132,11 @@ cd ..
 	  </para>
 
 	  <screen>
-tar zxf strategoxt-<replaceable>version</replaceable>.tar.gz
-cd strategoxt-<replaceable>version</replaceable>
-./configure
-make
-make install
+<prompt>$</prompt> tar zxf strategoxt-<replaceable>version</replaceable>.tar.gz
+<prompt>$</prompt> cd strategoxt-<replaceable>version</replaceable>
+<prompt>$</prompt> ./configure
+<prompt>$</prompt> make
+<prompt>$</prompt> make install
 </screen>
 
 	  <para>
@@ -117,20 +148,26 @@ make install
 	  </para>
 
 	  <screen>
-./configure --prefix=/opt/strategoxt \
+<prompt>$</prompt> ./configure --prefix=/opt/strategoxt \
   --with-aterm=/opt/aterm --with-sdf=/opt/sdf2-bundle
 </screen>
 
+	  <para>
+	    As mentioned earler, you can alternatively add the
+	    location of the ATerm Library and the SDF2 Bundle to the
+	    PKG_CONFIG_PATH, which the configure script will use for
+	    searching packages.
+	  </para>
 	</section>
-
       </section>
 
       <section>
-	<title>Using binary RPMs</title>
+	<title>Using Binary RPMs</title>
 
 	<para>
-	  Install the RPMs by running the following command in the
-	  directory where you've downloaded the RPMs.
+	  Installing binary RPMs is very easy. Install the RPMs by
+	  running the following command in the directory where you
+	  have downloaded the RPMs.
 	</para>
 
 	<screen>
@@ -138,7 +175,7 @@ rpm -i *
 </screen>
 
 	<para>
-	  Use the upgrade option if you've already installed earlier
+	  Use the upgrade option if you have already installed earlier
 	  versions of RPMs for aterm, strategoxt or the sdf2-bundle.
 	</para>
 
@@ -150,7 +187,28 @@ rpm -U *
 	  Of course you can also install the RPMs one by one by
 	  specifying the filenames of the RPMs.  
 	</para>
+      </section>
 
+      <section>
+	<title>Using the Nix Deployment System (*)</title>
+	<para>
+	  Using the Nix deployment system for the installation of
+	  Stratego/XT is a good idea if you need to run multiple
+	  versions of Stratego/XT on the same system, if you will need
+	  to update other Stratego/XT related packages regularly, or
+	  if there is a problem with installation from source at your
+	  system. The Nix deployment system is designed to guarantee
+	  that the Stratego/XT that we are using on our system is
+	  <emphasis>exatly</emphasis> reproduced on your system. This
+	  basically guarantees that the installation will never fail
+	  because of missing dependencies or mistakes in the
+	  configuration.
+	</para>
+      </section>
+
+      <section>
+	<title>Using Binary Distributions fore Cygwin and MacOS X (*)</title>
+	<para/>
       </section>
   </section>
 </chapter>
