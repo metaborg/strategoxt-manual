@@ -58,7 +58,7 @@
     </para>
     
     <section>
-      <title>Using source tarballs</title>
+      <title>Using Source Distributions</title>
       
       <section>
 	<title>Installation of aterm and sdf2-bundle</title>
@@ -127,7 +127,7 @@
 	  <title>Installation of Stratego/XT</title>
 
 	  <para>
-	    Unpack, configure, make and install StrategoXT using the
+	    Unpack, configure, make and install Stratego/XT using the
 	    following commands:
 	  </para>
 
@@ -141,10 +141,11 @@
 
 	  <para>
 	    If you want to install StrategoXT at a different prefix,
-	    you should specify a --prefix. If you installed the aterm
-	    library and the sdf2-bundle at a different location, you
-	    should specify their location using --with-aterm and
-	    --with-sdf. For example:
+	    you should specify a <code>--prefix</code>. If you
+	    installed the aterm library and the sdf2-bundle at a
+	    different location, you should specify their location
+	    using <code>--with-aterm</code> and
+	    <code>--with-sdf</code>. For example:
 	  </para>
 
 	  <screen>
@@ -155,11 +156,41 @@
 	  <para>
 	    As mentioned earler, you can alternatively add the
 	    location of the ATerm Library and the SDF2 Bundle to the
-	    PKG_CONFIG_PATH, which the configure script will use for
-	    searching packages.
+	    <code>PKG_CONFIG_PATH</code>, which the configure script
+	    will use for searching packages.
 	  </para>
 	</section>
-      </section>
+
+	<section>
+	  <title>Installation of Stratego Shell, Java Front, etc.</title>
+	  
+	  <para>
+	    The Stratego Shell, Java Front, Tiger Base and several
+	    other packages depend on Stratego/XT. For all these
+	    packages, you can use the following commands:
+	  </para>
+
+	  <screen>
+<prompt>$</prompt> tar zxf <replaceable>package</replaceable>-<replaceable>version</replaceable>.tar.gz
+<prompt>$</prompt> cd <replaceable>package</replaceable>-<replaceable>version</replaceable>
+<prompt>$</prompt> ./configure
+<prompt>$</prompt> make
+<prompt>$</prompt> make install
+</screen>
+
+          <para>
+	    For all these packages, you should use the
+	    <code>--with-aterm=<replaceable>dir</replaceable></code>,
+	    <code>--with-sdf=<replaceable>dir</replaceable></code>,
+	    and
+	    <code>--with-strategoxt=<replaceable>dir</replaceable></code>
+	    options if you installed these packages at non-standard
+	    locations. Alternatively, you can extend the
+	    <code>PKG_CONFIG_PATH</code> to include the locations of
+	    the ATerm Library, SDF2 Bundle, and Stratego/XT.
+	  </para>
+	</section>
+    </section>
 
       <section>
 	<title>Using Binary RPMs</title>
