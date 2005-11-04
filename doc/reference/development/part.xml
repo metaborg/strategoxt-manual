@@ -4,7 +4,5 @@
   
   <title>Stratego/XT Development Manual (*)</title>
 
-  <!-- <xi:include href="package.xml" /> -->
-  <!-- <xi:include href="latestsources.xml" /> -->
   <xi:include href="stratego-dev.xml" />
 </part>
