@@ -62,16 +62,32 @@
   </para>
 
 </section>
-
   
 <section>
-  <title>To Do</title>
+  <title>Tiger</title>
 
   <para>
-    This tutorial is not complete. There are many other examples
-    of applications of Stratego that are not (yet) covered by this
-    tutorial, and countless more possible applications. Here are some
-    examples:
+
+    Tiger is the example language in Andrew Appel's compiler textbook
+    series. It is a small imperative language, yet non-trivial with
+    nested functions, arrays and records.
+
+    The Tiger Base package provides a syntax definition, interpreter,
+    pretty-printer, type checker, and a number of source to source
+    transformations.
+
+  </para>
+
+</section>
+
+<section>
+  <title>Other Applications</title>
+
+  <para>
+
+    This tutorial is not complete. There are many other examples of
+    applications of Stratego that are not (yet) covered by this
+    tutorial. Here are some examples:
 
     <itemizedlist>
       <listitem>

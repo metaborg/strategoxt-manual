@@ -47,35 +47,23 @@
   </part>
 
   <part xml:id="tutorial-bibtex">
-    <title>Transforming BibTeX Files (*)</title>
+    <title>Example Packages (*)</title>
     
     <xi:include href="../tutorial/workinprogress.xml"/>
-    
-    <chapter>
-      <title>BibTeX Syntax (*)</title>
-      <para></para>
-    </chapter>
-    
-    <chapter>
-      <title>BibTeX Transformations(*)</title>
-      <para></para>
-    </chapter>
-  </part>
 
-  <part xml:id="tutorial-tiger">
-    <title>Tiger Base (*)</title>
-    
-    <xi:include href="../tutorial/workinprogress.xml"/>
-    
-    <chapter>
-      <title>Tiger Syntax (*)</title>
-      <para></para>
-    </chapter>
-    
-    <chapter>
-      <title>Tiger Transformations (*)</title>
-      <para></para>
-    </chapter>
+    <partintro>
+
+      <para>
+
+	This part introduces several example packages. 
+
+      </para>
+
+    </partintro>
+        
+     <xi:include href="tiger.xml"/>
+     <xi:include href="bibtex-tools.xml"/>
+
   </part>
 
 </book>
