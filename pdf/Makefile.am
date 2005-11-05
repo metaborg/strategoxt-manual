@@ -2,9 +2,8 @@ include $(top_srcdir)/Makefile.docbook
 
 BOOK = $(top_srcdir)/doc/book
 
-noinst_DATA = book.fo
+# noinst_DATA = book.fo
 CLEANFILES  = book.fo
-
 
 # Sorry this is not autoconfigured until it actually works.
 
