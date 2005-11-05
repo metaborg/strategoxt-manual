@@ -67,9 +67,8 @@
     
       <para>
 	All the code examples in this manual are available for
-	separate download, such that you can experiment based on
-	these: <link
-	xl:href="./examples.tar.gz">examples.tar.gz</link>
+	separate download, so that you can experiment based on these:
+	<link xl:href="./examples.tar.gz">examples.tar.gz</link>
       </para>
     </formalpara>
   </section>
