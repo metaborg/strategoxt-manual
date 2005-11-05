@@ -4,18 +4,24 @@
 
   <title>Stratego Language (*)</title>
   
+  <include href="../../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+  
   <chapter>
-    <title>Stratego Core</title>
+    <title>Stratego Core (*)</title>
+
+    <include href="../../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     <para></para>
   </chapter>
   
   <chapter>
-    <title>Syntactic Abstractions</title>
+    <title>Syntactic Abstractions (*)</title>
+    <include href="../../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     <para></para>
   </chapter>
   
   <chapter>
-    <title>Dynamic Rules</title>
+    <title>Dynamic Rules (*)</title>
+    <include href="../../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
     <para></para>
   </chapter>
 </part>
