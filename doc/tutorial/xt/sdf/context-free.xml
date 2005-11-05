@@ -164,6 +164,8 @@ Times(Plus(Int("1"),Int("2")),Int("3"))</screen>
   <section>
     <title>Ambiguities in Expressions</title>
 
+    <xi:include href="../../workinprogress.xml"/>
+
     <para>
       Syntax definitions that use only a single non-terminal for
       expressions are highly ambiguous. <xref
@@ -195,11 +197,6 @@ amb(
   Exp "*" Exp -> Exp {cons("Mul")} 
   Exp "/" Exp -> Exp {cons("Div")}</programlisting>
     </example>
-
-    
-
-
-
 
     <para>
       In plain context-free grammars such ambiguities are solved by

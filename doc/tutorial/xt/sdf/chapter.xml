@@ -5,8 +5,6 @@
 
   <title>Syntax Definition in SDF (*)</title>
 
-  <include href="../../workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
-
   <para>
     First, basic structure of SDF. Second, how syntax is defined
     SDF. Third, examples of lexical and context-free syntax. Fourth,
@@ -17,7 +15,7 @@
   <xi:include href="syntax.xml" />
   <xi:include href="lexical.xml" />
   <xi:include href="context-free.xml" />
-  <xi:include href="disambiguation.xml" />
-  <xi:include href="glossary.xml"/>
+  <!-- <xi:include href="disambiguation.xml" /> -->
+  <!-- <xi:include href="glossary.xml"/> -->
   <xi:include href="parse-unit/section.xml"/>
 </chapter>
