@@ -3,10 +3,8 @@
   xmlns:xl="http://www.w3.org/1999/xlink"
   xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Installation (*)</title>
+  <title>Installation</title>
 
-  <xi:include href="../workinprogress.xml"/>
-  
   <section>
     <title>What do I Need?</title>
     
@@ -39,7 +37,9 @@
 	an interpreter for Stratego and an interactive command-line
 	for experimenting with the Stratego language. The Stratego
 	Shell is used in the Stratego part of this tutorial to
-	demonstrate the features of the Stratego language.
+	demonstrate the features of the Stratego language. The
+	Stratego Shell is also very useful for small experiments with
+	strategies of the Stratego Library.
       </para>
     </formalpara>
     
@@ -47,18 +47,18 @@
       <title>Extensions</title>
       <para>
 	Then there are the language-specific packages. These packages
-	provide the basic infrastructure for parsing and
-	pretty-printing, and sometimes analysing, source files of a
-	specific programmign language. Reusing such a package enables
-	you to get started immediately with the implementation of an
-	actual transformation. Examples of such packages are Java-front,
-	which obviously supports the implementation of Java
-	transformation systems, Transformers C and C++, BibTeX Tools,
-	Prolog Tools, and SQL Front. Also, there are some demonstration
-	packages, for example Tiger Base, which implements a compiler
-	for the Tiger language, and Java Borg, which demonstrates the
-	implementation of language embeddings. All these packages can
-	separately be installed as extensions of Stratego/XT.
+	provide the basic infrastructure for parsing, pretty-printing,
+	and in some cases also analyzing source files of a specific
+	programming language. Reusing such a package enables you to
+	get started immediately with the implementation of an actual
+	transformation. Examples of such packages are Java-front,
+	Dryad, Transformers C and C++, BibTeX Tools, Prolog Tools,
+	AspectJ Front, and SQL Front. Also, there are some
+	demonstration packages, for example Tiger Base, which
+	implements a compiler for the Tiger language, and Java Borg,
+	which demonstrates the implementation of language
+	embeddings. All these packages can separately be installed as
+	extensions of Stratego/XT.
       </para>
     </formalpara>
 
@@ -85,7 +85,7 @@
       pre-compiled binaries that can simply be unpacked. For Mac OS X
       users, we provide these binary packages as well, but they can
       also use the Nix deployment system, which will guarantee that
-      all dependecies are installed correctly. Nix packages are also
+      all dependencies are installed correctly. Nix packages are also
       available for Linux users. Finally, it is always possible to
       build from source.
     </para>
@@ -195,7 +195,7 @@
 </screen>
 
 	  <para>
-	    As mentioned earler, you can alternatively add the
+	    As mentioned earlier, you can alternatively add the
 	    location of the ATerm Library and the SDF2 Bundle to the
 	    <code>PKG_CONFIG_PATH</code>, which the configure script
 	    will use for searching packages.
@@ -238,31 +238,17 @@
 
 	<para>
 	  Installing binary RPMs is very easy. Install the RPMs by
-	  running the following command in the directory where you
-	  have downloaded the RPMs.
-	</para>
-
-	<screen>
-rpm -i *
-</screen>
-
-	<para>
-	  Use the upgrade option if you have already installed earlier
-	  versions of RPMs for aterm, strategoxt or the sdf2-bundle.
-	</para>
-
-	<screen>
-rpm -U *
-</screen>
-
-	<para>
-	  Of course you can also install the RPMs one by one by
-	  specifying the filenames of the RPMs.  
+	  running <code>rpm -i *</code> in the directory where you
+	  have downloaded the RPMs. Use the upgrade option <code>rpm
+	  -U *</code> if you have already installed earlier versions
+	  of RPMs for aterm, strategoxt or the sdf2-bundle. Of course
+	  you can also install the RPMs one by one by specifying the
+	  filenames of the RPMs.
 	</para>
       </section>
 
       <section>
-	<title>Using the Nix Deployment System (*)</title>
+	<title>Using the Nix Deployment System</title>
 	<para>
 	  Using the Nix deployment system for the installation of
 	  Stratego/XT is a good idea if you need to run multiple
@@ -271,16 +257,23 @@ rpm -U *
 	  if there is a problem with installation from source at your
 	  system. The Nix deployment system is designed to guarantee
 	  that the Stratego/XT that we are using on our system is
-	  <emphasis>exatly</emphasis> reproduced on your system. This
+	  <emphasis>exactly</emphasis> reproduced on your system. This
 	  basically guarantees that the installation will never fail
 	  because of missing dependencies or mistakes in the
 	  configuration.
 	</para>
+
+	<para>
+	  The release page of all the packages refer to Nix packages
+	  that can be installed using
+	  <code>nix-install-package</code>.
+	</para>
       </section>
 
-      <section>
+<!--      <section>
 	<title>Using Binary Distributions fore Cygwin and MacOS X (*)</title>
-	<para/>
-      </section>
+
+	<xi:include href="../workinprogress.xml"/>
+      </section> -->
   </section>
 </chapter>
