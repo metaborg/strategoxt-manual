@@ -3,7 +3,7 @@
    xmlns:xl="http://www.w3.org/1999/xlink"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <title>Syntax Definition in SDF (*)</title>
+  <title>Syntax Definition in SDF</title>
 
   <para>
     First, basic structure of SDF. Second, how syntax is defined
