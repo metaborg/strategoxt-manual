@@ -79,7 +79,9 @@ util/config
     In the remainder of this part of the tutorial, we will present the
     most important parts of the library, and show their typical usage
     patterns and idioms. If anything seems unclear, you are encouraged
-    to consult the online documentation for further details.
+    to consult the
+    <link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-0.16/docs/">online documentation</link>
+    for further details.
   </para>
   </section>  
 </partintro>

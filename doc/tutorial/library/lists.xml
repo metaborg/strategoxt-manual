@@ -353,7 +353,7 @@
   <para>
     More information about list strategies available can be found in
     the <code>collections/list</code> module, in the
-    <link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">library reference documentation</link>.
+    <link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-0.16/docs/">library reference documentation</link>.
   </para>  
 </section>  
 </chapter>

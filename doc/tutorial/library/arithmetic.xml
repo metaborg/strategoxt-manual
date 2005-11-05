@@ -222,7 +222,7 @@ command failed
     <para>
       The module <code>term/integer</code> contains strategies for
       working with numbers. Refer to the 
-      <link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">library reference documentation</link>
+      <link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-0.16/docs/">library reference documentation</link>
       for more information.
     </para>
     
