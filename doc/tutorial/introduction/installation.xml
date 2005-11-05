@@ -140,7 +140,7 @@
 	  <para>
 	    In this case, it possible that the sdf2-bundle cannot find
 	    the aterm package. To tell the sdf2-bundle where it should
-	    look for the ATerm library, you can use the
+	    look for the ATerm Library, you can use the
 	    <code>--with-aterm</code> argument:
 	  </para>
 
@@ -182,7 +182,7 @@
 	  <para>
 	    If you want to install StrategoXT at a different prefix,
 	    you should specify a <code>--prefix</code>. If you
-	    installed the aterm library and the sdf2-bundle at a
+	    installed the ATerm Library and the SDF2 Bundle at a
 	    different location, you should specify their location
 	    using <code>--with-aterm</code> and
 	    <code>--with-sdf</code>. For example:
