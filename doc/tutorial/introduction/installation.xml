@@ -80,7 +80,7 @@
     <para>
       First of all, you have to decide which deployment mechanism you
       want to use. For users of RPM-based Linux distributions (such as
-      Redhat, Fedora Core, and SUSE), we advice to use RPMs, which are
+      Redhat, Fedora Core, and SUSE), we advise to use RPMs, which are
       available from the release page. For Cygwin users we provide
       pre-compiled binaries that can simply be unpacked. For Mac OS X
       users, we provide these binary packages as well, but they can
