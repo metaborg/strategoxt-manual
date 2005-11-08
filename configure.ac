@@ -4,7 +4,7 @@ AM_INIT_AUTOMAKE
 
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 
-# XT_PRE_RELEASE
+XT_PRE_RELEASE
 XT_USE_JRE
 XT_USE_BATIK
 USE_DOCBOOK
