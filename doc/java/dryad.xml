@@ -3,9 +3,88 @@
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <title>Getting started with Dryad</title>
+
+  <xi:include href="../tutorial/workinprogress.xml"/>
   
   <para>
     Dryad is a collection of tools for developing transformation
     systems for Java source and bytecode.
   </para>
+
+  <section>
+    <title>Linking with the Dryad Library</title>
+
+    <para>
+      For some applications, you might want to link with the Dryad
+      library. This library has a few dependencies, such as libjvm,
+      that make linking a bit more involved than it should
+      be. Fortunately, you don't have to have to know all these
+      details.
+    </para>
+
+    <section>
+      <title>Compilation in Automake Package</title>
+      
+      <para>
+	In an autoxt-based Automake package, you can use the variable
+	<varname>DRYAD_LIBS</varname> in the
+	<filename>Makefile.am</filename>. This variable contains all
+	the required linker flags, including platform specific ones.
+      </para>
+    </section>
+
+    <section>
+      <title>Standalone Compilation at Command-line</title>
+
+      <para>
+	At the command-line, the preferred way of linking is:
+	
+	<screen><prompt>$</prompt> strc -i const-prop.str $(strcflags dryad)</screen>
+	
+	This way of linking works on all supported platforms, since it
+	reuses the information the configure script of Dryad has
+	figured out about the platform you are running on.
+      </para>
+      
+      <para>
+	If you haven't seen strcflags before: it is an alias for the
+	invocation of pkg-config. You can define it using the
+	following command. Of course, you also use the longer
+	pkg-config variant in the invocation of strc.
+
+	<screen><prompt>$</prompt> alias strcflags="pkg-config --variable=strcflags "</screen>
+      </para>
+      
+      <para>
+	Make sure that Dryad is in the PKG_CONFIG_PATH. You can check
+	if it is by invoking the following command. This will print a
+	bunch of strc options. If it prints nothing, then dryad is not
+	on the path and you can extend it by defining the
+	PKG_CONFIG_PATH.
+	
+	<screen><prompt>$</prompt> echo $(strcflags dryad)</screen>
+	<screen><prompt>$</prompt> export PKG_CONFIG_PATH=$dryadprefix/lib/pkgconfig:$PKG_CONFIG_PATH</screen>
+      </para>
+    </section>
+
+    <section>
+      <title>Explanation</title>
+      
+      <para>
+	If you don't use the suggested ways of linking, then you
+	probably get the following message:
+	
+	<screen><prompt>$</prompt> ./const-prop -i Foo.java 
+./const-prop: error while loading shared libraries: libjvm.so: cannot
+open shared object file: No such file or directory</screen>
+      </para>
+      
+      <para>
+	This can be solved in several ways, for example by setting the
+	<varname>LD_LIBRARY_PATH</varname>, or by adding the runtime
+	path of the libjvm library to the executable. This is what is
+	done be the previously suggested solutions.
+      </para>
+    </section>
+  </section>
 </chapter>
