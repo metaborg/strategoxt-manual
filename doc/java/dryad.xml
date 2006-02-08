@@ -37,13 +37,16 @@
       <title>Standalone Compilation at Command-line</title>
 
       <para>
-	At the command-line, the preferred way of linking is:
+	At the command-line, the preferred way of compilation is:
 	
-	<screen><prompt>$</prompt> strc -i const-prop.str $(strcflags dryad)</screen>
+	<screen><prompt>$</prompt> strc -i const-prop.str $(strcflags dryad java-front)</screen>
 	
-	This way of linking works on all supported platforms, since it
-	reuses the information the configure script of Dryad has
-	figured out about the platform you are running on.
+	The strcflags include the Stratego includes (-I) of these
+	packages and special linker options required to use the Dryad
+	library. This way of compilation works on all supported
+	platforms, since it reuses the information the configure
+	script of Dryad has figured out about the platform you are
+	running on.
       </para>
       
       <para>
