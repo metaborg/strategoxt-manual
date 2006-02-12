@@ -90,4 +90,61 @@ open shared object file: No such file or directory</screen>
       </para>
     </section>
   </section>
+
+
+  <section>
+    <title>Dryad on Mac OS X</title>
+
+    <para>
+      Dryad supports Mac OS X if the JDK 5.0 is installed. You need to
+      configure 5.0 as the default JVM in the preferences, or you can
+      set an environment variable for this:
+    </para>
+
+    <screen><prompt>$</prompt> export JAVA_JVM_VERSION="1.5"</screen>
+
+    <para>
+      If you get an
+      <classname>UnsupportedClassVersionError</classname>, then there
+      is something wrong with this configuration.
+    </para>
+
+    <para>
+      For Dryad, there is no need to manipulate the
+      <filename>Current</filename> and <filename>CurrentJDK</filename>
+      symbolic links in
+      <filename>/System/Library/Frameworks/JavaVM.framework/Versions</filename>,
+      which is often suggested on the Internet. In fact, this will not
+      affect the default JVM at all for Dryad, which starts the JVM as
+      a library using JNI, not from the command-line.
+    </para>
+
+    <section>
+      <title>Installing Dryad using Nix</title>
+      <para>
+	Users of Dryad in Nix have to install the JDK 5.0 as well: it
+	is not included in the dependencies of Dryad in Nix. They also
+	have to configure this JDK as the default.
+      </para>
+    </section>
+
+    <section>
+      <title>Dryad on Mac OS X 10.3</title>
+      <para>
+	The JDK 5.0 is not officially supported on Mac OS X 10.3, but
+	the Java features Dryad uses work with an installation of JDK
+	5.0 on Mac OS X 10.3. For this, you can copy the installation
+	of the JDK on a Mac OS X 10.4 machine to Mac OS X 10.3. Copy
+	the directory
+	<filename>/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0</filename>
+	to Mac OS X 10.3 and create a symbolic link
+	<filename>/System/Library/Frameworks/JavaVM.framework/Versions/1.5</filename>
+	to this directory. We advice you not to make this the global
+	default JVM: it is safer to set the
+	<envar>JAVA_JVM_VERSION</envar> to 1.5 for Dryad sessions
+	only, since the 1.5.0 installation will not work for most
+	other Java applications.
+      </para>
+    </section>
+  </section>
 </chapter>
