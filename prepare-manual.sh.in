@@ -8,8 +8,8 @@ prepare_manual() {
 
   mkdir -p mandist/manual/$kind/images/callouts
   cp html/*.css html/$kind/*.html mandist/manual/$kind
-  cp /home/martin/.nix-profile/xml/xsl/docbook/images/*.png mandist/manual/$kind/images/
-  cp /home/martin/.nix-profile/xml/xsl/docbook/images/callouts/*.png mandist/manual/$kind/images/callouts
+  cp @DOCBOOK_XSL@/xml/xsl/docbook/images/*.png mandist/manual/$kind/images/
+  cp @DOCBOOK_XSL@/xml/xsl/docbook/images/callouts/*.png mandist/manual/$kind/images/callouts
 
   cd doc
   find . \
@@ -33,7 +33,7 @@ prepare_manual() {
 prepare_mandist() {
   kind="$1"
   top="$(pwd)"
-  distdir=strategoxt-manual-$kind-0.16pre14477
+  distdir=@PACKAGE@-$kind-@VERSION@
 
   cd mandist/manual
   rm -rf $distdir
