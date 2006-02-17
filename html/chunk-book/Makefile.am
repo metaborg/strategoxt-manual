@@ -3,6 +3,9 @@ include $(top_srcdir)/Makefile.docbook
 XSLTPROC_FLAGS =					 \
 	--param html.stylesheet \'style.css\'		 \
         --param use.id.as.filename \'1\'		 \
+	--param chunk.chapter \'0\'		         \
+	--param chunk.part \'0\'		         \
+	--param chunk.book \'1\'		         \
 	--param chunk.section.depth \'0\'		 \
         --param toc.max.depth \'3\'			 \
 	--param toc.section.depth 2			 \

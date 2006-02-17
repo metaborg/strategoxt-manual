@@ -37,7 +37,7 @@ FIX_XSL=$(top_srcdir)/xslt/docbook-ng-fix.xsl
 
 index.html : $(BOOK).docbookxsl
 	if test "$(CHUNK)" = "true"; then \
-	  $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $< ; \
+	  $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ --path $(DOCBOOK_XSL)/xml/xsl/docbook/html $(top_srcdir)/xslt/chunk/flexchunk.xsl $< ; \
 	else \
 	  $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_XSL) $< ; \
 	fi

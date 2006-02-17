@@ -1,1 +1,1 @@
-SUBDIRS = chunk-chapter one-page
+SUBDIRS = chunk-chapter chunk-part one-page
