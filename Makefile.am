@@ -18,36 +18,17 @@ doc-only :
 
 # Create a complete manual in the dir mandist/manual
 manual :
-	cd doc; $(MAKE)
-	cd svg; $(MAKE)
-	cd html; $(MAKE)
+	cd doc && $(MAKE)
+	cd svg && $(MAKE)
 	rm -rf mandist
-	mkdir mandist
-	mkdir mandist/manual
-	mkdir mandist/manual/images
-	mkdir mandist/manual/images/callouts
-	cp html/*.css html/*.html mandist/manual
-	cp $(DOCBOOK_XSL)/xml/xsl/docbook/images/*.png mandist/manual/images/
-	cp $(DOCBOOK_XSL)/xml/xsl/docbook/images/callouts/*.png mandist/manual/images/callouts
-	cd doc && find . \
-           -name *.png -or \
-           -name *.str -or \
-           -name *.sdf -or \
-           -name *.str -or \
-           -name *.rtg -or \
-           -name *.pp -or \
-           -name *.meta | xargs -i cp -v --parents {} ../mandist/manual
-	cd svg && find . \
-           -name *.png  | xargs -i cp --parents {} ../mandist/manual
-	cp src/examples.tar.gz mandist/manual
-	cd mandist/manual && tar zxvf ../../src/examples-full.tar.gz
+	source $(top_srcdir)/prepare-manual.sh && prepare_manual "chunk-chapter"
+	source $(top_srcdir)/prepare-manual.sh && prepare_manual "one-page"
+	cp html/*.html mandist/manual
 
 # Creates several distributions of the manual
 mandist: manual
 	cd mandist && tar cvfj manual.tar.bz2 manual
 	mv mandist/manual.tar.bz2 .
-	cd mandist && mv manual $(distdir)
-	cd mandist && tar cvfj $(distdir).tar.bz2 $(distdir)
-	cd mandist && tar cvfz $(distdir).tar.gz $(distdir)
-	cd mandist && zip -r $(distdir).zip $(distdir)
-	rm -rf mandist/$(distdir)
+	source $(top_srcdir)/prepare-manual.sh && prepare_mandist "chunk-chapter"
+	source $(top_srcdir)/prepare-manual.sh && prepare_mandist "one-page"
+	rm -rf mandist/manual

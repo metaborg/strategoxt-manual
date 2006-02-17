@@ -32,18 +32,15 @@ FIX_XSL=$(top_srcdir)/xslt/docbook-ng-fix.xsl
 %.1 : $(BOOK).docbookxslstripns
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2MAN_XSL) $<
 
-%.html : $(BOOK).docbookxsl
-	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_XSL) $<
-
 %.fo : $(BOOK).docbookxslstripns
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK_XSL)/xml/xsl/docbook/fo/docbook.xsl $<
 
-%.xhtml : $(BOOK).docbookxsl
-	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2XHTML_XSL) $<
-
 index.html : $(BOOK).docbookxsl
-	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $<
-
+	if test "$(CHUNK)" = "true"; then \
+	  $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_CHUNK_XSL) $< ; \
+	else \
+	  $(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2HTML_XSL) $< ; \
+	fi
 
 index.xhtml : $(BOOK).docbookxsl
 	$(XSLTPROC) $(XSLTPROC_FLAGS) --output $@ $(DOCBOOK2XHTML_CHUNK_XSL) $<

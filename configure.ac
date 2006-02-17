@@ -13,10 +13,15 @@ AC_PROG_INSTALL
 
 AC_CONFIG_FILES([
   Makefile
+  prepare-manual.sh
   src/Makefile
   doc/Makefile
   svg/Makefile
   html/Makefile
+  html/chunk-chapter/Makefile
+  html/chunk-part/Makefile
+  html/chunk-book/Makefile
+  html/one-page/Makefile
   pdf/Makefile
   man/Makefile
 ])
