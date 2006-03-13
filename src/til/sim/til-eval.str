@@ -8,7 +8,7 @@ rules
   EvalAdd :
     Add(String(i), String(j)) -> String(<conc-strings>(i,j))
 
-  EvalSub :
+  EvalSub : 
     Sub(Int(i), Int(j)) -> Int(<subtS>(i,j))
 
   EvalMul :
@@ -21,16 +21,37 @@ rules
     Mod(Int(i), Int(j)) -> Int(<modS>(i,j))
 
   EvalLt :
-    Lt(Int(i), Int(j)) -> Int(<if ltS then !"1" else !"0" end>(i,j))
+    Lt(Int(i), Int(j)) -> <compare(ltS)>(i,j)
 
   EvalGt :
-    Gt(Int(i), Int(j)) -> Int(<if gtS then !"1" else !"0" end>(i,j))
+    Gt(Int(i), Int(j)) -> <compare(gtS)>(i,j)
+
+  EvalLeq :
+    Leq(Int(i), Int(j)) -> <compare(leqS)>(i,j)
+
+  EvalGeq :
+    Geq(Int(i), Int(j)) -> <compare(geqS)>(i,j)
 
   EvalEqu :
-    Equ(Int(i), Int(j)) -> Int(<if eq then !"1" else !"0" end>(i,j))
+    Equ(Int(i), Int(j)) -> <compare(eq)>(i,j)
     
   EvalNeq :
-    Neq(Int(i), Int(j)) -> Int(<if eq then !"0" else !"1" end>(i,j))
+    Neq(Int(i), Int(j)) -> <compare(not(eq))>(i,j)
+    
+  compare(s) =
+    if s then !True() else !False() end
+    
+  EvalOr :
+    Or(True(), e) -> True()
+    
+  EvalOr :
+    Or(False(), e) -> e
+    
+  EvalAnd :
+    And(True(), e) -> e
+    
+  EvalAnd :
+    And(False(), e) -> False()
     
   AddZero :
     Add(e, Int("0")) -> e
@@ -43,13 +64,19 @@ rules
 
   MulOne :
     Mul(Int("1"), e) -> e
+    
+  EvalS2I :
+    FunCall("string2int", [String(x)]) -> Int(x)
+    where <string-to-int> x
+   
+  EvalI2S :
+    FunCall("int2string", [Int(i)]) -> String(i)
+ 
+  EvalIf :
+    IfElse(False(), st1*, st2*) -> Block(st2*)
 
   EvalIf :
-    IfElse(Int("0"), st1*, st2*) -> Block(st2*)
-
-  EvalIf :
-    IfElse(Int(i), st1*, st2*) -> Block(st1*)
-    where <not(eq)>(i, "0")
+    IfElse(True(), st1*, st2*) -> Block(st1*)
 
   EvalWhile :
-     While(Int("0"), st*) -> Block([])
+     While(False(), st*) -> Block([])

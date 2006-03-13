@@ -18,7 +18,7 @@ strategies
     Block({| CopyPropRev : map(copyprop-rev) |})
 
   copyprop-rev-declaration = 
-    ?Declaration(x)
+    (?Declaration(x) <+ ?DeclarationTyped(x, t))
     ; new-CopyPropRev(|x, x)
 
   copyprop-rev-assign = 

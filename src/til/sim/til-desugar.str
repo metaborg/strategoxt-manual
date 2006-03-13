@@ -5,10 +5,10 @@ rules
   ForToWhile :
     For(x, e1, e2, st*) ->
       Block([
-        Declaration(y), 
+        DeclarationTyped(y, TypeName("int")), 
         Assign(x, e1), 
         Assign(y, e2), 
-        While(Or(Lt(Var(x), Var(y)), Equ(Var(x), Var(y))), 
+        While(Leq(Var(x), Var(y)), 
           <conc>(st*, [Assign(x, Add(Var(x), Int("1")))])
         )
       ])
@@ -17,14 +17,13 @@ rules
   IfThenToIfElse :
     IfThen(e, st*) -> IfElse(e, st*, [])
 
-  AndIsMul :
-    And(e1, e2) -> Mul(e1, e2)
+  DefaultDeclaration :
+    Declaration(x) -> DeclarationTyped(x, TypeName("int"))
 
-  OrIsAdd :
-    Or(e1, e2) -> Add(e1, e2)
-
-  ReadIsFunCall :
-    Read(x) -> Assign(x, FunCall("read", []))
-
-  WriteIsProcCall :
-    Write(e) -> ProcCall("write", [e])
+  WriteInt :
+    ProcCall("writeint", [e]) -> 
+    ProcCall("write", [FunCall("int2string", [e])])
+    
+  ReadInt :
+    FunCall("readint", []) -> 
+    FunCall("string2int", [FunCall("read", [])])

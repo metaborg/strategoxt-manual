@@ -16,5 +16,11 @@ strategies
 
   RenameDeclaration :
     Declaration(x) -> Declaration(y)
-    where <new> x => y
+    where <newname> x => y
         ; rules( RenameVar : x -> y )
+
+  RenameDeclaration :
+    DeclarationTyped(x, t) -> DeclarationTyped(y, t)
+    where <newname> x => y
+        ; rules( RenameVar : x -> y )
+        

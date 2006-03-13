@@ -11,7 +11,7 @@ strategies
   eval-stats = 
     {| EvalVar : map(eval-stat) |}
 
-  eval-stat = 
+  eval-stat = //debug(!"eval-stat: "); (
     eval-assign
     <+ eval-write
     <+ eval-declaration
@@ -19,6 +19,7 @@ strategies
     <+ eval-if
     <+ eval-while
     <+ EvalGoto
+  //)
 
   eval-if = 
     IfElse(eval-exp, id, id)

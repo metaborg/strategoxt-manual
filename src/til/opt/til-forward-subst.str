@@ -18,7 +18,7 @@ strategies
     Block({| ForwardSubst : map(forward-subst) |})
 
   forward-subst-declaration = 
-    ?Declaration(x)
+    (?Declaration(x) <+ ?DeclarationTyped(x, t))
     ; new-ForwardSubst(|x, x)
 
   forward-subst-assign = 

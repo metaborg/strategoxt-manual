@@ -17,13 +17,12 @@ strategies
     Block({| ~Rs : map(forward-prop) |})
 
   forward-prop-declaration(|Rs) = 
-    ?Declaration(x)
+    (?Declaration(x) <+ ?DeclarationTyped(x, t))
     ; new-dynamic-rules(|Rs, x, x)
 
   forward-prop-assign(|Rs) = 
     Assign(?x, forward-prop => e)
     ; undefine-dynamic-rules(|Rs, x)
-
     ; where( innermost-scope-Forward-Prop => z )
     ; if <?Var(y)> e then
         rules( Forward-Prop.z : Var(x) -> Var(y) depends on [(x,x),(y,y)] )

@@ -5,5 +5,10 @@ strategies
   eval-exp(eval-var) = 
     bottomup(try(
       eval-var <+ EvalAdd <+ EvalMul <+ EvalSub <+ EvalDiv <+ EvalMod
-      <+ EvalLt <+ EvalGt <+ EvalEqu <+ EvalNeq
+      <+ EvalLeq <+ EvalGeq <+ EvalLt <+ EvalGt <+ EvalEqu <+ EvalNeq
+      <+ EvalOr <+ EvalAnd <+ EvalS2I <+ EvalI2S
     ))
+
+
+
+    

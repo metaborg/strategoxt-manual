@@ -18,7 +18,7 @@ strategies
     Block({| PropConst : map(propconst) |})
 
   propconst-declaration = 
-    ?Declaration(x)
+    (?Declaration(x) <+ ?DeclarationTyped(x, t))
     ; rules( PropConst+x :- Var(x) )
 
   propconst-assign = 

@@ -1,0 +1,30 @@
+module til-typecheck-stats
+imports til-typecheck-var
+strategies
+
+  typecheck-block = 
+    Block(typecheck-stats)
+
+  typecheck-stats = 
+    {| TypeOfVar : map(typecheck-stat) |}
+
+  typecheck-stat = 
+    typecheck-block
+    <+ Assign(id, typecheck-exp); try(TypecheckAssign)
+    <+ typecheck-declaration
+    <+ IfElse(typecheck-exp, typecheck-stats, typecheck-stats); typecheck-if
+    <+ IfThen(typecheck-exp, typecheck-stats); typecheck-if
+    <+ While(typecheck-exp, typecheck-stats); typecheck-while
+    <+ ProcCall(id, map(typecheck-exp)); typecheck-proccall
+
+  typecheck-if :
+    IfElse(e, st1*, st2*) -> IfElse(e, st1*, st2*){TypeName("void")}
+    where <typeof> e => TypeName("bool")
+    
+  typecheck-if :
+    IfThen(e, st*) -> IfThen(e, st*){TypeName("void")}
+    where <typeof> e => TypeName("bool")
+
+  typecheck-while : 
+    While(e, st*) -> While(e, st*){TypeName("void")}
+    where <typeof> e => TypeName("bool")

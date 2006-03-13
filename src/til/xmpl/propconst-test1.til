@@ -6,5 +6,5 @@ while Q do
  i := f();
  i := j
 end;
-write i;
-write j;
+writeint(i);
+writeint(j);

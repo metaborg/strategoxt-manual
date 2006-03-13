@@ -6,6 +6,10 @@ rules
     [Declaration(x) | st*] -> st*
     where <not(VarUsed)> Var(x)
 
+  ElimDecl : 
+    [DeclarationTyped(x, t) | st*] -> st*
+    where <not(VarUsed)> Var(x)
+
   ElimAssign :
     Assign(x, e) -> Block([])
     where <not(VarNeeded)> Var(x)
@@ -38,7 +42,7 @@ strategies
     <+ []
 
   dce-stats-decl = 
-    ?[Declaration(x) | _]
+    (?[Declaration(x) | _] <+ ?[DeclarationTyped(x, t) | _])
     ; {| VarNeeded, VarUsed 
        : rules(
            VarNeeded+x :- Var(x)
@@ -47,9 +51,9 @@ strategies
        ; [id | dce-stats]
        ; try(ElimDecl)
        |}
-
+       
   dce-stats-other =
-    [not(?Declaration(_)) | dce-stats]
+    [not(?Declaration(_) <+ ?DeclarationTyped(_, _)) | dce-stats]
     ; [dce-stat | id]
     ; try(?[Block([]) | <id>])
 

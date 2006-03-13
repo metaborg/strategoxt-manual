@@ -3,6 +3,8 @@ imports TIL-literals
 exports 
   sorts Exp
   context-free syntax
+    "true"       -> Exp {cons("True")}
+    "false"      -> Exp {cons("False")}
     Id           -> Exp {cons("Var")}
     Int          -> Exp {cons("Int")}
     String       -> Exp {cons("String")}
@@ -13,6 +15,8 @@ exports
     Exp "-" Exp  -> Exp {cons("Sub"),left}
     Exp "<" Exp  -> Exp {cons("Lt"),non-assoc}
     Exp ">" Exp  -> Exp {cons("Gt"),non-assoc}
+    Exp "<=" Exp -> Exp {cons("Leq"),non-assoc}
+    Exp ">=" Exp -> Exp {cons("Geq"),non-assoc}
     Exp "=" Exp  -> Exp {cons("Equ"),non-assoc}
     Exp "!=" Exp -> Exp {cons("Neq"),non-assoc}
     Exp "&" Exp  -> Exp {cons("And"),assoc}
@@ -28,6 +32,8 @@ exports
   > {non-assoc: 
        Exp "<" Exp  -> Exp 
        Exp ">" Exp  -> Exp
+       Exp "<=" Exp -> Exp 
+       Exp ">=" Exp -> Exp
        Exp "="  Exp -> Exp 
        Exp "!=" Exp -> Exp }
   > Exp "&" Exp  -> Exp

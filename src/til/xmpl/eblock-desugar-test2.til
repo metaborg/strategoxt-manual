@@ -1,14 +1,14 @@
-write
+write(
   begin
     var x;
-    read x;
+    x := read();
     return 
       x + begin 
-            read x; 
+            x := readint(); 
             return x; 
             x := x * 2; 
           end + 1;
     x := x + 1;
-    write x;
+    write(x);
   end
-;
+);
