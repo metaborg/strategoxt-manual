@@ -6,4 +6,4 @@ strategies
     io-wrap(typecheck-program)
     
   typecheck-program =
-    ?Program(typecheck-stats)
+    Program(typecheck-stats)

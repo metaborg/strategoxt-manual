@@ -7,17 +7,30 @@ strategies
       typecheck-var <+ TypecheckAdd <+ TypecheckMul <+ TypecheckSub <+ TypecheckDiv <+ TypecheckMod
       <+ TypecheckLeq <+ TypecheckGeq <+ TypecheckLt <+ TypecheckGt <+ TypecheckEqu <+ TypecheckNeq
       <+ TypecheckOr <+ TypecheckAnd
+      <+ TypecheckInt <+ TypecheckString <+ TypecheckBool
     ))
 
 rules
 
   typeof :
     e{t*} -> t
-    where <fetchelem(is-type)> t* => t
+    where <fetch-elem(is-type)> t* => t
     
   is-type = 
     ?TypeName(_)
+    
+  TypecheckInt :
+    Int(i) -> Int(i){TypeName("int")}
 
+  TypecheckString :
+    String(x) -> String(x){TypeName("string")}
+
+  TypecheckBool :
+    True() -> True(){TypeName("bool")}
+    
+  TypecheckBool :
+    False() -> False(){TypeName("bool")}
+    
   TypecheckAdd :
     Add(e1, e2) -> Add(e1, e2){TypeName("string")}
     where <typeof> e1 => TypeName("string")

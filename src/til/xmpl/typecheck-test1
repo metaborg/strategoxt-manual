@@ -1,0 +1,2 @@
+# typecheck test1.til after parsing 
+../tc/til-typecheck -i test1.atil > test1.tc
