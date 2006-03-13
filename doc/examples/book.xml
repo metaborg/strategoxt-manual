@@ -40,6 +40,7 @@
      <xi:include href="sdf.xml"/>
      <xi:include href="simplify.xml"/>
      <xi:include href="renaming.xml"/>
+     <xi:include href="tc.xml"/>
      <xi:include href="run.xml"/>
      <xi:include href="data-flow.xml"/>
      <!--xi:include href="compilation.xml"/-->
