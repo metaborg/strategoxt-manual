@@ -1,0 +1,39 @@
+module til-propconst
+imports til-opt-lib
+strategies
+
+  io-til-propconst = 
+    io-wrap(propconst)
+
+  propconst = 
+    PropConst
+    <+ propconst-declaration
+    <+ propconst-assign 
+    <+ propconst-block
+    <+ propconst-if
+    <+ propconst-while
+    <+ all(propconst); try(EvalExp)
+
+  propconst-block =
+    Block({| PropConst : map(propconst) |})
+
+  propconst-declaration = 
+    (?Declaration(x) <+ ?DeclarationTyped(x, t))
+    ; rules( PropConst+x :- Var(x) )
+
+  propconst-assign = 
+    Assign(?x, propconst => e)
+    ; if <is-value> e then
+        rules( PropConst.x : Var(x) -> e )
+      else
+        rules( PropConst.x :- Var(x) )
+      end
+
+  propconst-if =
+    IfElse(propconst, id, id)
+    ; (EvalIf; propconst
+       <+ IfElse(id, propconst, id) /PropConst\ IfElse(id,id,propconst))
+
+  propconst-while =
+    ?While(_, _)
+    ; (/PropConst\* While(propconst, propconst))
