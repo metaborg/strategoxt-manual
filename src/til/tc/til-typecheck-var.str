@@ -48,7 +48,7 @@ strategies // built-in functions
     FunCall("read", []) -> FunCall("read", []){TypeName("string")}
     
   TypecheckRead :
-    FunCall("readint", []) -> FunCall("read", []){TypeName("int")}
+    FunCall("readint", []) -> FunCall("readint", []){TypeName("int")}
 
 strategies // built-in procedures
 
@@ -57,7 +57,7 @@ strategies // built-in procedures
     where <typeof> e => TypeName("string")
 
   TypecheckWrite :
-    ProcCall("writeint", [e]) -> ProcCall("write", [e]){TypeName("void")}
+    ProcCall("writeint", [e]) -> ProcCall("writeint", [e]){TypeName("void")}
     where <typeof> e => TypeName("int")
 
 

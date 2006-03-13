@@ -43,6 +43,7 @@
      <xi:include href="tc.xml"/>
      <xi:include href="run.xml"/>
      <xi:include href="data-flow.xml"/>
+     <xi:include href="typestate.xml"/>
      <!--xi:include href="compilation.xml"/-->
      <xi:include href="eblocks.xml"/>
   </part>

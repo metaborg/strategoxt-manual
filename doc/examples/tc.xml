@@ -2,10 +2,66 @@
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
 
+  <title>Typechecking (*)</title>
+
+  <include href="../tutorial/workinprogress.xml" xmlns="http://www.w3.org/2003/XInclude"/>
+
+  <para>
+
+     propagation of variable types and type annotation of expressions
+     and statements
+
+  </para>
+
+<sect1>
   <title>Typechecking</title>
-      
+
   <para>
 
   </para>
+
+  <includefile 
+     id="ref-til-tc-til-typecheck.str" 
+     root="../../src" 
+     file="til/tc/til-typecheck.str" />
+
+  <includefile 
+     id="ref-til-tc-til-typecheck-exp.str" 
+     root="../../src" 
+     file="til/tc/til-typecheck-exp.str" />
+
+
+  <includefile 
+     id="ref-til-tc-til-typecheck-stats.str" 
+     root="../../src" 
+     file="til/tc/til-typecheck-stats.str" />
+
+
+  <includefile 
+     id="ref-til-tc-til-typecheck-var.str" 
+     root="../../src" 
+     file="til/tc/til-typecheck-var.str" />
+
+</sect1>
+
+<sect1>
+  <title>Example</title>
+
+  <para>
+
+  </para>
+
+  <includefile 
+     id="ref-til-xmpl-typecheck-test" 
+     root="../../src" 
+     file="til/xmpl/typecheck-test1" />
+
+  <beforeafter 
+     id="ref-til-xmpl-rename-test-run" 
+     root="../../src" 
+     file1="til/xmpl/test1.til"
+     file2="til/xmpl/test1.tc" />
+
+</sect1>
 
 </chapter>
