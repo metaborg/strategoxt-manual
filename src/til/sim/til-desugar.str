@@ -27,3 +27,15 @@ rules
   ReadInt :
     FunCall("readint", []) -> 
     FunCall("string2int", [FunCall("read", [])])
+ 
+  BinOpToFunCall :
+    op#([e1,e2]){t*} -> FunCall(op, [e1,e2]){t*}
+    where <is-bin-op> op
+    
+  FunCallToBinOp :
+    FunCall(op, [e1,e2]){t*} -> op#([e1,e2]){t*}
+    where <is-bin-op> op
+     
+  is-bin-op =
+    "Add" <+ "Mul" <+ "Subt" <+ "Div" <+ "Mod"
+    <+ "Geq" <+ "Leq" <+ "Gt" <+ "Lt" <+ "Equ" <+ "Neq"

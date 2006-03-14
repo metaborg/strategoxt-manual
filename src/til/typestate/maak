@@ -1,19 +1,4 @@
-INCL="-I ../sig -I ../sim"
+INCL="-I ../sig -I ../sim -I ../opt"
 
-# compile forward-subst
-strc ${INCL} -i til-forward-subst.str -la stratego-lib -m io-til-forward-subst -O 2
-
-# compile dce
-strc ${INCL} -i til-dce.str -la stratego-lib -m io-til-dce -O 2
-
-# compile cse
-strc ${INCL} -i til-cse.str -la stratego-lib -m io-til-cse
-
-# compile copyprop
-strc -i til-copyprop.str ${INCL} -la stratego-lib -m io-til-copyprop
-
-# compile copyprop-rev
-strc -i til-copyprop-rev.str ${INCL} -la stratego-lib -m io-til-copyprop-rev
-
-# compile propconst
-strc -i til-propconst.str ${INCL} -la stratego-lib -m io-til-propconst
+# compile typestate
+strc -i til-typestate.str ${INCL} -la stratego-lib -m io-til-typestate

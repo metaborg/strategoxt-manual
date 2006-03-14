@@ -6,33 +6,39 @@ strategies
     Block(typecheck-stats)
 
   typecheck-stats = 
-    {| TypeOf : map(debug(!"in: "); typecheck-stat; debug(!"out: ")) |}
+    {| TypeOf : map(typecheck-stat) |}
 
   typecheck-stat = 
     typecheck-block
-    <+ Assign(id, typecheck-exp); try(TypecheckAssign)
     <+ typecheck-declaration
-    <+ IfElse(typecheck-exp, typecheck-stats, typecheck-stats); typecheck-if
-    <+ IfThen(typecheck-exp, typecheck-stats); typecheck-if
-    <+ While(typecheck-exp, typecheck-stats); typecheck-while
-    <+ ProcCall(id, map(typecheck-exp)); typecheck-proccall
-    <+ For(id, typecheck-exp, typecheck-exp, typecheck-stats); typecheck-for
+    <+ Assign(id, typecheck-exp)
+       ; try(TypecheckAssign)
+    <+ IfElse(typecheck-exp, typecheck-stats, typecheck-stats)
+       ; TypecheckIf
+    <+ IfThen(typecheck-exp, typecheck-stats)
+       ; TypecheckIf
+    <+ While(typecheck-exp, typecheck-stats)
+       ; TypecheckWhile
+    <+ ProcCall(id, map(typecheck-exp))
+       ; typecheck-proccall
+    <+ For(id, typecheck-exp, typecheck-exp, typecheck-stats)
+       ; TypecheckFor
     <+ debug(!"unknown statement: ")
        ; <exit> 1
 
-  typecheck-if :
+  TypecheckIf :
     IfElse(e, st1*, st2*) -> IfElse(e, st1*, st2*){TypeName("void")}
     where <typeof> e => TypeName("bool")
     
-  typecheck-if :
+  TypecheckIf :
     IfThen(e, st*) -> IfThen(e, st*){TypeName("void")}
     where <typeof> e => TypeName("bool")
 
-  typecheck-while : 
+  TypecheckWhile : 
     While(e, st*) -> While(e, st*){TypeName("void")}
     where <typeof> e => TypeName("bool")
 
-  typecheck-for : 
+  TypecheckFor : 
     For(x, e1, e2, st*) -> For(x, e1, e2, st*){TypeName("void")}
     where <TypeOf> x => TypeName("int")
         ; <typeof> e1 => TypeName("int")
