@@ -662,8 +662,8 @@ map(s) : [x | xs] -> [&lt;s> x | &lt;map(s)> xs]
 <para>
 
   In general, a term wrap is a build strategy <code>!p[&lt;s>]</code>
-  containing on or more strategy applications <code>&lt;s></code> that
-  are <emphasis>not applied to a term</emphasis>.
+  containing one or more strategy applications <code>&lt;s></code>
+  that are <emphasis>not applied to a term</emphasis>.
 
   When executing the the build operation, each occurrence of such a
   strategy application <code>&lt;s></code> is replaced with the term
