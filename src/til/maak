@@ -1,12 +1,20 @@
 #! /bin/sh -e
 
-(cd syn && ./maak)
-(cd sig && ./maak)
-(cd pp && ./maak)
-(cd sim && ./maak)
-(cd renaming && ./maak)
-(cd run && ./maak)
-(cd opt && ./maak)
-(cd til-eblock && ./maak)
-(cd tc && ./maak)
-(cd xmpl && ./maak)
+maakdir() {
+  echo "=== Making $1 ========================================"
+  cd $1
+  ./maak
+  cd ..
+}
+
+maakdir syn
+maakdir sig
+maakdir pp
+maakdir sim
+maakdir renaming
+maakdir run
+maakdir opt
+maakdir til-eblock
+maakdir tc
+maakdir xmpl
+
