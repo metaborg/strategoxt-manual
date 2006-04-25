@@ -17,6 +17,6 @@ set -x
 ./dce-test2
 ./eblock-desugar-test2
 ./rename-test
+./typecheck-test1
 
-# ./typecheck-test1
 # ./typestate-test1
