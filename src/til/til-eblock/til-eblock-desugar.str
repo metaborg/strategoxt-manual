@@ -15,7 +15,7 @@ strategies
 	<+ HoistEBlockFromBinOp 
 	<+ HoistEBlockFromAssign 
 	<+ HoistEBlockFromProcCall 
-	<+ HoistEBlockFromWrite 
+//	<+ HoistEBlockFromWrite 
 	<+ HoistEBlockFromIf 
 	<+ HoistEBlockFromWhile 
 	<+ HoistEBlockFromFor
@@ -61,8 +61,8 @@ rules
     ProcCall(f, e1*) -> Block([st*, ProcCall(f, e2*)])
     where <collect-eblocks> e1* => (st*, e2*)
 
-  HoistEBlockFromWrite :
-    Write(EBlock(st1*, e, st2*)) -> Block([st1*, Write(e), st2*])
+//  HoistEBlockFromWrite :
+//    Write(EBlock(st1*, e, st2*)) -> Block([st1*, Write(e), st2*])
 
   HoistEBlockFromIf :
     IfElse(EBlock(st1*, e, st2*), st3*, st4*) -> 

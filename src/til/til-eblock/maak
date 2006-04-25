@@ -1,3 +1,5 @@
+#! /bin/sh -e
+
 # collect modules 
 pack-sdf -I ../syn -i TIL-eblocks.sdf -o TIL-eblocks.def
 

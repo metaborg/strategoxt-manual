@@ -1,3 +1,5 @@
+#! /bin/sh -e
+
 # generate pretty-print table from syntax definition
 ppgen -i ../syn/TIL.def -o TIL.pp
 

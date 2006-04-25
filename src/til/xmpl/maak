@@ -1,3 +1,5 @@
+#! /bin/sh -e
+
 ./parse-test
 ./parse-test2
 ./pp-test1

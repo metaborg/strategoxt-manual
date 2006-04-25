@@ -8,7 +8,7 @@ strategies
   til-rename-vars =
     Var(RenameVar)
     <+ Assign(RenameVar, til-rename-vars)
-    <+ Read(RenameVar)
+//    <+ Read(RenameVar)
     <+ For(RenameVar, til-rename-vars, til-rename-vars, til-rename-vars)
     <+ RenameDeclaration
     <+ Block({| RenameVar : map(til-rename-vars) |})

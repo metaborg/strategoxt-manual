@@ -1,3 +1,5 @@
+#! /bin/sh -e
+
 INCL="-I ../sig -I ../sim"
 
 # compile forward-subst
