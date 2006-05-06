@@ -181,8 +181,8 @@
 	<listitem> 
 	  <para> 
 	    Zero or more symbols
-	    <code>A<subscript>0</subscript></code> seperated by
-	    <code>A<subscript>1</subscript>}*</code>.  Examples:
+	    <code>A<subscript>0</subscript></code> separated by
+	    <code>A<subscript>1</subscript></code>.  Examples:
 	    <code>{Exp ","}*</code>, <code>{FormalParam ","}*</code>
 	  </para>
 	</listitem>
@@ -193,8 +193,8 @@
 	<listitem> 
 	  <para>
 	    One or more symbols <code>A<subscript>0</subscript></code>
-	    seperated by
-	    <code>A<subscript>1</subscript>}*</code>. Examples:
+	    separated by
+	    <code>A<subscript>1</subscript></code>. Examples:
 	    <code>{Id "."}+</code>, <code>{InterfaceType ","}+</code>
 	  </para>
 	</listitem>
