@@ -9,4 +9,4 @@ BOOTCLEANFILES = $(pkgdata_DATA) Ogetarts.def
 SDF2RTG_FLAGS  = --main Ogetarts
 
 Ogetarts.def : 
-	$(LN_S) $(top_srcdir)/syn/Ogetarts.def $@
+	$(LN_S) $(top_builddir)/syn/Ogetarts.def $@

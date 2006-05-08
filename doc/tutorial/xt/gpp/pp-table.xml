@@ -41,7 +41,7 @@
       pretty-print rules can easiliy be customized by overruling them
       in additional pretty-print tables. The tool pptable-diff <!--
       TODO:link --> notifies inconsistensies in pretty-print tables
-      after the syntax definition has changed and can be used to brin
+      after the syntax definition has changed and can be used to bring
       inconsistent table up-to-date.
     </para>
   </section>
@@ -113,7 +113,7 @@
 	      For SDF separator lists <code>{S<subscript>1</subscript>
 	      S<subscript>2</subscript>}+</code>. Observe that the
 	      symbol <code>S<subscript>1</subscript></code> and the
-	      separator <code>S<subscript>2</subscript>}+</code> are
+	      separator <code>S<subscript>2</subscript></code> are
 	      ordinary subtrees of the iter-sep construct which can be
 	      refered to as first and second subtree, respectively.
 	    </para>
@@ -127,8 +127,8 @@
 	      For SDF separator lists <code>{S<subscript>1</subscript>
 	      S<subscript>2</subscript>}*</code>. Its symbol
 	      <code>S<subscript>1</subscript></code> and separator
-	      <code>S<subscript>2</subscript>}*</code> can be refered
-	      to as first and second sub tree.
+	      <code>S<subscript>2</subscript></code> can be refered to
+	      as first and second sub tree.
 	    </para>
 	  </listitem>
 	</varlistentry>

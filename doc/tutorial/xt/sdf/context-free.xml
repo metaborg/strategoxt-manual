@@ -225,7 +225,7 @@ amb(
 
     <para>
       In order to support natural syntax definitions, SDF provides
-      several declarative disambiguation mechanismqs. Associativity
+      several declarative disambiguation mechanisms. Associativity
       declarations (<code>left</code>, <code>right</code>,
       <code>non-assoc</code>), disambiguate combinations of a binary
       operator with itself and with other operators. Thus, the left

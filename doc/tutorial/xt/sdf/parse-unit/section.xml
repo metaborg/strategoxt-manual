@@ -8,7 +8,7 @@
     <command>Parse-unit</command> is a tool, part of Stratego/XT, for
     testing SDF syntax definitions. The spirit of unit testing is
     implemented in parse-unit by allowing you to check that small code
-    fragements are parsed correctly with your syntax definition.
+    fragments are parsed correctly with your syntax definition.
   </para>
   
   <para>

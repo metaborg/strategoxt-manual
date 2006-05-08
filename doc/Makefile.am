@@ -10,7 +10,12 @@ ALL_XML_FILES = \
   $(wildcard */*.sdf) \
   $(wildcard */*/*.sdf) \
   $(wildcard */*/*/*.sdf) \
-  $(wildcard */*/*/*/*.sdf)
+  $(wildcard */*/*/*/*.sdf) \
+  $(wildcard */*.txt) \
+  $(wildcard */*/*.txt) \
+  $(wildcard */*/*/*.txt) \
+  $(wildcard */*/*/*/*.txt)
+
 
 EXTRA_DIST = $(wildcard *.xml) book.docbook
 CLEANFILES = book.docbook book.xml-inc book.xml-exp book.xml-inc? book.xml-exp?
