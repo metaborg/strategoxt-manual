@@ -71,7 +71,7 @@
     
     <para>
       The status of the build farm can be found at 
-      <link xl:href="http://nix.cs.uu.nl/dist/stratego/latest100.xhtml">http://nix.cs.uu.nl/dist/stratego/latest100.xhtml</link>.
+      <link xl:href="http://nix.cs.uu.nl/dist/stratego/quick-view.html">http://nix.cs.uu.nl/dist/stratego/quick-view.html</link>.
       This page is updated every time the build farm completes a job. The result
       of a build (provided it suceeded) is downloadable, and you are free to
       download and test it. We do not, however, give any guarantees about the
@@ -184,7 +184,8 @@
 	would you like to have in the baseline as soon as possible,
 	then please request a baseline update at
 	<email>stratego-dev@cs.uu.nl</email> or the IRC channel
-	<command>#stratego</command>.
+	<command>#stratego</command> on <link
+        xl:href="http://www.freenode.net/">freenode</link>.
       </para>
 
     </section>
@@ -241,7 +242,7 @@
 
     <para>
       Unfortunately, many Linux distributions contain old versions of
-      these packages, so please check te versions that are installed
+      these packages, so please check the versions that are installed
       on your system. Also, check that libtool is installed at the
       same location (prefix) as Automake, otherwise
       <command>aclocal</command> will not be able to find the Autoconf
@@ -275,7 +276,7 @@
 </screen>
 
     <para>
-      Note that your Subversion client has to support SSL support. Install
+      Note that your Subversion client must have SSL support enabled. Install
       Subversion <option>--with-ssl</option>. This is the default installation
       for most distributions.
     </para>
@@ -320,7 +321,7 @@
     <title>Subversion Repoman</title>
 
     <para>
-      The repoman for gives an overview of possible ways to view the
+      The repoman gives an overview of possible ways to view the
       sources the StrategoXT repository:
     </para>
 
@@ -333,8 +334,8 @@
     <para>
       GNU Autoconf needs definitions of macros that are used in
       <filename>configure.ac</filename> files. GNU Automake contains
-      the tool <command>aclocal</command>, which installs all
-      requires macros. <command>aclocal</command> gets these macros
+      the tool <command>aclocal</command>, which installs the
+      required macros. <command>aclocal</command> gets these macros
       from a directory with m4 files. <command>aclocal
       --print-ac-dir</command> reports this directory. Your libtool
       installation must install the <command>libtool.m4</command>
