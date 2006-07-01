@@ -75,60 +75,60 @@
     </title>
 
    <itemizedlist mark="bullet">
-    <listitem>Compilers</listitem>
+    <listitem><para>Compilers</para></listitem>
     <listitem override="none">
       <itemizedlist>
-        <listitem>Translation, e.g. Stratego into C</listitem>
-        <listitem>Desugaring, e.g. Java's <code>foreach</code> into <code>for</code></listitem>
-        <listitem>Instruction selection</listitem>
+        <listitem><para>Translation, e.g. Stratego into C</para></listitem>
+        <listitem><para>Desugaring, e.g. Java's <code>foreach</code> into <code>for</code></para></listitem>
+        <listitem><para>Instruction selection</para></listitem>
         <listitem override="none">
           <itemizedlist>
-            <listitem>Maximal munch</listitem>
-            <listitem>BURG-style dynamic programming</listitem>
+            <listitem><para>Maximal munch</para></listitem>
+            <listitem><para>BURG-style dynamic programming</para></listitem>
           </itemizedlist>
         </listitem>
-        <listitem>Optimization</listitem>
+        <listitem><para>Optimization</para></listitem>
         <listitem override="none">
           <itemizedlist>
-            <listitem>Data-flow optimization</listitem>
-            <listitem>Vectorization</listitem>
-            <listitem>GHC-style simplification</listitem>
-            <listitem>Deforestation</listitem>
-            <listitem>Domain-specific optimization</listitem>
-            <listitem>Partial evaluation</listitem>
+            <listitem><para>Data-flow optimization</para></listitem>
+            <listitem><para>Vectorization</para></listitem>
+            <listitem><para>GHC-style simplification</para></listitem>
+            <listitem><para>Deforestation</para></listitem>
+            <listitem><para>Domain-specific optimization</para></listitem>
+            <listitem><para>Partial evaluation</para></listitem>
           </itemizedlist>
         </listitem>
-        <listitem>Type checking</listitem>
-        <listitem>Specialization of dynamic typing</listitem>
+        <listitem><para>Type checking</para></listitem>
+        <listitem><para>Specialization of dynamic typing</para></listitem>
       </itemizedlist>
     </listitem>
 
-    <listitem>Program generators</listitem>
+    <listitem><para>Program generators</para></listitem>
     <listitem override="none">
       <itemizedlist>
-        <listitem>Pretty-printer and signature generation from syntax definitions</listitem>
-        <listitem>Application generation, e.g. data format checkers from specifications</listitem>
+        <listitem><para>Pretty-printer and signature generation from syntax definitions</para></listitem>
+        <listitem><para>Application generation, e.g. data format checkers from specifications</para></listitem>
       </itemizedlist>
     </listitem>
  
-    <listitem>Program migration</listitem>
+    <listitem><para>Program migration</para></listitem>
     <listitem override="none">
       <itemizedlist>
-        <listitem>Grammar conversion, e.g. YACC to SDF</listitem>
+        <listitem><para>Grammar conversion, e.g. YACC to SDF</para></listitem>
       </itemizedlist>
     </listitem>
 
-    <listitem>Program understanding</listitem>
+    <listitem><para>Program understanding</para></listitem>
     <listitem override="none">
       <itemizedlist>
-        <listitem>Documentation generation, e.g. API documentation for Stratego</listitem>
+        <listitem><para>Documentation generation, e.g. API documentation for Stratego</para></listitem>
       </itemizedlist>
     </listitem>
     
-    <listitem>Document generation/transformation</listitem>
+    <listitem><para>Document generation/transformation</para></listitem>
     <listitem override="none">
       <itemizedlist>
-        <listitem>Web/XML programming (server-side scripts)</listitem>
+        <listitem><para>Web/XML programming (server-side scripts)</para></listitem>
       </itemizedlist>
     </listitem>
    </itemizedlist>

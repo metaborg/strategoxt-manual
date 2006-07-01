@@ -207,8 +207,8 @@
   <title>Installation from Subversion</title>
   
   <para>
-    In <link xref="installation" /> in the
-    <link xref="tutorial">Stratego/XT Tutorial</link>, we explain how to
+    In <link linkend="installation" /> in the
+    <link linkend="tutorial">Stratego/XT Tutorial</link>, we explain how to
     download, compile and install stable versions of the Stratego/XT framework.
     In this section we will see how to download the bleeding edge sources from
     the Subversion repository. Downloading the development sources is only

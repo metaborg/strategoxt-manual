@@ -50,11 +50,9 @@
 
   <part xml:id="tutorial-bibtex">
     <title>Example Packages (*)</title>
-    
-    <xi:include href="../tutorial/workinprogress.xml"/>
 
     <partintro>
-
+      <xi:include href="../tutorial/workinprogress.xml"/>
       <para>
 
 	This part introduces several example packages. 
