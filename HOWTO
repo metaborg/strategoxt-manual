@@ -36,7 +36,7 @@ Software
 
   Requirements:
 
-  - docbook-ng (PTO release: 5.0pre20050724-pto in Nix)
+  - docbook-5.0b6
   - docbook-xsl
   - recent libxml2
   - libxslt/xsltproc
@@ -55,7 +55,7 @@ Software
 
   schemas.xml for docbook-ng:
   <locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
-    <namespace ns="http://docbook.org/ns/docbook" uri="file:///home/martin/.nix-profile/xml/rng/docbook/docbookxi.rnc"/>
+    <namespace ns="http://docbook.org/ns/docbook" uri="file:///home/martin/.nix-profile/xml/dtd/docbook/rng/docbookxi.rnc"/>
     <documentElement localName="html" uri="file:///home/martin/.nix-profile/emacs/site-lisp/schema/xhtml.rnc"/>
   </locatingRules>
 
