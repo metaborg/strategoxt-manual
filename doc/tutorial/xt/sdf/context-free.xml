@@ -164,7 +164,15 @@ Times(Plus(Int("1"),Int("2")),Int("3"))</screen>
   <section>
     <title>Ambiguities in Expressions</title>
 
-    <xi:include href="../../workinprogress.xml"/>
+    <example xml:id="xmpl-sdf-amb-expression">
+      <title>Ambiguous Syntax Definition for Expressions</title>
+
+      <programlisting>
+  Exp "+" Exp -> Exp {cons("Plus")}
+  Exp "-" Exp -> Exp {cons("Minus")}
+  Exp "*" Exp -> Exp {cons("Mul")} 
+  Exp "/" Exp -> Exp {cons("Div")}</programlisting>
+    </example>
 
     <para>
       Syntax definitions that use only a single non-terminal for
@@ -185,26 +193,43 @@ amb(
   ]
 )</programlisting>
 
-
-
-    <example xml:id="xmpl-sdf-amb-expression">
-      <title>Ambiguous and Non-Ambiguous Syntax for
-      Expressions</title>
-
-      <programlisting>
-  Exp "+" Exp -> Exp {cons("Plus")}
-  Exp "-" Exp -> Exp {cons("Minus")}
-  Exp "*" Exp -> Exp {cons("Mul")} 
-  Exp "/" Exp -> Exp {cons("Div")}</programlisting>
-    </example>
-
     <para>
-      In plain context-free grammars such ambiguities are solved by
-      introducing additional non-terminals and productions. This
-      results in much more complex parse trees and increases the
-      distance between parse trees and abstract syntax trees.
+      These ambiguities can be solved by using the associativities and
+      priorities of the various operators to disallow undesirable
+      derivations. For example, from the derivations of <code>a + b *
+      c</code> we usually want to disallow the second one, where the
+      multiplications binds weaker than the addition operator. In
+      plain context-free grammars the associativity and priority rules
+      of a language can be encoded in the syntax definition by
+      introducing separate non-terminals for all the priority levels
+      and let every argument of productions refer to such a specific
+      priority level. <xref linkend="xmpl-sdf-disamb-expression"/>
+      shows how the usual priorities and associativity of the
+      operators of the example can be encoded in this way. For
+      example, this definition will never allow an <code>AddExp</code>
+      as an argument of a <code>MulExp</code>, which implies that
+      <code>*</code> binds stronger than <code>+</code>. Also,
+      <code>AddExp</code> can only occur at the left-hand side of an
+      <code>AddExp</code>, which makes the operator left associative.
     </para>
 
+    <para>
+      This way of dealing with associativity and priorities has
+      several disadvantages. First, the disambiguation is not natural,
+      since it is difficult to derive the more high-level rules of
+      priorities and associativity from this definition. Second, it is
+      difficult to define expressions in a modular way, since the
+      levels need to be known and new operators might affect the
+      carefully crafted productions for the existing ones. Third, due
+      to all the priority levels and the productions that connect
+      these levels, the parse trees are more complex and parsing is
+      less efficient. For these reasons SDF features a more
+      declarative way of defining associativity and priorities, which
+      we discuss in the next section.
+    </para>
+
+    <example xml:id="xmpl-sdf-disamb-expression">
+      <title>Non-Ambiguous Syntax Definition for Expressions</title>
     <programlisting>
   AddExp -> Exp
 
@@ -218,10 +243,13 @@ amb(
 
   IntConst -> PrimExp {cons("Int")}
   Id       -> PrimExp {cons("Var")}</programlisting>
+    </example>
   </section>
 
   <section>
     <title>Associativity and Priorities</title>
+
+    <xi:include href="../../workinprogress.xml"/>
 
     <para>
       In order to support natural syntax definitions, SDF provides

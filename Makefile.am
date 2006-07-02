@@ -16,6 +16,12 @@ doc-only :
 
 .PHONY : manual mandist
 
+quickmanual :
+	cd doc && $(MAKE)
+	cd svg && $(MAKE)
+	rm -rf mandist
+	source $(top_srcdir)/prepare-manual.sh && prepare_manual "chunk-chapter"
+
 # Create a complete manual in the dir mandist/manual
 manual :
 	cd doc && $(MAKE)
