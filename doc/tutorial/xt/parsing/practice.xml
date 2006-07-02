@@ -180,11 +180,9 @@ Times(Plus(Var("a"),Var("n")),Int("1"))
 	filters that select based on heuristics. Sometimes these
 	heuristics are applicable to your situation, but sometimes
 	they are not. Also, the heuristic filters make it less clear
-	when and why there are ambiguities in a syntax
-	definition. Therefore, we strongly advice you to use the
-	option <code>--no-heuristic-filters</code> of
-	<code>sglri</code>. The support for heuristic filters will be
-	removed in the future.
+	when and why there are ambiguities in a syntax definition. For
+	this reason, they are disabled by default if you use sglri,
+	(but not yet if you use sglr).
       </para>
     </formalpara>
 
@@ -201,7 +199,7 @@ Times(Plus(Var("a"),Var("n")),Int("1"))
       </para>
     </formalpara>
 
-<screen><prompt>$</prompt> echo "a" | sglri -p Expression.tbl --no-heuristic-filters
+<screen><prompt>$</prompt> echo "a" | sglri -p Expression.tbl
 amb([Var("a"),"a"])
 </screen>
 
@@ -211,7 +209,7 @@ amb([Var("a"),"a"])
       list of two alternatives.
     </para>
 
-<screen><prompt>$</prompt> echo "a" | sglri -p Expression.tbl --no-heuristic-filters -s Exp 
+<screen><prompt>$</prompt> echo "a" | sglri -p Expression.tbl -s Exp 
 Var("a")</screen>
 
     <formalpara>
