@@ -9,13 +9,13 @@ AC_DEFUN([USE_DOCBOOK], [
   )
   AC_SUBST(DOCBOOK_XML)
 
-  DOCBOOK_RNG=$DOCBOOK_XML/xml/dtd/docbook/rng/docbook.rng
+  DOCBOOK_RNG=$DOCBOOK_XML/xml/rng/docbook/docbook.rng
   AC_CHECK_FILE($DOCBOOK_RNG,
     DOCBOOK_RNG_WORKS=yes; AC_SUBST(DOCBOOK_RNG),
     DOCBOOK_RNG_WORKS=
   )
 
-  DOCBOOKXI_RNG=$DOCBOOK_XML/xml/dtd/docbook/rng/docbookxi.rng
+  DOCBOOKXI_RNG=$DOCBOOK_XML/xml/rng/docbook/docbookxi.rng
   AC_CHECK_FILE($DOCBOOKXI_RNG,
     DOCBOOKXI_RNG_WORKS=yes; AC_SUBST(DOCBOOKXI_RNG),
     DOCBOOKXI_RNG_WORKS=
