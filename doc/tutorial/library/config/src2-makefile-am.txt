@@ -2,12 +2,10 @@ include $(top_srcdir)/Makefile.xt
 include $(wildcard *.dep)
 
 bin_PROGRAMS = ogetarts
+ogetarts_LDADD = $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
 
-LDADD += $(SSL_LIBS)
-
-STRINCLUDES    = -I $(XTC)/share/xtc -I $(srcdir)/../sig
+STRINCLUDES    = -I $(top_srcdir)/lib -I $(top_srcdir)/syn
 STRCFLAGS      = --main io-$*
 
-EXTRA_DIST     = $(wildcard *.str) $(wildcard *.meta) $(wildcard *.syn) 
-CLEANFILES     = $(wildcard *.dep) $(wildcard *.tmp) $(wildcard *.c) $(wildcard *.o)
-BOOTCLEANFILES = $(wildcard *.c)
+EXTRA_DIST = $(wildcard *.str) $(wildcard *.meta)
+CLEANFILES = $(wildcard *.c) $(wildcard *.dep)

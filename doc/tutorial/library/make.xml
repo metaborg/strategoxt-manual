@@ -3,6 +3,18 @@
   xmlns:xi="http://www.w3.org/2003/XInclude">
   
   <title>Building and Deploying Stratego Programs</title>
+
+  <warning>
+    <title>Work in Progress</title>
+
+    <para>
+      This chapter is currently being updated. Some parts might be
+      inconsistent while we are working to improve this
+      chapter. Please come back tomorrow for the updated version.
+    </para>
+  </warning>
+
+
   
   <para>
     The Stratego build system is based on the GNU Autotools, that is
@@ -19,21 +31,24 @@
     <title>Setting up your Project</title>
     
     <para>
-      After creating your project directory, let's call it 
-      <filename>ogetarts</filename>, the first thing you should do
-      is populate it with the basic build system files, namely
-      <filename>configure.ac</filename>, <filename>project.spec.in</filename>,
-      <filename>bootstrap</filename> and <filename>Makefile.am</filename>.
-      Additionally, you may want to add <filename>ChangeLog</filename>,
+      After creating your project directory, let's call it
+      <filename>ogetarts</filename>, the first thing you should do is
+      populate it with the basic build system files, namely
+      <filename>configure.ac</filename>,
+      <filename>bootstrap</filename>,
+      <filename>Makefile.am</filename>. Additionally, you may want to
+      add <filename>ChangeLog</filename>,
       <filename>AUTHORS</filename>, <filename>NEWS</filename> and
-      <filename>README</filename>, but these are not essential.
+      <filename>README</filename>, but these are not essential. If you
+      want to support the creation of RPMs, then you need to create a
+      file <filename>ogetarts.spec.in</filename>.
     </para>
 
     <para>
-      For a normal Stratego project, with XTC components and some stand-alone
-      applications, we suggest the project layout given below (directories end
-      in <filename>/</filename>). We will discuss the all the components of
-      this hierarchy in turn.
+      For a normal Stratego project, with a syntax, some stand-alone
+      tools, and a library, we suggest the project layout given below
+      (directories end in <filename>/</filename>). We will discuss the
+      all the components of this hierarchy in turn.
     </para>
     
 <screen>
@@ -43,37 +58,32 @@ ogetarts/
   Makefile.am
   syn/
       Makefile.am
-  sig/
+  lib/
       Makefile.am
-  src/
-      Makefile.am      
-  src/xtc/
-          Makefile.am
-  src/lib/
-          Makefile.am
-  test/
-  doc/
+  tools/
+        Makefile.am
 </screen>
 
     <para>
-      The build system is kickstarted by the <filename>bootstrap</filename>
-      script. This script is responsible for generating a 
-      <filename>configure</filename> script. When run, the
+      The build system is kickstarted by the
+      <filename>bootstrap</filename> script. This script is
+      responsible for generating a <filename>configure</filename>
+      script. When run by the user of your package, the
       <filename>configure</filename> script will autodetect the
-      Stratego compiler and other tools required to build your project.
-	  The concept of generation is very central to autotool-based build
-	  systems. The <filename>configure</filename> script is generated
-	  from a <filename>configure.ac</filename> declaration by the
-      <command>autoreconf</command> tool. The 
+      Stratego compiler and other tools required to build your
+      project. The concept of generation is very central to
+      autotool-based build systems. The <filename>configure</filename>
+      script is generated from a <filename>configure.ac</filename>
+      declaration by the <command>autoreconf</command> tool. The
       <filename>Makefile</filename>s are generated from
       <filename>Makefile.in</filename> files by the
       <filename>configure</filename> script, and
       <filename>Makefile.in</filename> files are generated from
       <filename>Makefile.am</filename> files by
-      <command>automake</command>. Simple, huh? Generally, the
-      idea is that complicated scripts and makefiles can be generated
-      from high-level declarations using tools. Let's start with
-      the <filename>bootstrap</filename> script.
+      <command>automake</command>. Simple, huh? Generally, the idea is
+      that complicated scripts and makefiles can be generated from
+      high-level declarations using tools. Let's start with the
+      <filename>bootstrap</filename> script.
     </para>
     
 <screen><xi:include href="config/bootstrap.txt" parse="text"/></screen>
@@ -84,16 +94,13 @@ ogetarts/
     that takes care of running <command>autoxt</command> and
     <command>autoreconf</command>, as shown above. Note that we rely
     on reasonably recent versions of <command>autoconf</command> and
-    <command>automake</command>. Unfortunately, ensuring that the
-    correct version of these tools is executed is
-    distribution-specific, hence the <code>if</code>-statements above.
+    <command>automake</command>.
   </para>
-  
   
   <para>
     Assume we are in a palindromic mood and want to name our project
-    Ogetarts. The following file will then provide a reasonable starting
-    point for the <filename>configure.ac</filename> file.
+    Ogetarts. The following file will then provide a reasonable
+    starting point for the <filename>configure.ac</filename> file.
   </para>
 
 <screen><xi:include href="config/configure-ac.txt" parse="text"/></screen>
@@ -110,11 +117,20 @@ ogetarts/
 
   <variablelist>
     <varlistentry>
-      <term><code>XT_USE_XT_PACKAGES</code></term>
+      <term><code>XT_SETUP</code></term>
       <listitem>
        <para>
-         Adds configuration options to configure the package with the location
-         of the ATerm library, SDF and StrategoXT.
+	 Sets up a Stratego package by setting standard flags of the C
+	 compiler and linker for Stratego programs.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><code>XT_USE_XT_PACKAGES</code></term>
+     <listitem>
+       <para>
+	 Adds configuration options to configure the package with the
+	 location of the ATerm library, SDF2 Bundle and Stratego/XT.
        </para>
      </listitem>
    </varlistentry>
@@ -123,13 +139,49 @@ ogetarts/
      <listitem>
        <para>
          Adds the suffix <code>pre${SVN_REVISION}</code> to the
-         <code>PACKAGE_VERSION</code> and <code>VERSION</code> variables. This is a
-         naming convention for unstable packages that we are using in our release
-         management system.
+         <code>PACKAGE_VERSION</code> and <code>VERSION</code>
+         variables. This is a naming convention for unstable packages
+         that we are using in our release management system. If you
+         are not building your package in our buildfarm, then you do
+         not need to invoke this macro.
        </para>
      </listitem>
    </varlistentry>
-
+   <varlistentry>
+     <term><code>XT_DISABLE_XTC_REGISTER</code></term>
+     <listitem>
+       <para>
+	 Disabled the creation of an XTC repository. By default all
+	 programs and files are registered in an XTC repository.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><code>XT_USE_BOOTSTRAP_XT_PACKAGES</code></term>
+     <listitem>
+       <para>
+	 Similar to <code>XT_USE_XT_PACKAGES</code>, this macro adds
+	 configuration options to configure the package with the
+	 location of the ATerm library, SDF and Stratego/XT. However,
+	 the macro will only check the existance of these packages if
+	 the option <code>--enable-bootstrap</code> is given to the
+	 <code>configure</code> script. In other case, it will only
+	 look for the Aterm Library and Stratego Libraries. Also, XTC
+	 registration is disabled. This macro is used for packages
+	 that need to be very portable, including native Microsoft
+	 Windows.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><code>XT_SVN_REVISION</code></term>
+     <listitem>
+       <para>
+	 Determines the SVN revision and makes this number available
+	 to Stratego programs.
+       </para>
+     </listitem>
+   </varlistentry>
   </variablelist>
 
   <para>
@@ -148,36 +200,27 @@ ogetarts/
 
   <para>
     Again, most of this is boilerplate. The important point here is
-    that <code>SUBDIRS = src</code> will eventually result in rules 
-    which <command>make</command> to delve into the <filename>src/</filename>
-    directory. We will explain below how the
+    that <code>SUBDIRS = syn lib tools</code> will eventually result
+    in rules which <command>make</command> to delve into these
+    directories. We will explain below how the
     <filename>Makefile.am</filename> for source directories should
-    look like. Let's finish up the root build system first, closing
-    with the <filename>ogetarts.spec.in</filename> file.
-  </para>
-<screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
-  
-  <para>
-    This file is not strictly necessary. It's a so-called
-    <filename>.spec</filename>-file, which is a package descriptor for
-    rpm-based distributions. When you provide it, the Stratego/XT build
-    system can automatically make a <filename>.rpm</filename> package
-    file for your project.
+    look like.
   </para>  
   
   <para>
     The content of the <filename>Makefile.am</filename> files depends
-    on whether you are building stand-alone Stratego applications, 
-    XTC components or a Stratego library. We will discuss each variant
-    separately, but you are of course free to mix several of these
-    in your project, like we do in this project: In
-    <filename>src/lib</filename> lives the library parts of Ogetarts,
-    and in <filename>src/xtc</filename> live the XTC components.
+    on whether you are building a parser, stand-alone Stratego
+    programs, or a Stratego library. We will discuss each variant
+    separately, but you are of course free to mix several of these in
+    your project, like we do in this project: In
+    <filename>lib</filename> lives the library parts of Ogetarts, in
+    <filename>syn</filename> a parser is generated, and in
+    <filename>tools</filename> live the stand-alone programs.
   </para>
   </section>
   
   <section>
-    <title>Building Stand-alone Applications</title>
+    <title>Building Stand-alone Stratego Applications</title>
 
     <para>
       In <xref linkend="running-stratego-programs"/>, we showed how to
@@ -190,7 +233,7 @@ ogetarts/
 <screen><xi:include href="config/src2-makefile-am.txt" parse="text"/></screen>
     
     <para>
-      This file should be placed in <filename>src/prg/</filename>. The
+      This file should be placed in <filename>tools/</filename>. The
       following list explains the various parts occurring in the file.
     </para>
 
@@ -200,7 +243,9 @@ ogetarts/
       <term>include $(top_srcdir)/Makefile.xt</term>
       <listitem>
         <para>
-          Instructs the Stratego compiler to compile the Stratego files.
+	  Includes the various Stratego/XT make rules in this
+	  Makefile, for example for the compilation of Stratego
+	  programs and parse tables.
         </para>
       </listitem>
     </varlistentry>
@@ -209,10 +254,10 @@ ogetarts/
       <term>include $(wildcard *.dep)</term>
       <listitem>
         <para>
-          The Stratego compiler generates <filename>.dep</filename> files which
-          contain information about module dependencies. When these
-          <filename>.dep</filename> files are included, a rebuild
-          is forced when a dependent file changes.
+          The Stratego compiler generates <filename>.dep</filename>
+          files which contain information about module
+          dependencies. When these <filename>.dep</filename> files are
+          included, a rebuild is forced when a dependent file changes.
         </para>
       </listitem>
     </varlistentry>
@@ -221,33 +266,39 @@ ogetarts/
       <term>bin_PROGRAMS</term>
       <listitem>
         <para>
-          A list of stand-alone Stratego programs that should be compiled. For
-          each entry, a corresponding <filename>.str</filename> file must
-          exist.
+          A list of stand-alone Stratego programs that should be
+          compiled and installed in the directory
+          <filename>$prefix/bin</filename>. For each program, a
+          corresponding <filename>.str</filename> file must exist. In
+          this case, the most trivial
+          <filename>ogetarts.str</filename> module could look like:
         </para>
+
+<screen>
+module ogetarts
+imports libstratego-lib
+strategies
+  io-ogetarts = io-wrap(id)
+</screen>
       </listitem>
     </varlistentry>
 
     <varlistentry>
-      <term>libexec_PROGRAMS</term>
+      <term>program_LDADD</term>
       <listitem>
         <para>
-          A list of XTC components to compiler. For each entry, a corresponding
-          <filename>.str</filename> file must exist.
-        </para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>pkgdata_DATA</term>
-      <listitem>
-        <para>
-          A list of files that will be placed in
-          <filename>$prefix/share/pkg</filename>. This typically includes
-          parse tables, regular tree grammars, signatures and source code
-          for libraries. Including signatures and source code with your
-          program is useful when you want other projects to extend and
-          compile against yours.
+	  Stratego programs reuse various libraries, such as the ATerm
+	  library, the Stratego runtime and the Stratego library. This
+	  declaration tells the build system to link the program
+	  ogetarts with these libraries. If you use more libraries,
+	  such as the library <filename>libstratego-sglr</filename>
+	  for parsing, then you can add
+	  <code>$(STRATEGO_SGLR_LIBS)</code>. All libraries follow
+	  this naming convention, for example the variable
+	  <code>$(STRATEGO_XTC_LIBS)</code> is used for the library
+	  <filename>libstratego-xtc</filename>. If you also have your
+	  own library in this package, then you can add
+	  <code>$(top_builddir)/lib/libogetarts.la</code>.
         </para>
       </listitem>
     </varlistentry>
@@ -257,8 +308,12 @@ ogetarts/
       <listitem>
         <para>
           Contains compiler flags passed to the Stratego compiler. A
-          typical flags is <code>--main</code>. It is recommended that
-          include files are passed via the <code>STRINCLUDES</code>
+          typical flags is <code>--main</code>.  In this case, the
+          declaration tells the Stratego compiler that the main
+          stratego of a program <code>foo</code> is
+          <code>io-foo</code> (instead of the default
+          <code>main</code>). It is recommended that include
+          directories are passed via the <code>STRINCLUDES</code>
           variable.
         </para>
       </listitem>
@@ -268,9 +323,11 @@ ogetarts/
       <term>STRINCLUDES</term>
       <listitem>
         <para>
-          A list of additional includes necessary for a succesful compilation,
-          on the form <code>-I &lt;dir></code>. They will be passed unchanged
-          to the <command>strc</command> compiler.
+          A list of additional includes necessary for a succesful
+          compilation, of the form <code>-I &lt;dir></code>. They will
+          be passed unchanged to the <command>strc</command>
+          compiler. The Stratego compiler will then look in these
+          directories for Stratego modules.
         </para>
       </listitem>
     </varlistentry>
@@ -279,18 +336,23 @@ ogetarts/
       <term>EXTRA_DIST</term>
       <listitem>
         <para>
-          Specifies which auxilary files have to be included in the distribution,
-          when doing a <code>make install</code>.
+          Specifies which auxilary files have to be included in the
+          distribution, when doing a <code>make dist</code>. In this
+          case, we want to distribute all the Stratego modules and
+          their <filename>.meta</filename> (which do not always exist)
         </para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
-      <term>CLEANDIST</term>
+      <term>CLEANFILES</term>
       <listitem>
         <para>
-          Files to be deletes these files when the <code>make clean</code>
-          command is issued.
+          Files to be deletes these files when the <code>make
+          clean</code> command is issued. In this case we instruct
+          automake to remove the <filename>.c</filename> and
+          <filename>.dep</filename> files that are generated by the
+          Stratego compiler.
         </para>
       </listitem>
     </varlistentry>
@@ -313,12 +375,12 @@ ogetarts/
     this directory. For each program, a corresponding
     <filename>.str</filename> must exist, in this case, a
     <filename>ogetarts.str</filename> file. For each program the
-    compiler will be passed the <code>LDADD</code>,
-    <code>STRINCLUDES</code> and <code>STRCFLAGS</code> variables. The
-    <code>LDADD</code> variable is used to add additional shared
-    libraries that should be linked as part of the compilation
-    process.  <code>STRINCLUDES</code> and <code>STRCFLAGS</code> were
-    explained above.
+    Stratego compiler will be passed the <code>STRINCLUDES</code> and
+    <code>STRCFLAGS</code> variables. The <code>program_LDADD</code>
+    variable is used to add additional native libraries that should be
+    linked as part of the C compilation process.
+    <code>STRINCLUDES</code> and <code>STRCFLAGS</code> were explained
+    above.
   </para>
   
   <para>
@@ -329,14 +391,13 @@ ogetarts/
     to a declaration of programs to be compiled. The makefile
     automatically takes care of distributing the generated C code. The
     specification will only be compiled when it is newer than the C
-    code. This means that packages using <command>autoxt</command> can
-    be built using only the Stratego Run-Time System (srts).
+    code.
   </para>
 
   </section>
   
   <section>
-    <title>Building Parse Tables</title>
+    <title>Building Parse Tables, Tree Grammars and Stratego Signatures</title>
 
     <para>
       In <xref linkend="tutorial-sdf"/> we introduced you to the Syntax
@@ -362,11 +423,6 @@ ogetarts/
       and <filename>.tbl</filename> files from <filename>.def</filename>
       files using <command>sdf2table</command>.
     </para>
-    
-  </section>
-  
-  <section>
-    <title>Building Signatures</title>
 
     <para>
       The grammar declaration (Syntax Definition Formalism) can also be
@@ -376,58 +432,54 @@ ogetarts/
       shows.
     </para>
 
-<screen><xi:include href="config/sig-makefile-am.txt" parse="text"/></screen>
-
     <para>
-      This file should be placed as <filename>sig/Makefile.am</filename>.
-      The <code>sdfdata_DATA</code> declaration is the important part. It
-      tells the build system to build a Stratego signature 
+      The <code>sdfdata_DATA</code> declaration is the important
+      part. It tells the build system to build a Stratego signature
       (<filename>Ogetarts.str</filename>) and a regular tree grammar
       (<filename>Ogetarts.rtg</filename>) from the
-      <filename>Ogetarts.def</filename>. A minor trick is employed: The
-      <filename>Ogetarts.def</filename> is symlinked from the
-      <filename>syn/</filename> directory, hence it is important that the
-      <filename>syn/</filename> is built before the
-      <filename>sig/</filename> directory. We already took care to say
-      this in the root <filename>Makefile.am</filename>.
+      <filename>Ogetarts.def</filename>.
     </para>
-    
-  </section>
-  
-  <section>
-    <title>Building XTC components</title>
-    
-    <para>
-      <xref linkend="tutorial-xt"/> of this tutorial discusses the XTC
-      component architecture for Stratego. These components live in a
-      repository, where they must be registered (i.e. deployed) before
-      they can be used. The Stratego build system will take care of
-      all these details for you, if you let it. The easiest way to
-      delegate this responsibility to the build system is by using
-      the <filename>Makefile.am</filename> file provided here.
-    </para>
-    
-<screen><xi:include href="config/xtc-makefile-am.txt" parse="text"/></screen>
 
-    <para>
-      This <filename>Makefile.am</filename> should be placed in your
-      <filename>src/xtc/</filename> directory. As we can see, it
-      is mostly like the <filename>Makefile.am</filename> we use for
-      building stand-alone Stratego programs. The only difference
-      is using <code>libexec_PROGRAMS</code> for XTC components
-      instead of <code>bin_PROGRAMS</code>.
-    </para>
-    
-    <para>
-      The <filename>Makefile</filename> generated from this
-      <filename>Makefile.am</filename> will register all the
-      XTC components listed in <code>libexec_PROGRAMS</code>
-      when you run <code>make install</code>.
-    </para>
+    <variablelist>
+      <varlistentry>
+	<term>pkgdata_DATA</term>
+	<listitem>
+	  <para>
+	    A list of files that will be placed in
+	    <filename>$prefix/share/$packagename</filename>. This
+	    typically includes parse tables, regular tree grammars,
+	    signatures and source code for libraries. Including
+	    signatures and source code with your program is useful when
+	    you want other projects to extend and compile against yours.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>sdfdata_DATA</term>
+	<listitem>
+	  <para>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>PGEN_FLAGS</term>
+	<listitem>
+	  <para>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>SDF2RTG_FLAGS</term>
+	<listitem>
+	  <para>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
   </section>
   
   <section>
-     <title>Building Your Own library</title>
+     <title>Building Your Own Stratego Library</title>
      
      <para>
        The Stratego/XT build system allows you to freely organize the source
@@ -452,10 +504,12 @@ ogetarts/
     </para>
            
 <screen>
+module ogetarts
 imports
   ogetarts/core
-  ogetarts/extensions/- 
-</screen>    
+  ogetarts/extensions/ext1
+  ogetarts/extensions/ext2
+</screen>
 
     <para>
       The declaration <code>ogetarts/core</code> states
@@ -517,28 +571,28 @@ src/
   </para>
   
 <screen>
-  include $(top_srcdir)/Makefile.xt
+include $(top_srcdir)/Makefile.xt
 
-  lib_LTLIBRARIES = libogetarts.la 
-  pkgdata_DATA    = libogetarts.rtree
-  EXTRA_DIST      = $(ogetartssrc)
-  CLEANFILES      = libogetarts.c libogetarts.rtree
+lib_LTLIBRARIES = libogetarts.la 
+pkgdata_DATA    = libogetarts.rtree
+EXTRA_DIST      = $(ogetartssrc)
+CLEANFILES      = libogetarts.c libogetarts.rtree
 
-  libogetarts_la_SOURCES  = libogetarts.c
-  libogetarts_la_LDFLAGS  = -avoid-version -no-undefined
-  libogetarts_la_CPPFLAGS = $(STRATEGO_LIB_CFLAGS) $(STRATEGO_RUNTIME_CFLAGS) $(ATERM_CFLAGS)
-  libogetarts_la_LIBADD   = $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
+libogetarts_la_SOURCES  = libogetarts.c
+libogetarts_la_LDFLAGS  = -avoid-version -no-undefined
+libogetarts_la_CPPFLAGS = $(STRATEGO_LIB_CFLAGS) $(STRATEGO_RUNTIME_CFLAGS) $(ATERM_CFLAGS)
+libogetarts_la_LIBADD   = $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
 
-  ogetartssrc = \
-    ogetarts.str \
-    $(wildcard $(srcdir)/ogetarts/*.str) \
-    $(wildcard $(srcdir)/ogetarts/extensions/*.str)
+ogetartssrc = \
+  ogetarts.str \
+  $(wildcard $(srcdir)/ogetarts/*.str) \
+  $(wildcard $(srcdir)/ogetarts/extensions/*.str)
 
-  STRINCLUDES = -I $(top_srcdir)/lib -I $(top_srcdir)/syn
+STRINCLUDES = -I $(top_srcdir)/lib -I $(top_srcdir)/syn
 
-  libogetarts.c : $(ogetartssrc)
-      $(STRC)/bin/strc -c --library -i ./src/lib/ogetarts.str -o libogetarts.rtree $(STRINCLUDES)
-      rm libogetarts.str
+libogetarts.c : $(ogetartssrc)
+    $(STRC)/bin/strc -c --library -i ./src/lib/ogetarts.str -o libogetarts.rtree $(STRINCLUDES)
+    rm libogetarts.str
 </screen>
      
   <para>
@@ -553,6 +607,33 @@ src/
 </screen>
 
   </section>
+
+
+<section>
+  <title>RPM Support</title>
+
+  <para>
+    Let's finish up the root build system first, closing with the
+    <filename>ogetarts.spec.in</filename> file.
+  </para>
+  <screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
+  
+  <para>
+    This file is not strictly necessary. It's a so-called
+    <filename>.spec</filename>-file, which is a package descriptor for
+    rpm-based distributions. When you provide it, the Stratego/XT build
+    system can automatically make a <filename>.rpm</filename> package
+    file for your project.
+  </para>
+</section>
+
+<section>
+  <title>Package Config Support</title>
+  <para>
+    How to add a pkg-config file.
+  </para>
+</section>
+
 
 <section>
   <title>Summary</title>

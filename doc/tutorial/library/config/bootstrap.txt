@@ -1,12 +1,4 @@
 #! /bin/sh
 
-if [ -f /etc/gentoo-release ] ; then
-	export WANT_AUTOMAKE="1.8"
-	export WANT_AUTOCONF="2.59"
-elif [ -f /etc/debian_version ] ; then
-	export ACLOCAL="/usr/bin/aclocal-1.8"
-	export AUTOMAKE="/usr/bin/automake-1.8"
-fi
-
 autoxt || exit 1
-autoreconf -if || exit 1
+autoreconf -ifv || exit 1

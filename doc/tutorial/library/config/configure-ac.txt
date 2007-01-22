@@ -1,13 +1,11 @@
 AC_PREREQ([2.58])
 AC_INIT([ogetarts],[0.1],[ogetarts-bugs@ogetarts.org])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.7.2 -Wall -Wno-portability])
 
 # set the prefix immediately to the default prefix
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 
 XT_SETUP
-# comment to make this a stable release
-XT_PRE_RELEASE
 XT_USE_XT_PACKAGES
 
 AC_PROG_CC
@@ -15,12 +13,9 @@ AC_PROG_LIBTOOL
 
 ### OUTPUT #############################
 AC_CONFIG_FILES([
-  ogetarts.spec
   Makefile
   syn/Makefile
-  sig/Makefile
-  src/Makefile
-  src/xtc/Makefile
-  src/front/Makefile
+  lib/Makefile
+  tools/Makefile
 ])
 AC_OUTPUT

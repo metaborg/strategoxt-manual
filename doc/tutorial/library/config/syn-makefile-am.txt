@@ -1,23 +1,14 @@
 include $(top_srcdir)/Makefile.xt
 include $(wildcard *.dep)
 
-DEFS = \
-  Ogetarts.def
+DEF_TBL = Ogetarts.def Ogetarts.tbl
+RTG_SIG = Ogetarts.rtg Ogetarts.str
 
-TBLS = \
-  Ogetarts.tbl
+sdfdata_DATA = $(DEF_TBL) $(wildcard *.sdf)
+pkgdata_DATA = $(RTG_SIG)
 
-sdfdata_DATA = \
-  $(TBLS) \
-  $(DEFS) \
-  $(wildcard *.sdf)
+EXTRA_DIST   = $(DEF_TBL) $(RTG_SIG) $(wildcard *.sdf)
+CLEANFILES   = $(DEF_TBL) $(RTG_SIG)
 
-EXTRA_DIST     = $(DEFS) $(wildcard *.sdf)
-CLEANFILES     = $(wildcard *.tbl) $(TESTS)
-
-BOOTCLEANFILES	= $(wildcard *.def)   		
-
-SDF2RTG_FLAGS  = --main $*
-PGEN_FLAGS	= -m $*
-
-
+SDF2RTG_FLAGS = -m $*
+PGEN_FLAGS    = -m $*
