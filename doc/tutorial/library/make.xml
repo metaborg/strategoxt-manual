@@ -99,14 +99,13 @@ ogetarts/
 <screen><xi:include href="config/configure-ac.txt" parse="text"/></screen>
   
   <para>
-    Most of this is standard boilerplate. The important lines are
-    <code>XT_PKG_ATERM</code>, <code>XT_PKG_SDF</code> and
-    <code>XT_PKG_STRATEGOXT</code>. These are actually macro invocations
-    which will extend to shell script code that looks for the ATerm
-    library, the SDF tools and Stratego/XT, respectively. These macros
-    are provided by the <command>autoxt</command> tool, via a macro
-    file called <filename>autoxt.m4</filename>. It provides the
-    following macros.
+    Most of this is standard boilerplate. The important line is
+    <code>XT_USE_XT_PACKAGES</code> which is a macro invocation that
+    will extend to shell script code that looks for the ATerm library,
+    the SDF tools and Stratego/XT, respectively. These macros are
+    provided by the <command>autoxt</command> tool, via a macro file
+    called <filename>autoxt.m4</filename>. It provides the following
+    macros.
   </para>
 
   <variablelist>
@@ -116,46 +115,6 @@ ogetarts/
        <para>
          Adds configuration options to configure the package with the location
          of the ATerm library, SDF and StrategoXT.
-       </para>
-     </listitem>
-   </varlistentry>
-   <varlistentry>
-     <term><code>XT_PKG_ATERM</code></term>
-     <listitem>
-       <para>
-         Checks if the ATerm library is installed at the specified prefix of the
-         ATerm library.
-       </para>
-     </listitem>
-   </varlistentry>
-   <varlistentry>
-     <term><code>XT_PKG_SDF</code></term>
-     <listitem>
-       <para>
-         Checks if the SDF packages are installed at the specified prefix of SDF.
-       </para>
-     </listitem>
-   </varlistentry>
-   <varlistentry>
-     <term><code>XT_PKG_STRATEGOXT</code></term>
-     <listitem>
-       <para>
-         Checks if StrategoXT is installed at the specified prefix of StrategoXT.
-       </para>
-     </listitem>
-   </varlistentry>
-   <varlistentry>
-     <term><code>XT_TERM_DEFINE</code></term>
-     <listitem>
-       <para>
-         Defines some Stratego strategies that will return the values (as strings) of
-         various Autoconf variables: <code>PACKAGE_NAME_TERM()</code>,
-         <code>PACKAGE_TARNAME_TERM()</code>,
-         <code>PACKAGE_VERSION_TERM()</code>,
-         <code>PACKAGE_BUGREPORT_TERM()</code>,
-         and <code>SVN_REVISION_TERM()</code>.
-         These strategies can be used in any Stratego program in this package.
-         Checks if StrategoXT is installed at the specified prefix of StrategoXT.
        </para>
      </listitem>
    </varlistentry>
@@ -294,13 +253,13 @@ ogetarts/
     </varlistentry>
 
     <varlistentry>
-      <term>SCFLAGS</term>
+      <term>STRCFLAGS</term>
       <listitem>
         <para>
-          Contains compiler flags passed to the Stratego compiler. Typical
-          flags are <code>--main</code> and <code>--dr</code>. It is
-          recommended that include files are passed via the
-          <code>STRINCLUDES</code> variable.
+          Contains compiler flags passed to the Stratego compiler. A
+          typical flags is <code>--main</code>. It is recommended that
+          include files are passed via the <code>STRINCLUDES</code>
+          variable.
         </para>
       </listitem>
     </varlistentry>
@@ -349,26 +308,29 @@ ogetarts/
   </variablelist>
 
   <para>
-    As we can see from the list above, the <code>bin_PROGRAMS</code> is
-    a list of the stand-alone programs that should be compiled in this
-    directory. For each program, a corresponding <filename>.str</filename>
-    must exist, in this case, a <filename>ogetarts.str</filename> file. For
-    each program the compiler will be passed the <code>LDADD</code>,
-    <code>STRINCLUDES</code> and <code>SCFLAGS</code> variables. The
+    As we can see from the list above, the <code>bin_PROGRAMS</code>
+    is a list of the stand-alone programs that should be compiled in
+    this directory. For each program, a corresponding
+    <filename>.str</filename> must exist, in this case, a
+    <filename>ogetarts.str</filename> file. For each program the
+    compiler will be passed the <code>LDADD</code>,
+    <code>STRINCLUDES</code> and <code>STRCFLAGS</code> variables. The
     <code>LDADD</code> variable is used to add additional shared
-    libraries that should be linked as part of the compilation process.
-    <code>STRINCLUDES</code> and <code>SCFLAGS</code> were explained above.
+    libraries that should be linked as part of the compilation
+    process.  <code>STRINCLUDES</code> and <code>STRCFLAGS</code> were
+    explained above.
   </para>
   
   <para>
-    <command>autoxt</command> installs <filename>Makefile.xt</filename>, a
-    collection of Automake rules for compiling Stratego programs and applying
-    other XT tools, such as signature generation. Using this makefile, a makefile
-    reduces to a declaration of programs to be compiled. The makefile automatically
-    takes care of distributing the generated C code. The specification will only be
-    compiled when it is newer than the C code. This means that packages using
-    <command>autoxt</command> can be built using only the Stratego Run-Time
-    System (srts).
+    <command>autoxt</command> installs
+    <filename>Makefile.xt</filename>, a collection of Automake rules
+    for compiling Stratego programs and applying other XT tools, such
+    as signature generation. Using this makefile, a makefile reduces
+    to a declaration of programs to be compiled. The makefile
+    automatically takes care of distributing the generated C code. The
+    specification will only be compiled when it is newer than the C
+    code. This means that packages using <command>autoxt</command> can
+    be built using only the Stratego Run-Time System (srts).
   </para>
 
   </section>
@@ -555,14 +517,18 @@ src/
   </para>
   
 <screen>
-  pkglib_LTLIBRARIES   = libogetarts.la 
-  pkgdata_DATA         = libogetarts.rtree
+  include $(top_srcdir)/Makefile.xt
 
-  liblibmod_la_SOURCES = libogetarts.c
-  AM_CPPFLAGS          = -I$(SRTS)/include -I$(ATERM)/include
+  lib_LTLIBRARIES = libogetarts.la 
+  pkgdata_DATA    = libogetarts.rtree
+
+  libogetarts_la_SOURCES  = libogetarts.c
+  libogetarts_la_LDFLAGS  = -avoid-version -no-undefined
+  libogetarts_la_CPPFLAGS = $(STRATEGO_LIB_CFLAGS) $(STRATEGO_RUNTIME_CFLAGS) $(ATERM_CFLAGS)
+  libogetarts_la_LIBADD   = $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
 
   libmod.c : 
-      $(STRC)/bin/strc -c --library -i ./src/lib/ogetarts.str -o libogetarts.rtree
+      $(STRC)/bin/strc -c --library -i ./src/lib/ogetarts.str -o libogetarts.rtree $(STRINCLUDES)
 </screen>
      
   <para>

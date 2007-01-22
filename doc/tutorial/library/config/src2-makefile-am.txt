@@ -6,8 +6,7 @@ bin_PROGRAMS = ogetarts
 LDADD += $(SSL_LIBS)
 
 STRINCLUDES    = -I $(XTC)/share/xtc -I $(srcdir)/../sig
-
-SCFLAGS        = --main io-$* -O 2 --dr new
+STRCFLAGS      = --main io-$*
 
 EXTRA_DIST     = $(wildcard *.str) $(wildcard *.meta) $(wildcard *.syn) 
 CLEANFILES     = $(wildcard *.dep) $(wildcard *.tmp) $(wildcard *.c) $(wildcard *.o)

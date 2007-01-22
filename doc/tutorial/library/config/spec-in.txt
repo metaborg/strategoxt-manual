@@ -7,9 +7,9 @@ Group: Development/Tools/Ogetarts
 URL: http://www.ogetarts.org/Ogetarts
 Source: @PACKAGE_TARNAME@-@PACKAGE_VERSION@.tar.gz
 BuildRoot: %{_tmppath}/%{name}-@PACKAGE_VERSION@-buildroot
-Requires: aterm >= 2.2
-Requires: sdf2-bundle >= 2.2
-Requires: strategoxt >= 0.12
+Requires: aterm >= 2.5
+Requires: sdf2-bundle >= 2.4
+Requires: strategoxt >= 0.17
 Provides: %{name} = %{version}
 
 %description

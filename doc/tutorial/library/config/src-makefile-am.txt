@@ -4,3 +4,5 @@ SUBDIRS           = syn sig src
 BOOTCLEAN_SUBDIRS = $(SUBDIRS)
 DIST_SUBDIRS      = $(SUBDIRS)
 EXTRA_DIST        =
+
+ACLOCAL_AMFLAGS = -I .

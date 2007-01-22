@@ -5,23 +5,13 @@ AM_INIT_AUTOMAKE
 # set the prefix immediately to the default prefix
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 
-XT_SVN_REVISION
+XT_SETUP
 # comment to make this a stable release
 XT_PRE_RELEASE
 XT_USE_XT_PACKAGES
-XT_TERM_DEFINE 
+
 AC_PROG_CC
-
-### PACKAGES ##########################
-
-XT_SETUP
-
-XT_PKG_ATERM
-XT_PKG_SDF
-XT_PKG_STRATEGOXT
-
 AC_PROG_LIBTOOL
-
 
 ### OUTPUT #############################
 AC_CONFIG_FILES([
