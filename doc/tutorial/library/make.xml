@@ -476,10 +476,10 @@ src/
     lib/
         ogetarts/
                  core.str
-        extensions/
-                 ext1.str
-                 ext2.str
-                 ...
+                 extensions/
+                            ext1.str
+                            ext2.str
+                            ...
 </screen>
 
    <para>
@@ -521,14 +521,24 @@ src/
 
   lib_LTLIBRARIES = libogetarts.la 
   pkgdata_DATA    = libogetarts.rtree
+  EXTRA_DIST      = $(ogetartssrc)
+  CLEANFILES      = libogetarts.c libogetarts.rtree
 
   libogetarts_la_SOURCES  = libogetarts.c
   libogetarts_la_LDFLAGS  = -avoid-version -no-undefined
   libogetarts_la_CPPFLAGS = $(STRATEGO_LIB_CFLAGS) $(STRATEGO_RUNTIME_CFLAGS) $(ATERM_CFLAGS)
   libogetarts_la_LIBADD   = $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
 
-  libmod.c : 
+  ogetartssrc = \
+    ogetarts.str \
+    $(wildcard $(srcdir)/ogetarts/*.str) \
+    $(wildcard $(srcdir)/ogetarts/extensions/*.str)
+
+  STRINCLUDES = -I $(top_srcdir)/lib -I $(top_srcdir)/syn
+
+  libogetarts.c : $(ogetartssrc)
       $(STRC)/bin/strc -c --library -i ./src/lib/ogetarts.str -o libogetarts.rtree $(STRINCLUDES)
+      rm libogetarts.str
 </screen>
      
   <para>
