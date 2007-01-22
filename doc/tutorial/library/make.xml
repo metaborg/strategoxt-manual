@@ -400,47 +400,44 @@ strategies
     <title>Building Parse Tables, Tree Grammars and Stratego Signatures</title>
 
     <para>
-      In <xref linkend="tutorial-sdf"/> we introduced you to the Syntax
-      Definition Formalism for specifying grammars, and showed you how
-      to use <command>pack-sdf</command> and <command>sdf2table</command>
-      to construct parse tables out of these definitions. Not surprisingly,
-      the build system is equipped to do this for you. Consider the
-      <filename>Makefile.am</filename> provided below.
+      In <xref linkend="tutorial-sdf"/> we introduced you to the
+      Syntax Definition Formalism for specifying grammars, and showed
+      you how to use <command>pack-sdf</command> and
+      <command>sdf2table</command> to construct parse tables out of
+      these definitions. The grammar (Syntax Definition Formalism) can
+      also be used to derive Stratego signatures and regular tree
+      grammars. Not surprisingly, the build system is equipped to do
+      this for you. Consider the <filename>Makefile.am</filename>
+      provided below.
     </para>
     
 <screen><xi:include href="config/syn-makefile-am.txt" parse="text"/></screen>
 
     <para>
-      This file should be placed in <filename>syn/</filename>. 
-      The important declaration in this file is <code>sdfdata_DATA</code>. 
-      This declaration states which files are requested as part of the build
-      process. They will be installed as part of a <code>make install</code>.
-      For convenience, we have split them into <filename>.def</filename>
-      and <filename>.tbl</filename> files, in the <code>DEFS</code> and
-      <code>TBLS</code> declaration, respectively. The build system
-      knows how to generate <filename>.def</filename> files from
-      <filename>.sdf</filename> using <command>pack-sdf</command>,
-      and <filename>.tbl</filename> files from <filename>.def</filename>
-      files using <command>sdf2table</command>.
-    </para>
-
-    <para>
-      The grammar declaration (Syntax Definition Formalism) can also be
-      used to derive Stratego signatures and regular tree grammars. The
-      input for the tools are the <filename>.def</filename> files
-      constructed above, as the following <filename>Makefile.am</filename>
-      shows.
-    </para>
-
-    <para>
-      The <code>sdfdata_DATA</code> declaration is the important
-      part. It tells the build system to build a Stratego signature
-      (<filename>Ogetarts.str</filename>) and a regular tree grammar
-      (<filename>Ogetarts.rtg</filename>) from the
-      <filename>Ogetarts.def</filename>.
+      This file should be placed in <filename>syn/</filename>. The
+      following list explains the various parts occurring in the file.
     </para>
 
     <variablelist>
+      <varlistentry>
+	<term>sdfdata_DATA</term>
+	<listitem>
+	  <para>
+	    The important declarations in this file are
+	    <code>sdfdata_DATA</code> and <code>pkgdata_DATA</code>.
+	    They will be installed as part of a <code>make
+	    install</code>.  For convenience, we have split them into
+	    <filename>.def</filename> and <filename>.tbl</filename>
+	    files, in the <code>DEFS</code> and <code>TBLS</code>
+	    declaration, respectively. The build system knows how to
+	    generate <filename>.def</filename> files from
+	    <filename>.sdf</filename> using
+	    <command>pack-sdf</command>, and <filename>.tbl</filename>
+	    files from <filename>.def</filename> files using
+	    <command>sdf2table</command>.
+	  </para>
+	</listitem>
+      </varlistentry>
       <varlistentry>
 	<term>pkgdata_DATA</term>
 	<listitem>
@@ -452,15 +449,33 @@ strategies
 	    signatures and source code with your program is useful when
 	    you want other projects to extend and compile against yours.
 	  </para>
+
+	  <para>
+	    The <code>pkgdata_DATA</code> declaration is the important
+	    part. It tells the build system to build a Stratego
+	    signature (<filename>Ogetarts.str</filename>) and a
+	    regular tree grammar (<filename>Ogetarts.rtg</filename>)
+	    from the <filename>Ogetarts.def</filename>.
+	  </para>
 	</listitem>
       </varlistentry>
+
       <varlistentry>
-	<term>sdfdata_DATA</term>
+	<term>EXTRA_DIST</term>
 	<listitem>
 	  <para>
 	  </para>
 	</listitem>
       </varlistentry>
+
+      <varlistentry>
+	<term>CLEANFILES</term>
+	<listitem>
+	  <para>
+	  </para>
+	</listitem>
+      </varlistentry>
+
       <varlistentry>
 	<term>PGEN_FLAGS</term>
 	<listitem>
@@ -468,6 +483,7 @@ strategies
 	  </para>
 	</listitem>
       </varlistentry>
+
       <varlistentry>
 	<term>SDF2RTG_FLAGS</term>
 	<listitem>
@@ -608,58 +624,65 @@ libogetarts.c : $(ogetartssrc)
 
   </section>
 
-
-<section>
-  <title>RPM Support</title>
-
-  <para>
-    Let's finish up the root build system first, closing with the
-    <filename>ogetarts.spec.in</filename> file.
-  </para>
-  <screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
+  <section>
+    <title>Package Config Support</title>
+    <para>
+      How to add a pkg-config file to the package.
+    </para>
+  </section>
   
-  <para>
-    This file is not strictly necessary. It's a so-called
-    <filename>.spec</filename>-file, which is a package descriptor for
-    rpm-based distributions. When you provide it, the Stratego/XT build
-    system can automatically make a <filename>.rpm</filename> package
-    file for your project.
-  </para>
-</section>
-
-<section>
-  <title>Package Config Support</title>
-  <para>
-    How to add a pkg-config file.
-  </para>
-</section>
-
-
-<section>
-  <title>Summary</title>
+  <section>
+    <title>RPM Support</title>
+    
+    <para>
+      Let's finish up the root build system first, closing with the
+      <filename>ogetarts.spec.in</filename> file.
+    </para>
+    <screen><xi:include href="config/spec-in.txt" parse="text"/></screen>
+    
+    <para>
+      This file is not strictly necessary. It's a so-called
+      <filename>.spec</filename>-file, which is a package descriptor for
+      rpm-based distributions. When you provide it, the Stratego/XT build
+      system can automatically make a <filename>.rpm</filename> package
+      file for your project.
+    </para>
+  </section>
   
-  <para>
-    In this chapter we learned how to organize Stratego/XT projects, and 
-    how to set up the Stratego/XT build system. We saw how the build system,
-    which is based on <command>automake</command> and
-    <command>autoconf</command>, is used to generate many of the artifacts
-    from the syntax definition, such as parse tables and signatures, in
-    the way we discussed in <xref linkend="tutorial-xt"/> . We also learned
-    how to make stand-alone programs, libraries and XT components from
-    Stratego source code, and how modules and packages relate to files and
-    directories.
-  </para>
+  <section>
+    <title>Microsoft Windows Support</title>
+    <para>
+      How to make a package that builds in Microsoft Windows without
+      Cygwin.
+    </para>
+  </section>
   
-  <para>
-    More detail can be found by looking at the manual pages for the build
-    tools, such as <xref linkend="ref-autoxt"/>, 
-    <xref linkend="ref-strc"/>, <xref linkend="ref-sdf2table"/>,
-    <xref linkend="ref-sdf2rtg"/> and <xref linkend="ref-xtc"/>. The
-    detailed examples from the
-    <link linkend="examples">Stratego/XT Examples</link> tutorial contain
-    working build systems that can serve as a starting point.
-  </para>
-  
+  <section>
+    <title>Summary</title>
+    
+    <para>
+      In this chapter we learned how to organize Stratego/XT projects,
+      and how to set up the Stratego/XT build system. We saw how the
+      build system, which is based on <command>automake</command> and
+      <command>autoconf</command>, is used to generate many of the
+      artifacts from the syntax definition, such as parse tables and
+      signatures, in the way we discussed in <xref
+      linkend="tutorial-xt"/> . We also learned how to make
+      stand-alone programs, libraries and XT components from Stratego
+      source code, and how modules and packages relate to files and
+      directories.
+    </para>
+    
+    <para>
+      More detail can be found by looking at the manual pages for the
+      build tools, such as <xref linkend="ref-autoxt"/>, <xref
+      linkend="ref-strc"/>, <xref linkend="ref-sdf2table"/>, <xref
+      linkend="ref-sdf2rtg"/> and <xref linkend="ref-xtc"/>. The
+      detailed examples from the <link linkend="examples">Stratego/XT
+      Examples</link> tutorial contain working build systems that can
+      serve as a starting point.
+    </para>
+    
 </section>
 
 </chapter>
