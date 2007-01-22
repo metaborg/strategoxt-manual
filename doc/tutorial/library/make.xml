@@ -504,7 +504,7 @@ strategies
     </para>
            
 <screen>
-module ogetarts
+module ogetarts-lib
 imports
   ogetarts/core
   ogetarts/extensions/ext1
