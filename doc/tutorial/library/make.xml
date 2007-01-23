@@ -814,11 +814,13 @@ imports
 
 strategies
 
-  main =
+  io-ogetarts-eval =
     io-stream-wrap(
       ?(&lt;id>, fout)
       ; parse-ogetarts-stream
-      ; &lt;write-to-stream> (fout, &lt;id>)
+      ; ogetarts-eval
+      ; ?Int(&lt;id>)
+      ; &lt;fputs> (&lt;id>, fout); &lt;fputs> ("\n", fout)
     )
 </screen>
 
@@ -834,6 +836,13 @@ ogetarts_eval_LDADD = \
   $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
 </screen>
 
+<para>
+  Invoke the eval tool:
+</para>
+
+<screen>
+<prompt>$</prompt> echo "1+2" | ./tools/ogetarts-eval
+</screen>
     </section>
   </section>
 
