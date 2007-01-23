@@ -594,9 +594,9 @@ exports
        linkend="running-stratego-programs"/> for an introduction to
        modules.  There is a direct mapping between the directory name
        and the package name, and also between file and module
-       names. Consider the following main module of your library,
-       which imports all the Stratego modules that constitute the
-       library:
+       names. Consider the following main module
+       <filename>lib/ogetarts.str</filename> of your library, which
+       imports all the Stratego modules that constitute the library:
     </para>
 
 <screen>
@@ -604,12 +604,11 @@ module ogetarts
 imports
   ogetarts/main
   ogetarts/front/parse
-  ogetarts/back/codegen
 </screen>
 
     <para>
-      The declaration <code>ogetarts/main</code> states that we want
-      to import the module <code>main</code> from the package
+      The import declaration <code>ogetarts/main</code> states that we
+      want to import the module <code>main</code> from the package
       <code>ogetarts</code>. This tells the Stratego compiler to look
       for the file <filename>main.str</filename> inside the
       <filename>ogetarts/</filename> directory. The line
@@ -626,8 +625,6 @@ lib/
              main.str
              front/
                    parse.str
-             back/
-                   codegen.str
 </screen>
 
     <para>
@@ -725,8 +722,7 @@ libogetarts_la_LIBADD   = \
 ogetartssrc = \
   ogetarts.str \
   $(wildcard $(srcdir)/ogetarts/*.str) \
-  $(wildcard $(srcdir)/ogetarts/front/*.str) \
-  $(wildcard $(srcdir)/ogetarts/back/*.str)
+  $(wildcard $(srcdir)/ogetarts/front/*.str)
 
 STRINCLUDES = -I $(top_srcdir)/syn
 
