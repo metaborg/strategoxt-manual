@@ -106,7 +106,12 @@ ogetarts/
 <screen><xi:include href="config/configure-ac.txt" parse="text"/></screen>
   
   <para>
-    Most of this is standard boilerplate. The important line is
+    Most of this is standard boilerplate. If you do not want to
+    maintain files like <filename>ChangeLog</filename>,
+    <filename>AUTHORS</filename>, <filename>NEWS</filename> and
+    <filename>README</filename>, then you can add the option
+    <code>foreign</code> to the arguments of
+    <code>AM_INIT_AUTOMAKE</code>. The important line is
     <code>XT_USE_XT_PACKAGES</code> which is a macro invocation that
     will extend to shell script code that looks for the ATerm library,
     the SDF tools and Stratego/XT, respectively. These macros are
