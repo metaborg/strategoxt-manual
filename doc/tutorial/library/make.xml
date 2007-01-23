@@ -472,8 +472,8 @@ exports
     IntConst -> Expr {cons("Int")}
 
   context-free priorities
-      Expr "+" Expr -> Expr {left, cons("Plus")}
-    > Expr "*" Expr -> Expr {left, cons("Mul")}
+      Expr "*" Expr -> Expr {left, cons("Mul")}
+    > Expr "+" Expr -> Expr {left, cons("Plus")}
 
   lexical syntax
     [0-9]+ -> IntConst
