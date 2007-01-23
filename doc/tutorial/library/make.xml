@@ -486,7 +486,8 @@ exports
 	<listitem>
 	  <para>
 	    This variable defines a list of files that will be placed
-	    in <filename>$prefix/share/$packagename</filename>. This
+	    in
+	    <filename><replaceable>prefix</replaceable>/share/<replaceable>package-name</replaceable></filename>. This
 	    typically includes regular tree grammars, Stratego
 	    signatures and Stratego source code for libraries. In this
 	    makefile, we use <code>pkgdata_DATA</code> to tell the
@@ -551,6 +552,20 @@ exports
 	    regular tree grammar for an SDF syntax definition. Again,
 	    we define the main module of the syntax definition to be
 	    the basename of the file.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>SDFINCLUDES</term>
+	<listitem>
+	  <para>
+	    Similar to STRINCLUDES, you can define directories to
+	    search for SDF modules using the SDFINCLUDES variable. In
+	    addition to the option <code>-I
+	    <replaceable>dir</replaceable></code> you can also include
+	    modules from an SDF definition: <code>-Idef
+	    <replaceable>file</replaceable>.def</code>.
 	  </para>
 	</listitem>
       </varlistentry>

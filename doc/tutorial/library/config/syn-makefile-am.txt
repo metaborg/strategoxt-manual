@@ -10,5 +10,6 @@ pkgdata_DATA = $(RTG_SIG)
 EXTRA_DIST   = $(DEF_TBL) $(RTG_SIG) $(wildcard *.sdf)
 CLEANFILES   = $(DEF_TBL) $(RTG_SIG)
 
+SDFINCLUDES   =
 SDF2RTG_FLAGS = -m $*
 PGEN_FLAGS    = -m $*
