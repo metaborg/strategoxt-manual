@@ -106,18 +106,25 @@ ogetarts/
 <screen><xi:include href="config/configure-ac.txt" parse="text"/></screen>
   
   <para>
-    Most of this is standard boilerplate. If you do not want to
-    maintain files like <filename>ChangeLog</filename>,
-    <filename>AUTHORS</filename>, <filename>NEWS</filename> and
-    <filename>README</filename>, then you can add the option
-    <code>foreign</code> to the arguments of
-    <code>AM_INIT_AUTOMAKE</code>. The important line is
-    <code>XT_USE_XT_PACKAGES</code> which is a macro invocation that
-    will extend to shell script code that looks for the ATerm library,
-    the SDF tools and Stratego/XT, respectively. These macros are
-    provided by the <command>autoxt</command> tool, via a macro file
-    called <filename>autoxt.m4</filename>. It provides the following
-    macros.
+    Most of this is standard boilerplate. The <code>foreign</code>
+    option specified in the arguments of <code>AM_INIT_AUTOMAKE</code>
+    tells automake not the check that the package conforms to GNU
+    package standards, which requires files such as
+    <filename>ChangeLog</filename>, <filename>AUTHORS</filename>,
+    <filename>COPYING</filename>, <filename>NEWS</filename> and
+    <filename>README</filename>. For this small example, we do not
+    want create all these files. You can leave out the
+    <code>foreign</code> option if you want to make a complete GNU
+    package.
+  </para>
+
+  <para>
+    The important line is <code>XT_USE_XT_PACKAGES</code> which is a
+    macro invocation that will extend to shell script code that looks
+    for the ATerm library, the SDF tools and Stratego/XT,
+    respectively. These macros are provided by the
+    <command>autoxt</command> tool, via a macro file called
+    <filename>autoxt.m4</filename>. It provides the following macros.
   </para>
 
   <variablelist>
@@ -209,8 +216,20 @@ ogetarts/
     in rules which <command>make</command> to delve into these
     directories. We will explain below how the
     <filename>Makefile.am</filename> for source directories should
-    look like.
-  </para>  
+    look like. If you create empty <filename>Makefile.am</filename>
+    files in the sub-directories <filename>syn/</filename>,
+    <filename>lib/</filename>, and <filename>tools/</filename>, then
+    you shoud now be able to bootstrap and configure the package:
+  </para>
+
+<screen>
+<prompt>$</prompt> mkdir syn lib tools
+<prompt>$</prompt> touch syn/Makefile.am lib/Makefile.am tools/Makefile.am
+<prompt>$</prompt> chmod u+x bootstrap
+<prompt>$</prompt> ./bootstrap
+<prompt>$</prompt> ./configure
+<prompt>$</prompt> make
+</screen>
   
   <para>
     The content of the <filename>Makefile.am</filename> files depends
