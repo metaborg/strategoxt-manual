@@ -635,15 +635,15 @@ lib/
 
 <screen>
 module ogetarts/main
-imports libstratego-lib
+imports libstratego-lib Ogetarts
 strategies
 
-  ogetarts-eval = bottom(try(Eval))
+  ogetarts-eval = bottomup(try(Eval))
 
 rules
 
   Eval : Plus(Int(i), Int(j)) -> Int(&lt;addS> (i, j))
-  Eval : Mul(Int(i), Int(j))  -> Int(&lt;mulS> (i, j)
+  Eval : Mul(Int(i), Int(j))  -> Int(&lt;mulS> (i, j))
 </screen>
 
     <para>
