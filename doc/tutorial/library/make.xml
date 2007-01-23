@@ -733,14 +733,6 @@ libogetarts.c : $(ogetartssrc)
 
 <variablelist>
   <varlistentry>
-    <term><code>libogetarts.c : ...</code></term>
-    <listitem>
-      <para>
-	Warning: use tab.
-      </para>
-     </listitem>
-  </varlistentry>
-  <varlistentry>
     <term><code>lib_LTLIBRARIES</code></term>
     <listitem>
       <para>
@@ -776,6 +768,22 @@ libogetarts.c : $(ogetartssrc)
 	STRATEGO_SGLR_LIBS, since the library using libstratego-sglr.
       </para>
     </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><code>STRINCLUDES</code></term>
+    <listitem>
+      <para>
+	For finding the signature and parsetable
+      </para>
+     </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><code>libogetarts.c : ...</code></term>
+    <listitem>
+      <para>
+	Warning: use tab.
+      </para>
+     </listitem>
   </varlistentry>
 </variablelist>
 
@@ -813,6 +821,10 @@ strategies
       ; &lt;write-to-stream> (fout, &lt;id>)
     )
 </screen>
+
+<para>
+Add to <filename>tools/Makefile.am</filename>:
+</para>
 
 <screen>
 bin_PROGRAMS = ogetarts-eval
