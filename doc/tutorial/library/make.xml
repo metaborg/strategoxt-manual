@@ -709,7 +709,7 @@ include $(wildcard *.dep)
 
 lib_LTLIBRARIES = libogetarts.la 
 pkgdata_DATA    = libogetarts.rtree
-EXTRA_DIST      = $(ogetartssrc)
+EXTRA_DIST      = $(ogetartssrc) libogetarts.rtree
 CLEANFILES      = libogetarts.c libogetarts.rtree
 
 libogetarts_la_SOURCES  = libogetarts.c
@@ -726,7 +726,7 @@ ogetartssrc = \
 
 STRINCLUDES = -I $(top_srcdir)/syn
 
-libogetarts.c : $(ogetartssrc)
+libogetarts.c libogetarts.rtree : $(ogetartssrc)
     @$(STRC)/bin/strc -c --library -i ogetarts.str -o libogetarts.rtree $(STRINCLUDES)
     rm libogetarts.str
 </screen>
