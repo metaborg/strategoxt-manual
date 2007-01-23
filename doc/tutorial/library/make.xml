@@ -156,7 +156,7 @@ ogetarts/
      <term><code>XT_DISABLE_XTC_REGISTER</code></term>
      <listitem>
        <para>
-	 Disabled the creation of an XTC repository. By default all
+	 Disables the creation of an XTC repository. By default all
 	 programs and files are registered in an XTC repository.
        </para>
      </listitem>
@@ -406,14 +406,13 @@ strategies
 
     <para>
       In <xref linkend="tutorial-sdf"/> we introduced you to the
-      Syntax Definition Formalism for specifying grammars, and showed
-      you how to use <command>pack-sdf</command> and
+      Syntax Definition Formalism SDF for specifying grammars, and
+      showed you how to use <command>pack-sdf</command> and
       <command>sdf2table</command> to construct parse tables out of
-      these definitions. The grammar (Syntax Definition Formalism) can
-      also be used to derive Stratego signatures and regular tree
-      grammars. Not surprisingly, the build system is equipped to do
-      this for you. Consider the <filename>Makefile.am</filename>
-      provided below.
+      these definitions. The grammar can also be used to derive
+      Stratego signatures and regular tree grammars. Not surprisingly,
+      the build system is equipped to do this for you. Consider the
+      <filename>Makefile.am</filename> provided below.
     </para>
     
 <screen><xi:include href="config/syn-makefile-am.txt" parse="text"/></screen>
@@ -428,39 +427,56 @@ strategies
 	<term>sdfdata_DATA</term>
 	<listitem>
 	  <para>
-	    The important declarations in this file are
-	    <code>sdfdata_DATA</code> and <code>pkgdata_DATA</code>.
-	    They will be installed as part of a <code>make
-	    install</code>.  For convenience, we have split them into
-	    <filename>.def</filename> and <filename>.tbl</filename>
-	    files, in the <code>DEFS</code> and <code>TBLS</code>
-	    declaration, respectively. The build system knows how to
-	    generate <filename>.def</filename> files from
+	    The important declaration in this file is
+	    <code>sdfdata_DATA</code>. They files listed for this
+	    variable will be installed as part of a <code>make
+	    install</code> into the directory
+	    <filename>$prefix/share/sdf/$packagename</filename>. For
+	    convenience, we have defines the <filename>.def</filename>
+	    and <filename>.tbl</filename> files, in a separate
+	    variable <code>DEF_TBL</code>. The build system knows how
+	    to generate <filename>.def</filename> files from
 	    <filename>.sdf</filename> using
 	    <command>pack-sdf</command>, and <filename>.tbl</filename>
 	    files from <filename>.def</filename> files using
-	    <command>sdf2table</command>.
+	    <command>sdf2table</command>. Note that there must be an
+	    SDF module <filename>Ogetarts.sdf</filename>, which is the
+	    main module of the syntax definition. For example:
 	  </para>
+
+<screen>
+module Ogetarts
+hiddens
+  context-free start-symbols Expr
+exports
+  context-free syntax
+    IntConst -> Expr {cons("Int")}
+
+  context-free priorities
+      Expr "+" Expr -> Expr {left, cons("Plus")}
+    > Expr "*" Expr -> Expr {left, cons("Mul")}
+
+  lexical syntax
+    [0-9]+ -> IntConst
+    [\t\n\r\ ] -> LAYOUT
+</screen>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term>pkgdata_DATA</term>
 	<listitem>
 	  <para>
-	    A list of files that will be placed in
-	    <filename>$prefix/share/$packagename</filename>. This
-	    typically includes parse tables, regular tree grammars,
-	    signatures and source code for libraries. Including
-	    signatures and source code with your program is useful when
-	    you want other projects to extend and compile against yours.
-	  </para>
-
-	  <para>
-	    The <code>pkgdata_DATA</code> declaration is the important
-	    part. It tells the build system to build a Stratego
-	    signature (<filename>Ogetarts.str</filename>) and a
-	    regular tree grammar (<filename>Ogetarts.rtg</filename>)
-	    from the <filename>Ogetarts.def</filename>.
+	    This variable defines a list of files that will be placed
+	    in <filename>$prefix/share/$packagename</filename>. This
+	    typically includes regular tree grammars, Stratego
+	    signatures and Stratego source code for libraries. In this
+	    makefile, we use <code>pkgdata_DATA</code> to tell the
+	    build system to build a Stratego signature
+	    (<filename>Ogetarts.str</filename>) and a regular tree
+	    grammar (<filename>Ogetarts.rtg</filename>) from the
+	    <filename>Ogetarts.def</filename>. Including signatures
+	    and source code with your program is useful when you want
+	    other projects to extend and compile against yours.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -469,6 +485,14 @@ strategies
 	<term>EXTRA_DIST</term>
 	<listitem>
 	  <para>
+	    Similar to the makfile for building Stratego programs, we
+	    use <code>EXTRA_DIST</code> to define the files to
+	    distribute. In this case, we also distribute the derived
+	    <filename>.def</filename>, <filename>.tbl</filename>,
+	    <filename>.rtg</filename>, and <filename>.str</filename>,
+	    which is used to avoid a dependency on the full
+	    Stratego/XT. If this is not required, then we can leave
+	    these files out of the distribution.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -477,6 +501,9 @@ strategies
 	<term>CLEANFILES</term>
 	<listitem>
 	  <para>
+	    In <code>CLEANFILES</code> we specify that we want make to
+	    remove the generated files when running a <code>make
+	    clean</code>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -485,6 +512,13 @@ strategies
 	<term>PGEN_FLAGS</term>
 	<listitem>
 	  <para>
+	    This variable is used to pass flags to the parsetable
+	    generator, sdf2table. The definition in this makefile
+	    defines the main module to be <code>$*</code>, which is
+	    the basename of the <filename>.def</filename> file that is
+	    used as the input to the parser generator. This is typical
+	    for most makefiles, since the default main module is
+	    <code>Main</code>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -493,6 +527,11 @@ strategies
 	<term>SDF2RTG_FLAGS</term>
 	<listitem>
 	  <para>
+	    Similar to <code>PGEN_FLAGS</code>, this variable is used
+	    to pass flags to the tool sdf2rtg, which generates a
+	    regular tree grammar for an SDF syntax definition. Again,
+	    we define the main module of the syntax definition to be
+	    the basename of the file.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -503,96 +542,139 @@ strategies
      <title>Building Your Own Stratego Library</title>
      
      <para>
-       The Stratego/XT build system allows you to freely organize the source
-       files of your project, but we recommend that you follow some conventions
-       in the way the directories are organized. The base directory of your
-       library should be in <filename>src/lib/</filename>. Each
-       <filename>.str</filename> file placed inside this directory becomes a
-       module. For sufficiently large projects, it is recommended that you
-       further organize your modules into subdirectories inside
-       <filename>lib/</filename>. Each such subdirectory becomes a package. 
+       Stratego allows you to freely organize the Stratego modules of
+       your project, but we recommend to have a separate library in
+       the directory <filename>lib/</filename>. Each
+       <filename>.str</filename> file placed inside this directory
+       becomes a module for your library. For sufficiently large
+       projects, it is recommended that you further organize your
+       modules into subdirectories inside
+       <filename>lib/</filename>. Each such subdirectory becomes a
+       package.
     </para>
     
     <para>
        Importing modules and packages in Stratego is done using the
        <code>imports</code> statement. Using <code>imports</code>, you
-       specify which module from which package to import. See <xref 
-       linkend="running-stratego-programs"/> for an introduction to modules.
-       You can import all modules from one package in one single declaration.
-       There is a direct mapping between the directory name and the package
-       name, and also between file and module names. Consider the following
-       code snippet:
+       specify which module from which package to import. See <xref
+       linkend="running-stratego-programs"/> for an introduction to
+       modules.  There is a direct mapping between the directory name
+       and the package name, and also between file and module
+       names. Consider the following main module of your library,
+       which imports all the Stratego modules that constitute the
+       library:
     </para>
-           
+
 <screen>
 module ogetarts
 imports
-  ogetarts/core
-  ogetarts/extensions/ext1
-  ogetarts/extensions/ext2
+  ogetarts/main
+  ogetarts/front/parse
+  ogetarts/back/codegen
 </screen>
 
     <para>
-      The declaration <code>ogetarts/core</code> states
-      that we want to import the module <code>core</code>
-      from the package <code>ogetarts</code>. This
-      tells the Stratego compiler to look for the file
-      <filename>core.str</filename> inside the 
+      The declaration <code>ogetarts/main</code> states that we want
+      to import the module <code>main</code> from the package
+      <code>ogetarts</code>. This tells the Stratego compiler to look
+      for the file <filename>main.str</filename> inside the
       <filename>ogetarts/</filename> directory. The line
-      <code>ogetarts/extensions/-</code> will import all
-      modules in the <code>ogetarts/extensions</code>
-      package, that is, all <filename>.str</filename> files
-      inside the <filename>ogetarts/extensions/</filename>
-      directory. On disk, we will have the following layout:
+      <code>ogetarts/front/parse</code> will import the file
+      <filename>parse.str</filename> in the
+      <code>ogetarts/extensions</code> package. On disk, we will have
+      the following layout:
     </para>
 
 <screen>
-src/
-    lib/
-        ogetarts/
-                 core.str
-                 extensions/
-                            ext1.str
-                            ext2.str
-                            ...
+lib/
+    ogetarts.str
+    ogetarts/
+             main.str
+             front/
+                   parse.str
+             back/
+                   codegen.str
 </screen>
 
-   <para>
-     So how does the compiler know where to search for the
-     packages (directories)? This is specified by the
-     <option>-I</option> option to <command>strc</command>. In
-     our case, we specify <filename>src/lib/</filename> as the
-     basepath for our library. All module and package references
-     are looked up from there. For programs using several libraries
-     installed at different locations, multiple base directories
-     should be specified, each with the <option>-I</option> option.
-   </para>
-   
-  <formalpara>
-    <title>Supporing Separate Compilation</title>
+    <para>
+      In this example, we will assume that the module
+      <filename>ogetarts/main</filename> provides a simple evaluator
+      for arithmetic expressions:
+    </para>
+
+<screen>
+module ogetarts/main
+imports libstratego-lib
+strategies
+
+  ogetarts-eval = bottom(try(Eval))
+
+rules
+
+  Eval : Plus(Int(i), Int(j)) -> Int(&lt;addS> (i, j))
+  Eval : Mul(Int(i), Int(j))  -> Int(&lt;mulS> (i, j)
+</screen>
 
     <para>
-       The build system can be told to create a separate library from
-       your source (<filename>.str</filename>) files. This is done using
-       <command>libtool</command>, which takes care of creating both static
-       and shared libraries. On most platforms, the linker prefers shared
-       libraries over static libraries, given the choice. This means that
-       linking to your Stratego library will be done dynamically, unless
-       you or your library user take steps to enable static linking.
+      The module <filename>ogetarts/front/parse</filename> provides a
+      strategy for parsing ogetarts expressions:
     </para>
-  </formalpara>
 
-  <para>
-    In cases where you want to compile all of the library code into
-    one dynamic (or static) library, you must provide a toplevel
-    module that imports all of the library. Let this be the file
-    <filename>lib/ogetarts.str</filename>. The code below is what
-    goes into your <filename>Makefile.am</filename> for you
-    library:
-  </para>
-  
+<screen>
+module ogetarts/front/parse
+imports libstratego-sglr libstratego-lib
+strategies
+
+  parse-ogetarts-stream =
+    where(tbl := &lt;import-term(Ogetarts.tbl); open-parse-table>)
+    ; finally(
+        parse-stream(strsglr-report-parse-error | tbl)
+      , &lt;close-parse-table> tbl
+      )
+</screen>
+
+    <para>
+      So how does the compiler know where to search for the packages
+      (directories)? This is specified by the <option>-I</option>
+      option to <command>strc</command>. In our case, we did already
+      specify <filename>lib/</filename> as the basepath for our
+      library in the section on compiling Stratego programs. Thus, all
+      module and package references are looked up from there. For
+      programs using several libraries installed at different
+      locations, multiple base directories should be specified, each
+      with the <option>-I</option> option.
+    </para>
+   
+  <section>
+    <title>Compiling the Library</title>
+
+    <para>
+      In principle, it is possible to import the Stratego
+      implementation of your library in your Stratego programs. In
+      that case, there is no need to compile the library: it will be
+      compiled by the Stratego compiler every time the library is
+      included in a Stratego program. However, this has the
+      disadvantage that the Stratego code has to be compiled again and
+      again, which is not very attractive if you have many programs in
+      your package. To solve this, the build system can be told to
+      compile the library separately from your Stratego source
+      (<filename>.str</filename>) files. The creation of the native
+      library is done using <command>libtool</command>, which takes
+      care of creating both static and shared libraries. On most
+      platforms, the linker prefers shared libraries over static
+      libraries, given the choice. This means that linking to your
+      Stratego library will be done dynamically, unless you or your
+      library user take steps to enable static linking.
+    </para>
+
+    <para>
+      The code below is what goes into your
+      <filename>Makefile.am</filename> for you library:
+    </para>
+
 <screen>
 include $(top_srcdir)/Makefile.xt
+include $(wildcard *.dep)
 
 lib_LTLIBRARIES = libogetarts.la 
 pkgdata_DATA    = libogetarts.rtree
@@ -601,21 +683,72 @@ CLEANFILES      = libogetarts.c libogetarts.rtree
 
 libogetarts_la_SOURCES  = libogetarts.c
 libogetarts_la_LDFLAGS  = -avoid-version -no-undefined
-libogetarts_la_CPPFLAGS = $(STRATEGO_LIB_CFLAGS) $(STRATEGO_RUNTIME_CFLAGS) $(ATERM_CFLAGS)
-libogetarts_la_LIBADD   = $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
+libogetarts_la_CPPFLAGS = \
+  $(STRATEGO_LIB_CFLAGS) $(STRATEGO_RUNTIME_CFLAGS) $(ATERM_CFLAGS)
+libogetarts_la_LIBADD   = \
+  $(STRATEGO_SGLR_LIBS) $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
 
 ogetartssrc = \
   ogetarts.str \
   $(wildcard $(srcdir)/ogetarts/*.str) \
-  $(wildcard $(srcdir)/ogetarts/extensions/*.str)
+  $(wildcard $(srcdir)/ogetarts/front/*.str) \
+  $(wildcard $(srcdir)/ogetarts/back/*.str)
 
-STRINCLUDES = -I $(top_srcdir)/lib -I $(top_srcdir)/syn
+STRINCLUDES = -I $(top_srcdir)/syn
 
 libogetarts.c : $(ogetartssrc)
-    $(STRC)/bin/strc -c --library -i ogetarts.str -o libogetarts.rtree $(STRINCLUDES)
+    @$(STRC)/bin/strc -c --library -i ogetarts.str -o libogetarts.rtree $(STRINCLUDES)
     rm libogetarts.str
 </screen>
-     
+
+<variablelist>
+  <varlistentry>
+    <term><code>libogetarts.c : ...</code></term>
+    <listitem>
+      <para>
+	Warning: use tab.
+      </para>
+     </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><code>lib_LTLIBRARIES</code></term>
+    <listitem>
+      <para>
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><code>pkgdata_DATA</code></term>
+    <listitem>
+      <para>
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><code>libogetarts_LDFLAGS</code></term>
+    <listitem>
+      <para>
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><code>libogetarts_CPPLAGS</code></term>
+    <listitem>
+      <para>
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><code>libogetarts_LIBADD</code></term>
+    <listitem>
+      <para>
+	Necessary for some platforms. Note that we add
+	STRATEGO_SGLR_LIBS, since the library using libstratego-sglr.
+      </para>
+    </listitem>
+  </varlistentry>
+</variablelist>
+
   <para>
     If you prefer static over dynamic libraries, you can enforce static
     linking by passing the <code>-static</code> option to the
@@ -626,7 +759,40 @@ libogetarts.c : $(ogetartssrc)
 <screen>
 <prompt>$</prompt> ./configure ... LDFLAGS=-static
 </screen>
+  </section>
 
+    <section>
+      <title>Using Your Library in Stratego Programs</title>
+      
+      <para>
+	Add a program to the tools directory
+      </para>
+
+<screen>
+module ogetarts-eval
+imports
+  libstratego-lib
+  libogetarts
+
+strategies
+
+  main =
+    io-stream-wrap(
+      ?(&lt;id>, fout)
+      ; parse-ogetarts-stream
+      ; &lt;write-to-stream> (fout, &lt;id>)
+    )
+</screen>
+
+<screen>
+bin_PROGRAMS = ogetarts-eval
+
+ogetarts_eval_LDADD = \
+  $(top_builddir)/lib/libogetarts.la \
+  $(STRATEGO_LIB_LIBS) $(STRATEGO_RUNTIME_LIBS) $(ATERM_LIBS)
+</screen>
+
+    </section>
   </section>
 
   <section>
