@@ -41,8 +41,12 @@
     </para>
     
     <para>
-      See documentation for <command>sglr</command> and <command>implode-asfix</command>
-      for details on each of the components.
+      See documentation for <command>sglr</command> and
+      <command>implode-asfix</command> for details on each of the
+      components. Note that <command>sglri</command> changes the
+      default behaviour of <command>sglri</command> by disabling the
+      heuristic filters <code>-fi</code> and <code>-fe</code> and uses
+      the AsFix2 parse tree format.
     </para>
   </refsection>
 
@@ -63,11 +67,12 @@
       </varlistentry>
       
       <varlistentry>
-        <term>--no-heuristic-filters</term>
+        <term>--heuristic-filters <replaceable>on|off</replaceable></term>
         <listitem>
           <para>
-            Do not use heuristic disambiguation filters. Enabling this option is highly
-            encouraged.
+            Use heuristic disambiguation filters or not. The heuristic
+            disambiguation filters (the sglr options <code>-fi</code>
+            and <code>-fi</code>) are disabled by default.
           </para>
         </listitem>
       </varlistentry>

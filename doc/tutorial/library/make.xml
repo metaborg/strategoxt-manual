@@ -688,14 +688,14 @@ strategies
       disadvantage that the Stratego code has to be compiled again and
       again, which is not very attractive if you have many programs in
       your package. To solve this, the build system can be told to
-      compile the library separately from your Stratego source
-      (<filename>.str</filename>) files. The creation of the native
-      library is done using <command>libtool</command>, which takes
-      care of creating both static and shared libraries. On most
-      platforms, the linker prefers shared libraries over static
-      libraries, given the choice. This means that linking to your
-      Stratego library will be done dynamically, unless you or your
-      library user take steps to enable static linking.
+      compile the library separately to a native library. The creation
+      of the native library is done using <command>libtool</command>,
+      which takes care of creating both static and shared
+      libraries. On most platforms, the linker prefers shared
+      libraries over static libraries, given the choice. This means
+      that linking to your Stratego library will be done dynamically,
+      unless you or your library user take steps to enable static
+      linking.
     </para>
 
     <para>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <section
    xmlns="http://docbook.org/ns/docbook"
    xmlns:xi="http://www.w3.org/2003/XInclude">
@@ -226,22 +227,26 @@ Var("a")</screen>
       </para>
     </formalpara>
 
-    <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | pp-aterm
+    <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 -fi -fe | pp-aterm
 parsetree( ... )
 </screen>
     
     <para>
-      Note that we passed the option <code>-2</code> to sglr. This
-      option specifies the variant of the AsFix parse tree format that
-      should be used: AsFix2. The Stratego/XT tools use this variant
-      at the moment. All variants of the AsFix format are complete and
+      Note that we passed the options <code>-2 -fi -fe</code> to
+      <code>sglr</code>. The <code>-2</code> option specifies the
+      variant of the AsFix parse tree format that should be used:
+      AsFix2. The Stratego/XT tools use this variant at the
+      moment. All variants of the AsFix format are complete and
       faithful representation of the derivation constructed by the
       parser. It includes all details of the input file, including
       whitespace, comments, and is self documenting as it uses the
       complete productions of the syntax definition to encode node
       labels. The AsFix2 variant preserves all the structure of the
       derivation. In the other variant, the structure of the lexical
-      parts of a parse tree are not preserved.
+      parts of a parse tree are not preserved. The <code>-fi
+      -fe</code> options are used to heuristic disambiguation filters,
+      which are by default disabled in <code>sglri</code>, but not in
+      <code>sglr</code>.
     </para>
 
     <para>
@@ -252,7 +257,7 @@ parsetree( ... )
       invoking <code>sglri</code>.
     </para>
 
-<screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | implode-asfix
+<screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 -fi -fe | implode-asfix
 Times(Plus(Var("a"),Var("n")),Int("1"))</screen>
 
       <para>
@@ -264,7 +269,7 @@ Times(Plus(Var("a"),Var("n")),Int("1"))</screen>
         was!
       </para>
 
-      <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 | asfix-yield
+      <screen><prompt>$</prompt> echo "(a + n) * 1" | sglr -p Expression.tbl -2 -fi -fe | asfix-yield
 (a + n) * 1</screen>
 
   </section>
