@@ -11,7 +11,8 @@ XSLTPROC_FLAGS =					 \
 	--param toc.section.depth 2			 \
 	--param xref.with.number.and.title 0		 \
 	--param section.label.includes.component.label 2 \
-	--param section.autolabel 1
+	--param section.autolabel 1 \
+        --param keep.relative.image.uris 0
 
 CHUNK = true
 BOOK = $(top_srcdir)/doc/book
