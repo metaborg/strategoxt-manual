@@ -87,7 +87,11 @@
       linkend="Fig-Expressions-NoCons.sdf"/>:
 
       <informalfigure pgwide="1">
-	<pngobject fileref="Plus.png" align="center"/>
+	<mediaobject>
+	  <imageobject role="html">
+	    <imagedata format="PNG" fileref="Plus.png" align="center"/>
+	  </imageobject>
+	</mediaobject>
       </informalfigure>
     </para>
     
