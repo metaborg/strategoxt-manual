@@ -507,7 +507,7 @@ strategies
 \endinput
 \begin{code}
 strategies
-  Tiger-Rename = iowrap(exprename)
+  Tiger-Rename = io-wrap(exprename)
 
   NewTid : 
     x -> y 
@@ -690,7 +690,7 @@ strategies
 \begin{code}
 strategies
 
-  Tiger-Inline = iowrap(inline(try(InlineFun),id))
+  Tiger-Inline = io-wrap(inline(try(InlineFun),id))
 
   inlineable = 
     not(is-recursive)
@@ -876,7 +876,7 @@ strategies
 \endinput
 \begin{code}
   Tiger-ElimDead = 
-    iowrap(eliminate-dead-functions)
+    io-wrap(eliminate-dead-functions)
 \end{code}
 
 	\end{boxedminipage}
