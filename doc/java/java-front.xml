@@ -102,7 +102,7 @@ public class Foo
 
     <programlisting>
 module add-block
-imports options
+imports libstratego-lib
 strategies
   main =
     io-wrap(id)
@@ -110,10 +110,11 @@ strategies
 
 	  <para>
 	    Save this module in a file add-block.str and compile it
-	    with the Stratego compiler:
+	    with the Stratego compiler, linking with the standard
+	    library:
 	  </para>
 	  <screen>
-  <prompt>$</prompt> strc -i add-block.str</screen>
+  <prompt>$</prompt> strc -i add-block.str -la stratego-lib</screen>
 	  <para>
 	    The result is an executable file add-block. We can use
 	    this executable to setup our first pipeline:
@@ -207,8 +208,9 @@ class Foo
 	    this with a simple topdown traversal, where we try to
 	    apply this rule at every node in the abstract syntax
 	    tree. The topdown strategy is readily available in the
-	    Stratego Library module simple-traversal. We also need to
-	    import the module that defines the Stratego language. This
+	    Stratego Library that we already import as
+	    <filename>libstratego-lib</filename>. We also need to
+	    import the module that defines the Java language. This
 	    module, called Java-15, is available in your installation
 	    of JavaFront. You should instruct the compiler to look for
 	    modules in this directory. The complete implementation is:
@@ -216,11 +218,7 @@ class Foo
 
     <programlisting>
 module add-block
-imports
-  options
-  simple-traversal
-  Java-15
-
+imports libstratego-lib Java-15
 strategies
 
   main =
@@ -242,7 +240,7 @@ rules
 	    installation.
 	  </para>
 	  <screen>
-<prompt>$</prompt> strc -i add-block.str -I prefix/share/java-front/</screen>
+<prompt>$</prompt> strc -i add-block.str -la stratego-lib -I <replaceable>prefix</replaceable>/share/java-front/</screen>
 
 	  <para>
 	    Now apply the program to the test program we have used
@@ -380,7 +378,7 @@ AddBlock:
     <programlisting>
 module gen-hello-world
 imports
-  options
+  libstratego-lib
   Java-15
 
 strategies
@@ -425,13 +423,13 @@ Meta([
 	    Now you're ready to compile the hello world generator. The
 	    compiler needs to know where to look for the syntax
 	    definition of Java in Stratego. It is located in
-	    <filename><replaceable>prefix</replaceable>/share/sdf/java-front</filename>,
-	    so we include this directory in the search path of strc
-	    with the <parameter>-I</parameter> argument.
+	    <filename><replaceable>prefix</replaceable>/share/java-front</filename>,
+	    which is already in the search path of our usual strc
+	    invocation:
 	  </para>
 
 	  <screen>
-<prompt>$</prompt> strc -i gen-hello-world.str -I <replaceable>prefix</replaceable>/share/sdf/java-front -I <replaceable>prefix</replaceable>/share/java-front</screen>
+<prompt>$</prompt> strc -i gen-hello-world.str -la stratego-lib -I <replaceable>prefix</replaceable>/share/java-front</screen>
 
 	  <para>
 	    If you invoke the <filename>./gen-hello-world</filename>
@@ -477,7 +475,7 @@ Meta([
 	  </para>
 	  
 	  <screen>
-<prompt>$</prompt> pp-stratego -i gen-hello-world.str -I prefix/share/sdf/java-front -I prefix/share/java-front</screen>
+<prompt>$</prompt> pp-stratego -i gen-hello-world.str -I <replaceable>prefix</replaceable>/share/java-front</screen>
 
 	  <para>
 	    You will see a rather large abstract syntax tree, which
@@ -516,7 +514,7 @@ Meta([
     <programlisting>
 module gen-print
 imports
-  options
+  libstratego-lib
   Java-15
 
 strategies
@@ -558,7 +556,7 @@ rules
 	  </para>
 
 	  <screen>
-<prompt>$</prompt> strc -i gen-print.str -I prefix/share/sdf/java-front -I prefix/share/java-front</screen>
+<prompt>$</prompt> strc -i gen-print.str -la stratego-lib -I <replaceable>prefix</replaceable>/share/java-front</screen>
 
 	  <para>
 	    How should our new generator be invoked? The input of the
@@ -642,7 +640,7 @@ ClassDec(
     <programlisting>
 module gen-print
 imports
-  options
+  libstratego-lib
   Java-15
 
 strategies
@@ -674,10 +672,11 @@ rules
 	    The invocation of the generator is still the same, since
 	    we have not implemented support for a command-line
 	    argument. Command-line arguments are passed as the current
-	    term to the main strategy of Stratego program. The options
-	    module of the Stratego library provides some abstractions
-	    for processing the arguments. We have been using this
-	    module all the time: <function>io-wrap</function> and
+	    term to the main strategy of Stratego program. The
+	    <filename>util/config/options</filename> module of the
+	    Stratego library provides some abstractions for processing
+	    the arguments. We have been using this module all the
+	    time: <function>io-wrap</function> and
 	    <function>output-wrap</function> are defined in options
 	    and implement support for the <parameter>-i</parameter>
 	    and <parameter>-o</parameter> options.
@@ -810,7 +809,7 @@ rules
     <programlisting>
 module java-simple-opt
 imports
-  options
+  libstratego-lib
   Java-15
 
 strategies
