@@ -11,10 +11,7 @@
   <xsl:output method="xml"/>
   
   <xsl:template match="db:includefile">
-    <figure>
-      <xsl:attribute name="id" namespace="http://www.w3.org/XML/1998/namespace">
-	<xsl:value-of select="@id"/>
-      </xsl:attribute>
+    <figure xml:id="{@id}">
       <title>file: <link xl:href="examples-full/{@file}"><xsl:value-of select="@file" /></link></title>
       <screen><xi:include parse="text" href="{@root}/{@file}"/></screen>
     </figure>
