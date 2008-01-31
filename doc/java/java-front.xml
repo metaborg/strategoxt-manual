@@ -274,7 +274,7 @@ class Foo
 class Foo
 {
   static
-  {
+  
     if(x)
     {
       foo();
@@ -308,9 +308,56 @@ AddBlock:
 	    If you compile and run your new program, then you'll see
 	    that the results is exactly what we want to have.
 	  </para>
-
-
 	</section>
+
+	<section>
+	  <title>Source to Source Program</title>
+	  
+	  <para>
+	    The current program requires the user to invoke
+	    <command>parse-java</command> and
+	    <command>pp-java</command> before and after the real
+	    transformation. With very minor effort, it is possible to
+	    include the parsing and pretty-printing of Java in the
+	    program itself. The JavaFront library provides a strategy
+	    <function>io-java2java-wrap</function>, which is a variant
+	    of the strategy <function>io-wrap</function>, which we
+	    have seen before. The difference is that
+	    <function>io-java2java-wrap(s)</function> parses the input
+	    file using the Java parser before invoking your strategy
+	    <function>s</function> and afterwards pretty-prints the
+	    result.
+	  </para>
+
+	  <programlisting>
+module add-block
+imports libstratego-lib libjava-front
+strategies
+
+  main =
+    io-java2java-wrap(add-block)
+
+  ...
+	  </programlisting>
+
+	  <para>
+	    Because this strategy is part of the JavaFront library,
+	    you can still compile the Stratego program with the same
+	    command:
+	  </para>
+	
+	  <screen>
+<prompt>$</prompt> strc -i add-block.str $(strcflags stratego-lib java-front)</screen>
+
+	  <para>
+	    Your source to source transformation tool can now be invoked
+	    in the following way:
+	  </para>
+
+	  <screen>
+<prompt>$</prompt> ./add-block -i Foo.java</screen>
+	</section>
+
 	<section>
 	  <title>Conclusion</title>
 
