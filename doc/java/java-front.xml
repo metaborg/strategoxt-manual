@@ -114,7 +114,7 @@ strategies
 	    library:
 	  </para>
 	  <screen>
-  <prompt>$</prompt> strc -i add-block.str -la stratego-lib</screen>
+  <prompt>$</prompt> strc -i add-block.str $(strcflags stratego-lib)</screen>
 	  <para>
 	    The result is an executable file add-block. We can use
 	    this executable to setup our first pipeline:
@@ -170,7 +170,7 @@ class Foo
 	    tool:
 	  </para>
 	  <screen>
-<prompt>$</prompt> parse-java -i Test.java | pp-aterm</screen>
+<prompt>$</prompt> parse-java -i Foo.java | pp-aterm</screen>
 
 	  <para>
 	    This reveals that the body of the static initializer is
@@ -210,15 +210,17 @@ class Foo
 	    tree. The topdown strategy is readily available in the
 	    Stratego Library that we already import as
 	    <filename>libstratego-lib</filename>. We also need to
-	    import the module that defines the Java language. This
-	    module, called Java-15, is available in your installation
-	    of JavaFront. You should instruct the compiler to look for
-	    modules in this directory. The complete implementation is:
+	    import the JavaFront library, which defines the Java
+	    language. This module, called
+	    <filename>libjava-front</filename>, is available in your
+	    installation of JavaFront. Therefore you should instruct
+	    the compiler to use JavaFront. The complete implementation
+	    is:
 	  </para>
 
     <programlisting>
 module add-block
-imports libstratego-lib Java-15
+imports libstratego-lib libjava-front
 strategies
 
   main =
@@ -235,12 +237,11 @@ rules
 
 
 	  <para>
-	    Compile the module with the following command, where you
-	    should replace prefix with the location of you JavaFront
-	    installation.
+	    Compile the module with the following command.
 	  </para>
+
 	  <screen>
-<prompt>$</prompt> strc -i add-block.str -la stratego-lib -I <replaceable>prefix</replaceable>/share/java-front/</screen>
+<prompt>$</prompt> strc -i add-block.str $(strcflags stratego-lib java-front)</screen>
 
 	  <para>
 	    Now apply the program to the test program we have used
@@ -261,6 +262,9 @@ class Foo
     }
   }
 }    </programlisting>
+
+	  <screen>
+<prompt>$</prompt> parse-java -i Foo.java | ./add-block | pp-java</screen>
 
 	  <para>
 	    The result is:
@@ -379,7 +383,7 @@ AddBlock:
 module gen-hello-world
 imports
   libstratego-lib
-  Java-15
+  libjava-front
 
 strategies
 
@@ -422,14 +426,13 @@ Meta([
 	  <para>
 	    Now you're ready to compile the hello world generator. The
 	    compiler needs to know where to look for the syntax
-	    definition of Java in Stratego. It is located in
-	    <filename><replaceable>prefix</replaceable>/share/java-front</filename>,
-	    which is already in the search path of our usual strc
-	    invocation:
+	    definition of Java in Stratego. The commmand
+	    <command>strcflags java-front</command> will take care of
+	    that.
 	  </para>
 
 	  <screen>
-<prompt>$</prompt> strc -i gen-hello-world.str -la stratego-lib -I <replaceable>prefix</replaceable>/share/java-front</screen>
+<prompt>$</prompt> strc -i gen-hello-world.str $(strcflags stratego-lib java-front)</screen>
 
 	  <para>
 	    If you invoke the <filename>./gen-hello-world</filename>
@@ -475,7 +478,7 @@ Meta([
 	  </para>
 	  
 	  <screen>
-<prompt>$</prompt> pp-stratego -i gen-hello-world.str -I <replaceable>prefix</replaceable>/share/java-front</screen>
+<prompt>$</prompt> pp-stratego -i gen-hello-world.str $(strcflags java-front)</screen>
 
 	  <para>
 	    You will see a rather large abstract syntax tree, which
@@ -515,7 +518,7 @@ Meta([
 module gen-print
 imports
   libstratego-lib
-  Java-15
+  libjava-front
 
 strategies
 
@@ -556,7 +559,7 @@ rules
 	  </para>
 
 	  <screen>
-<prompt>$</prompt> strc -i gen-print.str -la stratego-lib -I <replaceable>prefix</replaceable>/share/java-front</screen>
+<prompt>$</prompt> strc -i gen-print.str $(strcflags stratego-lib java-front)</screen>
 
 	  <para>
 	    How should our new generator be invoked? The input of the
@@ -641,7 +644,7 @@ ClassDec(
 module gen-print
 imports
   libstratego-lib
-  Java-15
+  libjava-front
 
 strategies
 
@@ -810,7 +813,7 @@ rules
 module java-simple-opt
 imports
   libstratego-lib
-  Java-15
+  libjava-front
 
 strategies
 
