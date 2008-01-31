@@ -321,8 +321,8 @@ AddBlock:
 	    include the parsing and pretty-printing of Java in the
 	    program itself. The JavaFront library provides a strategy
 	    <function>io-java2java-wrap</function>, which is a variant
-	    of the strategy <function>io-wrap</function>, which we
-	    have seen before. The difference is that
+	    of the strategy <function>io-wrap</function>. The
+	    difference is that
 	    <function>io-java2java-wrap(s)</function> parses the input
 	    file using the Java parser before invoking your strategy
 	    <function>s</function> and afterwards pretty-prints the
