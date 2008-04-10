@@ -71,7 +71,7 @@
     
     <para>
       The status of the build farm can be found at 
-      <link xl:href="http://nix.cs.uu.nl/dist/stratego/quick-view.html">http://nix.cs.uu.nl/dist/stratego/quick-view.html</link>.
+      <link xl:href="http://releases.strategoxt.org/">http://releases.strategoxt.org/</link>.
       This page is updated every time the build farm completes a job. The result
       of a build (provided it suceeded) is downloadable, and you are free to
       download and test it. We do not, however, give any guarantees about the

@@ -24,7 +24,7 @@
 	Stratego and its library is a work in progress. New material is added to
 	the library on a weekly basis. If you want to follow the progress, you
 	should consult the latest version of the 
-	<link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-stable-latest/docs">library documentation</link>.
+	<link xl:href="http://releases.strategoxt.org/docs/api/libstratego-lib/libstratego-lib-docs-stable/docs/">library documentation</link>.
   </para>
   
   <para>
@@ -80,7 +80,7 @@ util/config
     most important parts of the library, and show their typical usage
     patterns and idioms. If anything seems unclear, you are encouraged
     to consult the
-    <link xl:href="http://nix.cs.uu.nl/dist/stratego/stratego-lib-docs-0.16/docs/">online documentation</link>
+    <link xl:href="http://releases.strategoxt.org/docs/api/libstratego-lib/libstratego-lib-docs-stable/docs/">online documentation</link>
     for further details.
   </para>
   </section>  
