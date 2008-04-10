@@ -67,7 +67,7 @@ Buildfarm
 
   After committing, the manual will automatically be rebuilt by the Nix
   buildfarm and made available at:
-  http://nix.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/index.html
+  http://releases.strategoxt.org/strategoxt-manual/strategoxt-manual-unstable/
 
   The single page version is available at:
-  http://nix.cs.uu.nl/dist/stratego/strategoxt-manual-unstable-latest/manual/manual.html
+  http://releases.strategoxt.org/strategoxt-manual/strategoxt-manual-unstable/manual/one-page/index.html
