@@ -26,6 +26,9 @@ To build this manual, you need the following packages from Nix:
    * docbook-xml
    * recent libxml2 (2.6.5 works)
    * libxslt
+   * jing-tools
+   * batik
+   * docbook5 (5.0-pre-cr1 works)
 
 You can also build it on a Debian system, by installing
 

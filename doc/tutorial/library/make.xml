@@ -4,31 +4,99 @@
   
   <title>Building and Deploying Stratego Programs</title>
 
-  <warning>
-    <title>Work in Progress</title>
-
-    <para>
-      This chapter is currently being updated. Some parts might be
-      inconsistent while we are working to improve this
-      chapter. Please come back tomorrow for the updated version.
-    </para>
-  </warning>
-
-
-  
   <para>
-    The Stratego build system is based on the GNU Autotools, that is
-    to say, <command>automake</command>, <command>autoconf</command> and
-    <command>libtool</command>. In addition, Stratego provides a
-    tool called <command>autoxt</command>. If you are familiar with the 
-    Autotools, setting up a project for Stratego should be rather easy. If
-    this is unfamiliar ground to you, don't fear. We will walk through it
-    slowly in this chapter, but a full treatise is beyond the scope of this
-    tutorial.
+    There are two typical scenarios for building Stratego programs. The
+    first, and simplest, is to execute the compiler by hand on the 
+    command line in order to build one artifact (a program or a library).
+    The second is to set up a full build system is based on the GNU 
+    Autotools. Both scenarios will be covered in this chapter. 
   </para>
 
   <section>
+    <title>Building stand-alone artifacts</title>
+    
+    <para>
+      Here we describe how to use the Stratego compiler for small
+      projects and for compiling one-off examples on the command-line.
+      We recommend that you use Autotools for larger projects, i.e. when
+      you need to build multiple artifacts (see the next sections).
+    </para> 
+    
+    <para>
+      Invoking the compiler on simple programs which only depend on the
+      Stratego library is straightforward:
+    </para>
+    
+<screen>
+$ strc -i myprog.str 
+</screen>   
+    
+    <para>
+      This produces the executable file <filename>myprog</filename>. When 
+      your program depends on other Stratego packages (libraries),
+      you need to provide the compiler with proper include paths (for
+      finding the module definitions) and linking arguments (for linking
+      the libraries with the final executable). For convenience, you 
+      should define an alias called <command>strcflags</command> as follows:
+    </para>
+    
+<screen>
+$ alias strcflags="pkg-config --variable=strcflags "
+</screen>
+    
+    <para>
+	  By calling <command>strcflags</command> with the the name of a 
+	  specific package, e.g. <filename>java-front</filename>, all necessary 
+      include paths and library arguments will be provided for you. This
+      gives rise to the following idiom:
+    </para>
+     
+<screen>
+$ strc -i myprog.str $(strcflags dryad java-front)
+</screen>
+    
+    <para>
+      Note that providing several arguments (packages) to
+      <command>strcflags</command> is allowed.
+    </para>
+    
+
+       
+    <section>
+      <title>Static linking</title>
+      
+      <para>
+        By default, the Stratego compiler will dynamically link all libraries. To
+        enable static linking instead, you must add the command line options
+    	<code>-Xlinker -all-static</code>:
+      </para>
+      
+<screen>
+$ strc -i myprog.str -Xlinker -all-static
+</screen>    
+
+      <para>
+        This ensures that the <filename>myprog</filename> executable is statically
+        linked (and therefore has no external dependencies).
+      </para>
+    </section>
+    
+  </section>
+  
+  <section>
     <title>Setting up your Project</title>
+    
+    <para>
+      Setting up a build system for Stratego involves the Autotool
+      programs <command>automake</command>, 
+      <command>autoconf</command> and <command>libtool</command>. 
+      In addition, Stratego provides a new tool called
+      <command>autoxt</command>. If you are familiar with the Autotools, 
+      setting up a project for Stratego should be rather easy. If
+      this is unfamiliar ground to you, don't fear. We will walk through it
+      slowly in the next sections, but a full treatise is beyond the scope of this
+      tutorial.
+    </para>
     
     <para>
       After creating your project directory, let's call it
@@ -175,7 +243,7 @@ ogetarts/
 	 Similar to <code>XT_USE_XT_PACKAGES</code>, this macro adds
 	 configuration options to configure the package with the
 	 location of the ATerm library, SDF and Stratego/XT. However,
-	 the macro will only check the existance of these packages if
+	 the macro will only check the existence of these packages if
 	 the option <code>--enable-bootstrap</code> is given to the
 	 <code>configure</code> script. In other case, it will only
 	 look for the Aterm Library and Stratego Libraries. Also, XTC
@@ -213,13 +281,14 @@ ogetarts/
   <para>
     Again, most of this is boilerplate. The important point here is
     that <code>SUBDIRS = syn lib tools</code> will eventually result
-    in rules which <command>make</command> to delve into these
+    in rules that tell <command>make</command> to delve into these
     directories. We will explain below how the
-    <filename>Makefile.am</filename> for source directories should
-    look like. If you create empty <filename>Makefile.am</filename>
-    files in the sub-directories <filename>syn/</filename>,
-    <filename>lib/</filename>, and <filename>tools/</filename>, then
-    you shoud now be able to bootstrap and configure the package:
+    <filename>Makefile.am</filename>s for each of the source directories 
+    should look like. For now, you can just create empty 
+    <filename>Makefile.am</filename> files in the sub-directories 
+    <filename>syn/</filename>,
+    <filename>lib/</filename>, and <filename>tools/</filename>. This 
+	allows you to bootstrap and configure the package:
   </para>
 
 <screen>
@@ -232,14 +301,14 @@ ogetarts/
 </screen>
   
   <para>
-    The content of the <filename>Makefile.am</filename> files depends
+    The content of the empty <filename>Makefile.am</filename> files depends
     on whether you are building a parser, stand-alone Stratego
     programs, or a Stratego library. We will discuss each variant
     separately, but you are of course free to mix several of these in
     your project, like we do in this project: In
     <filename>lib</filename> lives the library parts of Ogetarts, in
     <filename>syn</filename> a parser is generated, and in
-    <filename>tools</filename> live the stand-alone programs.
+    <filename>tools</filename> we place the command-line programs.
   </para>
   </section>
   
@@ -264,7 +333,7 @@ ogetarts/
 
   <variablelist>
     <varlistentry>
-      <term>include $(top_srcdir)/Makefile.xt</term>
+      <term><code>include $(top_srcdir)/Makefile.xt</code></term>
       <listitem>
         <para>
 	  Includes the various Stratego/XT make rules in this
@@ -275,7 +344,7 @@ ogetarts/
     </varlistentry>
 
     <varlistentry>
-      <term>include $(wildcard *.dep)</term>
+      <term><code>include $(wildcard *.dep)</code></term>
       <listitem>
         <para>
           The Stratego compiler generates <filename>.dep</filename>
@@ -287,7 +356,7 @@ ogetarts/
     </varlistentry>
     
     <varlistentry>
-      <term>bin_PROGRAMS</term>
+      <term><code>bin_PROGRAMS</code></term>
       <listitem>
         <para>
           A list of stand-alone Stratego programs that should be
@@ -308,7 +377,7 @@ strategies
     </varlistentry>
 
     <varlistentry>
-      <term>program_LDADD</term>
+      <term><code>program_LDADD</code></term>
       <listitem>
         <para>
 	  Stratego programs reuse various libraries, such as the ATerm
@@ -328,7 +397,7 @@ strategies
     </varlistentry>
 
     <varlistentry>
-      <term>STRCFLAGS</term>
+      <term><code>STRCFLAGS</code></term>
       <listitem>
         <para>
           Contains compiler flags passed to the Stratego compiler. A
@@ -344,7 +413,7 @@ strategies
     </varlistentry>
 
     <varlistentry>
-      <term>STRINCLUDES</term>
+      <term><code>STRINCLUDES</code></term>
       <listitem>
         <para>
           A list of additional includes necessary for a succesful
@@ -357,7 +426,7 @@ strategies
     </varlistentry>
 
     <varlistentry>
-      <term>EXTRA_DIST</term>
+      <term><code>EXTRA_DIST</code></term>
       <listitem>
         <para>
           Specifies which auxilary files have to be included in the
@@ -369,7 +438,7 @@ strategies
     </varlistentry>
 
     <varlistentry>
-      <term>CLEANFILES</term>
+      <term><code>CLEANFILES</code></term>
       <listitem>
         <para>
           Files to be deletes these files when the <code>make
@@ -382,7 +451,7 @@ strategies
     </varlistentry>
 
     <varlistentry>
-      <term>BOOTCLEANFILES</term>
+      <term><code>BOOTCLEANFILES</code></term>
       <listitem>
         <para>
           Files to be deleted when <code>make bootclean</code> is issued. In
@@ -443,7 +512,7 @@ strategies
 
     <variablelist>
       <varlistentry>
-	<term>sdfdata_DATA</term>
+	<term><code>sdfdata_DATA</code></term>
 	<listitem>
 	  <para>
 	    The important declaration in this file is
@@ -482,7 +551,7 @@ exports
 	</listitem>
       </varlistentry>
       <varlistentry>
-	<term>pkgdata_DATA</term>
+	<term><code>pkgdata_DATA</code></term>
 	<listitem>
 	  <para>
 	    This variable defines a list of files that will be placed
@@ -502,7 +571,7 @@ exports
       </varlistentry>
 
       <varlistentry>
-	<term>EXTRA_DIST</term>
+	<term><code>EXTRA_DIST</code></term>
 	<listitem>
 	  <para>
 	    Similar to the makfile for building Stratego programs, we
@@ -518,7 +587,7 @@ exports
       </varlistentry>
 
       <varlistentry>
-	<term>CLEANFILES</term>
+	<term><code>CLEANFILES</code></term>
 	<listitem>
 	  <para>
 	    In <code>CLEANFILES</code> we specify that we want make to
@@ -529,11 +598,12 @@ exports
       </varlistentry>
 
       <varlistentry>
-	<term>PGEN_FLAGS</term>
+	<term><code>PGEN_FLAGS</code></term>
 	<listitem>
 	  <para>
 	    This variable is used to pass flags to the parsetable
-	    generator, sdf2table. The definition in this makefile
+	    generator, <command>sdf2table</command>. The definition in 
+	    this makefile
 	    defines the main module to be <code>$*</code>, which is
 	    the basename of the <filename>.def</filename> file that is
 	    used as the input to the parser generator. This is typical
@@ -544,11 +614,12 @@ exports
       </varlistentry>
 
       <varlistentry>
-	<term>SDF2RTG_FLAGS</term>
+	<term><code>SDF2RTG_FLAGS</code></term>
 	<listitem>
 	  <para>
 	    Similar to <code>PGEN_FLAGS</code>, this variable is used
-	    to pass flags to the tool sdf2rtg, which generates a
+	    to pass flags to the tool <command>sdf2rtg</command>, which 
+	    generates a
 	    regular tree grammar for an SDF syntax definition. Again,
 	    we define the main module of the syntax definition to be
 	    the basename of the file.
@@ -557,11 +628,11 @@ exports
       </varlistentry>
 
       <varlistentry>
-	<term>SDFINCLUDES</term>
+	<term><code>SDFINCLUDES</code></term>
 	<listitem>
 	  <para>
-	    Similar to STRINCLUDES, you can define directories to
-	    search for SDF modules using the SDFINCLUDES variable. In
+	    Similar to <code>SDFINCLUDES</code>, you can define directories to
+	    search for SDF modules using the <code>SDFINCLUDES</code> variable. In
 	    addition to the option <code>-I
 	    <replaceable>dir</replaceable></code> you can also include
 	    modules from an SDF definition: <code>-Idef
@@ -680,15 +751,17 @@ strategies
     <title>Compiling the Library</title>
 
     <para>
-      In principle, it is possible to import the Stratego
-      implementation of your library in your Stratego programs. In
-      that case, there is no need to compile the library: it will be
+      In principle, it is possible to import full source of your library 
+      in your Stratego programs. In that case, there is no need to 
+      compile the library separately: it will be
       compiled by the Stratego compiler every time the library is
-      included in a Stratego program. However, this has the
-      disadvantage that the Stratego code has to be compiled again and
-      again, which is not very attractive if you have many programs in
-      your package. To solve this, the build system can be told to
-      compile the library separately to a native library. The creation
+      included in a Stratego program. The compiler will act as a 
+      whole-program compiler and compile all the source code from scratch,
+      including your library sources. This is wasteful, since the 
+      library is recompiled needlessly. To avoid this, the build system
+      can be told to
+      compile the library separately to a native library, e.g. a 
+      <filename>.so</filename> file. The creation
       of the native library is done using <command>libtool</command>,
       which takes care of creating both static and shared
       libraries. On most platforms, the linker prefers shared
@@ -765,7 +838,8 @@ libogetarts.c libogetarts.rtree : $(ogetartssrc)
     <listitem>
       <para>
 	Necessary for some platforms. Note that we add
-	STRATEGO_SGLR_LIBS, since the library using libstratego-sglr.
+	<code>STRATEGO_SGLR_LIBS</code>, since our module is
+	importing <code>libstratego-sglr</code>.
       </para>
     </listitem>
   </varlistentry>
@@ -870,7 +944,9 @@ ogetarts_eval_LDADD = \
       file for your project.
     </para>
   </section>
-  
+
+<!-- 
+
   <section>
     <title>Microsoft Windows Support</title>
     <para>
@@ -878,6 +954,7 @@ ogetarts_eval_LDADD = \
       Cygwin.
     </para>
   </section>
+-->
   
   <section>
     <title>Summary</title>
