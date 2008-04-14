@@ -1,0 +1,48 @@
+
+ TIL - Tiny Imperative Language
+================================
+
+This project contains an implementation of a tiny imperative language
+called TIL in the Stratego/XT program transformation system. It is meant
+as a small and rather clear illustration of how to implement languages.
+
+A fuller explanation of the implementation is available in the 
+Stratego/XT development manual, available on-line:
+
+http://releases.strategoxt.org/strategoxt-manual/strategoxt-manual-unstable/
+
+
+ Compilation
+--------------
+
+Before you compile this project, you need to have Stratego/XT installed
+and in your path. Download and installation instructions are available
+on-line: 
+
+http://strategoxt.org/Stratego/StrategoDownload
+
+
+After you have installed Stratego/XT, all you need to do is run the 'maak'
+script:
+
+$ ./maak
+
+
+
+ Bugs and support
+------------------
+
+Should you encounter any problems, please to report them in the Stratego/XT
+issue tracker, in the Stratego/XT Manual component:
+
+http://bugs.strategoxt.org/browse/SXM
+
+
+For help and advice with TIL and Stratego/XT, you are encouraged to subscrive
+to the mailing lists or visit our IRC channel:
+
+  http://strategoxt.org/Stratego/MailingList
+  irc://irc.freenode.net/#stratego
+
+
+
