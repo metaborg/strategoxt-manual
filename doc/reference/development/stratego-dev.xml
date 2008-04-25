@@ -28,30 +28,32 @@
 	</para>
       
     <para>
-      The development of Stratego/XT centers around the code repository,
-      stored in Subversion at
-      <link xl:href="http://svn.cs.uu.nl:12443/repos/StrategoXT">http://svn.cs.uu.nl:12443/repos/StrategoXT</link>.
-      This repository contains all the code that goes into Stratego/XT, with
-      the exception of the ATerm library and the SDF2 tool bundle, which are
-      available from CWI.
+      The development of Stratego/XT centers around the code
+      repository, stored in Subversion at <link
+      xl:href="https://svn.strategoxt.org/repos/StrategoXT">https://svn.strategoxt.org/repos/StrategoXT</link>.
+      This repository contains all the code that goes into
+      Stratego/XT, with the exception of the ATerm library and the
+      SDF2 tool bundle, which are available from CWI.
 
-      From the source code repository, the project is rebuilt by the build
-      farm whenever a commit is done to the Stratego/XT project. During a build,
-      all the unit tests are also run. This improves stability, as we are able to
-      find breaking changes shortly after they are introduced.
+      From the source code repository, the project is rebuilt by the
+      build farm whenever a commit is done to the Stratego/XT
+      project. During a build, all the unit tests are also run. This
+      improves stability, as we are able to find breaking changes
+      shortly after they are introduced.
     </para>
 
    <section>
      <title>Issue Tracker</title>
      
      <para>
-       Our issue tracker is located at
-       <link xl:href="https://bugs.cs.uu.nl/browse/STR">https://bugs.cs.uu.nl/browse/STR</link>.
-       The tracker contains issues reported by our users, internally delegated
-       tasks and requests for feature improvements, all placed into a release
-       schedule for the coming releases. If you are looking for something to do,
-       this is the place to start. Also, if you are interested in knowing where
-       the project is headed, this is the best source of information.
+       Our issue tracker is located at <link
+       xl:href="http://bugs.strategoxt.org/browse/STR">http://bugs.strategoxt.org/browse/STR</link>.
+       The tracker contains issues reported by our users, internally
+       delegated tasks and requests for feature improvements, all
+       placed into a release schedule for the coming releases. If you
+       are looking for something to do, this is the place to
+       start. Also, if you are interested in knowing where the project
+       is headed, this is the best source of information.
      </para>
    </section>
    
@@ -272,7 +274,7 @@
     </para>
 
 <screen>
-  $ svn checkout https://svn.cs.uu.nl:12443/repos/StrategoXT/trunk/StrategoXT/
+  $ svn checkout https://svn.strategoxt.org/repos/StrategoXT/strategoxt/trunk/
 </screen>
 
     <para>
@@ -325,7 +327,7 @@
       sources the StrategoXT repository:
     </para>
 
-    <screen>https://svn.cs.uu.nl:12443/repoman/info/StrategoXT</screen>
+    <screen>https://svn.strategoxt.org/repoman/info/StrategoXT</screen>
   </section>
 
   <section>
