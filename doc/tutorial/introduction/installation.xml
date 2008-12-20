@@ -119,7 +119,7 @@
 
 <prompt>$</prompt> tar zxf sdf2-bundle-<replaceable>version</replaceable>.tar.gz
 <prompt>$</prompt> cd sdf2-bundle-<replaceable>version</replaceable>
-<prompt>$</prompt> ./configure
+<prompt>$</prompt> ./configure --with-aterm=/usr/local
 <prompt>$</prompt> make
 <prompt>$</prompt> make install
 <prompt>$</prompt> cd ..
@@ -174,7 +174,7 @@
 	  <screen>
 <prompt>$</prompt> tar zxf strategoxt-<replaceable>version</replaceable>.tar.gz
 <prompt>$</prompt> cd strategoxt-<replaceable>version</replaceable>
-<prompt>$</prompt> ./configure
+<prompt>$</prompt> ./configure --with-aterm=/usr/local --with-sdf=/usr/local
 <prompt>$</prompt> make
 <prompt>$</prompt> make install
 </screen>
