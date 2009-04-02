@@ -872,7 +872,7 @@ S(S(S(Z)))
   use <code>debug</code> from the Stratego Library.
 
 <screen>
-<prompt>stratego></prompt> import liblib
+<prompt>stratego></prompt> import libstratego-lib
 <prompt>stratego></prompt> !P(S(S(S(Z()))),Z())
 P(S(S(S(Z))),Z)
 <prompt>stratego></prompt> repeat(debug; (A &lt;+ B))

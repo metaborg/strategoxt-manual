@@ -32,7 +32,7 @@
   
 <screen>
 module foo
-imports liblib
+imports libstratego-lib
 strategies
   main = id
 </screen>
@@ -93,7 +93,7 @@ strategies
   
 <screen>
 module foo
-imports liblib
+imports libstratego-lib
 strategies
   main = io-wrap(id)
 </screen>
@@ -203,7 +203,7 @@ Yes(It(Works))
     
 <screen>
 module foo
-imports liblib
+imports libstratego-lib
 signature
   constructors
     Verify : Option

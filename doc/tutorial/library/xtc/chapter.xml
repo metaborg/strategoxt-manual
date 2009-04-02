@@ -228,7 +228,7 @@ stratego-lib (0.16M1) : .../stratego-lib
     
 <screen>
 module xtcid
-imports liblib
+imports libstratego-lib
 strategies
   main = xtc-io-wrap(xtcfoo)
   xtcfoo = id
@@ -304,7 +304,10 @@ My(Term)
 
 <screen>
 module xtcfoo
-imports liblib
+imports 
+  libstratego-lib
+  libstratego-xtc
+
 strategies
   main = xtc-output-wrap(xtcfoo)
   xtcfoo = !"foo" ; write-to
@@ -357,7 +360,9 @@ strategies
       
 <screen>
 module xtcid
-imports liblib
+imports 
+  libstratego-lib
+  libstratego-xtc
 strategies
   main = xtc-io-wrap(check-options(!["sglr", "foo2bar"]), xtcid)
   xtcid = xtc-check-dependencies ; id
@@ -418,7 +423,9 @@ strategies
       
 <screen>
 module xtcinc
-imports liblib
+imports 
+  libstratego-lib
+  libstratego-xtc
 strategies
   main = xtc-io-wrap(read-from ; &lt;add> (&lt;id>, 1) ; write-to)
 </screen>
@@ -431,7 +438,9 @@ strategies
 
 <screen>
 module xtcclient
-imports liblib
+imports 
+  libstratego-lib
+  libstratego-xtc
 strategies
   main = !1 ; xtc-transform(!"xtcinc")
 </screen>
@@ -535,7 +544,9 @@ My(Term)
     
 <screen>
 module xtcload
-imports liblib
+imports 
+  libstratego-lib
+  libstratego-xtc
 strategies
   main = &lt;xtc-find-file> "myterm.trm" ; read-from
 </screen>

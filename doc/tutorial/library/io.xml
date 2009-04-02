@@ -52,7 +52,7 @@
     
 <screen>
 module example
-imports liblib
+imports libstratego-lib
 strategies
   main = 
     &lt;print> (stdout, ["baz"])

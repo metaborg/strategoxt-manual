@@ -80,7 +80,7 @@
 
      Module <code>til-simplify</code> is a basic Stratego program. It
      imports the <code>til-eval</code> and <code>til-desugar</code>
-     modules, and the Stratego standard library (<code>liblib</code>),
+     modules, and the Stratego standard library (<code>libstratego-lib</code>),
      which defines standard rewriting strategies and additional
      utilities for I/O and such.
 

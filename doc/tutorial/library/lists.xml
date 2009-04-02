@@ -43,12 +43,12 @@
   <para>
     The module <code>collection/list</code> contains a lot of convenience
     functions for dealing with lists. (<code>collection/list</code> is
-    contained in the <code>liblib</code> library.) For example, the strategy
+    contained in the <code>libstratego-lib</code> library.) For example, the strategy
     <code>elem</code> will check if a given value is in a list. If it
     is, the identity of the list will be returned.
   </para>
 <screen>
-<prompt>stratego></prompt> import liblib
+<prompt>stratego></prompt> import libstratego-lib
 <prompt>stratego></prompt> &lt;elem> (1, [2,3,1,4])
 [2,3,1,4]
 </screen>
