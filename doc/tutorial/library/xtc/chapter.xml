@@ -477,7 +477,7 @@ strategies
    </para>
 
 <screen>
-<prompt>$</prompt> strc --xtc-repo ./XTC -i xtcclient.str
+<prompt>$</prompt> strc --xtc-repo ./XTC -i xtcclient.str -la stratego-lib -la stratego-xtc
 ....
 </screen>
 

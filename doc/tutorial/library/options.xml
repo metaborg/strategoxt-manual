@@ -45,7 +45,7 @@ strategies
   </para>
   
 <screen>
-<prompt>$</prompt> strc -i foo.str
+<prompt>$</prompt> strc -i foo.str -la stratego-lib
 ...
 <prompt>$</prompt> ./foo --help
 ["./foo","--help"]

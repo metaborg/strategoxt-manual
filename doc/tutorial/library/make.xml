@@ -28,7 +28,7 @@
     </para>
     
 <screen>
-$ strc -i myprog.str 
+$ strc -i myprog.str -la stratego-lib
 </screen>   
     
     <para>
@@ -72,7 +72,7 @@ $ strc -i myprog.str $(strcflags dryad java-front)
       </para>
       
 <screen>
-$ strc -i myprog.str -Xlinker -all-static
+$ strc -i myprog.str -Xlinker -all-static -la stratego-lib
 </screen>    
 
       <para>
