@@ -7,9 +7,15 @@ CLEANFILES  = book.pdf
 
 images :
 	mkdir images
-	find $(top_srcdir) -name *.png | xargs -I{} cp {} images/
+	for pic in `find $(top_srcdir) -name *.png`; \
+	do \
+		convert -background white -layers merge $$pic images/`basename $$pic` ; \
+	done
 	mkdir images/xmpl
-	cp $(top_srcdir)/todo/program-representation-xmpl/*.png images/xmpl/
+	for pic in `find $(top_srcdir)/todo/program-representation-xmpl/ -name *.png`; \
+	do \
+		convert -background white -layers merge $$pic images/`basename $$pic` ; \
+	done 
 
 # Sorry this is not autoconfigured until it actually works.
 book.pdf : $(BOOK) images
