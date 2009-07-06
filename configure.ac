@@ -4,7 +4,16 @@ AM_INIT_AUTOMAKE
 
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 
-XT_PRE_RELEASE
+# if VERSION_SUFFIX not is set then it's a pre release
+if ! test -n "${VERSION_SUFFIX+X}"; then
+  XT_PRE_RELEASE
+else
+  # if VERSION_SUFFIX is set and not "" then it's a pre release
+  if test -n "${VERSION_SUFFIX}"; then
+    XT_PRE_RELEASE
+  fi
+fi
+
 XT_USE_JRE
 XT_USE_BATIK
 USE_DOCBOOK
