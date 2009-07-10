@@ -6,10 +6,10 @@
 
   <para>
     The Annotated Term Format, or <emphasis>ATerms</emphasis> for
-    short, is heavily used in Stratego/XT. It used for the structured
+    short, is heavily used in Stratego/XT. It is used for the structured
     representation of programs (and also data in general). Program
     representations are exchanged between transformation tools in the
-    ATerm format and the data-structures of the Stratego language
+    ATerm format, and the data-structures of the Stratego language
     itself are ATerms.
   </para>
 
