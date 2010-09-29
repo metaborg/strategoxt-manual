@@ -88,11 +88,11 @@
 </screen>  
 
   <para>
-    Finally, the <code>fetch(s)</code> strategy can be used to find
+    Finally, the <code>fetch-elem(s)</code> strategy can be used to find
     the first element for which <code>s</code> succeeds:
   </para>
 <screen>
-<prompt>stratego></prompt> &lt;fetch(?2)> [1,2,3]
+<prompt>stratego></prompt> &lt;fetch-elem(?2)> [1,2,3]
 2
 </screen>  
 
